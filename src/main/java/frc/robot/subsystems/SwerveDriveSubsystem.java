@@ -6,11 +6,15 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DataLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.RobotContainer;
 import frc.robot.lib.SwerveState;
 
-// hello
 public class SwerveDriveSubsystem extends SubsystemBase {
 
     private SwerveDriveOdometry odometry;
@@ -60,6 +64,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         double b = omega * Constants.Swerve.LENGTH/2;
 
         //The addition of the movement and rotational vector
+        // TODO: Use 2-size arrays or Translation2D instead of independent doubles
         double x0 = x - b;
         double y0 = y + a;
 
@@ -124,6 +129,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+        odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());        
     }
 }

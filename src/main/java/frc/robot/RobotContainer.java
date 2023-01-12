@@ -4,10 +4,22 @@
 
 package frc.robot;
 
+import edu.wpi.first.util.datalog.BooleanLogEntry;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.subsystems.SwerveDriveSubsystem;
+
 public class RobotContainer {
+
+  public static BooleanLogEntry entry;
+  public static DataLog log;
+
 
   public RobotContainer() {
     // Configure the trigger bindings
+
+    SmartDashboard.putData(SwerveDriveSubsystem.getInstance());
+
     configureBindings();
   }
 

@@ -60,6 +60,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         double b = omega * Constants.Swerve.LENGTH/2;
 
         //The addition of the movement and rotational vector
+        // TODO: Use 2-size arrays or Translation2D instead of independent doubles
         double x0 = x - b;
         double y0 = y + a;
 

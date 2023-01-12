@@ -30,12 +30,13 @@ public class SwerveModule {
         set(state.move, state.turn);
     }
     
+    //move input in MPS, Turn input in radians
     public void set(double move, double turn){
         turn *= 180/Math.PI;
         setDeg(move, turn);
     }
     
-    //Input is radians
+    //Move input in MPS, Turn input in degrees
     public void setDeg(double move, double turn) {
         double currentPos =  turnMotor.getSelectedSensorPosition();
         double lastTurn = Units.NUToDeg(currentPos);
@@ -46,6 +47,7 @@ public class SwerveModule {
         double nextPos = currentPos + Units.degToNU(angleChange);
 
         turnMotor.set(ControlMode.MotionMagic, nextPos);
+        moveMotor.set(ControlMode.Velocity, move * moveMultiplier);
     }
 
     public SwerveModulePosition getPosition() {

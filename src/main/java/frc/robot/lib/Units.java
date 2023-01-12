@@ -6,7 +6,7 @@ public class Units {
     // Converts from native units into degrees
     public static double NUToDeg(double angle){
         //Account for gear ratio
-        angle /= Constants.SwerveBase.GEARRATIO;
+        angle /= Constants.Swerve.GEARRATIO;
 
         //Convert from native units into rotations;
         angle /= 2048;
@@ -26,7 +26,7 @@ public class Units {
         angle *= 2048;
 
         //Account for gear ratio
-        angle *= Constants.SwerveBase.GEARRATIO;
+        angle *= Constants.Swerve.GEARRATIO;
 
         return angle;
     }
@@ -45,5 +45,32 @@ public class Units {
         else{
             return angle + 360;
         }
+    }
+
+    //Convert from Native Units to Radians
+    public static double NUToRad(double angle){
+        //Account for gear ratio
+        angle /= Constants.Swerve.GEARRATIO;
+
+        //Convert from native units into rotations;
+        angle /= 2048;
+
+        //Convert from rotations into radians
+        angle *= 2*Math.PI;
+
+        return angle;
+    }
+
+    //Convert from NU/100ms to Meters per Second
+    public static double NUToMPS(double speed){
+        //Convert from NU/100ms to NU/s
+        speed /= 10;
+
+        //Convert from NU/s to Rotations/s
+        speed /= 4096;
+
+        //Convert from Rotations/s to Meters/s
+        speed *= 2*Math.PI*Constants.Swerve.WHEELRADIUS;
+        return speed;
     }
 }

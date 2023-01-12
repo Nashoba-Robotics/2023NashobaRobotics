@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import frc.robot.lib.Units;
 import frc.robot.lib.SwerveState;
@@ -50,8 +51,12 @@ public class SwerveModule {
         moveMotor.set(ControlMode.Velocity, move * moveMultiplier);
     }
 
+    // MPS, Rotation 2D
     public SwerveModulePosition getPosition() {
-        return null;
+        return new SwerveModulePosition(
+            Units.NUToMPS(moveMotor.getSelectedSensorVelocity()),  //<-- This is in NU/100ms => Convert into Meters per Sec
+            new Rotation2d(Units.NUToRad(turnMotor.getSelectedSensorPosition()))
+        );
     }
 
     public double findLowestAngle(double turn, double lastTurn){

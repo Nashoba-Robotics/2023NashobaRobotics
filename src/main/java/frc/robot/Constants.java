@@ -47,4 +47,8 @@ public final class Constants {
     public static final double BACK_RIGHT_OFFSET_RADIANS = 0;
   }
 
+  public static class SwerveBase{
+    public static final double GEARRATIO = 0;
+  }
+
 }

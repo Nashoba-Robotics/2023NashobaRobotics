@@ -2,10 +2,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import frc.robot.lib.Units;
 import frc.robot.lib.SwerveState;
@@ -26,6 +27,47 @@ public class SwerveModule {
         turnSensor = new CANCoder(sensorPort);
 
         this.offset = offset;
+
+        //config();
+    }
+
+    public void config(){
+        //Move motor configuration
+        moveMotor.configFactoryDefault();
+
+        //Turn motor configuratoin
+        turnMotor.configFactoryDefault();
+        turnMotor.configNeutralDeadband(0.001);
+        turnMotor.config_kF(0, 0.0475);
+        turnMotor.config_kP(0, 0.2);
+        //turnMotor.config_kI(0, 0.0025);
+        turnMotor.config_kD(0, 0.1);
+
+        int cruiseVelocity = 20_000;
+        turnMotor.configMotionCruiseVelocity(cruiseVelocity);
+        turnMotor.configMotionAcceleration(2*cruiseVelocity);
+        
+        turnMotor.configFeedbackNotContinuous(true, 0);
+
+        //General Config
+        configCurrentLimit();
+    }
+
+    public void configCurrentLimit(){
+        moveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.2));
+        moveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.2));
+
+        turnMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.2));
+        turnMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.2));
+    }
+
+    public void configOffset(){
+        turnSensor.configMagnetOffset(offset);
+        turnMotor.setSelectedSensorPosition(turnSensor.getAbsolutePosition());
+    }
+
+    public void zero(){
+        set(0, 0);
     }
 
     public void set(SwerveState state){
@@ -55,8 +97,8 @@ public class SwerveModule {
     // MPS, Rotation 2D
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            Units.NUToMPS(moveMotor.getSelectedSensorVelocity()),  //<-- This is in NU/100ms => Convert into Meters per Sec
-            new Rotation2d(Units.NUToRad(turnMotor.getSelectedSensorPosition()))
+            Units.NUToMPS(moveMotor.getSelectedSensorVelocity()),
+            new Rotation2d(getAngle())
         );
     }
 
@@ -111,10 +153,20 @@ public class SwerveModule {
         return distance;
     }
 
-    double findDistance(double turn, double lastTurn){
+    public double findDistance(double turn, double lastTurn){
         double distance = Math.min(Math.abs(turn - lastTurn), Math.abs(turn+360 - lastTurn));
         distance = Math.min(distance, Math.abs(turn - (lastTurn+360)));
 
         return distance;
+    }
+
+    //returns angle in radians
+    public double getAngle(){
+        return Units.NUToRad(turnMotor.getSelectedSensorPosition());
+    }
+
+    //returns CANCoder angle in radians
+    public double getAbsAngle(){
+        return turnSensor.getAbsolutePosition() * Math.PI/180;
     }
 }

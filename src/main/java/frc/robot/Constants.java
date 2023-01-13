@@ -29,7 +29,7 @@ public final class Constants {
     public static final int FRONT_RIGHT_MOVE_PORT = 4;
     public static final int FRONT_LEFT_MOVE_PORT = 5;
     public static final int BACK_LEFT_MOVE_PORT = 6;
-    public static final int BAKC_RIGHT_MOVE_PORT = 7;
+    public static final int BACK_RIGHT_MOVE_PORT = 7;
 
     public static final int FRONT_RIGHT_SENSOR_PORT = 0;
     public static final int FRONT_LEFT_SENSOR_PORT = 1;

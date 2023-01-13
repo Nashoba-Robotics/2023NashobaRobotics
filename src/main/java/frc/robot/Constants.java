@@ -49,6 +49,13 @@ public final class Constants {
     public static final double BACK_LEFT_OFFSET_RADIANS = 0;
     public static final double BACK_RIGHT_OFFSET_RADIANS = 0;
   }
+
+  public static final class Grabber{
+    public static final int LEFT_GRABBER_PORT = 0;
+    public static final int RIGHT_GRABBER_PORT = 0;
+
+    public static final int WRIST_PORT = 0;
+  }
 }
 
 

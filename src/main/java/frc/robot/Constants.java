@@ -10,6 +10,8 @@ public final class Constants {
   }
   
   public static final class Swerve {
+    public static final double GEARRATIO = 0;
+
     //meters
     public static final double WIDTH = .548;
     public static final double LENGTH = .548;
@@ -20,6 +22,7 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
+    public static final double WHEELRADIUS = 0;
 
     public static final int FRONT_RIGHT_TURN_PORT = 0;
     public static final int FRONT_LEFT_TURN_PORT = 1;
@@ -46,9 +49,24 @@ public final class Constants {
     public static final double BACK_LEFT_OFFSET_RADIANS = 0;
     public static final double BACK_RIGHT_OFFSET_RADIANS = 0;
   }
-
-  public static class SwerveBase{
-    public static final double GEARRATIO = 0;
-  }
-
 }
+
+
+/*
+ * Motors:
+ * 2 Neo550 for grabber (Spark max)
+ * 1 Neo550 for wrist (Spark max)
+ * 1 Falcon for extending arm
+ * 2 Falcons for pivoting arm
+ * 8 Falcons for swerve
+ * 
+ * Sensors:
+ * 2 Limit switches on extending arm
+ * Pigeon
+ * 
+ * Cameras:
+ * Game piece sensing
+ * 
+ * LEDs:
+ * CANdle
+ */

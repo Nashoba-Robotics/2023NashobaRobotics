@@ -10,7 +10,7 @@ public final class Constants {
   }
   
   public static final class Swerve {
-    public static final double GEARRATIO = 0;
+    public static final double GEARRATIO = 150. / 7.;
 
     //meters
     public static final double WIDTH = .548;
@@ -39,15 +39,15 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = -75.63;
-    public static final double FRONT_LEFT_OFFSET_DEGREES = -43.066;
-    public static final double BACK_LEFT_OFFSET_DEGREES = -121.318;
-    public static final double BACK_RIGHT_OFFSET_DEGREES = 96.68;
+    public static final double FRONT_RIGHT_OFFSET_DEGREES = 109.1;
+    public static final double FRONT_LEFT_OFFSET_DEGREES = 0;//148.5;
+    public static final double BACK_LEFT_OFFSET_DEGREES = 0;//-126.6;
+    public static final double BACK_RIGHT_OFFSET_DEGREES = 0;//108.9;
 
-    public static final double FRONT_RIGHT_OFFSET_RADIANS = 0;
-    public static final double FRONT_LEFT_OFFSET_RADIANS = 0;
-    public static final double BACK_LEFT_OFFSET_RADIANS = 0;
-    public static final double BACK_RIGHT_OFFSET_RADIANS = 0;
+    public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
+    public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
+    public static final double BACK_LEFT_OFFSET_RADIANS = BACK_LEFT_OFFSET_DEGREES * Math.PI/180;
+    public static final double BACK_RIGHT_OFFSET_RADIANS = BACK_RIGHT_OFFSET_DEGREES * Math.PI/180;
   }
 }
 

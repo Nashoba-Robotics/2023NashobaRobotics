@@ -6,14 +6,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.util.datalog.BooleanLogEntry;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DataLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import frc.robot.lib.JoystickValues;
 import frc.robot.lib.SwerveState;
 
 public class SwerveDriveSubsystem extends SubsystemBase {
@@ -25,7 +20,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private boolean fieldCentric;
 
     private SwerveDriveSubsystem() {
-        gyro = new Pigeon2(Constants.MiscPorts.GYRO_PORT);
+        gyro = new Pigeon2(Constants.Misc.GYRO_PORT);
         gyro.configFactoryDefault();
         fieldCentric = false;
 
@@ -50,6 +45,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     private double getGyroAngle() {
         return ((gyro.getYaw() % 360 + 360) % 360 - 180) * Math.PI / 180;
+    }
+
+    public void set(JoystickValues joystickValues, double omega) {
+        set(joystickValues.x, joystickValues.y, omega);
     }
 
     public void set(double x, double y, double omega) {        
@@ -154,6 +153,5 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
-        SmartDashboard.putNumber("NU pos", modules[0].getTurnPosition());
     }
 }

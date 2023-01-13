@@ -23,7 +23,7 @@ public class TestCommand extends CommandBase {
 
     @Override
     public void execute() {
-        SwerveDriveSubsystem.getInstance().setDirectly(0.2, 0);
+        SwerveDriveSubsystem.getInstance().setDirectly(0.2, -Math.PI/4);
     }
 
     @Override

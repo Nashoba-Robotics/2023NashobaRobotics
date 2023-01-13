@@ -2,27 +2,29 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class SwerveDriveCommand extends CommandBase {
-    private Joystick leftJoystick;
-    private Joystick rightJoystick;
-
     public SwerveDriveCommand() {
-        addRequirements(SwerveDriveSubsystem.getInstance());
+        addRequirements(new SubsystemBase[]{
+            SwerveDriveSubsystem.getInstance(),
+            JoystickSubsytem.getInstance(),
+        });
     }
 
     @Override
     public void initialize() {
-            rightJoystick = new Joystick(0);
-            leftJoystick = new Joystick(1);
+        SwerveDriveSubsystem.getInstance().set(0, 0, 0);
     }
 
     @Override
     public void execute() {
-            double[] leftJoystickValues = {leftJoystick.getX(), leftJoystick.getY()};
-            double rightJoystickValue = rightJoystick.getX();
-            SwerveDriveSubsystem.getInstance().set(leftJoystickValues[0], leftJoystickValues[1], rightJoystickValue);
+            SwerveDriveSubsystem.getInstance().set(
+                JoystickSubsytem.getInstance().getLeftJoystickValues().applyDeadZone(),
+                JoystickSubsytem.getInstance().getRightJoystickValues().applyDeadZone().x
+                );
     }
 
     @Override

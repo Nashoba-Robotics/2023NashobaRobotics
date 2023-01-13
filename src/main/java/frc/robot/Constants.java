@@ -5,8 +5,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 
 public final class Constants {
 
-  public static final class MiscPorts {
+  public static final class Misc {
     public static final int GYRO_PORT = 0;
+  }
+
+  public static final class Joystick {
+    public static final int LEFT_JOYSTICK_PORT = 1;
+    public static final int RIGHT_JOYSTICK_PORT = 0;
+
+    public static final double DEAD_ZONE = 0.15;
   }
   
   public static final class Swerve {
@@ -40,9 +47,9 @@ public final class Constants {
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
     public static final double FRONT_RIGHT_OFFSET_DEGREES = 109.1;
-    public static final double FRONT_LEFT_OFFSET_DEGREES = 0;//148.5;
-    public static final double BACK_LEFT_OFFSET_DEGREES = 0;//-126.6;
-    public static final double BACK_RIGHT_OFFSET_DEGREES = 0;//108.9;
+    public static final double FRONT_LEFT_OFFSET_DEGREES = -29.9;
+    public static final double BACK_LEFT_OFFSET_DEGREES = -128.1;
+    public static final double BACK_RIGHT_OFFSET_DEGREES = -68.8;
 
     public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;

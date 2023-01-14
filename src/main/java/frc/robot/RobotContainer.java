@@ -23,7 +23,7 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     SmartDashboard.putData(new TestCommand());
-    // SmartDashboard.putData(new SwerveDriveCommand());
+    SmartDashboard.putData(new SwerveDriveCommand());
     // SmartDashboard.putData(new RunMotorCommand());
     SmartDashboard.putData(new SingleModuleCommand());
 

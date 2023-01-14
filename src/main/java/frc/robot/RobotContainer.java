@@ -7,6 +7,10 @@ package frc.robot;
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.RunMotorCommand;
+import frc.robot.commands.SingleModuleCommand;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.TestCommand;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class RobotContainer {
@@ -18,7 +22,10 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the trigger bindings
 
-    SmartDashboard.putData(SwerveDriveSubsystem.getInstance());
+    SmartDashboard.putData(new TestCommand());
+    // SmartDashboard.putData(new SwerveDriveCommand());
+    // SmartDashboard.putData(new RunMotorCommand());
+    SmartDashboard.putData(new SingleModuleCommand());
 
     configureBindings();
   }

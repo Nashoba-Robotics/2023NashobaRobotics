@@ -10,6 +10,7 @@ import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DataLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -26,13 +27,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.MiscPorts.GYRO_PORT);
         gyro.configFactoryDefault();
-        fieldCentric = true;
+        fieldCentric = false;
 
         modules = new SwerveModule[] {
-            new SwerveModule(),
-            new SwerveModule(),
-            new SwerveModule(),
-            new SwerveModule(),
+            new SwerveModule(Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES),
+            new SwerveModule(Constants.Swerve.FRONT_LEFT_MOVE_PORT, Constants.Swerve.FRONT_LEFT_TURN_PORT, Constants.Swerve.FRONT_LEFT_SENSOR_PORT, Constants.Swerve.FRONT_LEFT_OFFSET_DEGREES),
+            new SwerveModule(Constants.Swerve.BACK_LEFT_MOVE_PORT, Constants.Swerve.BACK_LEFT_TURN_PORT, Constants.Swerve.BACK_LEFT_SENSOR_PORT, Constants.Swerve.BACK_LEFT_OFFSET_DEGREES),
+            new SwerveModule(Constants.Swerve.BACK_RIGHT_MOVE_PORT, Constants.Swerve.BACK_RIGHT_TURN_PORT, Constants.Swerve.BACK_RIGHT_SENSOR_PORT, Constants.Swerve.BACK_RIGHT_OFFSET_DEGREES)
         };
 
         odometry = new SwerveDriveOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
@@ -98,12 +99,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             Math.atan2(y3, x3)
         );
 
-        // TODO: check input units
         modules[0].set(s0.move, s0.turn);
         modules[1].set(s1.move, s1.turn);
         modules[2].set(s2.move, s2.turn);
         modules[3].set(s3.move, s3.turn);
+    }
 
+    public void setDirectly(double speed, double angle) {
+        modules[0].set(speed, angle);
+        modules[1].set(speed, angle);
+        modules[2].set(speed, angle);
+        modules[3].set(speed, angle);
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -127,8 +133,27 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         gyro.setYaw(angle * 180 / Math.PI);
     }
 
+    public double[] getModAngles() {
+        return new double[] {
+            modules[0].getAbsAngle(),
+            modules[1].getAbsAngle(),
+            modules[2].getAbsAngle(),
+            modules[3].getAbsAngle(),
+        };
+    }
+
+    public double[] getAnglePositions() {
+        return new double[] {
+            modules[0].getAngle(),
+            modules[1].getAngle(),
+            modules[2].getAngle(),
+            modules[3].getAngle(),
+        };
+    }
+
     @Override
     public void periodic(){
-        odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());        
+        odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+        SmartDashboard.putNumber("NU pos", modules[0].getTurnPosition());
     }
 }

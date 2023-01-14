@@ -73,4 +73,14 @@ public class Units {
         speed *= 2*Math.PI*Constants.Swerve.WHEELRADIUS;
         return speed;
     }
+
+    public static double radToNUArm(double angle){
+        angle /= 2*Math.PI;
+
+        angle *= 2048;
+
+        angle *= Constants.Arm.GEARRATIO;
+
+        return angle;
+    }
 }

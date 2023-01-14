@@ -2,9 +2,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -17,7 +22,6 @@ public class SwerveModule {
 
     private CANCoder turnSensor;
 
-    private double offset;
     private int moveMultiplier;
 
     public SwerveModule(int movePort, int turnPort, int sensorPort, double offset){
@@ -26,28 +30,37 @@ public class SwerveModule {
 
         turnSensor = new CANCoder(sensorPort);
 
-        this.offset = offset;
+        config();
+        configOffset(offset); //degrees
+        // turnMotor.set(ControlMode.MotionMagic, 0);
 
-        //config();
     }
 
     public void config(){
         //Move motor configuration
         moveMotor.configFactoryDefault();
+        moveMotor.setNeutralMode(NeutralMode.Brake);
+        moveMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        moveMotor.setInverted(InvertType.None);
 
         //Turn motor configuratoin
         turnMotor.configFactoryDefault();
+        turnMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         turnMotor.configNeutralDeadband(0.001);
         turnMotor.config_kF(0, 0.0475);
         turnMotor.config_kP(0, 0.2);
         //turnMotor.config_kI(0, 0.0025);
         turnMotor.config_kD(0, 0.1);
+        turnMotor.setInverted(InvertType.InvertMotorOutput);
 
         int cruiseVelocity = 20_000;
         turnMotor.configMotionCruiseVelocity(cruiseVelocity);
         turnMotor.configMotionAcceleration(2*cruiseVelocity);
         
         turnMotor.configFeedbackNotContinuous(true, 0);
+
+        turnMotor.setNeutralMode(NeutralMode.Coast);
+        turnSensor.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
         //General Config
         configCurrentLimit();
@@ -61,9 +74,10 @@ public class SwerveModule {
         turnMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.2));
     }
 
-    public void configOffset(){
+    public void configOffset(double offset){
         turnSensor.configMagnetOffset(offset);
-        turnMotor.setSelectedSensorPosition(turnSensor.getAbsolutePosition());
+        //turnSensor.setPosition(turnSensor.getAbsolutePosition()%180);
+        turnMotor.setSelectedSensorPosition(Units.degToNU(turnSensor.getAbsolutePosition()));
     }
 
     public void zero(){
@@ -91,7 +105,7 @@ public class SwerveModule {
         double nextPos = currentPos + Units.degToNU(angleChange);
 
         turnMotor.set(ControlMode.MotionMagic, nextPos);
-        moveMotor.set(ControlMode.Velocity, move * moveMultiplier);
+        moveMotor.set(ControlMode.PercentOutput, move * moveMultiplier);
     }
 
     // MPS, Rotation 2D
@@ -168,5 +182,13 @@ public class SwerveModule {
     //returns CANCoder angle in radians
     public double getAbsAngle(){
         return turnSensor.getAbsolutePosition() * Math.PI/180;
+    }
+
+    public double getTurnPosition() {
+        return turnMotor.getSelectedSensorPosition();
+    }
+
+    public void setTurnMotor(double position) {
+        turnMotor.set(ControlMode.MotionMagic, position);
     }
 }

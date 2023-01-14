@@ -3,8 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.lib.SwerveState;
-import frc.robot.lib.Units;
+import frc.robot.lib.math.Units;
+import frc.robot.lib.util.SwerveState;
 import frc.robot.subsystems.SwerveModule;
 
 public class SingleModuleCommand extends CommandBase {

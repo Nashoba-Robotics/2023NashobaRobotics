@@ -3,7 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.lib.JoystickValues;
+import frc.robot.lib.util.JoystickValues;
 
 public class JoystickSubsytem extends SubsystemBase {
     

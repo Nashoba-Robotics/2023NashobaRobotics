@@ -4,12 +4,14 @@ import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.lib.JoystickValues;
-import frc.robot.lib.SwerveState;
+import frc.robot.lib.math.SwerveMath;
+import frc.robot.lib.util.JoystickValues;
+import frc.robot.lib.util.SwerveState;
 
 public class SwerveDriveSubsystem extends SubsystemBase {
 
@@ -51,7 +53,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         set(joystickValues.x, joystickValues.y, omega);
     }
 
-    public void set(double x, double y, double omega) {        
+    public void set(double x, double y, double omega) {
+
+        //TODO:
+        //locks when in deadzone on Tau/4 directions
+        if(omega == 0) {
+
+        }
+
         if(fieldCentric) {
             double a = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
             double r = Math.sqrt(x*x + y*y); //magnitude of translation vector
@@ -64,44 +73,24 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         double b = omega * Constants.Swerve.LENGTH/2;
 
         //The addition of the movement and rotational vector
-        // TODO: Use 2-size arrays or Translation2D instead of independent doubles
-        double x0 = x - b;
-        double y0 = y + a;
+        Translation2d t0 = new Translation2d(x+b, y+a);
+        Translation2d t1 = new Translation2d(x+b, y-a);
+        Translation2d t2 = new Translation2d(x-b, y-a);
+        Translation2d t3 = new Translation2d(x-b, y+a);
 
-        double x1 = x - b;
-        double y1 = y - a;
-
-        double x2 = x + b;
-        double y2 = y - a;
-
-        double x3 = x + b;
-        double y3 = y + a;
-
-        //Convert to polar
-        SwerveState s0 = new SwerveState(
-            Math.sqrt(x0*x0 + y0*y0),
-            Math.atan2(y0, x0)
-            );
-
-        SwerveState s1 = new SwerveState(
-            Math.sqrt(x1*x1 + y1*y1),
-            Math.atan2(y1, x1)
+        //convert to polar
+        SwerveState[] setStates = SwerveState.fromTranslation2d(
+            new Translation2d[] {t0, t1, t2, t3}
         );
 
-        SwerveState s2 = new SwerveState(
-            Math.sqrt(x2*x2 + y2*y2),
-            Math.atan2(y2, x2)
-        );
+        setStates = SwerveMath.normalize(setStates);
+        set(setStates);
+    }
 
-        SwerveState s3 = new SwerveState(
-            Math.sqrt(x3*x3 + y3*y3),
-            Math.atan2(y3, x3)
-        );
-
-        modules[0].set(s0.move, s0.turn);
-        modules[1].set(s1.move, s1.turn);
-        modules[2].set(s2.move, s2.turn);
-        modules[3].set(s3.move, s3.turn);
+    public void set(SwerveState[] states) {
+        for(int i = 0; i < modules.length; i++) {
+            modules[i].set(states[i]);
+        }
     }
 
     public void setDirectly(double speed, double angle) {

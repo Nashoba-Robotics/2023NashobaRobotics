@@ -57,7 +57,7 @@ public class SwerveModule {
         turnMotor.configMotionCruiseVelocity(cruiseVelocity);
         turnMotor.configMotionAcceleration(2*cruiseVelocity);
         
-        turnMotor.configFeedbackNotContinuous(true, 0);
+        //turnMotor.configFeedbackNotContinuous(true, 0);
 
         turnMotor.setNeutralMode(NeutralMode.Coast);
         turnSensor.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
@@ -96,6 +96,10 @@ public class SwerveModule {
     
     //Move input in MPS, Turn input in degrees
     public void setDeg(double move, double turn) {
+        if(move == 0){
+            moveMotor.set(ControlMode.PercentOutput, 0);
+            return;
+        }
         double currentPos =  turnMotor.getSelectedSensorPosition();
         double lastTurn = Units.NUToDeg(currentPos);
 
@@ -104,6 +108,7 @@ public class SwerveModule {
         
         double nextPos = currentPos + Units.degToNU(angleChange);
 
+        //TODO: Change back to Velocity
         turnMotor.set(ControlMode.MotionMagic, nextPos);
         moveMotor.set(ControlMode.PercentOutput, move * moveMultiplier);
     }
@@ -112,7 +117,7 @@ public class SwerveModule {
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             Units.NUToMPS(moveMotor.getSelectedSensorVelocity()),
-            new Rotation2d(getAngle())
+            new Rotation2d(getAbsAngle())
         );
     }
 

@@ -49,7 +49,7 @@ public class JoystickValues {
         if(Math.abs(x) < deadzone) {
             x = 0;
         } else {
-            x = Math.signum(x) * (Math.abs(x) - deadzone) / (1 * deadzone);
+            x = Math.signum(x) * (Math.abs(x) - deadzone) / (1 - deadzone);
         }
         return this;
     }
@@ -58,8 +58,14 @@ public class JoystickValues {
         if(Math.abs(y) < deadzone) {
             y = 0;
         } else {
-            y = Math.signum(y) * (Math.abs(y) - deadzone) / (1 * deadzone);
+            y = Math.signum(y) * (Math.abs(y) - deadzone) / (1 - deadzone);
         }
+        return this;
+    }
+
+    public JoystickValues multiply(double multiplier) {
+        x *= multiplier;
+        y *= multiplier;
         return this;
     }
     

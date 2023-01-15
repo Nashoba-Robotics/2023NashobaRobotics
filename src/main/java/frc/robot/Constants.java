@@ -37,6 +37,10 @@ public final class Constants {
     );
     public static final double WHEELRADIUS = 0;
 
+    public static final double MAX_SPEED = 4.5; // m/s
+    public static final double MAX_ACCELERATION = 2; // m/s^2
+    public static final double MAX_NATIVE_VELOCITY = 22_000;  //Maximum velocity in NU/100ms
+
     public static final int FRONT_RIGHT_TURN_PORT = 0;
     public static final int FRONT_LEFT_TURN_PORT = 1;
     public static final int BACK_LEFT_TURN_PORT = 2;

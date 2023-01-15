@@ -73,4 +73,16 @@ public class Units {
         speed *= 2*Math.PI*Constants.Swerve.WHEELRADIUS;
         return speed;
     }
+
+    //Converts to NU/100ms then to 
+    public static double toPercentOutput(double mps){
+        //Convert to rotations per second
+        double speed = mps/(Constants.Swerve.WHEELRADIUS*Constants.TAU);
+        //Convert to NU per second
+        speed *= 2048;
+        //Convert to NU/100ms
+        speed *= 10;
+
+        return speed/Constants.Swerve.MAX_NATIVE_VELOCITY;
+    }
 }

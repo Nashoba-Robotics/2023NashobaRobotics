@@ -13,6 +13,7 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.lib.math.Units;
 import frc.robot.lib.util.SwerveState;
 
@@ -86,6 +87,10 @@ public class SwerveModule {
 
     public void set(SwerveState state){
         set(state.move, state.turn);
+    }
+
+    public void set(SwerveModuleState state){
+        set(Units.toPercentOutput(state.speedMetersPerSecond), state.angle.getDegrees());
     }
     
     //move input in MPS, Turn input in radians

@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -122,6 +123,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return positions;
     }
 
+    public void setStates(SwerveModuleState[] states) {
+        for(int i = 0; i < modules.length; i++) {
+            modules[i].set(states[i]);
+        }
+    }
+
     public void setFieldCentric(boolean fieldCentric) {
         this.fieldCentric = fieldCentric;
     }
@@ -129,6 +136,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     //radians
     public void setGyro(double angle) {
         gyro.setYaw(angle * 180 / Math.PI);
+    }
+
+    public Pose2d getPose() {
+        return odometry.getPoseMeters();
     }
 
     public double[] getModAngles() {

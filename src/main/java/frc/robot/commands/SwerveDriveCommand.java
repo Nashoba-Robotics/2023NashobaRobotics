@@ -26,7 +26,7 @@ public class SwerveDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double multiplier = (int)SmartDashboard.getNumber("kiddy mode", 0)==1 ? 0.1 : 1;
+        double multiplier = (int)SmartDashboard.getNumber("kiddy mode", 0)==1 ? 0.3 : 1;
 
             SwerveDriveSubsystem.getInstance().set(
                 JoystickSubsytem.getInstance().getLeftJoystickValues().shape(

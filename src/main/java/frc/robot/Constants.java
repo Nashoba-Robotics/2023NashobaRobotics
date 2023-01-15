@@ -18,7 +18,7 @@ public final class Constants {
     public static final double MOVE_DEAD_ZONE = 0.15;
     public static final double TURN_DEAD_ZONE = 0.15;
 
-    public static final double MOVE_SENSITIVITY = 1;
+    public static final double MOVE_SENSITIVITY = 1.5;
     public static final double TURN_SENSITIVITY = 1;
   }
   

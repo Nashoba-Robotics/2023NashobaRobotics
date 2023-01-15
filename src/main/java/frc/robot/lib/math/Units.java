@@ -64,14 +64,25 @@ public class Units {
     //Convert from NU/100ms to Meters per Second
     public static double NUToMPS(double speed){
         //Convert from NU/100ms to NU/s
-        speed /= 10;
+        speed *= 10;
 
         //Convert from NU/s to Rotations/s
-        speed /= 4096;
+        speed /= 2048;
+
+        speed /= Constants.Swerve.GEARRATIO;
 
         //Convert from Rotations/s to Meters/s
-        speed *= 2*Math.PI*Constants.Swerve.WHEELRADIUS;
+        speed *= Constants.TAU*Constants.Swerve.WHEELRADIUS;
         return speed;
+    }
+
+    public static double NUToM(double NU) {
+        NU /= 2048;
+
+        NU /= Constants.Swerve.GEARRATIO;
+
+        NU *= Constants.TAU*Constants.Swerve.WHEELRADIUS;
+        return NU;
     }
 
     //Converts to NU/100ms then to 
@@ -80,12 +91,13 @@ public class Units {
         double speed = mps/(Constants.Swerve.WHEELRADIUS*Constants.TAU);
         //Convert to NU per second
         speed *= 2048;
+        speed *= Constants.Swerve.GEARRATIO;
         //Convert to NU/100ms
-        speed *= 10;
+        speed /= 10;
 
         return speed/Constants.Swerve.MAX_NATIVE_VELOCITY;
     }
-    
+
     public static double radToNUArm(double angle){
         angle /= 2*Math.PI;
 

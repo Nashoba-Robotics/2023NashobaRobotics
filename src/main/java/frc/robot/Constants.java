@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 public final class Constants {
 
@@ -35,7 +36,7 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
-    public static final double WHEELRADIUS = 0;
+    public static final double WHEELRADIUS = Units.inchesToMeters(4);
 
     public static final double MAX_SPEED = 4.5; // m/s
     public static final double MAX_ACCELERATION = 2; // m/s^2

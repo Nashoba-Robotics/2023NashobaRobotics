@@ -85,4 +85,14 @@ public class Units {
 
         return speed/Constants.Swerve.MAX_NATIVE_VELOCITY;
     }
+    
+    public static double radToNUArm(double angle){
+        angle /= 2*Math.PI;
+
+        angle *= 2048;
+
+        angle *= Constants.Arm.GEARRATIO;
+
+        return angle;
+    }
 }

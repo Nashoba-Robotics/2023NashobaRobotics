@@ -18,7 +18,7 @@ public final class Constants {
     public static final double MOVE_DEAD_ZONE = 0.15;
     public static final double TURN_DEAD_ZONE = 0.15;
 
-    public static final double MOVE_SENSITIVITY = 1;
+    public static final double MOVE_SENSITIVITY = 1.5;
     public static final double TURN_SENSITIVITY = 1;
   }
   
@@ -65,6 +65,22 @@ public final class Constants {
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
     public static final double BACK_LEFT_OFFSET_RADIANS = BACK_LEFT_OFFSET_DEGREES * Math.PI/180;
     public static final double BACK_RIGHT_OFFSET_RADIANS = BACK_RIGHT_OFFSET_DEGREES * Math.PI/180;
+  }
+
+  public static final class Grabber{
+    public static final int LEFT_GRABBER_PORT = 0;
+    public static final int RIGHT_GRABBER_PORT = 0;
+
+    public static final int WRIST_PORT = 0;
+  }
+
+  public static final class Arm{
+    public static final double GEARRATIO = 0;
+
+    public static final int PIVOT_PORT_1 = 0;
+    public static final int PIVOT_PORT_2 = 0;
+
+    public static final int EXTEND_PORT = 0;
   }
 }
 

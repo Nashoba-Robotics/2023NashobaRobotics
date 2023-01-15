@@ -100,13 +100,13 @@ public class SwerveModule {
     }
     
     //Move input in MPS, Turn input in degrees
-    public void setDeg(double move, double turn) {
+    public void setDeg(double move, double turn) {//TODO: Constrain NU of current pos
         if(move == 0){
             moveMotor.set(ControlMode.PercentOutput, 0);
             return;
         }
         double currentPos =  turnMotor.getSelectedSensorPosition();
-        double lastTurn = Units.NUToDeg(currentPos);
+        double lastTurn = Units.constrainDeg(Units.NUToDeg(currentPos));
 
         double angle = findLowestAngle(turn, lastTurn);
         double angleChange = findAngleChange(angle, lastTurn);

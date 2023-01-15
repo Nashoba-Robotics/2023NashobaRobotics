@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -22,8 +23,14 @@ public class SwerveDriveCommand extends CommandBase {
     @Override
     public void execute() {
             SwerveDriveSubsystem.getInstance().set(
-                JoystickSubsytem.getInstance().getLeftJoystickValues().applyDeadZone(),
-                JoystickSubsytem.getInstance().getRightJoystickValues().applyDeadZone().x
+                JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
+                    Constants.Joystick.MOVE_DEAD_ZONE,
+                    Constants.Joystick.MOVE_SENSITIVITY
+                ),
+                JoystickSubsytem.getInstance().getRightJoystickValues().shape(
+                    Constants.Joystick.TURN_DEAD_ZONE,
+                    Constants.Joystick.TURN_SENSITIVITY
+                ).x
                 );
     }
 

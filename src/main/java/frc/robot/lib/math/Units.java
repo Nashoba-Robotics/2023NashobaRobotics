@@ -1,4 +1,4 @@
-package frc.robot.lib;
+package frc.robot.lib.math;
 
 import frc.robot.Constants;
 

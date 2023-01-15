@@ -13,8 +13,8 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import frc.robot.lib.Units;
-import frc.robot.lib.SwerveState;
+import frc.robot.lib.math.Units;
+import frc.robot.lib.util.SwerveState;
 
 public class SwerveModule {
     private TalonFX moveMotor;

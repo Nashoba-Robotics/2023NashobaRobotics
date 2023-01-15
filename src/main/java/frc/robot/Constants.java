@@ -52,10 +52,10 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = 154.1; //109.1;
-    public static final double FRONT_LEFT_OFFSET_DEGREES = 15.1; //-29.9;
-    public static final double BACK_LEFT_OFFSET_DEGREES = -83.1; //-128.1;
-    public static final double BACK_RIGHT_OFFSET_DEGREES = -23.8; //-68.8;
+    public static final double FRONT_RIGHT_OFFSET_DEGREES = 199.1; //109.1;
+    public static final double FRONT_LEFT_OFFSET_DEGREES = 60.1; //-29.9;
+    public static final double BACK_LEFT_OFFSET_DEGREES = -38.1; //-128.1;
+    public static final double BACK_RIGHT_OFFSET_DEGREES = 21.2; //-68.8;
 
     public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;

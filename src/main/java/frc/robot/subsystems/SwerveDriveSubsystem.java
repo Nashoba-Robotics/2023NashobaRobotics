@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.lib.math.SwerveMath;
@@ -24,7 +25,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.Misc.GYRO_PORT);
         gyro.configFactoryDefault();
-        fieldCentric = false;
+        fieldCentric = true;
 
         modules = new SwerveModule[] {
             new SwerveModule(Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES),
@@ -55,11 +56,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     public void set(double x, double y, double omega) {
 
-        //TODO:
-        //locks when in deadzone on Tau/4 directions
-        if(omega == 0) {
-
-        }
+        SmartDashboard.putNumber("set x", x);
+        SmartDashboard.putNumber("set y", y);
 
         if(fieldCentric) {
             double a = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
@@ -67,23 +65,35 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             x = r * Math.cos(a);
             y = r * Math.sin(a);
         }
+
+        SmartDashboard.putNumber("centric x", x);
+        SmartDashboard.putNumber("centric y", y);
+        SmartDashboard.putNumber("omega", omega);
         
         //Repeated equations
         double a = omega * Constants.Swerve.WIDTH/2;
         double b = omega * Constants.Swerve.LENGTH/2;
 
         //The addition of the movement and rotational vector
-        Translation2d t0 = new Translation2d(x+b, y+a);
-        Translation2d t1 = new Translation2d(x+b, y-a);
-        Translation2d t2 = new Translation2d(x-b, y-a);
-        Translation2d t3 = new Translation2d(x-b, y+a);
+        Translation2d t0 = new Translation2d(x+b, y-a);
+        Translation2d t1 = new Translation2d(x+b, y+a);
+        Translation2d t2 = new Translation2d(x-b, y+a);
+        Translation2d t3 = new Translation2d(x-b, y-a);
 
         //convert to polar
         SwerveState[] setStates = SwerveState.fromTranslation2d(
             new Translation2d[] {t0, t1, t2, t3}
         );
 
+        int i = 0;
         setStates = SwerveMath.normalize(setStates);
+        for(SwerveState state : setStates) {
+            SmartDashboard.putNumber("Module " + i + " move", state.move);
+            SmartDashboard.putNumber("Module " + i + " turn", state.turn);
+            i++;
+        }
+        SmartDashboard.putNumber("Gyro Angle", getGyroAngle());
+
         set(setStates);
     }
 

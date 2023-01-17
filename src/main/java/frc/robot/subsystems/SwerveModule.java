@@ -13,6 +13,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import frc.robot.Constants;
 import frc.robot.lib.math.Units;
 import frc.robot.lib.util.SwerveState;
 
@@ -21,8 +22,6 @@ public class SwerveModule {
     private TalonFX turnMotor;
 
     private CANCoder turnSensor;
-
-    private int moveMultiplier;
 
     public SwerveModule(int movePort, int turnPort, int sensorPort, double offset){
         moveMotor = new TalonFX(movePort);
@@ -114,14 +113,14 @@ public class SwerveModule {
 
         //TODO: Change back to Velocity
         turnMotor.set(ControlMode.MotionMagic, nextPos);
-        moveMotor.set(ControlMode.PercentOutput, move * moveMultiplier);
+        moveMotor.set(ControlMode.PercentOutput, move);
     }
 
     // MPS, Rotation 2D
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             Units.NUToM(moveMotor.getSelectedSensorPosition()),
-            Rotation2d.fromDegrees(getAbsAngle())
+            Rotation2d.fromRadians(moveMotor.getInverted() ?  Units.constrainRad(getAbsAngle()+Constants.TAU/2) : getAbsAngle())
         );
     }
 
@@ -134,11 +133,11 @@ public class SwerveModule {
 
         // If the original distance is less, we want to go there
         if(originalDistance <= oppositeDistance){
-            moveMultiplier = 1;
+            moveMotor.setInverted(InvertType.None);
             return potAngles[0];
         }
         else{
-            moveMultiplier = -1;
+            moveMotor.setInverted(InvertType.InvertMotorOutput);
             return potAngles[1];
         } 
     }

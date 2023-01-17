@@ -6,7 +6,7 @@ public class Units {
     // Converts from native units into degrees
     public static double NUToDeg(double angle){
         //Account for gear ratio
-        angle /= Constants.Swerve.GEARRATIO;
+        angle /= Constants.Swerve.TURN_GEAR_RATIO;
 
         //Convert from native units into rotations;
         angle /= 2048;
@@ -26,7 +26,7 @@ public class Units {
         angle *= 2048;
 
         //Account for gear ratio
-        angle *= Constants.Swerve.GEARRATIO;
+        angle *= Constants.Swerve.TURN_GEAR_RATIO;
 
         return angle;
     }
@@ -47,10 +47,14 @@ public class Units {
         }
     }
 
+    public static double constrainRad(double angle) {
+        return constrainDeg(angle * 360 / Constants.TAU) * Constants.TAU / 360;
+    }
+
     //Convert from Native Units to Radians
     public static double NUToRad(double angle){
         //Account for gear ratio
-        angle /= Constants.Swerve.GEARRATIO;
+        angle /= Constants.Swerve.TURN_GEAR_RATIO;
 
         //Convert from native units into rotations;
         angle /= 2048;
@@ -69,7 +73,7 @@ public class Units {
         //Convert from NU/s to Rotations/s
         speed /= 2048;
 
-        speed /= Constants.Swerve.GEARRATIO;
+        speed /= Constants.Swerve.MOVE_GEAR_RATIO;
 
         //Convert from Rotations/s to Meters/s
         speed *= Constants.TAU*Constants.Swerve.WHEELRADIUS;
@@ -79,7 +83,7 @@ public class Units {
     public static double NUToM(double NU) {
         NU /= 2048;
 
-        NU /= Constants.Swerve.GEARRATIO;
+        NU /= Constants.Swerve.MOVE_GEAR_RATIO;
 
         NU *= Constants.TAU*Constants.Swerve.WHEELRADIUS;
         return NU;
@@ -91,7 +95,7 @@ public class Units {
         double speed = mps/(Constants.Swerve.WHEELRADIUS*Constants.TAU);
         //Convert to NU per second
         speed *= 2048;
-        speed *= Constants.Swerve.GEARRATIO;
+        speed *= Constants.Swerve.TURN_GEAR_RATIO;
         //Convert to NU/100ms
         speed /= 10;
 
@@ -99,7 +103,7 @@ public class Units {
     }
 
     public static double radToNUArm(double angle){
-        angle /= 2*Math.PI;
+        angle /= Constants.TAU;
 
         angle *= 2048;
 

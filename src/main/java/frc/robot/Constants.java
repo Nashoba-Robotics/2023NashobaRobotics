@@ -24,7 +24,8 @@ public final class Constants {
   }
   
   public static final class Swerve {
-    public static final double GEARRATIO = 150. / 7.;
+    public static final double TURN_GEAR_RATIO = 150. / 7.;
+    public static final double MOVE_GEAR_RATIO = 8.14;
 
     //meters
     public static final double WIDTH = .548;

@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 public final class Constants {
 
@@ -23,7 +24,8 @@ public final class Constants {
   }
   
   public static final class Swerve {
-    public static final double GEARRATIO = 150. / 7.;
+    public static final double TURN_GEAR_RATIO = 150. / 7.;
+    public static final double MOVE_GEAR_RATIO = 8.14;
 
     //meters
     public static final double WIDTH = .548;
@@ -35,7 +37,11 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
-    public static final double WHEELRADIUS = 0;
+    public static final double WHEELRADIUS = Units.inchesToMeters(4);
+
+    public static final double MAX_SPEED = 4.5; // m/s
+    public static final double MAX_ACCELERATION = 2; // m/s^2
+    public static final double MAX_NATIVE_VELOCITY = 22_000;  //Maximum velocity in NU/100ms
 
     public static final int FRONT_RIGHT_TURN_PORT = 0;
     public static final int FRONT_LEFT_TURN_PORT = 1;

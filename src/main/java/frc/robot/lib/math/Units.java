@@ -6,7 +6,7 @@ public class Units {
     // Converts from native units into degrees
     public static double NUToDeg(double angle){
         //Account for gear ratio
-        angle /= Constants.Swerve.GEARRATIO;
+        angle /= Constants.Swerve.TURN_GEAR_RATIO;
 
         //Convert from native units into rotations;
         angle /= 2048;
@@ -26,7 +26,7 @@ public class Units {
         angle *= 2048;
 
         //Account for gear ratio
-        angle *= Constants.Swerve.GEARRATIO;
+        angle *= Constants.Swerve.TURN_GEAR_RATIO;
 
         return angle;
     }
@@ -47,10 +47,14 @@ public class Units {
         }
     }
 
+    public static double constrainRad(double angle) {
+        return constrainDeg(angle * 360 / Constants.TAU) * Constants.TAU / 360;
+    }
+
     //Convert from Native Units to Radians
     public static double NUToRad(double angle){
         //Account for gear ratio
-        angle /= Constants.Swerve.GEARRATIO;
+        angle /= Constants.Swerve.TURN_GEAR_RATIO;
 
         //Convert from native units into rotations;
         angle /= 2048;
@@ -64,18 +68,42 @@ public class Units {
     //Convert from NU/100ms to Meters per Second
     public static double NUToMPS(double speed){
         //Convert from NU/100ms to NU/s
-        speed /= 10;
+        speed *= 10;
 
         //Convert from NU/s to Rotations/s
-        speed /= 4096;
+        speed /= 2048;
+
+        speed /= Constants.Swerve.MOVE_GEAR_RATIO;
 
         //Convert from Rotations/s to Meters/s
-        speed *= 2*Math.PI*Constants.Swerve.WHEELRADIUS;
+        speed *= Constants.TAU*Constants.Swerve.WHEELRADIUS;
         return speed;
     }
 
+    public static double NUToM(double NU) {
+        NU /= 2048;
+
+        NU /= Constants.Swerve.MOVE_GEAR_RATIO;
+
+        NU *= Constants.TAU*Constants.Swerve.WHEELRADIUS;
+        return NU;
+    }
+
+    //Converts to NU/100ms then to 
+    public static double toPercentOutput(double mps){
+        //Convert to rotations per second
+        double speed = mps/(Constants.Swerve.WHEELRADIUS*Constants.TAU);
+        //Convert to NU per second
+        speed *= 2048;
+        speed *= Constants.Swerve.TURN_GEAR_RATIO;
+        //Convert to NU/100ms
+        speed /= 10;
+
+        return speed/Constants.Swerve.MAX_NATIVE_VELOCITY;
+    }
+
     public static double radToNUArm(double angle){
-        angle /= 2*Math.PI;
+        angle /= Constants.TAU;
 
         angle *= 2048;
 

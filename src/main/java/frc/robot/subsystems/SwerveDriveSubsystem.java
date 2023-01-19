@@ -154,6 +154,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
+        for(SwerveModule module : modules) module.updateMovePosition();
         if(!reseting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
         Pose2d pose = odometry.getPoseMeters();
 

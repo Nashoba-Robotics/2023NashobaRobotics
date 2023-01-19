@@ -23,6 +23,9 @@ public class SwerveModule {
 
     private CANCoder turnSensor;
 
+    private double movePosition;
+    private double lastMovePosition;
+
     public SwerveModule(int movePort, int turnPort, int sensorPort, double offset){
         moveMotor = new TalonFX(movePort);
         turnMotor = new TalonFX(turnPort);
@@ -31,8 +34,9 @@ public class SwerveModule {
 
         config();
         configOffset(offset); //degrees
-        // turnMotor.set(ControlMode.MotionMagic, 0);
 
+        movePosition = 0;
+        lastMovePosition = 0;
     }
 
     public void config(){
@@ -40,6 +44,7 @@ public class SwerveModule {
         moveMotor.configFactoryDefault();
         moveMotor.setNeutralMode(NeutralMode.Brake);
         moveMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        moveMotor.setSelectedSensorPosition(0);
         moveMotor.setInverted(InvertType.None);
 
         //Turn motor configuratoin
@@ -47,7 +52,7 @@ public class SwerveModule {
         turnMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         turnMotor.configNeutralDeadband(0.001);
         turnMotor.config_kF(0, 0.0475);
-        turnMotor.config_kP(0, 0.2);
+        turnMotor.config_kP(0, 0.35);
         //turnMotor.config_kI(0, 0.0025);
         turnMotor.config_kD(0, 0.1);
         turnMotor.setInverted(InvertType.InvertMotorOutput);
@@ -119,7 +124,7 @@ public class SwerveModule {
     // MPS, Rotation 2D
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            Units.NUToM(moveMotor.getSelectedSensorPosition()),
+            Units.NUToM(movePosition),
             Rotation2d.fromRadians(moveMotor.getInverted() ?  Units.constrainRad(getAbsAngle()+Constants.TAU/2) : getAbsAngle())
         );
     }
@@ -133,15 +138,11 @@ public class SwerveModule {
 
         // If the original distance is less, we want to go there
         if(originalDistance <= oppositeDistance){
-            boolean inverted = moveMotor.getInverted();
             moveMotor.setInverted(InvertType.None);
-            if(inverted) moveMotor.setSelectedSensorPosition(-moveMotor.getSelectedSensorPosition());
             return potAngles[0];
         }
         else{
-            boolean inverted = moveMotor.getInverted();
             moveMotor.setInverted(InvertType.InvertMotorOutput);
-            if(!inverted) moveMotor.setSelectedSensorPosition(-moveMotor.getSelectedSensorPosition());
             return potAngles[1];
         } 
     }
@@ -209,6 +210,12 @@ public class SwerveModule {
     }
 
     public double getMovePosition() {
-        return moveMotor.getSelectedSensorPosition();
+        return movePosition;
+    }
+
+    public void updateMovePosition() {
+        double temp = Math.abs(moveMotor.getSelectedSensorPosition());
+        movePosition += Math.abs(temp - lastMovePosition);
+        lastMovePosition = temp;
     }
 }

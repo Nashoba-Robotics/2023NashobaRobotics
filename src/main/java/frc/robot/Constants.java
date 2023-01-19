@@ -17,7 +17,7 @@ public final class Constants {
     public static final int RIGHT_JOYSTICK_PORT = 0;
 
     public static final double MOVE_DEAD_ZONE = 0.15;
-    public static final double TURN_DEAD_ZONE = 0.15;
+    public static final double TURN_DEAD_ZONE = 0.1;
 
     public static final double MOVE_SENSITIVITY = 1.5;
     public static final double TURN_SENSITIVITY = 1;
@@ -37,7 +37,7 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
-    public static final double WHEELRADIUS = Units.inchesToMeters(4);
+    public static final double WHEELRADIUS = Units.inchesToMeters(2);
 
     public static final double MAX_SPEED = 4.5; // m/s
     public static final double MAX_ACCELERATION = 2; // m/s^2

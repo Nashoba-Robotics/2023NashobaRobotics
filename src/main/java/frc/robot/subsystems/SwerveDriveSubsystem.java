@@ -99,8 +99,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         modules[3].set(speed, angle);
     }
 
+    private boolean reseting = false;
+
     public void resetOdometry(Pose2d pose) {
+        reseting = true;
         odometry.resetPosition(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), pose);
+        reseting = false;
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -150,11 +154,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic(){
-        odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+        if(!reseting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
         Pose2d pose = odometry.getPoseMeters();
 
         SmartDashboard.putNumber("x", pose.getX());
         SmartDashboard.putNumber("y", pose.getY());
         SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
+        SmartDashboard.putNumber("gyro angle", getGyroAngle());
+
+        for(int i = 0; i < modules.length; i++) {
+            SmartDashboard.putNumber("Mod " + i, modules[i].getMovePosition());
+        }
     }
 }

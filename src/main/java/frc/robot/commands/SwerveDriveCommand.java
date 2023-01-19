@@ -21,7 +21,7 @@ public class SwerveDriveCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        SwerveDriveSubsystem.getInstance().setGyro(0);
+        SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
         SwerveDriveSubsystem.getInstance().set(0, 0, 0);
         SmartDashboard.putNumber("kiddy mode", 0);
         SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0)));

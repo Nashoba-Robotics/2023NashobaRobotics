@@ -133,11 +133,15 @@ public class SwerveModule {
 
         // If the original distance is less, we want to go there
         if(originalDistance <= oppositeDistance){
+            boolean inverted = moveMotor.getInverted();
             moveMotor.setInverted(InvertType.None);
+            if(inverted) moveMotor.setSelectedSensorPosition(-moveMotor.getSelectedSensorPosition());
             return potAngles[0];
         }
         else{
+            boolean inverted = moveMotor.getInverted();
             moveMotor.setInverted(InvertType.InvertMotorOutput);
+            if(!inverted) moveMotor.setSelectedSensorPosition(-moveMotor.getSelectedSensorPosition());
             return potAngles[1];
         } 
     }
@@ -198,5 +202,13 @@ public class SwerveModule {
 
     public void setTurnMotor(double position) {
         turnMotor.set(ControlMode.MotionMagic, position);
+    }
+
+    public void resetTurnPosition() {
+        turnMotor.setSelectedSensorPosition(0);
+    }
+
+    public double getMovePosition() {
+        return moveMotor.getSelectedSensorPosition();
     }
 }

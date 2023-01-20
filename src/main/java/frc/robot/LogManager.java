@@ -23,7 +23,7 @@ public final class LogManager {
         DataLogManager.log(message);
     }
 
-    public void appendToLog(Object valueToAppend, String path) {
+    public static void appendToLog(Object valueToAppend, String path) {
         if (filepathToLogEntry.containsKey(path)) {
             filepathToLogEntry.get(path).appendToLog(valueToAppend);
         }

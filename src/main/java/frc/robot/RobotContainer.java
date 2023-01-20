@@ -8,6 +8,7 @@ import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.LoggingTestCommand;
 import frc.robot.commands.RunMotorCommand;
 import frc.robot.commands.SingleModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
@@ -27,6 +28,7 @@ public class RobotContainer {
     SmartDashboard.putData(new SwerveDriveCommand());
     // SmartDashboard.putData(new RunMotorCommand());
     SmartDashboard.putData(new SingleModuleCommand());
+    SmartDashboard.putData(new LoggingTestCommand());
 
     configureBindings();
   }

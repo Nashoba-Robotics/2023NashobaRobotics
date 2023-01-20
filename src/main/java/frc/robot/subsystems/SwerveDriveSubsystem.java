@@ -5,21 +5,19 @@ import com.ctre.phoenix.sensors.Pigeon2;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.lib.math.SwerveMath;
+import frc.robot.lib.util.CarpetOdometry;
 import frc.robot.lib.util.JoystickValues;
 import frc.robot.lib.util.SwerveState;
 
 public class SwerveDriveSubsystem extends SubsystemBase {
 
-    // FORK PULL REQUEST TEST
-
-    private SwerveDriveOdometry odometry;
+    private CarpetOdometry odometry;
     private SwerveModule[] modules;
     private Pigeon2 gyro;
 
@@ -37,7 +35,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             new SwerveModule(Constants.Swerve.BACK_RIGHT_MOVE_PORT, Constants.Swerve.BACK_RIGHT_TURN_PORT, Constants.Swerve.BACK_RIGHT_SENSOR_PORT, Constants.Swerve.BACK_RIGHT_OFFSET_DEGREES)
         };
 
-        odometry = new SwerveDriveOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+        odometry = new CarpetOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), Constants.Field.ANGLE_OF_RESISTANCE);
     }
     
     private static SwerveDriveSubsystem instance;
@@ -99,12 +97,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         modules[3].set(speed, angle);
     }
 
-    private boolean reseting = false;
+    private boolean resetting = false;
 
     public void resetOdometry(Pose2d pose) {
-        reseting = true;
+        resetting = true;
         odometry.resetPosition(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), pose);
-        reseting = false;
+        resetting = false;
     }
 
     public SwerveModulePosition[] getSwerveModulePositions() {
@@ -155,7 +153,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         for(SwerveModule module : modules) module.updateMovePosition();
-        if(!reseting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+        if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
         Pose2d pose = odometry.getPoseMeters();
 
         SmartDashboard.putNumber("x", pose.getX());

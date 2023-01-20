@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -37,7 +38,7 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
-    public static final double WHEELRADIUS = Units.inchesToMeters(2);
+    public static final double WHEELRADIUS = Units.inchesToMeters(1.87);
 
     public static final double MAX_SPEED = 4.5; // m/s
     public static final double MAX_ACCELERATION = 2; // m/s^2
@@ -76,13 +77,18 @@ public final class Constants {
     public static final int WRIST_PORT = 0;
   }
 
-  public static final class Arm{
+  public static final class Arm {
     public static final double GEARRATIO = 0;
 
     public static final int PIVOT_PORT_1 = 0;
     public static final int PIVOT_PORT_2 = 0;
 
     public static final int EXTEND_PORT = 0;
+  }
+
+  public static final class Field {
+    public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
+    public static final double K_CARPET = 0;
   }
 }
 

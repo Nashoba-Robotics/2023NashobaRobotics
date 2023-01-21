@@ -17,7 +17,8 @@ public class SingleModuleCommand extends CommandBase {
             Constants.Swerve.FRONT_RIGHT_MOVE_PORT,
             Constants.Swerve.FRONT_RIGHT_TURN_PORT,
             Constants.Swerve.FRONT_RIGHT_SENSOR_PORT,
-            0
+            0,
+            Constants.Swerve.MOD0_AFF
         );
         // SmartDashboard.putNumber("after module", module.getTurnPosition());
         // module.setTurnMotor(

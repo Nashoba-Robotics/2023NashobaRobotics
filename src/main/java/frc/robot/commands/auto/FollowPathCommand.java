@@ -1,10 +1,11 @@
-package frc.robot.commands;
+package frc.robot.commands.auto;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants;
@@ -25,6 +26,12 @@ public class FollowPathCommand extends SequentialCommandGroup {
                 ),
             SwerveDriveSubsystem.getInstance()::setStates,
             SwerveDriveSubsystem.getInstance());
+
+            addCommands(
+                new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().resetOdometry(trajectory.getInitialPose());}, SwerveDriveSubsystem.getInstance()),
+                swerveController,
+                new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().set(0, 0, 0);}, SwerveDriveSubsystem.getInstance())
+            );
 
     }
 

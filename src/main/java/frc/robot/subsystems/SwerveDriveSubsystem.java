@@ -29,10 +29,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         fieldCentric = true;
 
         modules = new SwerveModule[] {
-            new SwerveModule(Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES),
-            new SwerveModule(Constants.Swerve.FRONT_LEFT_MOVE_PORT, Constants.Swerve.FRONT_LEFT_TURN_PORT, Constants.Swerve.FRONT_LEFT_SENSOR_PORT, Constants.Swerve.FRONT_LEFT_OFFSET_DEGREES),
-            new SwerveModule(Constants.Swerve.BACK_LEFT_MOVE_PORT, Constants.Swerve.BACK_LEFT_TURN_PORT, Constants.Swerve.BACK_LEFT_SENSOR_PORT, Constants.Swerve.BACK_LEFT_OFFSET_DEGREES),
-            new SwerveModule(Constants.Swerve.BACK_RIGHT_MOVE_PORT, Constants.Swerve.BACK_RIGHT_TURN_PORT, Constants.Swerve.BACK_RIGHT_SENSOR_PORT, Constants.Swerve.BACK_RIGHT_OFFSET_DEGREES)
+            new SwerveModule(Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD0_AFF),
+            new SwerveModule(Constants.Swerve.FRONT_LEFT_MOVE_PORT, Constants.Swerve.FRONT_LEFT_TURN_PORT, Constants.Swerve.FRONT_LEFT_SENSOR_PORT, Constants.Swerve.FRONT_LEFT_OFFSET_DEGREES, Constants.Swerve.MOD1_AFF),
+            new SwerveModule(Constants.Swerve.BACK_LEFT_MOVE_PORT, Constants.Swerve.BACK_LEFT_TURN_PORT, Constants.Swerve.BACK_LEFT_SENSOR_PORT, Constants.Swerve.BACK_LEFT_OFFSET_DEGREES, Constants.Swerve.MOD2_AFF),
+            new SwerveModule(Constants.Swerve.BACK_RIGHT_MOVE_PORT, Constants.Swerve.BACK_RIGHT_TURN_PORT, Constants.Swerve.BACK_RIGHT_SENSOR_PORT, Constants.Swerve.BACK_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD3_AFF)
         };
 
         odometry = new CarpetOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), Constants.Field.ANGLE_OF_RESISTANCE);
@@ -56,6 +56,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void set(double x, double y, double omega) {
+
+        SmartDashboard.putNumber("Set x", x);
+        SmartDashboard.putNumber("Set y", y);
 
         if(fieldCentric) {
             double a = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
@@ -162,7 +165,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("gyro angle", getGyroAngle());
 
         for(int i = 0; i < modules.length; i++) {
-            SmartDashboard.putNumber("Mod " + i, modules[i].getMovePosition());
+            SmartDashboard.putNumber("Mod "+i, modules[i].getMoveVelocity());
         }
     }
 }

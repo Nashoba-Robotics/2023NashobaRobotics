@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
@@ -26,7 +27,11 @@ public class SwerveModule {
     private double movePosition;
     private double lastMovePosition;
 
-    public SwerveModule(int movePort, int turnPort, int sensorPort, double offset){
+    private double AFF;
+
+    public SwerveModule(int movePort, int turnPort, int sensorPort, double offset, double AFF){
+        this.AFF = AFF;
+
         moveMotor = new TalonFX(movePort);
         turnMotor = new TalonFX(turnPort);
 
@@ -46,15 +51,19 @@ public class SwerveModule {
         moveMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         moveMotor.setSelectedSensorPosition(0);
         moveMotor.setInverted(InvertType.None);
+        moveMotor.config_kF(0, Constants.Swerve.MOVE_KF);
+        moveMotor.config_kP(0, Constants.Swerve.MOVE_KP);
+        moveMotor.config_kI(0, Constants.Swerve.MOVE_KI);
+        moveMotor.config_kD(0, Constants.Swerve.MOVE_KD);
 
         //Turn motor configuratoin
         turnMotor.configFactoryDefault();
         turnMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         turnMotor.configNeutralDeadband(0.001);
-        turnMotor.config_kF(0, 0.0475);
-        turnMotor.config_kP(0, 0.35);
-        //turnMotor.config_kI(0, 0.0025);
-        turnMotor.config_kD(0, 0.1);
+        turnMotor.config_kF(0, Constants.Swerve.TURN_KF);
+        turnMotor.config_kP(0, Constants.Swerve.TURN_KP);
+        turnMotor.config_kI(0, Constants.Swerve.TURN_KI);
+        turnMotor.config_kD(0, Constants.Swerve.TURN_KD);
         turnMotor.setInverted(InvertType.InvertMotorOutput);
 
         int cruiseVelocity = 20_000;
@@ -118,7 +127,7 @@ public class SwerveModule {
 
         //TODO: Change back to Velocity
         turnMotor.set(ControlMode.MotionMagic, nextPos);
-        moveMotor.set(ControlMode.PercentOutput, move);
+        moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
     }
 
     // MPS, Rotation 2D
@@ -211,6 +220,14 @@ public class SwerveModule {
 
     public double getMovePosition() {
         return movePosition;
+    }
+
+    public double getMoveVelocity() {
+        return moveMotor.getSelectedSensorVelocity();
+    }
+
+    public void setMoveVelocity(double move) {
+        moveMotor.set(ControlMode.Velocity, move);
     }
 
     public void updateMovePosition() {

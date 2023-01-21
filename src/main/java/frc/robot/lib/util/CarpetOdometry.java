@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class CarpetOdometry extends SwerveDriveOdometry {
@@ -12,6 +13,7 @@ public class CarpetOdometry extends SwerveDriveOdometry {
     private Rotation2d angOfResistance;
     private SwerveModulePosition[] currPositions;
     private double[] lastPositions;
+    public static int count = 0;
 
     public CarpetOdometry(SwerveDriveKinematics kinematics, Rotation2d rotation, SwerveModulePosition[] positions, Rotation2d angOfResistance) {
         super(kinematics, rotation, positions);
@@ -28,13 +30,13 @@ public class CarpetOdometry extends SwerveDriveOdometry {
 
     @Override
     public void resetPosition(Rotation2d rotation, SwerveModulePosition[] positions, Pose2d pose) {
-        super.resetPosition(rotation, positions, pose);
         for(int i = 0; i < positions.length; i++) {
             lastPositions[i] = positions[i].distanceMeters;
         }
         for(int i = 0; i < positions.length; i++) {
             currPositions[i] = new SwerveModulePosition(0, positions[i].angle);
         }
+        super.resetPosition(rotation, currPositions, pose);
     }
 
     @Override
@@ -54,8 +56,7 @@ public class CarpetOdometry extends SwerveDriveOdometry {
             currPositions[i].angle = positions[i].angle;
         }
 
-        //TODO: change to currPositions
-        return super.update(rotation, positions);
+        return super.update(rotation, currPositions);
     }
 
 }

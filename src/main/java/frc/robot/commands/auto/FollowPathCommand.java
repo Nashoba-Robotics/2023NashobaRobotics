@@ -15,15 +15,17 @@ public class FollowPathCommand extends SequentialCommandGroup {
  
     public FollowPathCommand(Trajectory trajectory) {
 
+        PIDController xController = new PIDController(Constants.Swerve.Auto.P_X, 0, Constants.Swerve.Auto.D_X);
+        PIDController yController = new PIDController(Constants.Swerve.Auto.P_Y, 0, Constants.Swerve.Auto.D_Y);
+        ProfiledPIDController thetaController = new ProfiledPIDController(Constants.Swerve.Auto.P_THETA, 0, 0, Constants.Swerve.Auto.THETA_CONSTRAINTS);
+        thetaController.enableContinuousInput(-Constants.TAU/2, Constants.TAU/2);
+        HolonomicDriveController controller = new HolonomicDriveController(xController, yController, thetaController);
+
         SwerveControllerCommand swerveController = new SwerveControllerCommand(
             trajectory,
             SwerveDriveSubsystem.getInstance()::getPose,
             Constants.Swerve.KINEMATICS,
-            new HolonomicDriveController(
-                new PIDController(0, 0, 0),
-                new PIDController(0, 0, 0),
-                new ProfiledPIDController(0, 0, 0, new TrapezoidProfile.Constraints(0, 0))
-                ),
+            controller,
             SwerveDriveSubsystem.getInstance()::setStates,
             SwerveDriveSubsystem.getInstance());
 

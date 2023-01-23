@@ -83,6 +83,14 @@ public final class Constants {
     public static final double MOD1_AFF = 0.063;
     public static final double MOD2_AFF = 0.06;
     public static final double MOD3_AFF = 0.07;
+  
+    public static final class Balance{
+      public static final double K_P = 0.01;
+      public static final double K_I = 0.0;
+      public static final double K_D = 0.0;
+
+      public static final double MAX_SPEED_PERCENT = 0.3;
+    }
   }
 
   public static final class Grabber{

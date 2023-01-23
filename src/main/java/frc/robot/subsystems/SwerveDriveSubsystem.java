@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.Pigeon2;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -23,6 +24,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     private boolean fieldCentric;
 
+    private PIDController balanceController;
+
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.Misc.GYRO_PORT);
         gyro.configFactoryDefault();
@@ -36,6 +39,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         };
 
         odometry = new CarpetOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), Constants.Field.ANGLE_OF_RESISTANCE);
+    
+        balanceController = new PIDController(Constants.Swerve.Balance.K_P, Constants.Swerve.Balance.K_I, Constants.Swerve.Balance.K_D);
     }
     
     private static SwerveDriveSubsystem instance;
@@ -47,8 +52,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return instance;
     }
 
-    private double getGyroAngle() {
+    public double getGyroAngle() {
         return ((gyro.getYaw() % 360 + 360) % 360 - 180) * Constants.TAU / 360;
+    }
+
+    public double getBalanceAngle() {
+        return 0;
+    }
+
+    //Convert to radians?
+    public double getPitch(){
+        return gyro.getPitch();
+    }
+
+    public double getRoll(){
+        return gyro.getRoll();
     }
 
     public void set(JoystickValues joystickValues, double omega) {
@@ -151,6 +169,18 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             modules[2].getAngle(),
             modules[3].getAngle(),
         };
+    }
+
+    //Set the desired angle for the balancing (level) and the allowed error (deadzone)
+    //All in degrees
+    public void setDesiredLevel(double angle, double deadzone){
+        balanceController.setSetpoint(angle);
+        balanceController.setTolerance(deadzone);
+    }
+
+    //TODO: Add algorithm to check whether to use Pitch or Roll (Maybe averaging the values?)
+    public double getChange(){
+        return balanceController.calculate(getRoll());
     }
 
     @Override

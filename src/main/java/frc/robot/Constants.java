@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
@@ -39,9 +40,7 @@ public final class Constants {
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
     public static final double WHEELRADIUS = Units.inchesToMeters(1.87);
-
-    public static final double MAX_SPEED = 4.5; // m/s
-    public static final double MAX_ACCELERATION = 2; // m/s^2
+    
     public static final double MAX_NATIVE_VELOCITY = 22_000;  //Maximum velocity in NU/100ms
 
     public static final int FRONT_RIGHT_TURN_PORT = 0;
@@ -90,6 +89,25 @@ public final class Constants {
       public static final double K_D = 0.0;
 
       public static final double MAX_SPEED_PERCENT = 0.3;
+    }
+
+    public static final class Auto {
+      
+      public static final double MAX_SPEED = 4; // m/s
+      public static final double MAX_ACCELERATION = 2; // m/s^2
+
+      public static final double MAX_TURNING_SPEED = 1;
+      public static final double MAX_TURNING_ACCELERATION = 0.5;
+
+      public static final double P_X = 3.2;
+      public static final double D_X = 0.00001;
+      public static final double P_Y = 3.2;
+      public static final double D_Y = 0;
+      public static final double P_THETA = 0;
+      public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(
+      MAX_TURNING_SPEED,
+      MAX_TURNING_ACCELERATION
+      );
     }
   }
 

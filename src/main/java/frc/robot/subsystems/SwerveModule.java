@@ -102,7 +102,7 @@ public class SwerveModule {
     }
 
     public void set(SwerveModuleState state){
-        set(Units.toPercentOutput(state.speedMetersPerSecond), state.angle.getDegrees());
+        set(Units.toPercentOutput(state.speedMetersPerSecond), state.angle.getRadians());
     }
     
     //move input in MPS, Turn input in radians
@@ -112,7 +112,7 @@ public class SwerveModule {
     }
     
     //Move input in MPS, Turn input in degrees
-    public void setDeg(double move, double turn) {//TODO: Constrain NU of current pos
+    public void setDeg(double move, double turn) {
         if(move == 0){
             moveMotor.set(ControlMode.PercentOutput, 0);
             return;
@@ -125,7 +125,6 @@ public class SwerveModule {
         
         double nextPos = currentPos + Units.degToNU(angleChange);
 
-        //TODO: Change back to Velocity
         turnMotor.set(ControlMode.MotionMagic, nextPos);
         moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
     }

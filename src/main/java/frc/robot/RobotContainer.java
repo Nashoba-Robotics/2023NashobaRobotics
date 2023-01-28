@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.test.BalanceTestCommand;
 import frc.robot.commands.auto.TestAutoCommand;
-import frc.robot.commands.test.LoggingTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
 import frc.robot.commands.test.SingleModuleCommand;
 import frc.robot.commands.test.SwerveDriveTestCommand;
@@ -31,6 +30,7 @@ public class RobotContainer {
     // Configure the trigger bindings
 
     SmartDashboard.putData(new SwerveDriveCommand());
+    SmartDashboard.putData(new SwerveDriveTestCommand());
     SmartDashboard.putData(getAutoCommand());
 
     SmartDashboard.putData(new BalanceTestCommand());

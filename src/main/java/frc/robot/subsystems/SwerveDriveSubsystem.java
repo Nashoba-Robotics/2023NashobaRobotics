@@ -11,7 +11,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LogManager;
 import frc.robot.lib.math.SwerveMath;
+import frc.robot.lib.math.Units;
 import frc.robot.lib.util.CarpetOdometry;
 import frc.robot.lib.util.JoystickValues;
 import frc.robot.lib.util.SwerveState;
@@ -32,10 +34,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         fieldCentric = true;
 
         modules = new SwerveModule[] {
-            new SwerveModule(Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD0_AFF),
-            new SwerveModule(Constants.Swerve.FRONT_LEFT_MOVE_PORT, Constants.Swerve.FRONT_LEFT_TURN_PORT, Constants.Swerve.FRONT_LEFT_SENSOR_PORT, Constants.Swerve.FRONT_LEFT_OFFSET_DEGREES, Constants.Swerve.MOD1_AFF),
-            new SwerveModule(Constants.Swerve.BACK_LEFT_MOVE_PORT, Constants.Swerve.BACK_LEFT_TURN_PORT, Constants.Swerve.BACK_LEFT_SENSOR_PORT, Constants.Swerve.BACK_LEFT_OFFSET_DEGREES, Constants.Swerve.MOD2_AFF),
-            new SwerveModule(Constants.Swerve.BACK_RIGHT_MOVE_PORT, Constants.Swerve.BACK_RIGHT_TURN_PORT, Constants.Swerve.BACK_RIGHT_SENSOR_PORT, Constants.Swerve.BACK_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD3_AFF)
+            new SwerveModule(0, Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD0_AFF),
+            new SwerveModule(1, Constants.Swerve.FRONT_LEFT_MOVE_PORT, Constants.Swerve.FRONT_LEFT_TURN_PORT, Constants.Swerve.FRONT_LEFT_SENSOR_PORT, Constants.Swerve.FRONT_LEFT_OFFSET_DEGREES, Constants.Swerve.MOD1_AFF),
+            new SwerveModule(2, Constants.Swerve.BACK_LEFT_MOVE_PORT, Constants.Swerve.BACK_LEFT_TURN_PORT, Constants.Swerve.BACK_LEFT_SENSOR_PORT, Constants.Swerve.BACK_LEFT_OFFSET_DEGREES, Constants.Swerve.MOD2_AFF),
+            new SwerveModule(3, Constants.Swerve.BACK_RIGHT_MOVE_PORT, Constants.Swerve.BACK_RIGHT_TURN_PORT, Constants.Swerve.BACK_RIGHT_SENSOR_PORT, Constants.Swerve.BACK_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD3_AFF)
         };
 
         odometry = new CarpetOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), Constants.Field.ANGLE_OF_RESISTANCE);
@@ -69,7 +71,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return gyro.getRoll();
     }
 
-    public void set(JoystickValues joystickValues, double omega) {
+    public void set(JoystickValues joystickValues, double omega, boolean driftCorrection) {
+        if(driftCorrection) {
+            
+        }
         set(joystickValues.x, joystickValues.y, omega);
     }
 
@@ -194,8 +199,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
         SmartDashboard.putNumber("gyro angle", getGyroAngle());
 
-        for(int i = 0; i < modules.length; i++) {
-            SmartDashboard.putNumber("Mod "+i, modules[i].getMoveVelocity());
+        for(SwerveModule module : modules) {
+            SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
+            LogManager.appendToLog(Units.NUToMPS(module.getMoveVelocity()), "ActualState:/mod"+module.modNumber);
         }
     }
 }

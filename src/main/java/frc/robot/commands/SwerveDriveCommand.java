@@ -39,7 +39,8 @@ public class SwerveDriveCommand extends CommandBase {
                 JoystickSubsytem.getInstance().getRightJoystickValues().shape(
                     Constants.Joystick.TURN_DEAD_ZONE,
                     Constants.Joystick.TURN_SENSITIVITY
-                ).multiply(multiplier).x
+                ).multiply(multiplier).x,
+                true
                 );
     }
 

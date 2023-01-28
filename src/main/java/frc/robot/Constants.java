@@ -58,11 +58,11 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = -162.598; // -163.74, -163.301
-    public static final double FRONT_LEFT_OFFSET_DEGREES = -299.355; // -300.234, -300.322
-    public static final double BACK_LEFT_OFFSET_DEGREES = -37.705; // -219.287, -219.551
-    public static final double BACK_RIGHT_OFFSET_DEGREES = 21.904; // -339.521, -340.752, 341.104, 0-340.576, -341.104
-
+    public static final double FRONT_RIGHT_OFFSET_DEGREES = -163.652; // -163.74, -163.301  -162.598
+    public static final double FRONT_LEFT_OFFSET_DEGREES = 160.652; // -300.234, -300.322  -109.863
+    public static final double BACK_LEFT_OFFSET_DEGREES = -41.869; // -219.287, -219.551  -37.705 -49.746
+    public static final double BACK_RIGHT_OFFSET_DEGREES = -339.633; // -339.521, -340.752, 341.104, 0-340.576, -341.104  21.904
+    //-105.645  -58.535
     public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
     public static final double BACK_LEFT_OFFSET_RADIANS = BACK_LEFT_OFFSET_DEGREES * Math.PI/180;
@@ -73,15 +73,15 @@ public final class Constants {
     public static final double TURN_KI = 0;
     public static final double TURN_KD = 0.1;
 
-    public static final double MOVE_KF = 0.0475;
+    public static final double MOVE_KF = 0.04; //0.0475;
     public static final double MOVE_KP = 0.05;
     public static final double MOVE_KI = 0.0;
-    public static final double MOVE_KD = 0.01;
+    public static final double MOVE_KD = 0.02;
 
-    public static final double MOD0_AFF = 0.06;
-    public static final double MOD1_AFF = 0.063;
-    public static final double MOD2_AFF = 0.06;
-    public static final double MOD3_AFF = 0.07;
+    public static final double MOD0_AFF = 0.07; //0.06;
+    public static final double MOD1_AFF = 0.07; //0.063;
+    public static final double MOD2_AFF = 0.07; //0.06;
+    public static final double MOD3_AFF = 0.07; //0.07;
   
     public static final class Balance{
       public static final double K_P = 0.01;
@@ -99,11 +99,11 @@ public final class Constants {
       public static final double MAX_TURNING_SPEED = 1;
       public static final double MAX_TURNING_ACCELERATION = 0.5;
 
-      public static final double P_X = 3.2;
-      public static final double D_X = 0.00001;
-      public static final double P_Y = 3.2;
-      public static final double D_Y = 0;
-      public static final double P_THETA = 0;
+      public static final double P_X = 5;
+      public static final double D_X = 0.001; //0.00001;
+      public static final double P_Y = 5; //3.2;
+      public static final double D_Y = 0.001; //0;
+      public static final double P_THETA = 5; //0;
       public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(
       MAX_TURNING_SPEED,
       MAX_TURNING_ACCELERATION

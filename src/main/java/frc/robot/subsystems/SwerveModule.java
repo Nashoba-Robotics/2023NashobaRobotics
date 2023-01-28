@@ -19,6 +19,8 @@ import frc.robot.lib.math.Units;
 import frc.robot.lib.util.SwerveState;
 
 public class SwerveModule {
+    public int modNumber;
+
     private TalonFX moveMotor;
     private TalonFX turnMotor;
 
@@ -29,8 +31,9 @@ public class SwerveModule {
 
     private double AFF;
 
-    public SwerveModule(int movePort, int turnPort, int sensorPort, double offset, double AFF){
+    public SwerveModule(int modNumber, int movePort, int turnPort, int sensorPort, double offset, double AFF){
         this.AFF = AFF;
+        this.modNumber = modNumber;
 
         moveMotor = new TalonFX(movePort);
         turnMotor = new TalonFX(turnPort);
@@ -105,13 +108,13 @@ public class SwerveModule {
         set(Units.toPercentOutput(state.speedMetersPerSecond), state.angle.getRadians());
     }
     
-    //move input in MPS, Turn input in radians
+    //move input in percent, Turn input in radians
     public void set(double move, double turn){
         turn *= 180/Math.PI;
         setDeg(move, turn);
     }
     
-    //Move input in MPS, Turn input in degrees
+    //Move input in percent, Turn input in degrees
     public void setDeg(double move, double turn) {
         if(move == 0){
             moveMotor.set(ControlMode.PercentOutput, 0);

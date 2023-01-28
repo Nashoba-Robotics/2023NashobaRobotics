@@ -95,7 +95,7 @@ public class Units {
         double speed = mps/(Constants.Swerve.WHEELRADIUS*Constants.TAU);
         //Convert to NU per second
         speed *= 2048;
-        speed *= Constants.Swerve.TURN_GEAR_RATIO;
+        speed *= Constants.Swerve.MOVE_GEAR_RATIO;
         //Convert to NU/100ms
         speed /= 10;
 

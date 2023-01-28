@@ -36,4 +36,13 @@ public final class AutoPaths {
         trajectoryConfig
         );
 
+    public static final Trajectory rightTo3 = TrajectoryGenerator.generateTrajectory(
+        new Pose2d(1.777, 0.463, Rotation2d.fromDegrees(-90)), 
+        null, 
+        new Pose2d(6.759, 0.904, Rotation2d.fromDegrees(-90)), 
+        trajectoryConfig
+    );
+
+    
+
 }

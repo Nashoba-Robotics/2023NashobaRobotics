@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.test.BalanceTestCommand;
+import frc.robot.commands.auto.FollowPathCommand;
 import frc.robot.commands.auto.TestAutoCommand;
 import frc.robot.commands.test.RunMotorCommand;
 import frc.robot.commands.test.SingleModuleCommand;
@@ -43,7 +47,7 @@ public class RobotContainer {
   }
 
   public static CommandBase getAutoCommand() {
-    if(autoCommand == null) autoCommand = new TestAutoCommand();
+    if(autoCommand == null) autoCommand = new FollowPathCommand(PathPlanner.loadPath("New Path", new PathConstraints(4, 2)));
     return autoCommand;
   }
 

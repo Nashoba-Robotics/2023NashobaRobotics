@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.text.NumberFormat.Style;
+
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -27,6 +29,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private boolean fieldCentric;
 
     private PIDController balanceController;
+
+    private double lastGyroAngle = 0;
 
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.Misc.GYRO_PORT);
@@ -72,8 +76,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void set(JoystickValues joystickValues, double omega, boolean driftCorrection) {
+        SmartDashboard.putBoolean("running", false);
         if(driftCorrection) {
-            
+            if(omega == 0 && (joystickValues.x != 0 || joystickValues.y != 0)) {
+                SmartDashboard.putBoolean("running", true);
+                omega = (lastGyroAngle - getGyroAngle()) * 1;
+                SmartDashboard.putNumber("omega", omega);
+            }
+            lastGyroAngle = getGyroAngle();
         }
         set(joystickValues.x, joystickValues.y, omega);
     }
@@ -203,5 +213,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
             LogManager.appendToLog(Units.NUToMPS(module.getMoveVelocity()), "ActualState:/mod"+module.modNumber);
         }
+
     }
 }

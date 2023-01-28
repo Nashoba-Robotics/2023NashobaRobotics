@@ -29,7 +29,7 @@ public class BalanceTestCommand extends CommandBase{
         SmartDashboard.putNumber("Roll", roll);
         SmartDashboard.putBoolean("Target?", pigeonController.atSetpoint());
 
-        SwerveDriveSubsystem.getInstance().set(0, 0.3 * pigeonController.calculate(roll), 0);
+        SwerveDriveSubsystem.getInstance().set(0.3 * pigeonController.calculate(roll), 0, 0);
     }
 
     @Override

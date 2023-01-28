@@ -1,13 +1,13 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class GrabberSubsystem extends SubsystemBase{
-    private CANSparkMax leftGrabber;    //I don't know if this is actually how to make a SparkMax instance
+    /*private CANSparkMax leftGrabber;    //I don't know if this is actually how to make a SparkMax instance
     private CANSparkMax rightGrabber;
 
     private CANSparkMax wrist;
@@ -39,4 +39,5 @@ public class GrabberSubsystem extends SubsystemBase{
     public void orient(double angle){
 
     }
+     */
 }

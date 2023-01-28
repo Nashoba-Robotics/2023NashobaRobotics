@@ -40,7 +40,7 @@ public final class Constants {
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
     public static final double WHEELRADIUS = Units.inchesToMeters(1.87);
-
+    
     public static final double MAX_NATIVE_VELOCITY = 22_000;  //Maximum velocity in NU/100ms
 
     public static final int FRONT_RIGHT_TURN_PORT = 0;
@@ -82,6 +82,14 @@ public final class Constants {
     public static final double MOD1_AFF = 0.07; //0.063;
     public static final double MOD2_AFF = 0.07; //0.06;
     public static final double MOD3_AFF = 0.07; //0.07;
+  
+    public static final class Balance{
+      public static final double K_P = 0.01;
+      public static final double K_I = 0.0;
+      public static final double K_D = 0.0;
+
+      public static final double MAX_SPEED_PERCENT = 0.3;
+    }
 
     public static final class Auto {
       

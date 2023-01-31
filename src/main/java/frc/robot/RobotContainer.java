@@ -47,7 +47,7 @@ public class RobotContainer {
   }
 
   public static CommandBase getAutoCommand() {
-    if(autoCommand == null) autoCommand = new FollowPathCommand(PathPlanner.loadPath("New Path", new PathConstraints(4, 2)));
+    if(autoCommand == null) autoCommand = new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2)));
     return autoCommand;
   }
 

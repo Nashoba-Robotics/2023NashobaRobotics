@@ -1,5 +1,8 @@
 package frc.robot.lib.util;
 
+import frc.robot.Constants;
+import frc.robot.lib.math.Units;
+
 public class JoystickValues {
 
     public double x;
@@ -60,6 +63,17 @@ public class JoystickValues {
         } else {
             y = Math.signum(y) * (Math.abs(y) - deadzone) / (1 - deadzone);
         }
+        return this;
+    }
+
+    public JoystickValues applyAngleDeadzone(double deadzone) {
+        double angle = Math.atan2(y, x);
+
+        if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) y = 0;
+        angle-=Constants.TAU/4;
+        Units.boundTauHalfs(angle);
+        if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) x = 0;
+        
         return this;
     }
 

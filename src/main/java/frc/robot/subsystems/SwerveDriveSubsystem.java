@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,7 +22,6 @@ import frc.robot.lib.util.JoystickValues;
 import frc.robot.lib.util.SwerveState;
 
 public class SwerveDriveSubsystem extends SubsystemBase {
-
     private CarpetOdometry odometry;
     private SwerveModule[] modules;
     private Pigeon2 gyro;
@@ -29,8 +29,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private boolean fieldCentric;
 
     private PIDController balanceController;
-
-    private double lastGyroAngle = 0;
+    private PIDController driftController;
 
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.Misc.GYRO_PORT);
@@ -47,6 +46,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         odometry = new CarpetOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), Constants.Field.ANGLE_OF_RESISTANCE);
     
         balanceController = new PIDController(Constants.Swerve.Balance.K_P, Constants.Swerve.Balance.K_I, Constants.Swerve.Balance.K_D);
+        driftController = new PIDController(Constants.Swerve.DriftCorrection.P, Constants.Swerve.DriftCorrection.I, Constants.Swerve.DriftCorrection.D);
     }
     
     private static SwerveDriveSubsystem instance;
@@ -79,11 +79,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("running", false);
         if(driftCorrection) {
             if(omega == 0 && (joystickValues.x != 0 || joystickValues.y != 0)) {
+                short[] xyz = new short[3];
+                gyro.getBiasedAccelerometer(xyz);
                 SmartDashboard.putBoolean("running", true);
-                omega = (lastGyroAngle - getGyroAngle()) * 1;
+                omega = driftController.calculate(xyz[0], omega * Constants.Swerve.DriftCorrection.MAX_ANGULAR_VELOCITY);
                 SmartDashboard.putNumber("omega", omega);
             }
-            lastGyroAngle = getGyroAngle();
         }
         set(joystickValues.x, joystickValues.y, omega);
     }

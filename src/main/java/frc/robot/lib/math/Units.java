@@ -111,4 +111,8 @@ public class Units {
 
         return angle;
     }
+
+    public static double boundTauHalfs(double angle) {
+        return ((angle % Constants.TAU + Constants.TAU) % Constants.TAU - Constants.TAU/2);
+    }
 }

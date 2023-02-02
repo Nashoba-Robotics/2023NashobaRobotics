@@ -139,6 +139,13 @@ public final class Constants {
     public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
     public static final double K_CARPET = 0.04; // should not be higher than 0.5
   }
+
+  public static final class Limelight {
+    public static final int REFLECTIVE_TAPE_PIPELINE = 0;
+    public static final int APRIL_TAG_PIPELINE = 1;
+    public static final int CLASSIFICATION_PIPELINE = 2;
+    public static final int DETECTION_PIPELINE = 3;
+  }
 }
 
 

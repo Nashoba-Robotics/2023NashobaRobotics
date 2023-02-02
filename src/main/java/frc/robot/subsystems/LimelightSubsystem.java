@@ -6,6 +6,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class LimelightSubsystem extends SubsystemBase{
     private static LimelightSubsystem singleton;
@@ -24,7 +25,6 @@ public class LimelightSubsystem extends SubsystemBase{
     double ty;
     double tagID;
 
-
     private LimelightSubsystem(){
         nt = NetworkTableInstance.getDefault().getTable("limelight");
         botpose = nt.getEntry("botpose");
@@ -34,6 +34,11 @@ public class LimelightSubsystem extends SubsystemBase{
         tidEntry = nt.getEntry("tid");
 
         pipeline = nt.getEntry("pipeline");
+    }
+
+    public static LimelightSubsystem getInstance(){
+        if(singleton == null) singleton = new LimelightSubsystem();
+        return singleton;
     }
 
     @Override
@@ -47,14 +52,13 @@ public class LimelightSubsystem extends SubsystemBase{
         }
     }
 
-    public static LimelightSubsystem getInstance(){
-        if(singleton == null) singleton = new LimelightSubsystem();
-        return singleton;
-    }
-
     // Gets the 2d position of the robot using the april tag it sees
     public Pose2d getRobotPose(){
-        return new Pose2d(robotPos[0], robotPos[1], new Rotation2d(robotPos[3], robotPos[4]));
+        int pipeline = getPipeline();
+        setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
+        Pose2d pose = new Pose2d(robotPos[0], robotPos[1], new Rotation2d(robotPos[3], robotPos[4]));
+        setPipeline(pipeline);
+        return pose;
     }
 
     public double getTX(){
@@ -65,8 +69,8 @@ public class LimelightSubsystem extends SubsystemBase{
         return ty;
     }
 
-    public double isTarget(){
-        return isTarget();
+    public boolean isTarget(){
+        return isTarget;
     }
 
     //Don't know if this is correct

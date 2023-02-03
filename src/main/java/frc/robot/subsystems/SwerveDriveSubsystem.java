@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.text.NumberFormat.Style;
-
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;

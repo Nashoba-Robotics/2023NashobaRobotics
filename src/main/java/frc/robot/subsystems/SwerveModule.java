@@ -69,7 +69,7 @@ public class SwerveModule {
         turnMotor.config_kD(0, Constants.Swerve.TURN_KD);
         turnMotor.setInverted(InvertType.InvertMotorOutput);
 
-        int cruiseVelocity = 20_000;
+        int cruiseVelocity = 22_000;
         turnMotor.configMotionCruiseVelocity(cruiseVelocity);
         turnMotor.configMotionAcceleration(2*cruiseVelocity);
         

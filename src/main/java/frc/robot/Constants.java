@@ -39,7 +39,7 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
-    public static final double WHEELRADIUS = Units.inchesToMeters(1.87);
+    public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
     
     public static final double MAX_NATIVE_VELOCITY = 22_000;  //Maximum velocity in NU/100ms
 
@@ -109,6 +109,14 @@ public final class Constants {
       MAX_TURNING_ACCELERATION
       );
     }
+
+    public static final class DriftCorrection {
+      public static final double P = 0;
+      public static final double I = 0;
+      public static final double D = 0;
+
+      public static final double MAX_ANGULAR_VELOCITY = 0;
+    }
   }
 
   public static final class Grabber{
@@ -130,6 +138,13 @@ public final class Constants {
   public static final class Field {
     public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
     public static final double K_CARPET = 0.04; // should not be higher than 0.5
+  }
+
+  public static final class Limelight {
+    public static final int REFLECTIVE_TAPE_PIPELINE = 0;
+    public static final int APRIL_TAG_PIPELINE = 1;
+    public static final int CLASSIFICATION_PIPELINE = 2;
+    public static final int DETECTION_PIPELINE = 3;
   }
 }
 

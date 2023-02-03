@@ -7,6 +7,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+//TODO: Get constants for the height and angle of the limelight on robot
 public class LimelightSubsystem extends SubsystemBase{
     private static LimelightSubsystem singleton;
     NetworkTable nt;

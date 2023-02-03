@@ -12,6 +12,7 @@ public final class Constants {
 
   public static final class Misc {
     public static final int GYRO_PORT = 0;
+    public static final int CANDLE_PORT = 0;
   }
 
   public static final class Joystick {
@@ -39,7 +40,8 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
-    public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
+    public static final double WHEELRADIUS = Units.inchesToMeters(1.87);
+    // public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
     
     public static final double MAX_NATIVE_VELOCITY = 22_000;  //Maximum velocity in NU/100ms
 

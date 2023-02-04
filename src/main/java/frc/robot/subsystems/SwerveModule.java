@@ -74,8 +74,8 @@ public class SwerveModule {
         turnMotor.configMotionAcceleration(2*cruiseVelocity);
         
         //turnMotor.configFeedbackNotContinuous(true, 0);
+        turnMotor.setNeutralMode(NeutralMode.Brake);
 
-        turnMotor.setNeutralMode(NeutralMode.Coast);
         turnSensor.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
         //General Config

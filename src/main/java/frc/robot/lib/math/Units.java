@@ -107,7 +107,7 @@ public class Units {
 
         angle *= 2048;
 
-        angle *= Constants.Arm.GEARRATIO;
+        angle *= Constants.Arm.PIVOT_GEARRATIO;
 
         return angle;
     }

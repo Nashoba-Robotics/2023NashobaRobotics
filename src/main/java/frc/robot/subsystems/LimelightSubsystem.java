@@ -62,25 +62,30 @@ public class LimelightSubsystem extends SubsystemBase{
         return pose;
     }
 
+    // Returns how far away the target is from the crosshairs(center) horizontally
     public double getTX(){
         return tx;
     }
 
+    // Returns how far away the target is from the crosshairs(center) vertically
     public double getTY(){
         return ty;
     }
 
+    // Returns whether or not the camera can see a target (For Reflective Tape, April Tag, and Detector)
     public boolean isTarget(){
         return isTarget;
     }
 
     //Don't know if this is correct
+    // Returns the current pipeline as an int
     public int getPipeline(){
         return pipeline.getHandle();
     }
 
     // I couldn't figure out how to change the Point of Interest through code, so we'll probably have to change pipelines for that
     // (We can set the node to be or point of interest to make targeting easier)
+    // Switches pipeline taking input as the integer version of the pipeline
     public void setPipeline(int index){
         pipeline.setInteger(index);
     }

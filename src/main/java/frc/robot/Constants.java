@@ -139,6 +139,9 @@ public final class Constants {
 
     public static final int ARM_PORT = 0;
 
+    public static final int EXTEND_SWITCH_PORT = 0;
+    public static final int RETRACT_SWITCH_PORT = 0;
+
     public static final double ARM_KF = 0;
     public static final double ARM_KP = 0;
     public static final double ARM_KI = 0;

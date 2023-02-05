@@ -9,11 +9,13 @@ import com.pathplanner.lib.PathPlanner;
 
 import edu.wpi.first.util.datalog.BooleanLogEntry;
 import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.test.ArmTestCommand;
 import frc.robot.commands.test.BalanceTestCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.auto.FollowPathCommand;
@@ -40,6 +42,8 @@ public class RobotContainer {
     SmartDashboard.putData(new CameraTestCommand());
 
     SmartDashboard.putData(new BalanceTestCommand());
+
+    Shuffleboard.getTab("Arm Testing").add(new ArmTestCommand());
 
     configureBindings();
   }

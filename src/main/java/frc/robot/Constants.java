@@ -129,12 +129,30 @@ public final class Constants {
   }
 
   public static final class Arm {
-    public static final double GEARRATIO = 0;
+    public static final double PIVOT_GEARRATIO = 0;
 
     public static final int PIVOT_PORT_1 = 0;
     public static final int PIVOT_PORT_2 = 0;
 
-    public static final int EXTEND_PORT = 0;
+    public static final int ARM_PORT = 0;
+
+    public static final double ARM_KF = 0;
+    public static final double ARM_KP = 0;
+    public static final double ARM_KI = 0;
+    public static final double ARM_KD = 0;
+
+    public static final double ARM_CRUISE_VELOCITY = 0;
+    public static final double ARM_ACCELERATION = 0;
+
+    public static final double PIVOT_KF_1 = 0;
+    public static final double PIVOT_KP_1 = 0;
+    public static final double PIVOT_KI_1 = 0;
+    public static final double PIVOT_KD_1 = 0;
+
+    public static final double PIVOT_KF_2 = 0;
+    public static final double PIVOT_KP_2 = 0;
+    public static final double PIVOT_KI_2 = 0;
+    public static final double PIVOT_KD_2 = 0;
   }
 
   public static final class Field {

@@ -23,7 +23,8 @@ public class JoystickSubsytem extends SubsystemBase {
     }
 
     public JoystickValues getRightJoystickValues() {
-        return new JoystickValues(rightJoystick.getX(), -rightJoystick.getY());
+        return new JoystickValues(rightJoystick.getX(), -rightJoystick.getY()); 
+        //Joysticks are weird in that moving the Joystick forward produces a negative value
     }
 
     public JoystickValues getLeftJoystickValues() {

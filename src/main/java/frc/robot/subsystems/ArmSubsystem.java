@@ -80,7 +80,7 @@ public class ArmSubsystem{
 
     //Extends arm to specified position in meters
     public void extend(double pos){
-        tromboneSlide.set(ControlMode.MotionMagic, Units.mToNUArm(pos));
+        tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
     }
 
     //Basic Percent Output set
@@ -102,7 +102,7 @@ public class ArmSubsystem{
     public double getLength(){
         double pos = getPos();
 
-        return Units.NUToMArm(pos);
+        return Units.Arm.NUToM(pos);
     }
 
     public double getPos(){

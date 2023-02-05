@@ -209,7 +209,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
         for(SwerveModule module : modules) {
             SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
-            LogManager.appendToLog(Units.NUToMPS(module.getMoveVelocity()), "ActualState:/mod"+module.modNumber);
+            LogManager.appendToLog(Units.Drive.NUToMPS(module.getMoveVelocity()), "ActualState:/mod"+module.modNumber);
         }
 
     }

@@ -83,9 +83,14 @@ public class ArmSubsystem{
         tromboneSlide.set(ControlMode.MotionMagic, Units.mToNUArm(pos));
     }
 
+    //Basic Percent Output set
+    public void set(double speed){
+        tromboneSlide.set(ControlMode.PercentOutput, speed);
+    }
+
     //Pivots arm to specified angle (Where to define 0? Radians or degrees?)
     public void pivot(double angle){
-        
+        //How does motion magic work with 2 motors?
     }
 
     //Returns the angle of the arm
@@ -95,9 +100,12 @@ public class ArmSubsystem{
 
     //Returns the extension of the arm in meters
     public double getLength(){
-        double pos = tromboneSlide.getSelectedSensorPosition();
+        double pos = getPos();
 
         return Units.NUToMArm(pos);
     }
 
+    public double getPos(){
+        return tromboneSlide.getSelectedSensorPosition();
+    }
 }

@@ -140,6 +140,15 @@ public final class Constants {
   public static final class Field {
     public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
     public static final double K_CARPET = 0.04; // should not be higher than 0.5
+
+    public enum TargetLevel {
+      HIGH,
+      MID,
+      LOW
+    }
+
+    public static final double HIGH_TAPE_CAMERA_HEIGHT = 0;
+    public static final double MID_TAPE_CAMERA_HEIGHT = 0;
   }
 
   public static final class Limelight {

@@ -5,20 +5,35 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
+//Reflective Tape sorted by highest
+
+//In robot, the LEDs on the limelight should be off when the robot first turns on
+//During autonomous and teleop, the limelight LEDs will follow the pipeline
+//When the robot is disabled, the LEDs turn off
 //TODO: Get constants for the height and angle of the limelight on robot
 public class LimelightSubsystem extends SubsystemBase{
     private static LimelightSubsystem singleton;
     NetworkTable nt;
-    NetworkTableEntry botpose;
+
+    //General Limelight Entries
+    NetworkTableEntry tvEntry;
     NetworkTableEntry txEntry;
     NetworkTableEntry tyEntry;
-    NetworkTableEntry tvEntry;
-    NetworkTableEntry tidEntry;
 
     NetworkTableEntry pipeline;
+    NetworkTableEntry ledMode;
+
+    //April Tag Entries
+    NetworkTableEntry tidEntry;
+    
+    //Classifier/Detector Entries
+    NetworkTableEntry tclassEntry;
+
 
     boolean isTarget;
     double[] robotPos;
@@ -28,7 +43,7 @@ public class LimelightSubsystem extends SubsystemBase{
 
     private LimelightSubsystem(){
         nt = NetworkTableInstance.getDefault().getTable("limelight");
-        botpose = nt.getEntry("botpose");
+
         txEntry = nt.getEntry("tx");
         tyEntry = nt.getEntry("ty");
         tvEntry = nt.getEntry("tv");
@@ -44,12 +59,19 @@ public class LimelightSubsystem extends SubsystemBase{
 
     @Override
     public void periodic() {
-        isTarget = tvEntry.getBoolean(false);
+        isTarget = tvEntry.getDouble(0) == 1;
         if(isTarget){   //Only update information if we see a target
-            robotPos = botpose.getDoubleArray(new double[6]);
+            if(getPipeline() == Constants.Limelight.APRIL_TAG_PIPELINE){
+                if(DriverStation.getAlliance() == Alliance.Red)
+                    robotPos = nt.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+                else if(DriverStation.getAlliance() == Alliance.Blue)
+                    robotPos = nt.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
+                else
+                    robotPos = nt.getEntry("botpose").getDoubleArray(new double[6]);
+                tagID = tidEntry.getDouble(-1);
+            }
             tx = txEntry.getDouble(0);
             ty = tyEntry.getDouble(0);
-            tagID = tidEntry.getDouble(-1);
         }
     }
 
@@ -77,10 +99,9 @@ public class LimelightSubsystem extends SubsystemBase{
         return isTarget;
     }
 
-    //Don't know if this is correct
     // Returns the current pipeline as an int
     public int getPipeline(){
-        return pipeline.getHandle();
+        return (int)pipeline.getInteger(-1);
     }
 
     // I couldn't figure out how to change the Point of Interest through code, so we'll probably have to change pipelines for that
@@ -88,5 +109,22 @@ public class LimelightSubsystem extends SubsystemBase{
     // Switches pipeline taking input as the integer version of the pipeline
     public void setPipeline(int index){
         pipeline.setInteger(index);
+    }
+
+    //0 = follow pipeline, 1 = force off, 2 = force blink, 3 = force on
+    public void setLEDMode(int mode){
+        ledMode.setNumber(mode);
+    }
+
+    public void on(){
+        setLEDMode(3);
+    }
+
+    public void off(){
+        setLEDMode(1);
+    }
+
+    public void defaultLED(){
+        setLEDMode(0);
     }
 }

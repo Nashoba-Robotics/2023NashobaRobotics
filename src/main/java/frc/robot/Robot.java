@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /**
@@ -37,6 +38,8 @@ public class Robot extends TimedRobot {
     DriverStation.startDataLog(DataLogManager.getLog());
     // RobotContainer.log = DataLogManager.getLog();
     // RobotContainer.entry = new BooleanLogEntry(RobotContainer.log, "test");
+
+    LimelightSubsystem.getInstance().off();
   }
 
   /**
@@ -59,6 +62,7 @@ public class Robot extends TimedRobot {
   /** This function is called once each time the robot enters Disabled mode. */
   @Override
   public void disabledInit() {
+    LimelightSubsystem.getInstance().off();
   }
 
   @Override
@@ -67,7 +71,7 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    
+    LimelightSubsystem.getInstance().defaultLED();
   }
 
   /** This function is called periodically during autonomous. */
@@ -86,7 +90,7 @@ public class Robot extends TimedRobot {
 
     RobotContainer.getAutoCommand().cancel();
     SwerveDriveSubsystem.getInstance().set(0, 0, 0);
-    
+    LimelightSubsystem.getInstance().defaultLED();
   }
 
   /** This function is called periodically during operator control. */

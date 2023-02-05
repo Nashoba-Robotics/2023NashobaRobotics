@@ -1,12 +1,8 @@
 package frc.robot.commands.test;
 
-import com.ctre.phoenix.sensors.Pigeon2;
-import com.ctre.phoenix.sensors.PigeonIMU;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.Swerve;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class BalanceTestCommand extends CommandBase{
@@ -30,6 +26,11 @@ public class BalanceTestCommand extends CommandBase{
         SmartDashboard.putBoolean("Target?", pigeonController.atSetpoint());
 
         SwerveDriveSubsystem.getInstance().set(0.3 * pigeonController.calculate(roll), 0, 0);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        SwerveDriveSubsystem.getInstance().set(0, 0, 0);
     }
 
     @Override

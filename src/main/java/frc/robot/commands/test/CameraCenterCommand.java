@@ -1,6 +1,7 @@
 package frc.robot.commands.test;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -9,6 +10,8 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 /*
 Assuming the robot is alread oriented correctly with angle, 
 the robot will move horizontally until the April tag is in the middle (centered)
+
+Uses PID control rather than a snapshot
 */
 public class CameraCenterCommand extends CommandBase{
     PIDController driveController;
@@ -56,6 +59,10 @@ public class CameraCenterCommand extends CommandBase{
     public void execute() {
         double tx = LimelightSubsystem.getInstance().getTX();
         double gain = driveController.calculate(tx);
+
+        SmartDashboard.putNumber("Thing: ", gain);
+        SmartDashboard.putBoolean("In Range?", driveController.atSetpoint());
+        SmartDashboard.putNumber("tx", tx);
 
         //Switched to field-oriented notation
         SwerveDriveSubsystem.getInstance().set(0, maxSpeedPercent * gain, 0);

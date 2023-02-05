@@ -7,8 +7,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import frc.robot.Constants;
 
 public class ArmSubsystem{
-    private TalonFX tromboneSlide;
-    private TalonFX pivot1, pivot2;
+    private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
+    private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
 
     public ArmSubsystem(){
         tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT);
@@ -69,6 +69,11 @@ public class ArmSubsystem{
     public void zeroPivot(){
         zeroPivot1();
         zeroPivot2();
+    }
+
+    //Returns arm to upright position
+    public void reset(){
+
     }
 
     //Extends arm to specified position (What units?)

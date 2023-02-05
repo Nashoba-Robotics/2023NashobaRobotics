@@ -152,7 +152,7 @@ public class SwerveModule {
             moveMotor.setInverted(InvertType.None);
             return potAngles[0];
         }
-        else{
+        else{ //If we want to go to the opposite of the desired angle, we have to tell the motor to move "backwards"
             moveMotor.setInverted(InvertType.InvertMotorOutput);
             return potAngles[1];
         } 
@@ -162,13 +162,16 @@ public class SwerveModule {
     public double[] potentialAngles(double angle){
         //Constrain the variable to desired domain
         angle = Units.constrainDeg(angle);
+
         //Figure out the opposite angle
         double oppositeAngle = angle + 180;
+
         //Constrain the opposite angle
         oppositeAngle = Units.constrainDeg(oppositeAngle);
+
         //Put them into a size 2 array
         double[] angles = {angle, oppositeAngle};
-        //return it
+
         return angles;
     }
 

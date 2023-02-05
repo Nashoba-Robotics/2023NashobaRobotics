@@ -1,10 +1,12 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import frc.robot.Constants;
+import frc.robot.lib.math.Units;
 
 public class ArmSubsystem{
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
@@ -76,14 +78,26 @@ public class ArmSubsystem{
 
     }
 
-    //Extends arm to specified position (What units?)
+    //Extends arm to specified position in meters
     public void extend(double pos){
-        
+        tromboneSlide.set(ControlMode.MotionMagic, Units.mToNUArm(pos));
     }
 
     //Pivots arm to specified angle (Where to define 0? Radians or degrees?)
     public void pivot(double angle){
+        
+    }
 
+    //Returns the angle of the arm
+    public double getAngle(){
+        return 0;
+    }
+
+    //Returns the extension of the arm in meters
+    public double getLength(){
+        double pos = tromboneSlide.getSelectedSensorPosition();
+
+        return Units.NUToMArm(pos);
     }
 
 }

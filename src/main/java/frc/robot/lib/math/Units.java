@@ -103,13 +103,48 @@ public class Units {
     }
 
     public static double radToNUArm(double angle){
+        //Convert angle into rotations
         angle /= Constants.TAU;
 
-        angle *= 2048;
-
+        //Convert from arm rotations into motor rotations
         angle *= Constants.Arm.PIVOT_GEARRATIO;
 
+        //Convert rotations into NU
+        angle *= 2048;
+
         return angle;
+    }
+
+    public static double NUToRadArm(double pos){
+        //Convert to rotations
+        pos /= 2048;
+
+        //Convert to rotation of the arm
+        pos /= Constants.Arm.PIVOT_GEARRATIO;
+
+        //Convert to radians
+        pos *= Constants.TAU;
+
+        return pos;
+    }
+
+    public static double mToNUArm(double m){
+        m /= Constants.Arm.PITCH_DIAMETER*Math.PI;
+        m /= Constants.Arm.EXTENSION_GEARRATION;
+        m *= 2048;
+
+        return m;
+    }
+
+    public static double NUToMArm(double pos){
+        //Convert into rotations
+        pos /= 2048;
+        //Account for gear ratio
+        pos /= Constants.Arm.EXTENSION_GEARRATION;
+        //Calculate the distance that corresponds to with pitch diameter of pulley
+        pos *= Constants.Arm.PITCH_DIAMETER * Math.PI;
+
+        return pos;
     }
 
     public static double boundTauHalfs(double angle) {

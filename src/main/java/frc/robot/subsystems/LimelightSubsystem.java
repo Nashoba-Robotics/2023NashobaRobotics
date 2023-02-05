@@ -41,6 +41,11 @@ public class LimelightSubsystem extends SubsystemBase{
     double ty;
     double tagID;
 
+    public enum TargetType{
+        APRIL_TAG,
+        REFLECTIVE_TAPE
+    }
+
     private LimelightSubsystem(){
         nt = NetworkTableInstance.getDefault().getTable("limelight");
 

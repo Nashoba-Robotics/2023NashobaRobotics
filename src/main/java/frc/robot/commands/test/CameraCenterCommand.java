@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.subsystems.LimelightSubsystem.TargetType;
 
 /*
 Assuming the robot is alread oriented correctly with angle, 
@@ -18,11 +19,6 @@ public class CameraCenterCommand extends CommandBase{
     double maxSpeedPercent = 0.5;
     double setpoint = 0;
     double threshold = 2;
-
-    public enum TargetType{
-        APRIL_TAG,
-        REFLECTIVE_TAPE
-    }
 
     TargetType t;
 

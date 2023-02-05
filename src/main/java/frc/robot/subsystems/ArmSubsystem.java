@@ -80,7 +80,7 @@ public class ArmSubsystem{
 
     //Extends arm to specified position in meters
     public void extend(double pos){
-        tromboneSlide.set(ControlMode.MotionMagic, Units.mToNUArm(pos));
+        tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
     }
 
     //Pivots arm to specified angle (Where to define 0? Radians or degrees?)
@@ -97,7 +97,7 @@ public class ArmSubsystem{
     public double getLength(){
         double pos = tromboneSlide.getSelectedSensorPosition();
 
-        return Units.NUToMArm(pos);
+        return Units.Arm.NUToM(pos);
     }
 
 }

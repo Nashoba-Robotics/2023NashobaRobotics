@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.security.DigestInputStream;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -114,7 +112,7 @@ public class ArmSubsystem{
         return retractSwitch.get();
     }
 
-    //Pivots arm to specified angle (Where to define 0? Radians or degrees?)
+    //Pivots arm to specified angle (radians) (0 = upright)
     public void pivot(double angle){
         //How does motion magic work with 2 motors?
         angle = Units.Arm.radToNU(angle);

@@ -68,10 +68,10 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = -163.652;
-    public static final double FRONT_LEFT_OFFSET_DEGREES = 160.652;
-    public static final double BACK_LEFT_OFFSET_DEGREES = -41.869;
-    public static final double BACK_RIGHT_OFFSET_DEGREES = -339.633;
+    public static final double FRONT_RIGHT_OFFSET_DEGREES = -251.191;
+    public static final double FRONT_LEFT_OFFSET_DEGREES = 161.191;
+    public static final double BACK_LEFT_OFFSET_DEGREES = 15.82;
+    public static final double BACK_RIGHT_OFFSET_DEGREES = -309.199;
 
     public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
@@ -142,8 +142,8 @@ public final class Constants {
     public static final double PITCH_DIAMETER = Units.inchesToMeters(1.12);
     // One rotation of pulley = 3.5437
 
-    public static final int PIVOT_PORT_1 = 0;
-    public static final int PIVOT_PORT_2 = 0;
+    public static final int PIVOT_PORT_1 = 13;
+    public static final int PIVOT_PORT_2 = 15;
 
     public static final int ARM_PORT = 0;
 

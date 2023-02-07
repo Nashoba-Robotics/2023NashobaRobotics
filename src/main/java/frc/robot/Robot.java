@@ -17,7 +17,7 @@ public class Robot extends TimedRobot {
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
 
-    LimelightSubsystem.getInstance().off();
+    // LimelightSubsystem.getInstance().off();
     CommandScheduler.getInstance().cancelAll();
     SwerveDriveSubsystem.getInstance().set(0, 0, 0);
   }
@@ -29,7 +29,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    LimelightSubsystem.getInstance().off();
+    // LimelightSubsystem.getInstance().off();
   }
 
   @Override
@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    LimelightSubsystem.getInstance().defaultLED();
+    // LimelightSubsystem.getInstance().defaultLED();
   }
 
   @Override
@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     SwerveDriveSubsystem.getInstance().set(0, 0, 0);
-    LimelightSubsystem.getInstance().defaultLED();
+    // LimelightSubsystem.getInstance().defaultLED();
   }
 
   @Override

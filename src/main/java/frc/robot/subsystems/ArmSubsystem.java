@@ -13,20 +13,20 @@ import frc.robot.Constants;
 import frc.robot.lib.math.Units;
 
 public class ArmSubsystem{
-    private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
+    //private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
 
-    private DigitalInput extendSwitch;
-    private DigitalInput retractSwitch;
+    // private DigitalInput extendSwitch;
+    // private DigitalInput retractSwitch;
 
     public ArmSubsystem(){
-        tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT);
+        //tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT);
 
         pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1);
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2);
 
-        extendSwitch = new DigitalInput(Constants.Arm.EXTEND_SWITCH_PORT);
-        retractSwitch = new DigitalInput(Constants.Arm.RETRACT_SWITCH_PORT);
+        // extendSwitch = new DigitalInput(Constants.Arm.EXTEND_SWITCH_PORT);
+        // retractSwitch = new DigitalInput(Constants.Arm.RETRACT_SWITCH_PORT);
 
         config();
     }
@@ -38,16 +38,16 @@ public class ArmSubsystem{
     }
 
     public void config(){
-        tromboneSlide.configFactoryDefault();
-        tromboneSlide.setNeutralMode(NeutralMode.Brake);
-        tromboneSlide.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        tromboneSlide.config_kF(0, Constants.Arm.ARM_KF);
-        tromboneSlide.config_kP(0, Constants.Arm.ARM_KP);
-        tromboneSlide.config_kI(0, Constants.Arm.ARM_KI);
-        tromboneSlide.config_kD(0, Constants.Arm.ARM_KD);
+        // tromboneSlide.configFactoryDefault();
+        // tromboneSlide.setNeutralMode(NeutralMode.Brake);
+        // tromboneSlide.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        // tromboneSlide.config_kF(0, Constants.Arm.ARM_KF);
+        // tromboneSlide.config_kP(0, Constants.Arm.ARM_KP);
+        // tromboneSlide.config_kI(0, Constants.Arm.ARM_KI);
+        // tromboneSlide.config_kD(0, Constants.Arm.ARM_KD);
 
-        tromboneSlide.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
-        tromboneSlide.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        // tromboneSlide.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        // tromboneSlide.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
 
         pivot1.configFactoryDefault();
         pivot1.setNeutralMode(NeutralMode.Brake);
@@ -71,7 +71,7 @@ public class ArmSubsystem{
     }
 
     public void zeroArm(){
-        tromboneSlide.setSelectedSensorPosition(0);
+        //tromboneSlide.setSelectedSensorPosition(0);
     }
 
     public void zeroPivot1(){
@@ -94,24 +94,26 @@ public class ArmSubsystem{
 
     //Extends arm to specified position in meters
     public void extend(double pos){
-        tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
+       // tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
     }
 
     //Basic Percent Output set
     public void set(double speed){
         if(extended()){
-            tromboneSlide.set(ControlMode.PercentOutput, 0);
+            //tromboneSlide.set(ControlMode.PercentOutput, 0);
             return;
         }
-        tromboneSlide.set(ControlMode.PercentOutput, speed);
+       // tromboneSlide.set(ControlMode.PercentOutput, speed);
     }
 
     public boolean extended(){
-        return extendSwitch.get();
+        //return extendSwitch.get();
+        return false;
     }
 
     public boolean retracted(){
-        return retractSwitch.get();
+        //return retractSwitch.get();
+        return false;
     }
 
     //Pivots arm to specified angle (Where to define 0? Radians or degrees?)
@@ -140,7 +142,8 @@ public class ArmSubsystem{
     }
 
     public double getPos(){
-        return tromboneSlide.getSelectedSensorPosition();
+        // return tromboneSlide.getSelectedSensorPosition();
+        return 0;
     }
 
     //This is TEMPORARY

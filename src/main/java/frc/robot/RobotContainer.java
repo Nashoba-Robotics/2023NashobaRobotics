@@ -17,9 +17,9 @@ public class RobotContainer {
   public RobotContainer() {
     SmartDashboard.putData(new SwerveDriveCommand());
     SmartDashboard.putData(new SwerveDriveTestCommand());
-    SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
-    SmartDashboard.putData(new CameraTestCommand());
-    SmartDashboard.putData(new BalanceTestCommand());
+    // SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
+    // SmartDashboard.putData(new CameraTestCommand());
+    // SmartDashboard.putData(new BalanceTestCommand());
 
     Shuffleboard.getTab("Arm Testing").add(new ArmTestCommand());
 

@@ -129,11 +129,32 @@ public final class Constants {
     }
   }
 
-  public static final class Grabber{
+  public static final class Grabber {
     public static final int LEFT_GRABBER_PORT = 0;
     public static final int RIGHT_GRABBER_PORT = 0;
 
     public static final int WRIST_PORT = 0;
+
+    // TODO: FILL IN PID LOOP VALUES, CHANGE SPEED, AND CALCULATE ANGLES
+    public static final double ORIENTER_KF = 0.0;
+    public static final double ORIENTER_KP = 0.0;
+    public static final double ORIENTER_KI = 0.0;
+    public static final double ORIENTER_KD = 0.0;
+
+    public static final double INTAKE_SPEED = 0.4;
+    public static final double TURN_SPEED = 0.4;
+
+    public static enum ScoringLevelAngle {
+      LOW(0),
+      MEDIUM(0),
+      HIGH(0);
+
+      public final double ANGLE;
+
+      private ScoringLevelAngle(double ANGLE) {
+        this.ANGLE = ANGLE;
+      }
+    }
   }
 
   public static final class Arm {

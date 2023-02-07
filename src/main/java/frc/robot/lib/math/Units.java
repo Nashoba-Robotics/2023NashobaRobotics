@@ -106,7 +106,6 @@ public class Units {
     }
     
     public static class Arm {
-
         public static double radToNU(double angle){
             //Convert angle into rotations
             angle /= Constants.TAU;

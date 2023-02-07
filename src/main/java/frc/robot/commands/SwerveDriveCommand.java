@@ -40,7 +40,7 @@ public class SwerveDriveCommand extends CommandBase {
                     Constants.Joystick.TURN_DEAD_ZONE,
                     Constants.Joystick.TURN_SENSITIVITY
                 ).multiply(multiplier).x,
-                true
+                false
                 );
     }
 

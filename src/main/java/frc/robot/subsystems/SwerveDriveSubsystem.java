@@ -56,7 +56,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return ((gyro.getYaw() % 360 + 360) % 360 - 180) * Constants.TAU / 360;
+        return Units.constrainDeg(gyro.getYaw()) * Constants.TAU / 360;
     }
 
     public double getBalanceAngle() {
@@ -73,12 +73,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void set(JoystickValues joystickValues, double omega, boolean driftCorrection) {
-        SmartDashboard.putBoolean("running", false);
         if(driftCorrection) {
             if(omega == 0 && (joystickValues.x != 0 || joystickValues.y != 0)) {
                 short[] xyz = new short[3];
                 gyro.getBiasedAccelerometer(xyz);
-                SmartDashboard.putBoolean("running", true);
                 omega = driftController.calculate(xyz[0], omega * Constants.Swerve.DriftCorrection.MAX_ANGULAR_VELOCITY);
                 SmartDashboard.putNumber("omega", omega);
             }

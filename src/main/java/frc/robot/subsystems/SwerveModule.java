@@ -92,7 +92,6 @@ public class SwerveModule {
 
     public void configOffset(double offset){
         turnSensor.configMagnetOffset(offset);
-        //turnSensor.setPosition(turnSensor.getAbsolutePosition()%180);
         turnMotor.setSelectedSensorPosition(Units.Drive.degToNU(turnSensor.getAbsolutePosition()));
     }
 

@@ -1,4 +1,4 @@
-package frc.robot.commands.Score;
+package frc.robot.commands.score;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 

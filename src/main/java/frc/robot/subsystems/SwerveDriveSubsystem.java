@@ -56,7 +56,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return ((gyro.getYaw() % 360 + 360) % 360 - 180) * Constants.TAU / 360;
+        return Units.constrainDeg(getBalanceAngle()) * Constants.TAU / 360;
     }
 
     public double getBalanceAngle() {

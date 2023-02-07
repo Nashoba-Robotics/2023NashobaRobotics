@@ -150,17 +150,12 @@ public class Units {
     
             return pos;
         }
+    }    
 
+    public static class Intake {
+        // Converts from degrees to rotations
+        public static double degToNU(double angle){
+            return angle / 360;
+        }
     }
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 }

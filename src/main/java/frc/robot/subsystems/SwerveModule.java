@@ -35,10 +35,10 @@ public class SwerveModule {
         this.AFF = AFF;
         this.modNumber = modNumber;
 
-        moveMotor = new TalonFX(movePort);
-        turnMotor = new TalonFX(turnPort);
+        moveMotor = new TalonFX(movePort, "drivet");    //Why is it called drivet?
+        turnMotor = new TalonFX(turnPort, "drivet");    //It has the DRIVE and PIVET!!
 
-        turnSensor = new CANCoder(sensorPort);
+        turnSensor = new CANCoder(sensorPort, "drivet");
 
         config();
         configOffset(offset); //degrees

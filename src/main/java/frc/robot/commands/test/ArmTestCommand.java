@@ -19,6 +19,7 @@ public class ArmTestCommand extends CommandBase{
         // armTab.add("Pivot Speed", 0);
         // armTab.add("Pivot Angle", 0);
 
+        SmartDashboard.putNumber("Arm Speed", 0);
         SmartDashboard.putNumber("Pivot Speed", 0);
     }
 
@@ -32,7 +33,9 @@ public class ArmTestCommand extends CommandBase{
 
         // Do I need to put this into the tab? Or can I just do this?
         // double speed = armTab.add("Arm Speed", 0).getEntry().getDouble(0);
-        // ArmSubsystem.getInstance().set(speed);
+        double speed = SmartDashboard.getNumber("Arm Speed", 0);
+
+        ArmSubsystem.getInstance().set(speed);
 
         // armTab.add("Pivot NU 1", ArmSubsystem.getInstance().getPivotPos(1));
         // armTab.add("Pivot NU 2", ArmSubsystem.getInstance().getPivotPos(2)); 
@@ -42,6 +45,7 @@ public class ArmTestCommand extends CommandBase{
 
         //double pivotSpeed = armTab.add("Pivot Speed", 0).getEntry().getDouble(0);
         double pivotSpeed = SmartDashboard.getNumber("Pivot Speed", 0);
+        if(Math.abs(pivotSpeed) > 0.3) pivotSpeed = 0.15;    //Don't want to accidentally kill someone
         ArmSubsystem.getInstance().setPivot(pivotSpeed);
 
         // double angle = armTab.add("Pivot Angle", 0).getEntry().getDouble(0);

@@ -13,17 +13,17 @@ import frc.robot.Constants;
 import frc.robot.lib.math.Units;
 
 public class ArmSubsystem{
-    //private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
+    private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
 
     // private DigitalInput extendSwitch;
     // private DigitalInput retractSwitch;
 
     public ArmSubsystem(){
-        //tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT);
+        tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT);
 
-        pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1);
-        pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2);
+        pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
+        pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
 
         // extendSwitch = new DigitalInput(Constants.Arm.EXTEND_SWITCH_PORT);
         // retractSwitch = new DigitalInput(Constants.Arm.RETRACT_SWITCH_PORT);
@@ -38,7 +38,7 @@ public class ArmSubsystem{
     }
 
     public void config(){
-        // tromboneSlide.configFactoryDefault();
+        tromboneSlide.configFactoryDefault();
         // tromboneSlide.setNeutralMode(NeutralMode.Brake);
         // tromboneSlide.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
         // tromboneSlide.config_kF(0, Constants.Arm.ARM_KF);
@@ -68,6 +68,9 @@ public class ArmSubsystem{
         // TODO: CHECK INVERTS
         pivot1.setInverted(InvertType.InvertMotorOutput);
         pivot2.setInverted(InvertType.None);
+
+        //Positive is extending out
+        tromboneSlide.setInverted(InvertType.InvertMotorOutput);
     }
 
     public void zeroArm(){
@@ -103,7 +106,7 @@ public class ArmSubsystem{
             //tromboneSlide.set(ControlMode.PercentOutput, 0);
             return;
         }
-       // tromboneSlide.set(ControlMode.PercentOutput, speed);
+       tromboneSlide.set(ControlMode.PercentOutput, speed);
     }
 
     public boolean extended(){

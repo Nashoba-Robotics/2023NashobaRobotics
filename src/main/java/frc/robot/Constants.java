@@ -143,18 +143,6 @@ public final class Constants {
 
     public static final double INTAKE_SPEED = 0.4;
     public static final double TURN_SPEED = 0.4;
-
-    public static enum ScoringLevelAngle {
-      LOW(0),
-      MEDIUM(0),
-      HIGH(0);
-
-      public final double ANGLE;
-
-      private ScoringLevelAngle(double ANGLE) {
-        this.ANGLE = ANGLE;
-      }
-    }
   }
 
   public static final class Arm {
@@ -166,7 +154,7 @@ public final class Constants {
     public static final int PIVOT_PORT_1 = 13;
     public static final int PIVOT_PORT_2 = 15;
 
-    public static final int ARM_PORT = 0;
+    public static final int ARM_PORT = 10;
 
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;

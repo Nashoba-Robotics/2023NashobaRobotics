@@ -152,7 +152,7 @@ public class Units {
         }
     }    
 
-    public static class Intake {
+    public static class Grabber {
         // Converts from degrees to rotations
         public static double degToNU(double angle){
             return angle / 360;

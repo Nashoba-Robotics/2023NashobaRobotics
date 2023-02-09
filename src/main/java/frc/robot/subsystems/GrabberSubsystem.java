@@ -27,7 +27,9 @@ public class GrabberSubsystem extends SubsystemBase{
 
         grabber1.setIdleMode(IdleMode.kBrake);
         grabber2.setIdleMode(IdleMode.kBrake);
-        grabber2.follow(grabber1);
+        grabber2.follow(grabber1, true);
+
+        currentRotation = orienter.getEncoder().getPosition();
 
         orienterController = orienter.getPIDController();
         orienterController.setFF(Constants.Grabber.ORIENTER_KF);
@@ -53,13 +55,9 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber1.set(-Constants.Grabber.INTAKE_SPEED);
     }
 
-    public void orient(Constants.Grabber.ScoringLevelAngle scoringHeight) {
-        orient(scoringHeight.ANGLE);
-    }
-
     //Turns the orienter to specified angle
     public void orient(double angle){
-        currentRotation = Units.Intake.degToNU(angle);
+        currentRotation = Units.Grabber.degToNU(angle);
     }
 
     @Override

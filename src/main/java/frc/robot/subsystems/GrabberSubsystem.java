@@ -27,7 +27,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
         grabber1.setIdleMode(IdleMode.kBrake);
         grabber2.setIdleMode(IdleMode.kBrake);
-        grabber2.follow(grabber1, true);
+        grabber2.follow(grabber1);
 
         currentRotation = orienter.getEncoder().getPosition();
 

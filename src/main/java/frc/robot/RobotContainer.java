@@ -15,6 +15,7 @@ import frc.robot.commands.auto.FollowPathCommand;
 import frc.robot.commands.test.SwerveDriveTestCommand;
 import frc.robot.commands.test.ZeroPivotCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.GrabberSubsystem;
 
 public class RobotContainer {
 
@@ -25,8 +26,16 @@ public class RobotContainer {
     // SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
     // SmartDashboard.putData(new CameraTestCommand());
     // SmartDashboard.putData(new BalanceTestCommand());
+    SmartDashboard.putData(new ZeroPivotCommand());
+    SmartDashboard.putData(new ArmTestCommand());
+    SmartDashboard.putData(new InstantCommand(() -> ArmSubsystem.getInstance().zeroArm(), ArmSubsystem.getInstance()));
+    SmartDashboard.putData(new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
+<<<<<<< HEAD
     Tabs.armTab.add(new ArmTestCommand());
+=======
+    //Shuffleboard.getTab("Arm Testing").add(new ArmTestCommand());
+>>>>>>> 068e5e09dfaf4e1122fc115bda39bb8671234493
     // Shuffleboard.getTab("Arm Testing").add(new ZeroPivotCommand());
 
     configureBindings();

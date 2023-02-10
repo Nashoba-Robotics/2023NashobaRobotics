@@ -154,8 +154,12 @@ public class Units {
 
     public static class Grabber {
         // Converts from degrees to rotations
-        public static double degToNU(double angle){
-            return angle / 360;
+        public static double radToNU(double angle){
+            return angle / Constants.TAU;
+        }
+
+        public static double NUtoRad(double rotations) {
+            return rotations * Constants.TAU;
         }
     }
 }

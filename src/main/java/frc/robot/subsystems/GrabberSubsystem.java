@@ -52,12 +52,30 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Releases the game piece to score
     public void score(){
-        grabber1.set(-Constants.Grabber.INTAKE_SPEED);
+        grabber1.set(Constants.Grabber.SCORE_SPEED);
     }
 
-    //Turns the orienter to specified angle
+    public void set(double speed){
+        grabber1.set(speed);
+    }
+
+    //Turns the orienter to specified angle in radians
     public void orient(double angle){
-        currentRotation = Units.Grabber.degToNU(angle);
+        currentRotation = Units.Grabber.radToNU(angle);
+    }
+
+    //Reads the angle in radians of the orienter
+    public double getOrientation(){
+        return Units.constrainRad(Units.Grabber.NUtoRad(grabber1.getEncoder().getPosition()));
+    }
+
+    public void zeroWrist() {
+        orienter.getEncoder().setPosition(0);
+    }
+
+    public double getCurrent() {
+        // Average
+        return (grabber1.getOutputCurrent() + grabber2.getOutputCurrent()) / 2;
     }
 
     @Override

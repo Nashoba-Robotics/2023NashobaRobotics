@@ -141,8 +141,15 @@ public final class Constants {
     public static final double ORIENTER_KI = 0.0;
     public static final double ORIENTER_KD = 0.0;
 
-    public static final double INTAKE_SPEED = 0.4;
+    public static final double INTAKE_SPEED = -0.3;
+    public static final double SCORE_SPEED = 0.3;
     public static final double TURN_SPEED = 0.4;
+    public static final double HIGH_ANGLE = 0;
+    public static final double MID_ANGLE = 0;
+    public static final double LOW_ANGLE = 0;
+
+    public static final double ERROR_ANGLE = 0;
+
   }
 
   public static final class Arm {
@@ -164,18 +171,25 @@ public final class Constants {
     public static final double ARM_KI = 0;
     public static final double ARM_KD = 0;
 
-    public static final double ARM_CRUISE_VELOCITY = 0;
-    public static final double ARM_ACCELERATION = 0;
+    public static final double ARM_CRUISE_VELOCITY = 10_000;
+    public static final double ARM_ACCELERATION = 10_000;
 
-    public static final double PIVOT_KF_1 = 0;
-    public static final double PIVOT_KP_1 = 0;
+    public static final double PIVOT_KF_1 = 0.047;
+    public static final double PIVOT_KP_1 = 0.2;
     public static final double PIVOT_KI_1 = 0;
     public static final double PIVOT_KD_1 = 0;
 
-    public static final double PIVOT_KF_2 = 0;
-    public static final double PIVOT_KP_2 = 0;
+    public static final double PIVOT_KF_2 = 0.047;
+    public static final double PIVOT_KP_2 = 0.2;
     public static final double PIVOT_KI_2 = 0;
     public static final double PIVOT_KD_2 = 0;
+
+    public static final double HIGH_ANGLE = 0;
+    public static final double MID_ANGLE = 0;
+    public static final double LOW_ANGLE = 0;
+
+    public static final double ERROR_ANGLE = 0;
+    
   }
 
   public static final class Field {

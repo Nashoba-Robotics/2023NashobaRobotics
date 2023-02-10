@@ -143,6 +143,12 @@ public final class Constants {
 
     public static final double INTAKE_SPEED = 0.4;
     public static final double TURN_SPEED = 0.4;
+    public static final double HIGH_ANGLE = 0;
+    public static final double MID_ANGLE = 0;
+    public static final double LOW_ANGLE = 0;
+
+    public static final double ERROR_ANGLE = 0;
+
   }
 
   public static final class Arm {
@@ -176,6 +182,13 @@ public final class Constants {
     public static final double PIVOT_KP_2 = 0;
     public static final double PIVOT_KI_2 = 0;
     public static final double PIVOT_KD_2 = 0;
+
+    public static final double HIGH_ANGLE = 0;
+    public static final double MID_ANGLE = 0;
+    public static final double LOW_ANGLE = 0;
+
+    public static final double ERROR_ANGLE = 0;
+    
   }
 
   public static final class Field {

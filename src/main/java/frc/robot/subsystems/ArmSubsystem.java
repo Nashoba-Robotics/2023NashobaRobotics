@@ -9,10 +9,11 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.lib.math.Units;
 
-public class ArmSubsystem{
+public class ArmSubsystem extends SubsystemBase{
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
 

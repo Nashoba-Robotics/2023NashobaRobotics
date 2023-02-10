@@ -55,9 +55,14 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber1.set(-Constants.Grabber.INTAKE_SPEED);
     }
 
-    //Turns the orienter to specified angle
+    //Turns the orienter to specified angle in radians
     public void orient(double angle){
-        currentRotation = Units.Grabber.degToNU(angle);
+        currentRotation = Units.Grabber.radToNU(angle);
+    }
+
+    //Reads the angle in radians of the orienter
+    public double getOrientation(){
+        return Units.constrainRad(Units.Grabber.NUtoRad(grabber1.getEncoder().getPosition()));
     }
 
     @Override

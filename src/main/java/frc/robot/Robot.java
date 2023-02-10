@@ -18,7 +18,7 @@ public class Robot extends TimedRobot {
 
     // LimelightSubsystem.getInstance().off();
     CommandScheduler.getInstance().cancelAll();
-    SwerveDriveSubsystem.getInstance().set(0, 0, 0);
+    // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
   }
 
   @Override
@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    SwerveDriveSubsystem.getInstance().set(0, 0, 0);
+    // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
     // LimelightSubsystem.getInstance().defaultLED();
   }
 

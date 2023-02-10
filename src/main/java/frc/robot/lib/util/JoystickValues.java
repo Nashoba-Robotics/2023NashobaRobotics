@@ -82,5 +82,13 @@ public class JoystickValues {
         y *= multiplier;
         return this;
     }
+
+    //Only use for input into swervesubsystem
+    public JoystickValues swap() {
+        double temp = -x;
+        x = y;
+        y = temp;
+        return this;
+    }
     
 }

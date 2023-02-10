@@ -120,7 +120,7 @@ public class ArmSubsystem extends SubsystemBase {
         return false;
     }
 
-    //Pivots arm to specified angle (Where to define 0? Radians or degrees?)
+    //Pivots arm to specified angle (radians) (0 = upright)
     public void pivot(double angle){
         //How does motion magic work with 2 motors?
         angle = Units.Arm.radToNU(angle);
@@ -176,5 +176,29 @@ public class ArmSubsystem extends SubsystemBase {
     //This is TEMPORARY as well
     public double getPivotAngleDeg(int n){
         return getPivotAngle(n) * 360/Constants.TAU;
+    }
+
+    public double getStatorCurrent1(){
+        return pivot1.getStatorCurrent();
+    }
+
+    public double getStatorCurrent2(){
+        return pivot2.getStatorCurrent();
+    }
+
+    public double getPivotStator(){
+        return (getStatorCurrent1()+getStatorCurrent2())/2;
+    }
+
+    public double getSupplyCurrent1(){
+        return pivot1.getSupplyCurrent();
+    }
+
+    public double getSupplyCurrent2(){
+        return pivot2.getSupplyCurrent();
+    }
+
+    public double getPivotSupply(){
+        return (getStatorCurrent1()+getSupplyCurrent2())/2;
     }
 }

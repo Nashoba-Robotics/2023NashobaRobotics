@@ -11,7 +11,7 @@ public class FieldOrientCommand extends CommandBase {
     private long startTime;
     
     public FieldOrientCommand() {
-        PIDController controller = new PIDController(0, 0, 0);
+        controller = new PIDController(0, 0, 0);
         addRequirements(SwerveDriveSubsystem.getInstance());
     }
 

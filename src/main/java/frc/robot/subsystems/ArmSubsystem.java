@@ -189,4 +189,16 @@ public class ArmSubsystem extends SubsystemBase {
     public double getPivotStator(){
         return (getStatorCurrent1()+getStatorCurrent2())/2;
     }
+
+    public double getSupplyCurrent1(){
+        return pivot1.getSupplyCurrent();
+    }
+
+    public double getSupplyCurrent2(){
+        return pivot2.getSupplyCurrent();
+    }
+
+    public double getPivotSupply(){
+        return (getStatorCurrent1()+getSupplyCurrent2())/2;
+    }
 }

@@ -31,18 +31,6 @@ public class RobotContainer {
     SmartDashboard.putData(new InstantCommand(() -> ArmSubsystem.getInstance().zeroArm(), ArmSubsystem.getInstance()));
     SmartDashboard.putData(new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
-<<<<<<< HEAD
     Tabs.armTab.add(new ArmTestCommand());
-=======
-    //Shuffleboard.getTab("Arm Testing").add(new ArmTestCommand());
->>>>>>> 068e5e09dfaf4e1122fc115bda39bb8671234493
-    // Shuffleboard.getTab("Arm Testing").add(new ZeroPivotCommand());
-
-    configureBindings();
   }
-
-  private void configureBindings() {
-    
-  }
-
 }

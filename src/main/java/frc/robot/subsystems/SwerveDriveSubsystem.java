@@ -59,8 +59,9 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return Units.constrainDeg(gyro.getYaw()) * Constants.TAU / 360;
     }
 
+    //Don't know if this will work
     public double getBalanceAngle() {
-        return 0;
+        return Math.sqrt(getPitch()*getPitch() + getRoll()*getRoll());
     }
 
     //Convert to radians?
@@ -192,6 +193,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     //TODO: Add algorithm to check whether to use Pitch or Roll (Maybe averaging the values?)
     public double getChange(){
         return balanceController.calculate(getRoll());
+        //return balanceController.calculate(getBalanceAngle());
     }
 
     @Override

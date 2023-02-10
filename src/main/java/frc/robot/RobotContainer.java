@@ -26,7 +26,7 @@ public class RobotContainer {
     // SmartDashboard.putData(new CameraTestCommand());
     // SmartDashboard.putData(new BalanceTestCommand());
 
-    Shuffleboard.getTab("Arm Testing").add(new ArmTestCommand());
+    Tabs.armTab.add(new ArmTestCommand());
     // Shuffleboard.getTab("Arm Testing").add(new ZeroPivotCommand());
 
     configureBindings();

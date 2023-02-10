@@ -25,8 +25,10 @@ public class RobotContainer {
     // SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
     // SmartDashboard.putData(new CameraTestCommand());
     // SmartDashboard.putData(new BalanceTestCommand());
+    SmartDashboard.putData(new ZeroPivotCommand());
+    SmartDashboard.putData(new ArmTestCommand());
 
-    Shuffleboard.getTab("Arm Testing").add(new ArmTestCommand());
+    //Shuffleboard.getTab("Arm Testing").add(new ArmTestCommand());
     // Shuffleboard.getTab("Arm Testing").add(new ZeroPivotCommand());
 
     configureBindings();

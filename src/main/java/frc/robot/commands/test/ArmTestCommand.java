@@ -12,7 +12,7 @@ public class ArmTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        //ArmSubsystem.getInstance().zeroPivot();
+        ArmSubsystem.getInstance().zeroPivot();
 
         // Shuffleboard.getTab("Arm Testing");
         // armTab.add("Arm Speed", 0);
@@ -21,6 +21,7 @@ public class ArmTestCommand extends CommandBase{
 
         SmartDashboard.putNumber("Arm Speed", 0);
         SmartDashboard.putNumber("Pivot Speed", 0);
+        SmartDashboard.putNumber("Pivot Angle", 0);
     }
 
     //TODO: See if NU positive goes in the correct direction
@@ -33,24 +34,25 @@ public class ArmTestCommand extends CommandBase{
 
         // Do I need to put this into the tab? Or can I just do this?
         // double speed = armTab.add("Arm Speed", 0).getEntry().getDouble(0);
-        double speed = SmartDashboard.getNumber("Arm Speed", 0);
+        // double speed = SmartDashboard.getNumber("Arm Speed", 0);
+        // ArmSubsystem.getInstance().set(speed);
 
-        ArmSubsystem.getInstance().set(speed);
+        SmartDashboard.putNumber("Pivot NU 1", ArmSubsystem.getInstance().getPivotPos(1));
+        SmartDashboard.putNumber("Pivot NU 2", ArmSubsystem.getInstance().getPivotPos(2)); 
 
-        // armTab.add("Pivot NU 1", ArmSubsystem.getInstance().getPivotPos(1));
-        // armTab.add("Pivot NU 2", ArmSubsystem.getInstance().getPivotPos(2)); 
-
-        // armTab.add("Pivot Angle 1", ArmSubsystem.getInstance().getPivotAngleDeg(1));
-        // armTab.add("Pivot Angle 2", ArmSubsystem.getInstance().getPivotAngleDeg(2));
+        SmartDashboard.putNumber("Pivot Angle 1", ArmSubsystem.getInstance().getPivotAngleDeg(1));
+        SmartDashboard.putNumber("Pivot Angle 2", ArmSubsystem.getInstance().getPivotAngleDeg(2));
 
         //double pivotSpeed = armTab.add("Pivot Speed", 0).getEntry().getDouble(0);
-        double pivotSpeed = SmartDashboard.getNumber("Pivot Speed", 0);
-        if(Math.abs(pivotSpeed) > 0.3) pivotSpeed = 0.15;    //Don't want to accidentally kill someone
-        ArmSubsystem.getInstance().setPivot(pivotSpeed);
+        // double pivotSpeed = SmartDashboard.getNumber("Pivot Speed", 0);
+        // if(Math.abs(pivotSpeed) > 0.3) pivotSpeed = 0.15;    //Don't want to accidentally kill someone
+        // ArmSubsystem.getInstance().setPivot(pivotSpeed);
 
         // double angle = armTab.add("Pivot Angle", 0).getEntry().getDouble(0);
-        // angle *= Constants.TAU/360;
-        // ArmSubsystem.getInstance().pivot(angle);
+        double angle = SmartDashboard.getNumber("Pivot Angle", 0);
+        SmartDashboard.putNumber("Value", angle);
+        angle *= Constants.TAU/360;
+        ArmSubsystem.getInstance().pivot(angle);
     }
 
     @Override

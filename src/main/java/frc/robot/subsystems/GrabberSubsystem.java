@@ -52,12 +52,21 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Releases the game piece to score
     public void score(){
-        grabber1.set(-Constants.Grabber.INTAKE_SPEED);
+        grabber1.set(Constants.Grabber.SCORE_SPEED);
+    }
+
+    public void set(double speed){
+        grabber1.set(speed);
     }
 
     //Turns the orienter to specified angle
     public void orient(double angle){
         currentRotation = Units.Grabber.degToNU(angle);
+    }
+
+    public double getCurrent() {
+        // Average
+        return (grabber1.getOutputCurrent() + grabber2.getOutputCurrent()) / 2;
     }
 
     @Override

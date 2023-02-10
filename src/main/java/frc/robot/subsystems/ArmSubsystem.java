@@ -1,18 +1,16 @@
 package frc.robot.subsystems;
 
-import java.security.DigestInputStream;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.lib.math.Units;
 
-public class ArmSubsystem{
+public class ArmSubsystem extends SubsystemBase {
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
 
@@ -56,6 +54,8 @@ public class ArmSubsystem{
         pivot1.config_kP(0, Constants.Arm.PIVOT_KP_1);
         pivot1.config_kI(0, Constants.Arm.PIVOT_KI_1);
         pivot1.config_kD(0, Constants.Arm.PIVOT_KD_1);
+        pivot1.configMotionCruiseVelocity(10_000);
+        pivot1.configMotionAcceleration(5_000);
 
         pivot2.configFactoryDefault();
         pivot2.setNeutralMode(NeutralMode.Brake);
@@ -64,8 +64,9 @@ public class ArmSubsystem{
         pivot2.config_kP(0, Constants.Arm.PIVOT_KP_2);
         pivot2.config_kI(0, Constants.Arm.PIVOT_KI_2);
         pivot2.config_kD(0, Constants.Arm.PIVOT_KD_2);
+        pivot2.configMotionCruiseVelocity(10_000);
+        pivot2.configMotionAcceleration(5_000);
 
-        // TODO: CHECK INVERTS
         pivot1.setInverted(InvertType.InvertMotorOutput);
         pivot2.setInverted(InvertType.None);
 
@@ -74,7 +75,7 @@ public class ArmSubsystem{
     }
 
     public void zeroArm(){
-        //tromboneSlide.setSelectedSensorPosition(0);
+        tromboneSlide.setSelectedSensorPosition(0);
     }
 
     public void zeroPivot1(){
@@ -92,12 +93,12 @@ public class ArmSubsystem{
 
     //Returns arm to upright position
     public void reset(){
-
+        pivot(0);
     }
 
     //Extends arm to specified position in meters
     public void extend(double pos){
-       // tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
+       tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
     }
 
     //Basic Percent Output set
@@ -145,8 +146,15 @@ public class ArmSubsystem{
     }
 
     public double getPos(){
-        // return tromboneSlide.getSelectedSensorPosition();
-        return 0;
+        return tromboneSlide.getSelectedSensorPosition();
+    }
+
+    public double getStatorCurrent() {
+        return tromboneSlide.getStatorCurrent();
+    }
+    
+    public double getSupplyCurrent() {
+        return tromboneSlide.getSupplyCurrent();
     }
 
     //This is TEMPORARY

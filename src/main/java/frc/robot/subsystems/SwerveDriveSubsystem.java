@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import java.text.NumberFormat.Style;
-
 import com.ctre.phoenix.sensors.Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -10,7 +8,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -59,7 +56,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return ((gyro.getYaw() % 360 + 360) % 360 - 180) * Constants.TAU / 360;
+        return Units.constrainDeg(gyro.getYaw()) * Constants.TAU / 360;
     }
 
     public double getBalanceAngle() {
@@ -76,12 +73,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void set(JoystickValues joystickValues, double omega, boolean driftCorrection) {
-        SmartDashboard.putBoolean("running", false);
         if(driftCorrection) {
             if(omega == 0 && (joystickValues.x != 0 || joystickValues.y != 0)) {
                 short[] xyz = new short[3];
                 gyro.getBiasedAccelerometer(xyz);
-                SmartDashboard.putBoolean("running", true);
                 omega = driftController.calculate(xyz[0], omega * Constants.Swerve.DriftCorrection.MAX_ANGULAR_VELOCITY);
                 SmartDashboard.putNumber("omega", omega);
             }
@@ -212,7 +207,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
         for(SwerveModule module : modules) {
             SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
-            LogManager.appendToLog(Units.NUToMPS(module.getMoveVelocity()), "ActualState:/mod"+module.modNumber);
+            LogManager.appendToLog(Units.Drive.NUToMPS(module.getMoveVelocity()), "ActualState:/mod"+module.modNumber);
         }
 
     }

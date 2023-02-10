@@ -35,10 +35,10 @@ public class SwerveModule {
         this.AFF = AFF;
         this.modNumber = modNumber;
 
-        moveMotor = new TalonFX(movePort);
-        turnMotor = new TalonFX(turnPort);
+        moveMotor = new TalonFX(movePort, "drivet");    //Why is it called drivet?
+        turnMotor = new TalonFX(turnPort, "drivet");    //It has the DRIVE and PIVET!!
 
-        turnSensor = new CANCoder(sensorPort);
+        turnSensor = new CANCoder(sensorPort, "drivet");
 
         config();
         configOffset(offset); //degrees
@@ -74,8 +74,8 @@ public class SwerveModule {
         turnMotor.configMotionAcceleration(2*cruiseVelocity);
         
         //turnMotor.configFeedbackNotContinuous(true, 0);
+        turnMotor.setNeutralMode(NeutralMode.Brake);
 
-        turnMotor.setNeutralMode(NeutralMode.Coast);
         turnSensor.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
 
         //General Config
@@ -92,8 +92,7 @@ public class SwerveModule {
 
     public void configOffset(double offset){
         turnSensor.configMagnetOffset(offset);
-        //turnSensor.setPosition(turnSensor.getAbsolutePosition()%180);
-        turnMotor.setSelectedSensorPosition(Units.degToNU(turnSensor.getAbsolutePosition()));
+        turnMotor.setSelectedSensorPosition(Units.Drive.degToNU(turnSensor.getAbsolutePosition()));
     }
 
     public void zero(){
@@ -105,7 +104,7 @@ public class SwerveModule {
     }
 
     public void set(SwerveModuleState state){
-        set(Units.toPercentOutput(state.speedMetersPerSecond), state.angle.getRadians());
+        set(Units.Drive.toPercentOutput(state.speedMetersPerSecond), state.angle.getRadians());
     }
     
     //move input in percent, Turn input in radians
@@ -121,12 +120,12 @@ public class SwerveModule {
             return;
         }
         double currentPos =  turnMotor.getSelectedSensorPosition();
-        double lastTurn = Units.constrainDeg(Units.NUToDeg(currentPos));
+        double lastTurn = Units.constrainDeg(Units.Drive.NUToDeg(currentPos));
 
         double angle = findLowestAngle(turn, lastTurn);
         double angleChange = findAngleChange(angle, lastTurn);
         
-        double nextPos = currentPos + Units.degToNU(angleChange);
+        double nextPos = currentPos + Units.Drive.degToNU(angleChange);
 
         turnMotor.set(ControlMode.MotionMagic, nextPos);
         moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
@@ -135,7 +134,7 @@ public class SwerveModule {
     // MPS, Rotation 2D
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            Units.NUToM(movePosition),
+            Units.Drive.NUToM(movePosition),
             Rotation2d.fromRadians(moveMotor.getInverted() ?  Units.constrainRad(getAbsAngle()+Constants.TAU/2) : getAbsAngle())
         );
     }
@@ -152,7 +151,7 @@ public class SwerveModule {
             moveMotor.setInverted(InvertType.None);
             return potAngles[0];
         }
-        else{
+        else{ //If we want to go to the opposite of the desired angle, we have to tell the motor to move "backwards"
             moveMotor.setInverted(InvertType.InvertMotorOutput);
             return potAngles[1];
         } 
@@ -162,13 +161,16 @@ public class SwerveModule {
     public double[] potentialAngles(double angle){
         //Constrain the variable to desired domain
         angle = Units.constrainDeg(angle);
+
         //Figure out the opposite angle
         double oppositeAngle = angle + 180;
+
         //Constrain the opposite angle
         oppositeAngle = Units.constrainDeg(oppositeAngle);
+
         //Put them into a size 2 array
         double[] angles = {angle, oppositeAngle};
-        //return it
+
         return angles;
     }
 
@@ -200,7 +202,7 @@ public class SwerveModule {
 
     //returns angle in radians
     public double getAngle(){
-        return Units.NUToRad(turnMotor.getSelectedSensorPosition());
+        return Units.Drive.NUToRad(turnMotor.getSelectedSensorPosition());
     }
 
     //returns CANCoder angle in radians

@@ -12,6 +12,7 @@ public final class Constants {
 
   public static final class Misc {
     public static final int GYRO_PORT = 0;
+    public static final int CANDLE_PORT = 0;
   }
 
   public static final class Joystick {
@@ -20,6 +21,8 @@ public final class Constants {
 
     public static final double MOVE_DEAD_ZONE = 0.15;
     public static final double TURN_DEAD_ZONE = 0.1;
+
+    public static final double ANGLE_DEAD_ZONE = Constants.TAU / 12;
 
     public static final double MOVE_SENSITIVITY = 1.5;
     public static final double TURN_SENSITIVITY = 1;
@@ -33,15 +36,22 @@ public final class Constants {
     public static final double WIDTH = .548;
     public static final double LENGTH = .548;
     public static final double DIAGONAL = Math.sqrt(WIDTH*WIDTH + LENGTH*LENGTH)/2;
+
     public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
       new Translation2d(WIDTH/2, LENGTH/2),
       new Translation2d(-WIDTH/2, LENGTH/2),
       new Translation2d(-WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, -LENGTH/2)
     );
-    public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
+
+    //School applicable wheel radius
+    public static final double WHEELRADIUS = Units.inchesToMeters(1.87);
+
+    //WPI applicable wheel radius
+    // public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
     
-    public static final double MAX_NATIVE_VELOCITY = 22_000;  //Maximum velocity in NU/100ms
+    //Maximum velocity in NU/100ms
+    public static final double MAX_NATIVE_VELOCITY = 22_000;
 
     public static final int FRONT_RIGHT_TURN_PORT = 0;
     public static final int FRONT_LEFT_TURN_PORT = 1;
@@ -58,11 +68,11 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = -163.652; // -163.74, -163.301  -162.598
-    public static final double FRONT_LEFT_OFFSET_DEGREES = 160.652; // -300.234, -300.322  -109.863
-    public static final double BACK_LEFT_OFFSET_DEGREES = -41.869; // -219.287, -219.551  -37.705 -49.746
-    public static final double BACK_RIGHT_OFFSET_DEGREES = -339.633; // -339.521, -340.752, 341.104, 0-340.576, -341.104  21.904
-    //-105.645  -58.535
+    public static final double FRONT_RIGHT_OFFSET_DEGREES = -251.191;
+    public static final double FRONT_LEFT_OFFSET_DEGREES = 161.191;
+    public static final double BACK_LEFT_OFFSET_DEGREES = 15.82;
+    public static final double BACK_RIGHT_OFFSET_DEGREES = -309.199;
+
     public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
     public static final double BACK_LEFT_OFFSET_RADIANS = BACK_LEFT_OFFSET_DEGREES * Math.PI/180;
@@ -78,10 +88,10 @@ public final class Constants {
     public static final double MOVE_KI = 0.0;
     public static final double MOVE_KD = 0.02;
 
-    public static final double MOD0_AFF = 0.07; //0.06;
-    public static final double MOD1_AFF = 0.07; //0.063;
-    public static final double MOD2_AFF = 0.07; //0.06;
-    public static final double MOD3_AFF = 0.07; //0.07;
+    public static final double MOD0_AFF = 0.07;
+    public static final double MOD1_AFF = 0.07;
+    public static final double MOD2_AFF = 0.07;
+    public static final double MOD3_AFF = 0.07;
   
     public static final class Balance{
       public static final double K_P = 0.01;
@@ -96,14 +106,14 @@ public final class Constants {
       public static final double MAX_SPEED = 4; // m/s
       public static final double MAX_ACCELERATION = 2; // m/s^2
 
-      public static final double MAX_TURNING_SPEED = 1;
-      public static final double MAX_TURNING_ACCELERATION = 0.5;
+      public static final double MAX_TURNING_SPEED = 1; // r/s
+      public static final double MAX_TURNING_ACCELERATION = 0.5; // r/s^2
 
       public static final double P_X = 5;
-      public static final double D_X = 0.001; //0.00001;
-      public static final double P_Y = 5; //3.2;
-      public static final double D_Y = 0.001; //0;
-      public static final double P_THETA = 5; //0;
+      public static final double D_X = 0;
+      public static final double P_Y = 5;
+      public static final double D_Y = 0;
+      public static final double P_THETA = 5;
       public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(
       MAX_TURNING_SPEED,
       MAX_TURNING_ACCELERATION
@@ -119,25 +129,67 @@ public final class Constants {
     }
   }
 
-  public static final class Grabber{
+  public static final class Grabber {
     public static final int LEFT_GRABBER_PORT = 0;
     public static final int RIGHT_GRABBER_PORT = 0;
 
     public static final int WRIST_PORT = 0;
+
+    // TODO: FILL IN PID LOOP VALUES, CHANGE SPEED, AND CALCULATE ANGLES
+    public static final double ORIENTER_KF = 0.0;
+    public static final double ORIENTER_KP = 0.0;
+    public static final double ORIENTER_KI = 0.0;
+    public static final double ORIENTER_KD = 0.0;
+
+    public static final double INTAKE_SPEED = 0.4;
+    public static final double TURN_SPEED = 0.4;
   }
 
   public static final class Arm {
-    public static final double GEARRATIO = 0;
+    public static final double PIVOT_GEARRATIO = 192/1; //192 rotations of the motor = 1 rotation of the sprocket
+    public static final double EXTENSION_GEARRATION = 5/1;  //5 rotations of the motor = 1 rotation of the pulley
+    public static final double PITCH_DIAMETER = Units.inchesToMeters(1.12);
+    // One rotation of pulley = 3.5437
 
-    public static final int PIVOT_PORT_1 = 0;
-    public static final int PIVOT_PORT_2 = 0;
+    public static final int PIVOT_PORT_1 = 13;
+    public static final int PIVOT_PORT_2 = 15;
 
-    public static final int EXTEND_PORT = 0;
+    public static final int ARM_PORT = 10;
+
+    public static final int EXTEND_SWITCH_PORT = 0;
+    public static final int RETRACT_SWITCH_PORT = 0;
+
+    public static final double ARM_KF = 0;
+    public static final double ARM_KP = 0;
+    public static final double ARM_KI = 0;
+    public static final double ARM_KD = 0;
+
+    public static final double ARM_CRUISE_VELOCITY = 0;
+    public static final double ARM_ACCELERATION = 0;
+
+    public static final double PIVOT_KF_1 = 0;
+    public static final double PIVOT_KP_1 = 0;
+    public static final double PIVOT_KI_1 = 0;
+    public static final double PIVOT_KD_1 = 0;
+
+    public static final double PIVOT_KF_2 = 0;
+    public static final double PIVOT_KP_2 = 0;
+    public static final double PIVOT_KI_2 = 0;
+    public static final double PIVOT_KD_2 = 0;
   }
 
   public static final class Field {
     public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
     public static final double K_CARPET = 0.04; // should not be higher than 0.5
+
+    public enum TargetLevel {
+      HIGH,
+      MID,
+      LOW
+    }
+
+    public static final double HIGH_TAPE_CAMERA_HEIGHT = 0;
+    public static final double MID_TAPE_CAMERA_HEIGHT = 0;
   }
 
   public static final class Limelight {
@@ -147,23 +199,3 @@ public final class Constants {
     public static final int DETECTION_PIPELINE = 3;
   }
 }
-
-
-/*
- * Motors:
- * 2 Neo550 for grabber (Spark max)
- * 1 Neo550 for wrist (Spark max)
- * 1 Falcon for extending arm
- * 2 Falcons for pivoting arm
- * 8 Falcons for swerve
- * 
- * Sensors:
- * 2 Limit switches on extending arm
- * Pigeon
- * 
- * Cameras:
- * Game piece sensing
- * 
- * LEDs:
- * CANdle
- */

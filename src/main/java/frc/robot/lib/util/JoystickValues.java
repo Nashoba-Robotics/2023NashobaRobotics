@@ -71,7 +71,7 @@ public class JoystickValues {
 
         if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) y = 0;
         angle-=Constants.TAU/4;
-        Units.boundTauHalfs(angle);
+        Units.constrainRad(angle);
         if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) x = 0;
         
         return this;

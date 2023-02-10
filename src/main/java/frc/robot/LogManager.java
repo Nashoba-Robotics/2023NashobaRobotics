@@ -109,7 +109,7 @@ class LogEntry {
     }
 
     public void appendToLog(Object valueToAppend) {
-        // Sets the data in it's correct type
+        // Sets the data in its correct type
         if (valueToAppend instanceof Boolean && thisEntryType == LogType.BOOLEAN) {
             booleanLog.append((boolean) valueToAppend);
         }

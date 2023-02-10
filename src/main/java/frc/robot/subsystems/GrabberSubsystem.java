@@ -29,6 +29,7 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber2.setIdleMode(IdleMode.kBrake);
         grabber2.follow(grabber1);
 
+
         currentRotation = orienter.getEncoder().getPosition();
 
         orienterController = orienter.getPIDController();
@@ -76,6 +77,11 @@ public class GrabberSubsystem extends SubsystemBase{
     public double getCurrent() {
         // Average
         return (grabber1.getOutputCurrent() + grabber2.getOutputCurrent()) / 2;
+    }
+
+    public void stop() {
+        grabber1.set(0);
+        orienter.set(0);
     }
 
     @Override

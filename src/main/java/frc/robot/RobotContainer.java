@@ -39,8 +39,5 @@ public class RobotContainer {
     SmartDashboard.putData(new ManualExtensionCommand());
     SmartDashboard.putData(new IntakeTestCommand());
     SmartDashboard.putData(new IntakeCommand());
-
-
-    Tabs.Arm.add(new ArmTestCommand());
   }
 }

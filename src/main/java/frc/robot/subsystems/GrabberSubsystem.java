@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
-import frc.robot.lib.math.Units;
+import frc.robot.lib.math.NRUnits;
 
 public class GrabberSubsystem extends SubsystemBase{
     private CANSparkMax grabber1;    //I don't know if this is actually how to make a SparkMax instance
@@ -74,7 +74,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Turns the orienter to specified angle in radians
     public void orient(double angle){
-        orienterController.setReference(Units.Grabber.radToNU(angle), ControlType.kPosition);
+        orienterController.setReference(NRUnits.Grabber.radToNU(angle), ControlType.kPosition);
     }
 
     public void orientPos(double NU) {
@@ -91,7 +91,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Reads the angle in radians of the orienter
     public double getOrientation(){
-        return Units.Grabber.NUtoRad(orientEncoder.getPosition());
+        return NRUnits.Grabber.NUtoRad(orientEncoder.getPosition());
     }
 
     public double getPosition() {

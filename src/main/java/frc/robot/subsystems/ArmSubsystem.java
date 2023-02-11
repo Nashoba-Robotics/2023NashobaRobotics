@@ -9,7 +9,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
-import frc.robot.lib.math.Units;
+import frc.robot.lib.math.NRUnits;
 
 public class ArmSubsystem extends SubsystemBase {
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
@@ -120,7 +120,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //Extends arm to specified position in meters
     public void extend(double pos){
-       tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
+       tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Arm.mToNU(pos));
     }
 
     //Basic Percent Output set
@@ -145,7 +145,7 @@ public class ArmSubsystem extends SubsystemBase {
     //Pivots arm to specified angle (radians) (0 = upright)
     public void pivot(double angle){
         //How does motion magic work with 2 motors?
-        angle = Units.Arm.radToNU(angle);
+        angle = NRUnits.Arm.radToNU(angle);
         pivot1.set(ControlMode.MotionMagic,angle);
         pivot2.set(ControlMode.MotionMagic, angle);
     }
@@ -164,7 +164,7 @@ public class ArmSubsystem extends SubsystemBase {
     public double getLength(){
         double pos = getPos();
 
-        return Units.Arm.NUToM(pos);
+        return NRUnits.Arm.NUToM(pos);
     }
 
     public double getPos(){
@@ -192,7 +192,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //This is also TEMPORARY
     public double getPivotAngle(int n){
-        return Units.Arm.NUToRad(getPivotPos(n));
+        return NRUnits.Arm.NUToRad(getPivotPos(n));
     }
 
     //This is TEMPORARY as well

@@ -2,7 +2,7 @@ package frc.robot.lib.math;
 
 import frc.robot.Constants;
 
-public class Units {
+public class NRUnits {
 
     // Constrains the given angle to 180 DEGREES 
     public static double constrainDeg(double angle){

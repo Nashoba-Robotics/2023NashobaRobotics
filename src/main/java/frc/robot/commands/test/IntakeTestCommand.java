@@ -47,7 +47,7 @@ public class IntakeTestCommand extends CommandBase{
     @Override
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().stop();
-        ArmSubsystem.getInstance().setPivot(0);
+        ArmSubsystem.getInstance().stop();
     }
 
     @Override

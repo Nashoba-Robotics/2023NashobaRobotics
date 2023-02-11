@@ -34,8 +34,8 @@ public final class Constants {
 
     //2.625
     //meters
-    public static final double WIDTH = .548;
-    public static final double LENGTH = .548;
+    public static final double WIDTH = Units.inchesToMeters(26 - 2.625*2);
+    public static final double LENGTH = Units.inchesToMeters(26 - 2.625*2);
     public static final double DIAGONAL = Math.sqrt(WIDTH*WIDTH + LENGTH*LENGTH)/2;
 
     public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
@@ -157,7 +157,6 @@ public final class Constants {
 
   public static final class Arm {
     public static final double PIVOT_GEARRATIO = 192/1; //192 rotations of the motor = 1 rotation of the sprocket
-    //4*4*4*72/22
     public static final double EXTENSION_GEARRATION = 5/1;  //5 rotations of the motor = 1 rotation of the pulley
     public static final double PITCH_DIAMETER = Units.inchesToMeters(1.12);
     // One rotation of pulley = 3.5437
@@ -218,5 +217,11 @@ public final class Constants {
     public static final int APRIL_TAG_PIPELINE = 1;
     public static final int CLASSIFICATION_PIPELINE = 2;
     public static final int DETECTION_PIPELINE = 3;
+  }
+
+  public static final class Logging {
+    public static final boolean ARM = false;
+    public static final boolean GRABBER = false;
+    public static final boolean SWERVE = false;
   }
 }

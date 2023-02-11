@@ -226,19 +226,21 @@ public class ArmSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //Extender
-        LogManager.appendToLog(tromboneSlide.getSelectedSensorPosition(), "Arm:/Extender/Position");
-        LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
-        LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
-        
-        //Pivot1
-        LogManager.appendToLog(pivot1.getSelectedSensorPosition(), "Arm:/Pivot1/Position");
-        LogManager.appendToLog(pivot1.getStatorCurrent(), "Arm:/Pivot1/Stator");
-        LogManager.appendToLog(pivot1.getSupplyCurrent(), "Arm:/Pivot1/Supply");
+        if(Constants.Logging.ARM) {
+            //Extender
+            LogManager.appendToLog(tromboneSlide.getSelectedSensorPosition(), "Arm:/Extender/Position");
+            LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
+            LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
+            
+            //Pivot1
+            LogManager.appendToLog(pivot1.getSelectedSensorPosition(), "Arm:/Pivot1/Position");
+            LogManager.appendToLog(pivot1.getStatorCurrent(), "Arm:/Pivot1/Stator");
+            LogManager.appendToLog(pivot1.getSupplyCurrent(), "Arm:/Pivot1/Supply");
 
-        //Pivot2
-        LogManager.appendToLog(pivot2.getSelectedSensorPosition(), "Arm:/Pivot2/Position");
-        LogManager.appendToLog(pivot2.getStatorCurrent(), "Arm:/Pivot2/Stator");
-        LogManager.appendToLog(pivot2.getSupplyCurrent(), "Arm:/Pivot2/Supply");
+            //Pivot2
+            LogManager.appendToLog(pivot2.getSelectedSensorPosition(), "Arm:/Pivot2/Position");
+            LogManager.appendToLog(pivot2.getStatorCurrent(), "Arm:/Pivot2/Stator");
+            LogManager.appendToLog(pivot2.getSupplyCurrent(), "Arm:/Pivot2/Supply");
+        }
     }
 }

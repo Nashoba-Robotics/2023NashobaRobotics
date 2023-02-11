@@ -26,8 +26,6 @@ public class TestGrabberCommand extends CommandBase {
         //GrabberSubsystem.getInstance().setOrientSpeed(speed);
         GrabberSubsystem.getInstance().orient(speed);
         SmartDashboard.putNumber("Wrist Pos", GrabberSubsystem.getInstance().getOrientPos());
-        SmartDashboard.putNumber("Num", speed);
-        SmartDashboard.putNumber("Hello", 15);
     }
 
     @Override

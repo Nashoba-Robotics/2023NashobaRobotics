@@ -19,8 +19,6 @@ public class GrabberSubsystem extends SubsystemBase{
     private SparkMaxPIDController orienterController;
     private RelativeEncoder orientEncoder;
 
-    private double currentRotation = 0;
-
     public GrabberSubsystem(){
         grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
         grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushless);
@@ -30,17 +28,13 @@ public class GrabberSubsystem extends SubsystemBase{
 
         grabber1.setIdleMode(IdleMode.kBrake);
         grabber2.setIdleMode(IdleMode.kBrake);
-        grabber2.follow(grabber1);
-
-
-        currentRotation = orienter.getEncoder().getPosition();
 
         orienterController = orienter.getPIDController();
         orienterController.setFF(Constants.Grabber.ORIENTER_KF);
         orienterController.setP(Constants.Grabber.ORIENTER_KP);
         orienterController.setI(Constants.Grabber.ORIENTER_KI);
         orienterController.setD(Constants.Grabber.ORIENTER_KD);
-        orienterController.setOutputRange(-Constants.Grabber.TURN_SPEED, Constants.Grabber.TURN_SPEED);
+        orienterController.setOutputRange(-Constants.Grabber.MAX_TURN_SPEED, Constants.Grabber.MAX_TURN_SPEED);
     }
 
     private static GrabberSubsystem singleton;
@@ -59,8 +53,21 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber1.set(Constants.Grabber.SCORE_SPEED);
     }
 
-    public void set(double speed){
+    public void setLeft(double speed){
         grabber1.set(speed);
+    }
+
+    public void setRight(double speed){
+        grabber2.set(speed);
+    }
+
+    public void set(double leftSpeed, double rightSpeed){
+        setLeft(leftSpeed);
+        setRight(rightSpeed);
+    }
+
+    public void set(double speed){
+        set(speed, speed);
     }
 
     //Turns the orienter to specified angle in radians
@@ -78,7 +85,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Reads the angle in radians of the orienter
     public double getOrientation(){
-        return Units.constrainRad(Units.Grabber.NUtoRad(grabber1.getEncoder().getPosition()));
+        return Units.constrainRad(Units.Grabber.NUtoRad(orientEncoder.getPosition()));
     }
 
     public void zeroWrist() {
@@ -94,9 +101,4 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber1.set(0);
         orienter.set(0);
     }
-
-    // @Override
-    // public void periodic() {
-    //     orienterController.setReference(currentRotation, ControlType.kPosition);
-    // }
 }

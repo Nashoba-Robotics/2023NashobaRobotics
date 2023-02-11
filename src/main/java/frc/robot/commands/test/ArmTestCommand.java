@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Tabs;
+import frc.robot.Constants.Arm;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class ArmTestCommand extends CommandBase{
@@ -71,7 +72,19 @@ public class ArmTestCommand extends CommandBase{
 
         double pos = SmartDashboard.getNumber("Arm Set Pos", 0);    //meters
         ArmSubsystem.getInstance().extend(pos);
-        SmartDashboard.putNumber("N", pos);
+
+        double angle = SmartDashboard.getNumber("Arm Angle", 0);    //Degrees
+        angle *= Constants.TAU/360;
+        ArmSubsystem.getInstance().pivot(angle);
+
+        SmartDashboard.putNumber("Extend NU", ArmSubsystem.getInstance().getPos());
+        SmartDashboard.putNumber("Pivot NU", ArmSubsystem.getInstance().getPivotPos(1));
+
+        SmartDashboard.putNumber("Extend Stator", ArmSubsystem.getInstance().getArmStatorCurrent());
+        SmartDashboard.putNumber("Extend Supply", ArmSubsystem.getInstance().getArmSupplyCurrent());
+
+        SmartDashboard.putNumber("Pivot Stator", ArmSubsystem.getInstance().getPivotStator());
+        SmartDashboard.putNumber("Pivot Supply", ArmSubsystem.getInstance().getPivotSupply());
     }
 
     @Override

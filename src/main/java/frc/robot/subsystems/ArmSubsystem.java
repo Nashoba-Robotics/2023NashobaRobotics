@@ -96,6 +96,11 @@ public class ArmSubsystem extends SubsystemBase {
         pivot(0);
     }
 
+    public void stop(){
+        set(0);
+        setPivot(0);
+    }
+
     //Extends arm to specified position in meters
     public void extend(double pos){
        tromboneSlide.set(ControlMode.MotionMagic, Units.Arm.mToNU(pos));
@@ -149,11 +154,11 @@ public class ArmSubsystem extends SubsystemBase {
         return tromboneSlide.getSelectedSensorPosition();
     }
 
-    public double getStatorCurrent() {
+    public double getArmStatorCurrent() {
         return tromboneSlide.getStatorCurrent();
     }
     
-    public double getSupplyCurrent() {
+    public double getArmSupplyCurrent() {
         return tromboneSlide.getSupplyCurrent();
     }
 

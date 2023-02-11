@@ -143,7 +143,7 @@ public final class Constants {
 
     public static final double INTAKE_SPEED = -0.3;
     public static final double SCORE_SPEED = 0.3;
-    public static final double TURN_SPEED = 0.4;
+    public static final double MAX_TURN_SPEED = 0.4;
     public static final double HIGH_ANGLE = 0;
     public static final double MID_ANGLE = 0;
     public static final double LOW_ANGLE = 0;

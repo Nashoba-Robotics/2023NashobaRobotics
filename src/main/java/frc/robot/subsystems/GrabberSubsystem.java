@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -16,14 +17,16 @@ public class GrabberSubsystem extends SubsystemBase{
 
     private CANSparkMax orienter;
     private SparkMaxPIDController orienterController;
+    private RelativeEncoder orientEncoder;
 
     private double currentRotation = 0;
 
     public GrabberSubsystem(){
-        grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushed); //CHANGE: I don't know if the motors will be brushed or brushless
-        grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushed);
+        grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
+        grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushless);
 
-        orienter = new CANSparkMax(Constants.Grabber.WRIST_PORT, MotorType.kBrushed);
+        orienter = new CANSparkMax(Constants.Grabber.WRIST_PORT, MotorType.kBrushless);
+        orientEncoder = orienter.getEncoder();
 
         grabber1.setIdleMode(IdleMode.kBrake);
         grabber2.setIdleMode(IdleMode.kBrake);
@@ -62,7 +65,15 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Turns the orienter to specified angle in radians
     public void orient(double angle){
-        currentRotation = Units.Grabber.radToNU(angle);
+        orienterController.setReference(Units.Grabber.radToNU(angle), ControlType.kPosition);
+    }
+
+    public void setOrientSpeed(double speed){
+        orienter.set(speed);
+    }
+
+    public double getOrientPos(){
+        return orientEncoder.getPosition();
     }
 
     //Reads the angle in radians of the orienter
@@ -71,7 +82,7 @@ public class GrabberSubsystem extends SubsystemBase{
     }
 
     public void zeroWrist() {
-        orienter.getEncoder().setPosition(0);
+        orientEncoder.setPosition(0);
     }
 
     public double getCurrent() {
@@ -84,8 +95,8 @@ public class GrabberSubsystem extends SubsystemBase{
         orienter.set(0);
     }
 
-    @Override
-    public void periodic() {
-        orienterController.setReference(currentRotation, ControlType.kPosition);
-    }
+    // @Override
+    // public void periodic() {
+    //     orienterController.setReference(currentRotation, ControlType.kPosition);
+    // }
 }

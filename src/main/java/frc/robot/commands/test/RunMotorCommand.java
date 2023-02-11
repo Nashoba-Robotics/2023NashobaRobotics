@@ -13,31 +13,31 @@ public class RunMotorCommand extends CommandBase {
     
     CANSparkMax motor;
 
-    public RunMotorCommand() {
-        motor = new CANSparkMax(13, MotorType.kBrushless);
+    // public RunMotorCommand() {
+    //     //motor = new CANSparkMax(13, MotorType.kBrushless);
         
-        motor.setIdleMode(IdleMode.kBrake);
-    }
+    //     motor.setIdleMode(IdleMode.kBrake);
+    // }
 
-    @Override
-    public void initialize() {
-        SmartDashboard.putNumber("Motor Speed", 0);
-    }
+    // @Override
+    // public void initialize() {
+    //     SmartDashboard.putNumber("Motor Speed", 0);
+    // }
 
-    @Override
-    public void execute() {
-        double speed = SmartDashboard.getNumber("Motor Speed", 0);
-        motor.set(speed > 0.5 ? 0.5 : speed);
-    }
+    // @Override
+    // public void execute() {
+    //     double speed = SmartDashboard.getNumber("Motor Speed", 0);
+    //     motor.set(speed > 0.5 ? 0.5 : speed);
+    // }
 
-    @Override
-    public void end(boolean interrupted) {
-        motor.set(0);
-    }
+    // @Override
+    // public void end(boolean interrupted) {
+    //     motor.set(0);
+    // }
 
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     return false;
+    // }
 
 }

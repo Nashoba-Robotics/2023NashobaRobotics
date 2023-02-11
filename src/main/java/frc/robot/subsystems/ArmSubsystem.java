@@ -37,15 +37,15 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void config(){
         tromboneSlide.configFactoryDefault();
-        // tromboneSlide.setNeutralMode(NeutralMode.Brake);
-        // tromboneSlide.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        // tromboneSlide.config_kF(0, Constants.Arm.ARM_KF);
-        // tromboneSlide.config_kP(0, Constants.Arm.ARM_KP);
-        // tromboneSlide.config_kI(0, Constants.Arm.ARM_KI);
-        // tromboneSlide.config_kD(0, Constants.Arm.ARM_KD);
+        tromboneSlide.setNeutralMode(NeutralMode.Brake);
+        tromboneSlide.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        tromboneSlide.config_kF(0, Constants.Arm.ARM_KF);
+        tromboneSlide.config_kP(0, Constants.Arm.ARM_KP);
+        tromboneSlide.config_kI(0, Constants.Arm.ARM_KI);
+        tromboneSlide.config_kD(0, Constants.Arm.ARM_KD);
 
-        // tromboneSlide.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
-        // tromboneSlide.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        tromboneSlide.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        tromboneSlide.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
 
         pivot1.configFactoryDefault();
         pivot1.setNeutralMode(NeutralMode.Brake);
@@ -54,8 +54,8 @@ public class ArmSubsystem extends SubsystemBase {
         pivot1.config_kP(0, Constants.Arm.PIVOT_KP_1);
         pivot1.config_kI(0, Constants.Arm.PIVOT_KI_1);
         pivot1.config_kD(0, Constants.Arm.PIVOT_KD_1);
-        pivot1.configMotionCruiseVelocity(10_000);
-        pivot1.configMotionAcceleration(5_000);
+        pivot1.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
+        pivot1.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
 
         pivot2.configFactoryDefault();
         pivot2.setNeutralMode(NeutralMode.Brake);
@@ -64,8 +64,8 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.config_kP(0, Constants.Arm.PIVOT_KP_2);
         pivot2.config_kI(0, Constants.Arm.PIVOT_KI_2);
         pivot2.config_kD(0, Constants.Arm.PIVOT_KD_2);
-        pivot2.configMotionCruiseVelocity(10_000);
-        pivot2.configMotionAcceleration(5_000);
+        pivot2.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
+        pivot2.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
 
         pivot1.setInverted(InvertType.InvertMotorOutput);
         pivot2.setInverted(InvertType.None);

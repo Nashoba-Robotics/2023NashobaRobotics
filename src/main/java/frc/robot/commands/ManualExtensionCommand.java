@@ -9,7 +9,7 @@ public class ManualExtensionCommand extends CommandBase {
     Joystick extendJoystick;
 
     public ManualExtensionCommand() {
-        extendJoystick = new Joystick(2);
+        extendJoystick = new Joystick(5);
         addRequirements(ArmSubsystem.getInstance());
     }
 
@@ -20,7 +20,9 @@ public class ManualExtensionCommand extends CommandBase {
 
     @Override
     public void execute() {
-        ArmSubsystem.getInstance().set(-extendJoystick.getY());
+        double y = extendJoystick.getX();
+        y = Math.abs(y) < 0.1 ? 0 : (y-0.1)/0.9;
+        ArmSubsystem.getInstance().set(Math.abs(y)>0.3 ? 0 : -y);
         SmartDashboard.putNumber("Stator Current", ArmSubsystem.getInstance().getStatorCurrent());
         SmartDashboard.putNumber("Supply Current", ArmSubsystem.getInstance().getSupplyCurrent());
         SmartDashboard.putNumber("Extend NU", ArmSubsystem.getInstance().getPos());

@@ -130,14 +130,14 @@ public final class Constants {
   }
 
   public static final class Grabber {
-    public static final int LEFT_GRABBER_PORT = 0;
-    public static final int RIGHT_GRABBER_PORT = 0;
+    public static final int LEFT_GRABBER_PORT = 13;
+    public static final int RIGHT_GRABBER_PORT = 12;
 
-    public static final int WRIST_PORT = 0;
+    public static final int WRIST_PORT = 11;
 
     // TODO: FILL IN PID LOOP VALUES, CHANGE SPEED, AND CALCULATE ANGLES
-    public static final double ORIENTER_KF = 0.0;
-    public static final double ORIENTER_KP = 0.0;
+    public static final double ORIENTER_KF = 0.03;
+    public static final double ORIENTER_KP = 0.2;
     public static final double ORIENTER_KI = 0.0;
     public static final double ORIENTER_KD = 0.0;
 
@@ -166,13 +166,16 @@ public final class Constants {
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
 
-    public static final double ARM_KF = 0;
-    public static final double ARM_KP = 0;
+    public static final double ARM_KF = 0.047;
+    public static final double ARM_KP = 0.2;
     public static final double ARM_KI = 0;
     public static final double ARM_KD = 0;
 
     public static final double ARM_CRUISE_VELOCITY = 10_000;
-    public static final double ARM_ACCELERATION = 10_000;
+    public static final double ARM_ACCELERATION = 2_000;
+
+    public static final double PIVOT_CRUISE_VELOCITY = 10_000;
+    public static final double PIVOT_ACCELERATION = 5_000;
 
     public static final double PIVOT_KF_1 = 0.047;
     public static final double PIVOT_KP_1 = 0.2;

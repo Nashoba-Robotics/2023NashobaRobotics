@@ -10,10 +10,14 @@ import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 
 public class ArmTestCommand extends CommandBase{
-    GenericEntry armSpeed = Tabs.armTab.add("Arm Speed", 0).getEntry();
-    GenericEntry armPos = Tabs.armTab.add("Arm Pos", 0).getEntry();
+   // GenericEntry armSpeed = Tabs.Arm.add("Arm Speed", 0).getEntry();
+    // GenericEntry armPos = Tabs.Arm.add("Arm Pos", 0).getEntry();
 
-    GenericEntry pivotSpeed = Tabs.armTab.add("Pivot Angle", 0).getEntry();
+    // GenericEntry pivotSpeed = Tabs.Arm.add("Pivot Angle", 0).getEntry();
+    // GenericEntry armNU = Tabs.Arm.add("Arm NU", 0).getEntry();
+    // GenericEntry armLen = Tabs.Arm.add("Arm Len", 0).getEntry();
+    // GenericEntry armStator = Tabs.Arm.add("Extend Stator", 0).getEntry();
+    // GenericEntry armSupply = Tabs.Arm.add("Extend Supply", 0).getEntry();
 
     @Override
     public void initialize() {
@@ -26,27 +30,32 @@ public class ArmTestCommand extends CommandBase{
 
         // SmartDashboard.putNumber("Arm Speed", 0);
         // SmartDashboard.putNumber("Pivot Speed", 0);
+        ArmSubsystem.getInstance().zeroArm();
+        SmartDashboard.putNumber("Arm Set Pos", 0);
     }
 
     //TODO: See if NU positive goes in the correct direction
     @Override
     public void execute() {
         // TODO: Try .addPersistent()
-        Tabs.armTab.add("Arm NU", ArmSubsystem.getInstance().getPos());
-        Tabs.armTab.add("Arm Len", ArmSubsystem.getInstance().getLength());
+        // armNU.setDouble(ArmSubsystem.getInstance().getPos());
+        // armLen.setDouble( ArmSubsystem.getInstance().getLength());
+        // armStator.setDouble(ArmSubsystem.getInstance().getStatorCurrent());
+        // armSupply.setDouble(ArmSubsystem.getInstance().getSupplyCurrent());
         //armTab.add("Limit Switch Hit?", ArmSubsystem.getInstance().extended());
 
-        // Do I need to put this into the tab? Or can I just do this?
-        double speed = armSpeed.getDouble(0);
+        //double speed = armSpeed.getDouble(0);
         //double speed = SmartDashboard.getNumber("Arm Speed", 0);
+        //ArmSubsystem.getInstance().set(speed);
 
-        ArmSubsystem.getInstance().set(speed);
+        // double pos = armPos.getDouble(0);
+        // ArmSubsystem.getInstance().extend(pos); // In meters
 
-        Tabs.armTab.add("Pivot NU 1", ArmSubsystem.getInstance().getPivotPos(1));
-        Tabs.armTab.add("Pivot NU 2", ArmSubsystem.getInstance().getPivotPos(2)); 
+        // Tabs.Arm.add("Pivot NU 1", ArmSubsystem.getInstance().getPivotPos(1));
+        // Tabs.Arm.add("Pivot NU 2", ArmSubsystem.getInstance().getPivotPos(2)); 
 
-        Tabs.armTab.add("Avg Stator Current", ArmSubsystem.getInstance().getPivotStator());
-        Tabs.armTab.add("Avg Supply Current", ArmSubsystem.getInstance().getPivotSupply());
+        // Tabs.Arm.add("Avg Stator Current", ArmSubsystem.getInstance().getPivotStator());
+        // Tabs.Arm.add("Avg Supply Current", ArmSubsystem.getInstance().getPivotSupply());
 
         // armTab.add("Pivot Angle 1", ArmSubsystem.getInstance().getPivotAngleDeg(1));
         // armTab.add("Pivot Angle 2", ArmSubsystem.getInstance().getPivotAngleDeg(2));
@@ -56,9 +65,13 @@ public class ArmTestCommand extends CommandBase{
         // if(Math.abs(pivotSpeed) > 0.3) pivotSpeed = 0.15;    //Don't want to accidentally kill someone
         // ArmSubsystem.getInstance().setPivot(pivotSpeed);
 
-        double angle = pivotSpeed.getDouble(0);
-        angle *= Constants.TAU/360;
-        ArmSubsystem.getInstance().pivot(angle);
+        // double angle = pivotSpeed.getDouble(0);
+        // angle *= Constants.TAU/360;
+        // ArmSubsystem.getInstance().pivot(angle);
+
+        double pos = SmartDashboard.getNumber("Arm Set Pos", 0);    //meters
+        ArmSubsystem.getInstance().extend(pos);
+        SmartDashboard.putNumber("N", pos);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LogManager;
 import frc.robot.lib.math.Units;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -67,8 +68,24 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
         pivot2.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
 
-        pivot1.setInverted(InvertType.InvertMotorOutput);
-        pivot2.setInverted(InvertType.None);
+        pivot1.setInverted(InvertType.None);
+        pivot2.setInverted(InvertType.InvertMotorOutput);
+
+        pivot1.configForwardSoftLimitEnable(true);
+        pivot1.configForwardSoftLimitThreshold(50_000);
+        // pivot1.configForwardSoftLimitThreshold(131_000);
+
+        pivot1.configReverseSoftLimitEnable(true);
+        pivot1.configReverseSoftLimitThreshold(-50_000);
+        // pivot1.configReverseSoftLimitThreshold(-131_000);
+
+        pivot2.configForwardSoftLimitEnable(true);
+        pivot2.configForwardSoftLimitThreshold(50_000);
+        // pivot2.configForwardSoftLimitThreshold(131_000);
+
+        pivot2.configReverseSoftLimitEnable(true);
+        pivot2.configReverseSoftLimitThreshold(-50_000);
+        // pivot2.configReverseSoftLimitThreshold(-131_000);
 
         //Positive is extending out
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
@@ -138,9 +155,17 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.set(ControlMode.PercentOutput, speed);
     }
 
+    public void holdPivot(){
+        double pivotPos1 = getPivotPos(1);
+        pivot1.set(ControlMode.MotionMagic, pivotPos1);
+
+        double pivotPos2 = getPivotPos(2);
+        pivot2.set(ControlMode.MotionMagic, pivotPos2);
+    }
+
     //Returns the angle of the arm
     public double getAngle(){
-        return 0;
+        return (getPivotAngle(1) + getPivotAngle(2))/2;
     }
 
     //Returns the extension of the arm in meters
@@ -205,5 +230,25 @@ public class ArmSubsystem extends SubsystemBase {
 
     public double getPivotSupply(){
         return (getStatorCurrent1()+getSupplyCurrent2())/2;
+    }
+
+    @Override
+    public void periodic() {
+        if(Constants.Logging.ARM) {
+            //Extender
+            LogManager.appendToLog(tromboneSlide.getSelectedSensorPosition(), "Arm:/Extender/Position");
+            LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
+            LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
+            
+            //Pivot1
+            LogManager.appendToLog(pivot1.getSelectedSensorPosition(), "Arm:/Pivot1/Position");
+            LogManager.appendToLog(pivot1.getStatorCurrent(), "Arm:/Pivot1/Stator");
+            LogManager.appendToLog(pivot1.getSupplyCurrent(), "Arm:/Pivot1/Supply");
+
+            //Pivot2
+            LogManager.appendToLog(pivot2.getSelectedSensorPosition(), "Arm:/Pivot2/Position");
+            LogManager.appendToLog(pivot2.getStatorCurrent(), "Arm:/Pivot2/Stator");
+            LogManager.appendToLog(pivot2.getSupplyCurrent(), "Arm:/Pivot2/Supply");
+        }
     }
 }

@@ -2,11 +2,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
 public class IntakeCommand extends CommandBase {
-    double armAngle = 0;
+    double armAngle = 112 * Constants.TAU/360;
+    double wristNU = 8;
     double wristAngle = 0;
 
     public IntakeCommand(double armAngle, double wristAngle) {
@@ -16,12 +18,17 @@ public class IntakeCommand extends CommandBase {
         this.wristAngle = wristAngle;
     }
 
+    public IntakeCommand(){
+        addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
+    }
+
     @Override
     public void initialize() {
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extend(0);
         ArmSubsystem.getInstance().pivot(armAngle);
-        GrabberSubsystem.getInstance().orient(wristAngle);
+        GrabberSubsystem.getInstance().orientPos(wristNU);
+        //GrabberSubsystem.getInstance().orient(wristAngle);
     }
 
     @Override

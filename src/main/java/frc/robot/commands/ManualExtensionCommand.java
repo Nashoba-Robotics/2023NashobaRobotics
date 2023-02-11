@@ -17,6 +17,7 @@ public class ManualExtensionCommand extends CommandBase {
     @Override
     public void initialize() {
         ArmSubsystem.getInstance().set(0);
+        ArmSubsystem.getInstance().holdPivot();
     }
 
     @Override

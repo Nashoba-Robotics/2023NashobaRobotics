@@ -4,6 +4,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Swerve;
+import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem.TargetType;
@@ -15,7 +17,8 @@ the robot will move horizontally until the April tag is in the middle (centered)
 Uses PID control rather than a snapshot
 */
 public class CameraCenterCommand extends CommandBase{
-    PIDController driveController;
+    PIDController yController;
+    PIDController thetaController;
     double maxSpeedPercent = 0.5;
     double setpoint = 0;
     double threshold = 2;
@@ -24,15 +27,17 @@ public class CameraCenterCommand extends CommandBase{
 
     public CameraCenterCommand(){
         addRequirements(SwerveDriveSubsystem.getInstance());
-
-        driveController = new PIDController(0.1, 0, 0);
+        t = TargetType.REFLECTIVE_TAPE;
+        thetaController = new PIDController(0.1, 0, 0);
+        yController = new PIDController(0.1, 0, 0);
     }
 
     // When creating the command, we can tell the robot whether it is trying to center on April Tags or Reflective Tape
     public CameraCenterCommand(TargetType t){
         addRequirements(SwerveDriveSubsystem.getInstance());
 
-        driveController = new PIDController(0.1, 0, 0);
+        yController = new PIDController(0.1, 0, 0);
+        thetaController = new PIDController(0.1, 0, 0);
         this.t = t;
     }
 
@@ -47,21 +52,27 @@ public class CameraCenterCommand extends CommandBase{
                 break;
         }
 
-        driveController.setSetpoint(setpoint);
-        driveController.setTolerance(threshold);
+        thetaController.setSetpoint(0);
+        thetaController.setTolerance(0.1);
+
+        yController.setSetpoint(setpoint);
+        yController.setTolerance(threshold);
     }
 
     @Override
     public void execute() {
         double tx = LimelightSubsystem.getInstance().getTX();
-        double gain = driveController.calculate(tx);
+        double yGain = yController.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle());
+        double thetaGain = thetaController.calculate(tx);
 
-        SmartDashboard.putNumber("Thing: ", gain);
-        SmartDashboard.putBoolean("In Range?", driveController.atSetpoint());
+        SmartDashboard.putNumber("yGain: ", yGain);
+        SmartDashboard.putNumber("thetaGain", thetaGain);
+        SmartDashboard.putBoolean("In Range?", thetaController.atSetpoint());
         SmartDashboard.putNumber("tx", tx);
+        SmartDashboard.putBoolean("target?", LimelightSubsystem.getInstance().isTarget());
 
         //Switched to field-oriented notation
-        SwerveDriveSubsystem.getInstance().set(0, maxSpeedPercent * gain, 0);
+        SwerveDriveSubsystem.getInstance().set(0, -yGain, thetaGain);
     }
 
     @Override
@@ -72,6 +83,6 @@ public class CameraCenterCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return !LimelightSubsystem.getInstance().isTarget() || Math.abs(LimelightSubsystem.getInstance().getTX() - setpoint) <= threshold;
+        return !LimelightSubsystem.getInstance().isTarget() || thetaController.atSetpoint();
     }
 }

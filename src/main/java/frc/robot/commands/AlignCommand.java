@@ -59,11 +59,10 @@ public class AlignCommand extends CommandBase {
 
     @Override
     public void execute() {
-        double turnGain = turnController.calculate(LimelightSubsystem.getInstance().getTX());
-        double xGain = xController.calculate(LimelightSubsystem.getInstance().getTY()); // field relative
+        double turnGain = turnController.calculate(-LimelightSubsystem.getInstance().getTX());
+        double xGain = xController.calculate(LimelightSubsystem.getInstance().getTY()); //field relative
         double yGain = yController.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle());
 
-        // TODO: add y control
         SwerveDriveSubsystem.getInstance().set(xGain, yGain, turnGain);
     }
 

@@ -16,7 +16,7 @@ import frc.robot.Constants;
 //During autonomous and teleop, the limelight LEDs will follow the pipeline
 //When the robot is disabled, the LEDs turn off
 //TODO: Get constants for the height and angle of the limelight on robot
-public class LimelightSubsystem extends SubsystemBase{
+public class LimelightSubsystem extends SubsystemBase {
     private static LimelightSubsystem singleton;
     NetworkTable nt;
 
@@ -60,24 +60,6 @@ public class LimelightSubsystem extends SubsystemBase{
     public static LimelightSubsystem getInstance(){
         if(singleton == null) singleton = new LimelightSubsystem();
         return singleton;
-    }
-
-    @Override
-    public void periodic() {
-        isTarget = tvEntry.getDouble(0) == 1;
-        if(isTarget){   //Only update information if we see a target
-            if(getPipeline() == Constants.Limelight.APRIL_TAG_PIPELINE){
-                if(DriverStation.getAlliance() == Alliance.Red)
-                    robotPos = nt.getEntry("botpose_wpired").getDoubleArray(new double[6]);
-                else if(DriverStation.getAlliance() == Alliance.Blue)
-                    robotPos = nt.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
-                else
-                    robotPos = nt.getEntry("botpose").getDoubleArray(new double[6]);
-                tagID = tidEntry.getDouble(-1);
-            }
-            tx = txEntry.getDouble(0);
-            ty = tyEntry.getDouble(0);
-        }
     }
 
     // Gets the 2d position of the robot using the april tag it sees
@@ -132,4 +114,23 @@ public class LimelightSubsystem extends SubsystemBase{
     public void defaultLED(){
         setLEDMode(0);
     }
+
+    @Override
+    public void periodic() {
+        isTarget = tvEntry.getDouble(0) == 1;
+        if(isTarget){   //Only update information if we see a target
+            if(getPipeline() == Constants.Limelight.APRIL_TAG_PIPELINE){
+                if(DriverStation.getAlliance() == Alliance.Red)
+                    robotPos = nt.getEntry("botpose_wpired").getDoubleArray(new double[6]);
+                else if(DriverStation.getAlliance() == Alliance.Blue)
+                    robotPos = nt.getEntry("botpose_wpiblue").getDoubleArray(new double[6]);
+                else
+                    robotPos = nt.getEntry("botpose").getDoubleArray(new double[6]);
+                tagID = tidEntry.getDouble(-1);
+            }
+            tx = txEntry.getDouble(0);
+            ty = tyEntry.getDouble(0);
+        }
+    }
+    
 }

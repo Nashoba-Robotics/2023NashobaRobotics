@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
 import frc.robot.lib.math.SwerveMath;
-import frc.robot.lib.math.Units;
+import frc.robot.lib.math.NRUnits;
 import frc.robot.lib.util.CarpetOdometry;
 import frc.robot.lib.util.JoystickValues;
 import frc.robot.lib.util.SwerveState;
@@ -56,7 +56,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return Units.constrainDeg(gyro.getYaw()) * Constants.TAU / 360;
+        return NRUnits.constrainDeg(gyro.getYaw()) * Constants.TAU / 360;
     }
 
     //Don't know if this will work

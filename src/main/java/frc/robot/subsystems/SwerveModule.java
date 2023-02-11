@@ -15,7 +15,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.robot.Constants;
-import frc.robot.lib.math.Units;
+import frc.robot.lib.math.NRUnits;
 import frc.robot.lib.util.SwerveState;
 
 public class SwerveModule {
@@ -92,7 +92,7 @@ public class SwerveModule {
 
     public void configOffset(double offset){
         turnSensor.configMagnetOffset(offset);
-        turnMotor.setSelectedSensorPosition(Units.Drive.degToNU(turnSensor.getAbsolutePosition()));
+        turnMotor.setSelectedSensorPosition(NRUnits.Drive.degToNU(turnSensor.getAbsolutePosition()));
     }
 
     public void zero(){
@@ -104,7 +104,7 @@ public class SwerveModule {
     }
 
     public void set(SwerveModuleState state){
-        set(Units.Drive.toPercentOutput(state.speedMetersPerSecond), state.angle.getRadians());
+        set(NRUnits.Drive.toPercentOutput(state.speedMetersPerSecond), state.angle.getRadians());
     }
     
     //move input in percent, Turn input in radians
@@ -120,12 +120,12 @@ public class SwerveModule {
             return;
         }
         double currentPos =  turnMotor.getSelectedSensorPosition();
-        double lastTurn = Units.constrainDeg(Units.Drive.NUToDeg(currentPos));
+        double lastTurn = NRUnits.constrainDeg(NRUnits.Drive.NUToDeg(currentPos));
 
         double angle = findLowestAngle(turn, lastTurn);
         double angleChange = findAngleChange(angle, lastTurn);
         
-        double nextPos = currentPos + Units.Drive.degToNU(angleChange);
+        double nextPos = currentPos + NRUnits.Drive.degToNU(angleChange);
 
         turnMotor.set(ControlMode.MotionMagic, nextPos);
         moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
@@ -134,8 +134,8 @@ public class SwerveModule {
     // MPS, Rotation 2D
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            Units.Drive.NUToM(movePosition),
-            Rotation2d.fromRadians(moveMotor.getInverted() ?  Units.constrainRad(getAbsAngle()+Constants.TAU/2) : getAbsAngle())
+            NRUnits.Drive.NUToM(movePosition),
+            Rotation2d.fromRadians(moveMotor.getInverted() ?  NRUnits.constrainRad(getAbsAngle()+Constants.TAU/2) : getAbsAngle())
         );
     }
 
@@ -160,13 +160,13 @@ public class SwerveModule {
     // Find the two angles we could potentially go to
     public double[] potentialAngles(double angle){
         //Constrain the variable to desired domain
-        angle = Units.constrainDeg(angle);
+        angle = NRUnits.constrainDeg(angle);
 
         //Figure out the opposite angle
         double oppositeAngle = angle + 180;
 
         //Constrain the opposite angle
-        oppositeAngle = Units.constrainDeg(oppositeAngle);
+        oppositeAngle = NRUnits.constrainDeg(oppositeAngle);
 
         //Put them into a size 2 array
         double[] angles = {angle, oppositeAngle};
@@ -202,7 +202,7 @@ public class SwerveModule {
 
     //returns angle in radians
     public double getAngle(){
-        return Units.Drive.NUToRad(turnMotor.getSelectedSensorPosition());
+        return NRUnits.Drive.NUToRad(turnMotor.getSelectedSensorPosition());
     }
 
     //returns CANCoder angle in radians

@@ -1,7 +1,7 @@
 package frc.robot.lib.util;
 
 import frc.robot.Constants;
-import frc.robot.lib.math.Units;
+import frc.robot.lib.math.NRUnits;
 
 public class JoystickValues {
 
@@ -71,7 +71,7 @@ public class JoystickValues {
 
         if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) y = 0;
         angle-=Constants.TAU/4;
-        Units.constrainRad(angle);
+        NRUnits.constrainRad(angle);
         if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) x = 0;
         
         return this;

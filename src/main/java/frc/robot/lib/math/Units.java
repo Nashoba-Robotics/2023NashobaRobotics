@@ -155,11 +155,11 @@ public class Units {
     public static class Grabber {
         // Converts from degrees to rotations
         public static double radToNU(double angle){
-            return angle / Constants.TAU;
+            return angle / Constants.TAU * Constants.Grabber.GEAR_RATIO;
         }
 
         public static double NUtoRad(double rotations) {
-            return rotations * Constants.TAU;
+            return rotations * Constants.TAU / Constants.Grabber.GEAR_RATIO;
         }
     }
 }

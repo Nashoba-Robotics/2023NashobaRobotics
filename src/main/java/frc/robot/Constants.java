@@ -32,6 +32,7 @@ public final class Constants {
     public static final double TURN_GEAR_RATIO = 150. / 7.;
     public static final double MOVE_GEAR_RATIO = 8.14;
 
+    //2.625
     //meters
     public static final double WIDTH = .548;
     public static final double LENGTH = .548;
@@ -136,7 +137,7 @@ public final class Constants {
     public static final int WRIST_PORT = 11;
 
     // TODO: FILL IN PID LOOP VALUES, CHANGE SPEED, AND CALCULATE ANGLES
-    public static final double ORIENTER_KF = 0.03;
+    public static final double ORIENTER_KF = 0.001;
     public static final double ORIENTER_KP = 0.2;
     public static final double ORIENTER_KI = 0.0;
     public static final double ORIENTER_KD = 0.0;
@@ -149,6 +150,8 @@ public final class Constants {
     public static final double LOW_ANGLE = 0;
 
     public static final double ERROR_ANGLE = 0;
+
+    public static final double GEAR_RATIO = 48 * 36 / 22.; //TODO: find why 1.15
 
   }
 

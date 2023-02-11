@@ -7,8 +7,10 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LogManager;
 import frc.robot.lib.math.Units;
 
 public class GrabberSubsystem extends SubsystemBase{
@@ -75,6 +77,10 @@ public class GrabberSubsystem extends SubsystemBase{
         orienterController.setReference(Units.Grabber.radToNU(angle), ControlType.kPosition);
     }
 
+    public void orientPos(double NU) {
+        orienterController.setReference(NU, ControlType.kPosition);
+    }
+
     public void setOrientSpeed(double speed){
         orienter.set(speed);
     }
@@ -85,7 +91,11 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Reads the angle in radians of the orienter
     public double getOrientation(){
-        return Units.constrainRad(Units.Grabber.NUtoRad(orientEncoder.getPosition()));
+        return Units.Grabber.NUtoRad(orientEncoder.getPosition());
+    }
+
+    public double getPosition() {
+        return orientEncoder.getPosition();
     }
 
     public void zeroWrist() {
@@ -100,5 +110,21 @@ public class GrabberSubsystem extends SubsystemBase{
     public void stop() {
         grabber1.set(0);
         orienter.set(0);
+    }
+
+    @Override
+    public void periodic() {
+        if(Constants.Logging.GRABBER) {
+            //Grabber1
+            LogManager.appendToLog(grabber1.getEncoder().getVelocity(), "Grabber:/Grabber1/Velocity");
+            LogManager.appendToLog(grabber1.getBusVoltage() * grabber1.getAppliedOutput(), "Grabber:/Grabber1/Voltage");
+
+            //Grabber2
+            LogManager.appendToLog(grabber2.getEncoder().getVelocity(), "Grabber:/Grabber2/Velocity");
+            LogManager.appendToLog(grabber2.getBusVoltage() * grabber2.getAppliedOutput(), "Grabber:/Grabber2/Voltage");
+
+            //Orienter
+            LogManager.appendToLog(orientEncoder.getPosition(), "Grabber:/Orienter/Position");
+        }
     }
 }

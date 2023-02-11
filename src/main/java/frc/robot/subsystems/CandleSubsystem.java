@@ -12,7 +12,7 @@ public class CandleSubsystem {
     CANdle candle;
 
     public CandleSubsystem() {
-        candle = new CANdle(Constants.Misc.CANDLE_PORT);
+        candle = new CANdle(Constants.Misc.CANDLE_PORT, "drivet");
     }
 
     private static CandleSubsystem instance;

@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.test.ArmTestCommand;
@@ -25,18 +26,19 @@ public class RobotContainer {
   public RobotContainer() {
     SmartDashboard.putData(new SwerveDriveCommand());
     // SmartDashboard.putData(new SwerveDriveTestCommand());
-    SmartDashboard.putData(new RunMotorCommand());
+    //SmartDashboard.putData(new RunMotorCommand());
     // SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
     // SmartDashboard.putData(new CameraTestCommand());
     // SmartDashboard.putData(new BalanceTestCommand());
     SmartDashboard.putData(new ZeroPivotCommand());
-    SmartDashboard.putData(new ArmTestCommand());
+    //SmartDashboard.putData(new ArmTestCommand());
     SmartDashboard.putData(new InstantCommand(() -> ArmSubsystem.getInstance().zeroArm(), ArmSubsystem.getInstance()));
     SmartDashboard.putData(new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
-    SmartDashboard.putData(new TestGrabberCommand());
+    //SmartDashboard.putData(new TestGrabberCommand());
     SmartDashboard.putData(new ManualExtensionCommand());
     SmartDashboard.putData(new IntakeTestCommand());
+    SmartDashboard.putData(new IntakeCommand());
 
 
     Tabs.Arm.add(new ArmTestCommand());

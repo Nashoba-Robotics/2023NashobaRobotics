@@ -91,7 +91,7 @@ public class ArmTestCommand extends CommandBase{
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().set(0);
         ArmSubsystem.getInstance().setPivot(0);
-        //ArmSubsystem.getInstance().setPivot(0);
+        // ArmSubsystem.getInstance().setPivot(0);
     }
 
     @Override

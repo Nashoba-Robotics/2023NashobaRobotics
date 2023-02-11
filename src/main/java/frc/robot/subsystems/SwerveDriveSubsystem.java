@@ -29,7 +29,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private PIDController driftController;
 
     private SwerveDriveSubsystem() {
-        gyro = new Pigeon2(Constants.Misc.GYRO_PORT);
+        gyro = new Pigeon2(Constants.Misc.GYRO_PORT, "drivet");
         gyro.configFactoryDefault();
         fieldCentric = true;
 
@@ -207,10 +207,16 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
         SmartDashboard.putNumber("gyro angle", getGyroAngle());
 
-        for(SwerveModule module : modules) {
-            SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
-            LogManager.appendToLog(Units.Drive.NUToMPS(module.getMoveVelocity()), "ActualState:/mod"+module.modNumber);
-        }
+        if(Constants.Logging.SWERVE) {
+            for(SwerveModule module : modules) {
+                SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
+                LogManager.appendToLog(module.getMoveVelocity(), "Swerve/:Mod"+module.modNumber+"/Velocity");
+                LogManager.appendToLog(module.getAngle(), "Swerve/:Mod"+module.modNumber+"/Angle");
+            }
 
+            LogManager.appendToLog(gyro.getYaw(), "Gyro:/Yaw");
+            LogManager.appendToLog(gyro.getPitch(), "Gyro:/Pitch");
+            LogManager.appendToLog(gyro.getRoll(), "Gyro:/Roll");
+        }
     }
 }

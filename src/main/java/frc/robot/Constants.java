@@ -153,8 +153,7 @@ public final class Constants {
   }
 
   public static final class Arm {
-    public static final double PIVOT_GEARRATIO = 192/1; //192 rotations of the motor = 1 rotation of the sprocket
-    //4*4*4*72/22
+    public static final double PIVOT_GEARRATIO = 4*4*4*72/22; //4^3*72 rotations of the motor = 22 rotation of the sprocket
     public static final double EXTENSION_GEARRATION = 5/1;  //5 rotations of the motor = 1 rotation of the pulley
     public static final double PITCH_DIAMETER = Units.inchesToMeters(1.12);
     // One rotation of pulley = 3.5437

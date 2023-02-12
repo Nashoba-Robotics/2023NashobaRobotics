@@ -47,7 +47,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
     //Gets the game piece
     public void intake(){
-        grabber1.set(Constants.Grabber.INTAKE_SPEED);
+        set(Constants.Grabber.INTAKE_SPEED);
     }
 
     //Releases the game piece to score

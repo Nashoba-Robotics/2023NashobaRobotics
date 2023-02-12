@@ -128,8 +128,9 @@ public class LimelightSubsystem extends SubsystemBase {
                     robotPos = nt.getEntry("botpose").getDoubleArray(new double[6]);
                 tagID = tidEntry.getDouble(-1);
             }
-            tx = txEntry.getDouble(0);
-            ty = tyEntry.getDouble(0);
+            // The camera is sideways
+            tx = tyEntry.getDouble(0);
+            ty = txEntry.getDouble(0);
         }
     }
     

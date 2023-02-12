@@ -31,7 +31,7 @@ public class RobotContainer {
     // SmartDashboard.putData(new CameraTestCommand());
     // SmartDashboard.putData(new BalanceTestCommand());
     SmartDashboard.putData(new ZeroPivotCommand());
-    //SmartDashboard.putData(new ArmTestCommand());
+    SmartDashboard.putData(new ArmTestCommand());
     SmartDashboard.putData(new InstantCommand(() -> ArmSubsystem.getInstance().zeroArm(), ArmSubsystem.getInstance()));
     SmartDashboard.putData(new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 

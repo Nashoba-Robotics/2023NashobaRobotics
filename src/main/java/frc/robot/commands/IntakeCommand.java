@@ -7,7 +7,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
 public class IntakeCommand extends CommandBase {
-    double armAngle = 112 * Constants.TAU/360;
+    double armAngle = 110 * Constants.TAU/360;  //112
     double wristNU = 8;
     double wristAngle = 0;
 
@@ -41,6 +41,7 @@ public class IntakeCommand extends CommandBase {
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().pivot(0);
         GrabberSubsystem.getInstance().orient(0);
+        GrabberSubsystem.getInstance().set(-0.1);
     }
 
     @Override

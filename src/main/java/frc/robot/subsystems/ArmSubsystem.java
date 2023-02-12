@@ -72,20 +72,16 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.setInverted(InvertType.InvertMotorOutput);
 
         pivot1.configForwardSoftLimitEnable(true);
-        pivot1.configForwardSoftLimitThreshold(50_000);
-        // pivot1.configForwardSoftLimitThreshold(131_000);
+        pivot1.configForwardSoftLimitThreshold(131_000);
 
         pivot1.configReverseSoftLimitEnable(true);
-        pivot1.configReverseSoftLimitThreshold(-50_000);
-        // pivot1.configReverseSoftLimitThreshold(-131_000);
+        pivot1.configReverseSoftLimitThreshold(-131_000);
 
         pivot2.configForwardSoftLimitEnable(true);
-        pivot2.configForwardSoftLimitThreshold(50_000);
-        // pivot2.configForwardSoftLimitThreshold(131_000);
+        pivot2.configForwardSoftLimitThreshold(131_000);
 
         pivot2.configReverseSoftLimitEnable(true);
-        pivot2.configReverseSoftLimitThreshold(-50_000);
-        // pivot2.configReverseSoftLimitThreshold(-131_000);
+        pivot2.configReverseSoftLimitThreshold(-131_000);
 
         //Positive is extending out
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
@@ -121,6 +117,10 @@ public class ArmSubsystem extends SubsystemBase {
     //Extends arm to specified position in meters
     public void extend(double pos){
        tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Arm.mToNU(pos));
+    }
+
+    public void extendNU(double nu){
+        tromboneSlide.set(ControlMode.MotionMagic, nu);
     }
 
     //Basic Percent Output set
@@ -161,6 +161,11 @@ public class ArmSubsystem extends SubsystemBase {
 
         double pivotPos2 = getPivotPos(2);
         pivot2.set(ControlMode.MotionMagic, pivotPos2);
+    }
+
+    public void holdArm(){
+        double armPos = getPos();
+        tromboneSlide.set(ControlMode.MotionMagic, armPos);
     }
 
     //Returns the angle of the arm

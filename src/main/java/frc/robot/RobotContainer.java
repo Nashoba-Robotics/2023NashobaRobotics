@@ -6,6 +6,7 @@ import com.pathplanner.lib.PathPlanner;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
@@ -15,6 +16,7 @@ import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
 import frc.robot.commands.auto.FollowPathCommand;
+import frc.robot.commands.score.PrepHeightCommand;
 import frc.robot.commands.test.SwerveDriveTestCommand;
 import frc.robot.commands.test.TestGrabberCommand;
 import frc.robot.commands.test.ZeroPivotCommand;
@@ -39,5 +41,9 @@ public class RobotContainer {
     SmartDashboard.putData(new ManualExtensionCommand());
     SmartDashboard.putData(new IntakeTestCommand());
     SmartDashboard.putData(new IntakeCommand());
+
+    SmartDashboard.putData("Prep High",new PrepHeightCommand(TargetLevel.HIGH));
+    SmartDashboard.putData("Prep Mid",new PrepHeightCommand(TargetLevel.MID));
+
   }
 }

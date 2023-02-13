@@ -72,16 +72,16 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.setInverted(InvertType.InvertMotorOutput);
 
         pivot1.configForwardSoftLimitEnable(true);
-        pivot1.configForwardSoftLimitThreshold(131_000);
+        pivot1.configForwardSoftLimitThreshold(135_000);
 
         pivot1.configReverseSoftLimitEnable(true);
-        pivot1.configReverseSoftLimitThreshold(-131_000);
+        pivot1.configReverseSoftLimitThreshold(-135_000);
 
         pivot2.configForwardSoftLimitEnable(true);
-        pivot2.configForwardSoftLimitThreshold(131_000);
+        pivot2.configForwardSoftLimitThreshold(135_000);
 
         pivot2.configReverseSoftLimitEnable(true);
-        pivot2.configReverseSoftLimitThreshold(-131_000);
+        pivot2.configReverseSoftLimitThreshold(-135_000);
 
         //Positive is extending out
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);

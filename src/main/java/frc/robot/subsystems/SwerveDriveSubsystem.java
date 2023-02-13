@@ -61,7 +61,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     //Don't know if this will work
     public double getBalanceAngle() {
-        return Math.sqrt(getPitch()*getPitch() + getRoll()*getRoll());
+        double pitch = getPitch();
+        double roll = getRoll();
+        // What to do if pitch and roll are negative and positive? (I don't think it will happen)
+        if(Math.signum(pitch) == -1 && Math.signum(roll) == -1)
+        return -Math.sqrt(pitch*pitch + roll*roll);
+        return Math.sqrt(pitch*pitch + roll*roll);
     }
 
     //Convert to radians?

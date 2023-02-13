@@ -23,6 +23,7 @@ public class ManualExtensionCommand extends CommandBase {
         ArmSubsystem.getInstance().set(0);
         SmartDashboard.putNumber("Arm Angle Man", 0);
         SmartDashboard.putNumber("Grab Speed Man", 0);
+        SmartDashboard.putNumber("Grab Angle Man", 0);
     }
 
     @Override
@@ -46,18 +47,26 @@ public class ManualExtensionCommand extends CommandBase {
         SmartDashboard.putNumber("Supply Current", ArmSubsystem.getInstance().getArmSupplyCurrent());
         SmartDashboard.putNumber("Extend NU", ArmSubsystem.getInstance().getPos());
 
+        SmartDashboard.putNumber("Pivot Stator", ArmSubsystem.getInstance().getPivotStator());
+        SmartDashboard.putNumber("Pivot Supply", ArmSubsystem.getInstance().getPivotSupply());
+
         double angle = SmartDashboard.getNumber("Arm Angle Man", 0);
         angle *= Constants.TAU/360;
         ArmSubsystem.getInstance().pivot(angle);
 
         double grabSpeed = SmartDashboard.getNumber("Grab Speed Man", 0);
         GrabberSubsystem.getInstance().set(grabSpeed);
+
+        double grabNU = SmartDashboard.getNumber("Grab Angle Man", 0);
+        GrabberSubsystem.getInstance().orientPos(grabNU);
     }
 
     @Override
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().set(0);
         lastPos = 103.2;
+        ArmSubsystem.getInstance().reset();
+        GrabberSubsystem.getInstance().orientPos(0);
     }
 
     @Override

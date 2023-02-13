@@ -11,6 +11,7 @@ import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.test.ArmTestCommand;
 import frc.robot.commands.test.BalanceTestCommand;
+import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
@@ -39,5 +40,8 @@ public class RobotContainer {
     SmartDashboard.putData(new ManualExtensionCommand());
     SmartDashboard.putData(new IntakeTestCommand());
     SmartDashboard.putData(new IntakeCommand());
+    SmartDashboard.putData(new CameraCenterCommand());
+
+    SmartDashboard.putData(new BalanceTestCommand());
   }
 }

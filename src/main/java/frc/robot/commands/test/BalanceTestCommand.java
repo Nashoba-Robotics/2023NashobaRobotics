@@ -3,6 +3,7 @@ package frc.robot.commands.test;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class BalanceTestCommand extends CommandBase{
@@ -12,20 +13,28 @@ public class BalanceTestCommand extends CommandBase{
     public BalanceTestCommand(){
         //pigeon = new PigeonIMU(0);
 
-        pigeonController = new PIDController(0.01, 0, 0);
-        pigeonController.setSetpoint(1.5);
-        pigeonController.setTolerance(0.5);
+        pigeonController = new PIDController(0.001, 0, 0);
+        pigeonController.setSetpoint(1);
+        pigeonController.setTolerance(1);
+    }
+
+    @Override
+    public void initialize() {
+        
     }
 
     @Override
     public void execute() {
         //double roll = SwerveDriveSubsystem.getInstance().getRoll();
-        double roll = SwerveDriveSubsystem.getInstance().getRoll();
-        SmartDashboard.putNumber("Bal Value", pigeonController.calculate(roll));
-        SmartDashboard.putNumber("Roll", roll);
+        double angle = SwerveDriveSubsystem.getInstance().getBalanceAngle();
+        angle = SwerveDriveSubsystem.getInstance().getPitch();
+        SmartDashboard.putNumber("Bal Value", pigeonController.calculate(angle));
+        SmartDashboard.putNumber("Angle", angle);
         SmartDashboard.putBoolean("Target?", pigeonController.atSetpoint());
+        SmartDashboard.putNumber("Roll", SwerveDriveSubsystem.getInstance().getRoll());
+        SmartDashboard.putNumber("Pitch", SwerveDriveSubsystem.getInstance().getPitch());
 
-        SwerveDriveSubsystem.getInstance().set(pigeonController.calculate(roll), 0, 0);
+        SwerveDriveSubsystem.getInstance().set(1.5*pigeonController.calculate(angle), 0, 0);
     }
 
     @Override
@@ -35,6 +44,6 @@ public class BalanceTestCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return false;
+        return pigeonController.atSetpoint();
     }
 }

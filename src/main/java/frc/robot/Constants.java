@@ -142,7 +142,7 @@ public final class Constants {
     public static final double ORIENTER_KI = 0.0;
     public static final double ORIENTER_KD = 0.0;
 
-    public static final double INTAKE_SPEED = -0.3;
+    public static final double INTAKE_SPEED = -0.7;
     public static final double SCORE_SPEED = 0.3;
     public static final double MAX_TURN_SPEED = 0.4;
     public static final double HIGH_ANGLE = 0;

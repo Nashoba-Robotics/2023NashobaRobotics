@@ -70,7 +70,7 @@ public class ArmTestCommand extends CommandBase{
         // angle *= Constants.TAU/360;
         // ArmSubsystem.getInstance().pivot(angle);
 
-        double pos = SmartDashboard.getNumber("Arm Set Pos", 0);    //meters
+        double pos = SmartDashboard.getNumber("SetArmNU", 0);    //NU
         ArmSubsystem.getInstance().extend(pos);
 
         double angle = SmartDashboard.getNumber("Arm Angle", 0);    //Degrees
@@ -91,7 +91,6 @@ public class ArmTestCommand extends CommandBase{
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().set(0);
         ArmSubsystem.getInstance().setPivot(0);
-        // ArmSubsystem.getInstance().setPivot(0);
     }
 
     @Override

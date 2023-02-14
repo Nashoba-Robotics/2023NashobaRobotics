@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.AutoPaths;
 import frc.robot.Constants;
-import frc.robot.commands.auto.FollowPathCommand;
+import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class TestAutoCommand extends SequentialCommandGroup {

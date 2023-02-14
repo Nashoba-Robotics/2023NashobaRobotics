@@ -3,6 +3,8 @@ package frc.robot;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -27,6 +29,7 @@ import frc.robot.commands.test.TestGrabberCommand;
 import frc.robot.commands.test.ZeroPivotCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class RobotContainer {
 
@@ -55,6 +58,9 @@ public class RobotContainer {
     SmartDashboard.putData("Prep Mid", new PrepHeightCommand(TargetLevel.MID));
     SmartDashboard.putData("Zero Arm command", new ArmAngleCommand(0));
     SmartDashboard.putData("Score Command", new ScoreCommand());
+
+    SmartDashboard.putData("Reset Gyro", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(0), SwerveDriveSubsystem.getInstance()));
+    SmartDashboard.putData("Reset Odometery", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()));
 
   }
 

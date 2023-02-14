@@ -9,7 +9,20 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 //  We then have a display function to just display it to shuffleboard
 //  We also have a get function that reads the value from shuffleboard to give the subsystem in a command
 public final class Tabs {
-    public static final ShuffleboardTab Test = Shuffleboard.getTab("Test");
+    public static class Test{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Test");
+
+        private static GenericEntry dispTest = tab.add("Testing", 0).getEntry();
+        private static GenericEntry getTest = tab.add("Get Test", 0).getEntry();
+
+        public static void displayTest(int n){
+            dispTest.setDouble(n);
+        }
+
+        public static double getTest(){
+            return getTest.getDouble(0);
+        }
+    }
     public static class Arm{
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Arm");
 

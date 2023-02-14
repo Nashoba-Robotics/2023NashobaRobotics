@@ -22,7 +22,7 @@ public class CandleSubsystem {
     }
 
     public enum CandleState {
-
+        
     }
 
     public void set(CandleState state) {

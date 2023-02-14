@@ -134,7 +134,7 @@ public class NRUnits {
     
         public static double mToNU(double m){
             m /= Constants.Arm.PITCH_DIAMETER*Math.PI;
-            m /= Constants.Arm.EXTENSION_GEARRATION;
+            m *= Constants.Arm.EXTENSION_GEARRATION;
             m *= 2048;
     
             return m;

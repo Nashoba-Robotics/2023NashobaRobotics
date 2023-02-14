@@ -190,9 +190,14 @@ public final class Constants {
     public static final double PIVOT_KI_2 = 0;
     public static final double PIVOT_KD_2 = 0;
 
-    public static final double HIGH_ANGLE = 0;
-    public static final double MID_ANGLE = 0;
-    public static final double LOW_ANGLE = 0;
+    //Radians
+    public static final double HIGH_ANGLE = TAU / 6;
+    public static final double MID_ANGLE = 65 * TAU/360;
+    public static final double LOW_ANGLE = 105;
+
+    public static final double HIGH_EXTEND_NU = 31_629;
+    public static final double MID_EXTEND_NU = 15_000;
+    public static final double LOW_EXTEND_NU = 0;
 
     public static final double ERROR_ANGLE = 0;
     

@@ -26,15 +26,18 @@ public class PrepHeightCommand extends CommandBase {
         switch(targetLevel) {
             case HIGH: 
              GrabberSubsystem.getInstance().orientPos(-3);
-             ArmSubsystem.getInstance().pivot(Constants.TAU / 6);
-             ArmSubsystem.getInstance().extendNU(31_629);
+             ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
+             ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              break;
             case MID: 
              GrabberSubsystem.getInstance().orientPos(-3);
-             ArmSubsystem.getInstance().pivot(65 * Constants.TAU / 360);
+             ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE);
+             ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
              break;
-           // case LOW: 
-           //  ArmSubsystem.getInstance().extend(0);
+           case LOW: 
+            ArmSubsystem.getInstance().extend(Constants.Arm.LOW_ANGLE);
+            ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
+            break;
         }
         gotToStart = false;
     }

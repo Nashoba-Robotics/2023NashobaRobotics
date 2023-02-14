@@ -38,7 +38,7 @@ public class ScoreCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - startTime > 5000;
+        return Math.abs(ArmSubsystem.getInstance().getPos()-100) < 100 || System.currentTimeMillis() - startTime > 5000;
     }
 
 }

@@ -77,16 +77,16 @@ public class ArmSubsystem extends SubsystemBase {
         pivot1.setInverted(InvertType.None);
         pivot2.setInverted(InvertType.InvertMotorOutput);
 
-        pivot1.configForwardSoftLimitEnable(false);
+        pivot1.configForwardSoftLimitEnable(true);
         pivot1.configForwardSoftLimitThreshold(140_000);
 
-        pivot1.configReverseSoftLimitEnable(false);
+        pivot1.configReverseSoftLimitEnable(true);
         pivot1.configReverseSoftLimitThreshold(-140_000);
 
-        pivot2.configForwardSoftLimitEnable(false);
+        pivot2.configForwardSoftLimitEnable(true);
         pivot2.configForwardSoftLimitThreshold(140_000);
 
-        pivot2.configReverseSoftLimitEnable(false);
+        pivot2.configReverseSoftLimitEnable(true);
         pivot2.configReverseSoftLimitThreshold(-140_000);
 
         //Positive is extending out

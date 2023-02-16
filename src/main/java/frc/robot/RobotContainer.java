@@ -15,6 +15,7 @@ import frc.robot.commands.ArmAngleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.test.ArmTestCommand;
 import frc.robot.commands.test.BalanceTestCommand;
@@ -25,6 +26,7 @@ import frc.robot.commands.test.RunMotorCommand;
 import frc.robot.commands.score.PrepHeightCommand;
 import frc.robot.commands.score.ScoreCommand;
 import frc.robot.commands.test.SwerveDriveTestCommand;
+import frc.robot.commands.test.TestAutoCommand;
 import frc.robot.commands.test.TestGrabberCommand;
 import frc.robot.commands.test.ZeroPivotCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -36,6 +38,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
     SmartDashboard.putData(new SwerveDriveCommand());
+    SmartDashboard.putData(new TestAutoCommand());
     // SmartDashboard.putData(new SwerveDriveTestCommand());
     //SmartDashboard.putData(new RunMotorCommand());
     // SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
@@ -61,6 +64,8 @@ public class RobotContainer {
 
     SmartDashboard.putData("Reset Gyro", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(0), SwerveDriveSubsystem.getInstance()));
     SmartDashboard.putData("Reset Odometery", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()));
+
+    SmartDashboard.putData("AutoScore", new AutoScoreCommand());
 
   }
 

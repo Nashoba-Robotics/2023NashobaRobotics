@@ -11,6 +11,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.LogManager;
@@ -224,7 +225,8 @@ public class SwerveControllerCommand extends CommandBase {
     var targetModuleStates = m_kinematics.toSwerveModuleStates(targetChassisSpeeds);
 
     for(int i = 0; i < targetModuleStates.length; i++) {
-        LogManager.appendToLog(targetModuleStates[i].speedMetersPerSecond, "SetSpeed:/mod"+i);
+        // LogManager.appendToLog(targetModuleStates[i].speedMetersPerSecond, "SetSpeed:/mod"+i);
+        SmartDashboard.putNumber("Angle"+i, targetModuleStates[i].angle.getDegrees());
     }
 
     m_outputModuleStates.accept(targetModuleStates);

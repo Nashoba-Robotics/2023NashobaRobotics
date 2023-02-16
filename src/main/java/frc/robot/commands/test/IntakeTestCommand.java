@@ -24,6 +24,7 @@ public class IntakeTestCommand extends CommandBase{
         SmartDashboard.putNumber("SetWristNU", 0);
 
         SmartDashboard.putNumber("Intake Speed", 0);
+        SmartDashboard.putNumber("Extend NU", 0);
     }
 
     @Override
@@ -33,11 +34,16 @@ public class IntakeTestCommand extends CommandBase{
         GrabberSubsystem.getInstance().orientPos(wristAngle);
 
         double wristSpeed = SmartDashboard.getNumber("Intake Speed", 0);
+        // GrabberSubsystem.getInstance().set(wristSpeed, -wristSpeed); //Used -0.7 to intake
         GrabberSubsystem.getInstance().set(wristSpeed); //Used -0.7 to intake
 
         double pivotAngle = SmartDashboard.getNumber("Arm Angle", 0);   //In degrees
         pivotAngle *= Constants.TAU/360; 
         ArmSubsystem.getInstance().pivot(pivotAngle);   //107 degrees seemed good for intaking
+
+        double extendNU = SmartDashboard.getNumber("Extend NU", 0);
+
+        ArmSubsystem.getInstance().extendNU(extendNU);
 
         SmartDashboard.putNumber("Pivot NU", ArmSubsystem.getInstance().getPivotPos(1));
         SmartDashboard.putNumber("Pivot Angle Actual", ArmSubsystem.getInstance().getPivotAngleDeg(1));

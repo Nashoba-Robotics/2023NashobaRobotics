@@ -1,6 +1,5 @@
 package frc.robot.commands.score;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -38,7 +37,8 @@ public class PrepHeightCommand extends CommandBase {
              targetPos = Constants.Arm.MID_EXTEND_NU;
              break;
            case LOW: 
-            ArmSubsystem.getInstance().extend(Constants.Arm.LOW_ANGLE);
+            GrabberSubsystem.getInstance().orientPos(-3);
+            ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
             targetPos = Constants.Arm.LOW_EXTEND_NU;
             break;
@@ -66,6 +66,9 @@ public class PrepHeightCommand extends CommandBase {
                 ArmSubsystem.getInstance().set(-y*0.3);
                 joystick0 = false;
             }
+
+            double pivotX = RobotContainer.operatorController.getX()*0.3;
+            
         }
     }
 

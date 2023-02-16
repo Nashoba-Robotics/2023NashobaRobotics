@@ -66,7 +66,7 @@ public class RobotContainer {
 
   public static CommandJoystick operatorController = new CommandJoystick(2);
   Trigger intakeButton = operatorController.button(2);  //B
-  Trigger lowPrepCone = operatorController.button(1);
+  Trigger lowPrepCone = operatorController.button(1); //Y
   Trigger midPrepCone = operatorController.button(3); //A
   Trigger highPrepCone = operatorController.button(4);  //X
 
@@ -76,7 +76,8 @@ public class RobotContainer {
   public void configureButtonBindings(){
     intakeButton.toggleOnTrue(new IntakeCommand());
 
-    //midPrepCone.onTrue(new PrepHeightCommand(TargetLevel.MID));
+    lowPrepCone.onTrue(new PrepHeightCommand(TargetLevel.LOW));
+    midPrepCone.onTrue(new PrepHeightCommand(TargetLevel.MID));
     highPrepCone.onTrue(new PrepHeightCommand(TargetLevel.HIGH));
 
     scoreCone.toggleOnTrue(new ScoreCommand());

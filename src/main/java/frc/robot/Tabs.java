@@ -153,6 +153,8 @@ public final class Tabs {
     }
 
     public static class Comp{
-        
+        //Camera Stream
+        //Odometry
+        //
     }
 }

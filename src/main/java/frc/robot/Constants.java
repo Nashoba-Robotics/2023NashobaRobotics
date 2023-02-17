@@ -1,10 +1,16 @@
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.GrabberSubsystem;
 
 public final class Constants {
 
@@ -95,7 +101,7 @@ public final class Constants {
     public static final double MOD3_AFF = 0.07;
   
     public static final class Balance{
-      public static final double K_P = 0.01;
+      public static final double K_P = 0.001;
       public static final double K_I = 0.0;
       public static final double K_D = 0.0;
 
@@ -103,7 +109,6 @@ public final class Constants {
     }
 
     public static final class Auto {
-      
       public static final double MAX_SPEED = 4; // m/s
       public static final double MAX_ACCELERATION = 2; // m/s^2
 

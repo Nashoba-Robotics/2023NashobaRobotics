@@ -4,15 +4,21 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.auto.routines.LeftTo0ToScore;
+import frc.robot.commands.auto.routines.MidToClimb;
+import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
+  SendableChooser<Command> autoChooser;
 
   @Override
   public void robotInit() {
@@ -24,6 +30,12 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     CommandScheduler.getInstance().setDefaultCommand(SwerveDriveSubsystem.getInstance(), new SwerveDriveCommand());
     // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
+
+    autoChooser = new SendableChooser<>();
+    autoChooser.setDefaultOption("Right2Score", new RightTo3ToScoreAuto());
+    autoChooser.addOption("Left2Score", new LeftTo0ToScore());
+    autoChooser.addOption("MidClimb", new MidToClimb());
+    autoChooser.addOption("Gracious Professionalism", null);
   }
 
   @Override
@@ -44,6 +56,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // LimelightSubsystem.getInstance().defaultLED();
+    autoChooser.getSelected().schedule();
   }
 
   @Override

@@ -196,9 +196,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         balanceController.setTolerance(deadzone);
     }
 
+    public boolean balanced(){
+        return balanceController.atSetpoint();
+    }
+
+    public boolean isLevel(){
+        return Math.abs(getPitch() - 1.5) < 0.7;
+    }
+
+    public boolean notLevel() {
+        return !isLevel();
+    }
+
     //TODO: Add algorithm to check whether to use Pitch or Roll (Maybe averaging the values?)
     public double getChange(){
-        return balanceController.calculate(getRoll());
+        return balanceController.calculate(getPitch());
         //return balanceController.calculate(getBalanceAngle());
     }
 

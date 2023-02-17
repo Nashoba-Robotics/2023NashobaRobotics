@@ -1,5 +1,6 @@
 package frc.robot.commands.score;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -14,7 +15,9 @@ public class PrepHeightCommand extends CommandBase {
     double targetPos;
 
     double lastPos;
+    double lastPos2;
     boolean joystick0;
+    boolean joystick02;
     boolean gotToStart;
 
     public PrepHeightCommand(TargetLevel targetLevel) {
@@ -67,8 +70,21 @@ public class PrepHeightCommand extends CommandBase {
                 joystick0 = false;
             }
 
-            double pivotX = RobotContainer.operatorController.getX()*0.3;
-            
+            //Added pivoting manual
+            double pivotX = RobotContainer.operatorController.getX();
+            pivotX = Math.abs(pivotX) < 0.1 ? 0 : (y-0.1)/0.9;
+            if(pivotX == 0){ // If there isn't any input, maintain the position
+                ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
+                if(!joystick02){
+                    joystick02 = true;
+                    lastPos2 = ArmSubsystem.getInstance().getAngle();
+                }
+                ArmSubsystem.getInstance().pivot(lastPos2);
+            }
+            else{
+                ArmSubsystem.getInstance().setPivot(pivotX*0.3);
+                joystick02 = false;
+            }
         }
     }
 
@@ -78,6 +94,6 @@ public class PrepHeightCommand extends CommandBase {
     }
 
     public boolean isFinished() {
-        return false;
+        return DriverStation.isAutonomous();
     }
 }

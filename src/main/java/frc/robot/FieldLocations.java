@@ -12,7 +12,7 @@ public final class FieldLocations {
         public final static Translation2d LEFT_B = new Translation2d(SCORE_X, 0);
         public final static Translation2d LEFT_C = new Translation2d(SCORE_X, 3.85);
 
-        public final static Translation2d MID_A = new Translation2d(SCORE_X, 0);
+        public final static Translation2d MID_A = new Translation2d(SCORE_X, 3.28);
         public final static Translation2d MID_B = new Translation2d(SCORE_X, 2.73);
         public final static Translation2d MID_C = new Translation2d(SCORE_X, 0);
 
@@ -25,7 +25,7 @@ public final class FieldLocations {
         public final static Translation2d PIECE_2 = new Translation2d(INTAKE_X, 2.16);
         public final static Translation2d PIECE_3 = new Translation2d(INTAKE_X, 0.92);
 
-        public final static Translation2d INNER_BALANCE = new Translation2d(0, 0);
+        public final static Translation2d INNER_BALANCE = new Translation2d(3.7, 3.28);
         public final static Translation2d OUTER_BALANCE = new Translation2d(0, 0);
     }
 

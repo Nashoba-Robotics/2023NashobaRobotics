@@ -1,5 +1,6 @@
 package frc.robot.commands.score;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -7,7 +8,6 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
 public class ScoreCommand extends CommandBase {
-    
     private long startTime;    
 
     public ScoreCommand() {
@@ -38,7 +38,7 @@ public class ScoreCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(ArmSubsystem.getInstance().getPos()-100) < 100 || System.currentTimeMillis() - startTime > 5000;
+        return DriverStation.isAutonomous() || Math.abs(ArmSubsystem.getInstance().getPos()-100) < 100 || System.currentTimeMillis() - startTime > 5000;
     }
 
 }

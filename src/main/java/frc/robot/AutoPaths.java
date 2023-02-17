@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Translation2d;
     Stores trajectories for auto
 */
 public final class AutoPaths {
-
     public static final PathPlannerTrajectory testTrajectory = PathPlanner.generatePath(
         new PathConstraints(Constants.Swerve.Auto.MAX_SPEED, Constants.Swerve.Auto.MAX_ACCELERATION), 
         List.of(
@@ -45,6 +44,14 @@ public final class AutoPaths {
         List.of(
             new PathPoint(FieldLocations.Blue.PIECE_0, Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(-90)),
             new PathPoint(FieldLocations.Blue.OUTER_BALANCE, Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(90))
+        )
+    );
+
+    public static final PathPlannerTrajectory midAToClimb = PathPlanner.generatePath(
+        new PathConstraints(Constants.Swerve.Auto.MAX_SPEED, Constants.Swerve.Auto.MAX_ACCELERATION),
+        List.of(
+            new PathPoint(FieldLocations.Blue.MID_A, Rotation2d.fromDegrees(0),Rotation2d.fromDegrees(90)),
+            new PathPoint(FieldLocations.Blue.INNER_BALANCE, Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(90))
         )
     );
 

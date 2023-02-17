@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 
@@ -7,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -34,6 +38,7 @@ import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class RobotContainer {
+  public Map<String, Command> eventMap = new HashMap<>();
 
   public RobotContainer() {
     configureButtonBindings();
@@ -67,6 +72,15 @@ public class RobotContainer {
 
     SmartDashboard.putData("AutoScore", new AutoScoreCommand());
 
+    eventMap.put("Intake Start", new IntakeCommand());
+    eventMap.put("Stop Intake", new InstantCommand(
+        () -> {
+            ArmSubsystem.getInstance().pivot(0);
+            GrabberSubsystem.getInstance().set(-0.1);
+        },
+        ArmSubsystem.getInstance(),
+        GrabberSubsystem.getInstance()
+    ));
   }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);

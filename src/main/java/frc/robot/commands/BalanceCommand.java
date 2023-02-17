@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.Swerve;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class BalanceCommand extends CommandBase{
@@ -11,17 +12,16 @@ public class BalanceCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        SwerveDriveSubsystem.getInstance().setDesiredLevel(1.5, 0.5);
+        SwerveDriveSubsystem.getInstance().setDesiredLevel(1, 1);
     }
 
-    //100% This doesn't work
     @Override
     public void execute() {
         SwerveDriveSubsystem.getInstance().set(
-            0, 
-            Constants.Swerve.Balance.MAX_SPEED_PERCENT*SwerveDriveSubsystem.getInstance().getChange(), 
+            1.5*SwerveDriveSubsystem.getInstance().getChange(), 
+            0,
             0
-            );
+        );
     }
 
     @Override
@@ -32,6 +32,6 @@ public class BalanceCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
-        return false;
+        return SwerveDriveSubsystem.getInstance().balanced();
     }
 }

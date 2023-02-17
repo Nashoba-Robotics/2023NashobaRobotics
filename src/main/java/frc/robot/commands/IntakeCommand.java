@@ -7,16 +7,15 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
 public class IntakeCommand extends CommandBase {
-    double armAngle = 114 * Constants.TAU/360;  //112
-    double wristNU = 4;
-    double wristAngle = 0;
+    // double armAngle = 112 * Constants.TAU/360;  //112
+    //double wristNU = 7;
+    //double wristAngle = 0;
 
-    public IntakeCommand(double armAngle, double wristAngle) {
-        addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
+    // public IntakeCommand(double armAngle, double wristAngle) {
+    //     addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
 
-        this.armAngle = armAngle;
-        this.wristAngle = wristAngle;
-    }
+    //     this.armAngle = armAngle;
+    // }
 
     public IntakeCommand(){
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
@@ -26,8 +25,8 @@ public class IntakeCommand extends CommandBase {
     public void initialize() {
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extend(0);
-        ArmSubsystem.getInstance().pivot(armAngle);
-        GrabberSubsystem.getInstance().orientPos(wristNU);
+        ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE);
+        GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE);
         //GrabberSubsystem.getInstance().orient(wristAngle);
     }
 
@@ -41,7 +40,7 @@ public class IntakeCommand extends CommandBase {
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().pivot(0);
         GrabberSubsystem.getInstance().orient(0);
-        GrabberSubsystem.getInstance().set(-0.1);
+        GrabberSubsystem.getInstance().set(-0.1);   //Make the grabber hold it
     }
 
     @Override

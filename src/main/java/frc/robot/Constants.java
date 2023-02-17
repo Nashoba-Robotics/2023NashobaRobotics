@@ -143,8 +143,9 @@ public final class Constants {
     public static final double ORIENTER_KD = 0.0;
 
     public static final double INTAKE_SPEED = -0.7;
-    public static final double SCORE_SPEED = 0.3;
+    public static final double SCORE_SPEED = 0.1;
     public static final double MAX_TURN_SPEED = 0.4;
+    public static final double INTAKE_ANGLE = 7;
     public static final double HIGH_ANGLE = 0;
     public static final double MID_ANGLE = 0;
     public static final double LOW_ANGLE = 0;
@@ -177,8 +178,8 @@ public final class Constants {
     public static final double ARM_CRUISE_VELOCITY = 5_000;
     public static final double ARM_ACCELERATION = 5_000;
 
-    public static final double PIVOT_CRUISE_VELOCITY = 10_000;
-    public static final double PIVOT_ACCELERATION = 5_000;
+    public static final double PIVOT_CRUISE_VELOCITY = 20_000;
+    public static final double PIVOT_ACCELERATION = 10_000;
 
     public static final double PIVOT_KF_1 = 0.047;
     public static final double PIVOT_KP_1 = 0.2;
@@ -190,10 +191,12 @@ public final class Constants {
     public static final double PIVOT_KI_2 = 0;
     public static final double PIVOT_KD_2 = 0;
 
-    //Radians
+    //Scorign (Radians)
     public static final double HIGH_ANGLE = TAU / 6;
     public static final double MID_ANGLE = 65 * TAU/360;
-    public static final double LOW_ANGLE = 105;
+    public static final double LOW_ANGLE = 105 * TAU/360;
+
+    public static final double INTAKE_ANGLE = 112 * Constants.TAU/360;
 
     public static final double HIGH_EXTEND_NU = 31_629;
     public static final double MID_EXTEND_NU = 15_000;

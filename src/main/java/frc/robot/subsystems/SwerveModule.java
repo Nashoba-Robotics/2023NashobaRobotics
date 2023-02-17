@@ -14,6 +14,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.lib.math.NRUnits;
 import frc.robot.lib.util.SwerveState;
@@ -126,6 +127,8 @@ public class SwerveModule {
         double angleChange = findAngleChange(angle, lastTurn);
         
         double nextPos = currentPos + NRUnits.Drive.degToNU(angleChange);
+
+        SmartDashboard.putNumber("ActualAngle"+modNumber, getAngle() * Constants.TAU / 360);
 
         turnMotor.set(ControlMode.MotionMagic, nextPos);
         moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);

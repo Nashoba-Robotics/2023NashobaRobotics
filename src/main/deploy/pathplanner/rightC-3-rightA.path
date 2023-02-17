@@ -25,15 +25,15 @@
     {
       "anchorPoint": {
         "x": 6.363255461553659,
-        "y": 0.9249526191360088
+        "y": 0.9
       },
       "prevControl": {
         "x": 5.363255461553659,
-        "y": 0.9249526191360088
+        "y": 0.9
       },
       "nextControl": {
         "x": 5.363255461553659,
-        "y": 0.9249526191360088
+        "y": 0.9
       },
       "holonomicAngle": -90.0,
       "isReversal": true,
@@ -72,15 +72,15 @@
   ],
   "markers": [
     {
-      "position": 0.6109090909090843,
+      "position": 0.1309090909091248,
       "names": [
         "Intake Start"
       ]
     },
     {
-      "position": 0.2909090909090837,
+      "position": 1.2072727272726798,
       "names": [
-        "event"
+        "Stop Intake"
       ]
     }
   ]

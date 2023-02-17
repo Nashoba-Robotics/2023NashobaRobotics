@@ -23,11 +23,12 @@ public final class Tabs {
             return getTest.getDouble(0);
         }
     }
-    public static class Arm{
-        public static final ShuffleboardTab tab = Shuffleboard.getTab("Arm");
+    public static class Intake{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Intake");
 
         private static GenericEntry extendSpeed = tab.add("Arm Speed", 0).getEntry();
 
+        //Arm Stuff
         private static GenericEntry setExtendNU = tab.add("Extend NU", 0).getEntry();
         private static GenericEntry setExtendM = tab.add("Extend Meters", 0).getEntry();
         private static GenericEntry dispExtendNU = tab.add("Actual Extend NU", 0).getEntry();
@@ -35,10 +36,23 @@ public final class Tabs {
         private static GenericEntry extendStator = tab.add("Extend Stator", -1).getEntry();
         private static GenericEntry extendSupply = tab.add("Extend Supply", -1).getEntry();
 
+        //Grabber Stuff
+        private static GenericEntry topRollerSpeed = tab.add("Top Roller Speed", 0).getEntry();
+        private static GenericEntry topRollerStator = tab.add("Top Roller Stator", 0).getEntry();
+        private static GenericEntry bottomRollerSpeed = tab.add("Top Roller Speed", -1).getEntry();
+        private static GenericEntry bottomRollerStator = tab.add("Top Roller Stator", -1).getEntry();
+
+        //Arm & Grabber get() stuff
         private static GenericEntry pivotNU = tab.add("Pivot NU", 0).getEntry();
         private static GenericEntry pivotRad = tab.add("Pivot Angle", 0).getEntry();
         private static GenericEntry pivotStator = tab.add("Pivot Stator", -1).getEntry();
         private static GenericEntry pivotSupply = tab.add("Pivot Supply", -1).getEntry();
+
+        private static GenericEntry setOrienterNU = tab.add("Wrist NU", 0).getEntry();
+        private static GenericEntry setOrienterRad = tab.add("Wrist Angle", 0).getEntry();
+        private static GenericEntry orienterStator = tab.add("Wrist Stator", -1).getEntry();
+        private static GenericEntry dispOrienterNU = tab.add("Actual Wrist NU", 0).getEntry();
+        private static GenericEntry dispOrienterRad = tab.add("Actual Wrist Angle", 0).getEntry();
 
         public static void displayExtendNU(double NU){
             dispExtendNU.setDouble(NU);
@@ -64,35 +78,6 @@ public final class Tabs {
             pivotSupply.setDouble(supply);
         }
 
-        public static double getExtendNU(){
-            return setExtendNU.getDouble(0);
-        }
-        public static double getExtendM(){
-            return setExtendM.getDouble(0);
-        }
-        public static double getPivotNU(){
-            return pivotNU.getDouble(0);
-        }
-        public static double getPivotAngle(){
-            return pivotRad.getDouble(0);
-        }
-    }
-    
-    public static class Grabber{
-        public static final ShuffleboardTab tab = Shuffleboard.getTab("Grabber");
-
-        private static GenericEntry topRollerSpeed = tab.add("Top Roller Speed", 0).getEntry();
-        private static GenericEntry topRollerStator = tab.add("Top Roller Stator", 0).getEntry();
-        private static GenericEntry bottomRollerSpeed = tab.add("Top Roller Speed", -1).getEntry();
-        private static GenericEntry bottomRollerStator = tab.add("Top Roller Stator", -1).getEntry();
-
-        private static GenericEntry setOrienterNU = tab.add("Wrist NU", 0).getEntry();
-        private static GenericEntry setOrienterRad = tab.add("Wrist Angle", 0).getEntry();
-        private static GenericEntry orienterStator = tab.add("Wrist Stator", -1).getEntry();
-        private static GenericEntry dispOrienterNU = tab.add("Actual Wrist NU", 0).getEntry();
-        private static GenericEntry dispOrienterRad = tab.add("Actual Wrist Angle", 0).getEntry();
-
-
         public static void displayTopStator(double stator){
             topRollerStator.setDouble(stator);
         }
@@ -109,6 +94,19 @@ public final class Tabs {
             dispOrienterRad.setDouble(angle);
         }
 
+        public static double getExtendNU(){
+            return setExtendNU.getDouble(0);
+        }
+        public static double getExtendM(){
+            return setExtendM.getDouble(0);
+        }
+        public static double getPivotNU(){
+            return pivotNU.getDouble(0);
+        }
+        public static double getPivotAngle(){
+            return pivotRad.getDouble(0);
+        }
+
         public static double getTopSpeed(){
             return topRollerSpeed.getDouble(0);
         }
@@ -121,5 +119,40 @@ public final class Tabs {
         public static double getOrienterRad(){
             return setOrienterRad.getDouble(0);
         }
+    }
+    
+    public static class Auto{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Auto");
+
+        private static GenericEntry odometryX = tab.add("X", 0).getEntry();
+        private static GenericEntry odometryY = tab.add("Y", 0).getEntry();
+        private static GenericEntry odometryAngle = tab.add("Angle", 0).getEntry();
+        private static GenericEntry gyroAngle = tab.add("Gyro Angle", 0).getEntry();
+
+        public static void displayX(double x){
+            odometryX.setDouble(x);
+        }
+        public static void displayY(double y){
+            odometryY.setDouble(y);
+        }
+        public static void displayOdAngle(double a){
+            odometryAngle.setDouble(a);
+        }
+        public static void displayGyro(double a){
+            gyroAngle.setDouble(a);
+        }
+    }
+
+    public static class Limelight{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Limelight");
+
+        private static GenericEntry tx = tab.add("tx", 0).getEntry();
+        private static GenericEntry ty = tab.add("ty", 0).getEntry();
+        private static GenericEntry tv = tab.add("tv", 0).getEntry();
+
+    }
+
+    public static class Comp{
+        
     }
 }

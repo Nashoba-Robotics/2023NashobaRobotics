@@ -13,9 +13,8 @@ public class IntakeCommand extends CommandBase {
 
     double setPos2;
     boolean atSetPoint2;
-    // double armAngle = 112 * Constants.TAU/360;  //112
-    //double wristNU = 7;
-    //double wristAngle = 0;
+
+    int multiplier;
 
     // public IntakeCommand(double armAngle, double wristAngle) {
     //     addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
@@ -23,7 +22,8 @@ public class IntakeCommand extends CommandBase {
     //     this.armAngle = armAngle;
     // }
 
-    public IntakeCommand(){
+    public IntakeCommand(boolean intakeFront){
+        multiplier = intakeFront ? 1 : -1;
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
     }
 
@@ -31,11 +31,10 @@ public class IntakeCommand extends CommandBase {
     public void initialize() {
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extend(0);
-        ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE);
-        setPos2 = Constants.Arm.INTAKE_ANGLE;
+        ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);
+        setPos2 = Constants.Arm.INTAKE_ANGLE * multiplier;
         atSetPoint2 = false;
-        GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE);
-        //GrabberSubsystem.getInstance().orient(wristAngle);
+        GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE * multiplier);
         lastPos2 = ArmSubsystem.getInstance().getAngle();
     }
 

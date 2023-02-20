@@ -15,7 +15,7 @@ public class IntakeTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        // ArmSubsystem.getInstance().zeroPivot();
+        ArmSubsystem.getInstance().zeroPivot();
         // ArmSubsystem.getInstance().zeroArm();
         // GrabberSubsystem.getInstance().zeroWrist();
 

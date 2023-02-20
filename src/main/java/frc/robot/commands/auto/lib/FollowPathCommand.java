@@ -19,10 +19,6 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class FollowPathCommand extends SequentialCommandGroup {
  
     public FollowPathCommand(PathPlannerTrajectory trajectory) {
-        // PathPlannerTrajectory fixedTrajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, Alliance.Red);
-        // PathPlannerTrajectory fixedTrajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, DriverStation.getAlliance());
-        PathPlannerTrajectory fixedTrajectory = trajectory;
-
         //PID controllers for each axis of control
         PIDController xController = new PIDController(Constants.Swerve.Auto.P_X, 0, Constants.Swerve.Auto.D_X);
         PIDController yController = new PIDController(Constants.Swerve.Auto.P_Y, 0, Constants.Swerve.Auto.D_Y);
@@ -30,18 +26,19 @@ public class FollowPathCommand extends SequentialCommandGroup {
         thetaController.enableContinuousInput(-Constants.TAU/2, Constants.TAU/2);
 
         PPSwerveControllerCommand swerveController = new PPSwerveControllerCommand(
-            fixedTrajectory,
+            trajectory,
             SwerveDriveSubsystem.getInstance()::getPose,
             Constants.Swerve.KINEMATICS,
             xController,
             yController,
             thetaController,
             SwerveDriveSubsystem.getInstance()::setStates,
+            true,
             SwerveDriveSubsystem.getInstance()
             );
 
             addCommands(
-                new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().resetOdometry(fixedTrajectory.getInitialHolonomicPose());}, SwerveDriveSubsystem.getInstance()),
+                new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().resetOdometry(trajectory.getInitialHolonomicPose());}, SwerveDriveSubsystem.getInstance()),
                 swerveController
                 // new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().set(0, 0, 0);}, SwerveDriveSubsystem.getInstance())
             );
@@ -49,12 +46,3 @@ public class FollowPathCommand extends SequentialCommandGroup {
     }
 
 }
-
-
-// PathPlannerTrajectory path = PathPlanner.loadPath
-        
-        // FollowPathWithEvents command = new FollowPathWithEvents(
-        //     ,
-        //     , null)
-
-        // PathPlannerTrajectory.transformTrajectoryForAlliance(null, Alliance.Red);

@@ -66,12 +66,13 @@ public class JoystickValues {
         return this;
     }
 
+    //90 deg lock thing
     public JoystickValues applyAngleDeadzone(double deadzone) {
         double angle = Math.atan2(y, x);
 
         if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) y = 0;
         angle-=Constants.TAU/4;
-        NRUnits.constrainRad(angle);
+        angle = NRUnits.constrainRad(angle);
         if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) x = 0;
         
         return this;

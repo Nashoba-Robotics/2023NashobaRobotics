@@ -74,7 +74,7 @@ public class RobotContainer {
 
     SmartDashboard.putData("AutoScore", new AutoScoreCommand());
 
-    eventMap.put("Intake Start", new IntakeCommand());
+    eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(
         () -> {
             ArmSubsystem.getInstance().pivot(0);
@@ -98,7 +98,7 @@ public class RobotContainer {
   Trigger resetModules = JoystickSubsytem.getInstance().getRightJoystick().button(1);
 
   public void configureButtonBindings(){
-    intakeButton.toggleOnTrue(new IntakeCommand());
+    intakeButton.toggleOnTrue(new IntakeCommand(true));
 
     lowPrepCone.onTrue(new PrepHeightCommand(TargetLevel.LOW));
     midPrepCone.onTrue(new PrepHeightCommand(TargetLevel.MID));

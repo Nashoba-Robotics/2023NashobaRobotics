@@ -49,10 +49,10 @@ public class ArmSubsystem extends SubsystemBase {
         tromboneSlide.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
 
         tromboneSlide.configForwardSoftLimitEnable(true);
-        tromboneSlide.configForwardSoftLimitThreshold(44_000);
+        tromboneSlide.configForwardSoftLimitThreshold(Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT);
 
         tromboneSlide.configReverseSoftLimitEnable(true);
-        tromboneSlide.configReverseSoftLimitThreshold(50);
+        tromboneSlide.configReverseSoftLimitThreshold(Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT);
 
         pivot1.configFactoryDefault();
         pivot1.setNeutralMode(NeutralMode.Brake);
@@ -78,16 +78,16 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.setInverted(InvertType.InvertMotorOutput);
 
         pivot1.configForwardSoftLimitEnable(true);
-        pivot1.configForwardSoftLimitThreshold(140_000);
+        pivot1.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
 
         pivot1.configReverseSoftLimitEnable(true);
-        pivot1.configReverseSoftLimitThreshold(-140_000);
+        pivot1.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
 
         pivot2.configForwardSoftLimitEnable(true);
-        pivot2.configForwardSoftLimitThreshold(140_000);
+        pivot2.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
 
         pivot2.configReverseSoftLimitEnable(true);
-        pivot2.configReverseSoftLimitThreshold(-140_000);
+        pivot2.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
 
         //Positive is extending out
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
@@ -152,6 +152,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void pivot(double angle){
         //How does motion magic work with 2 motors?
         angle = NRUnits.Arm.radToNU(angle);
+        if(Constants.Logging.ARM) LogManager.appendToLog(angle, "Arm:/Pivot2/SetPosition");
         pivot1.set(ControlMode.MotionMagic,angle);
         pivot2.set(ControlMode.MotionMagic, angle);
     }

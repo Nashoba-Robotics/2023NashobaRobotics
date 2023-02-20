@@ -96,6 +96,10 @@ public class SwerveModule {
         turnMotor.setSelectedSensorPosition(NRUnits.Drive.degToNU(turnSensor.getAbsolutePosition()));
     }
 
+    public void resetTurnToAbsolute() {
+        turnMotor.setSelectedSensorPosition(NRUnits.Drive.degToNU(turnSensor.getAbsolutePosition()));
+    }
+
     public void zero(){
         set(0, 0);
     }

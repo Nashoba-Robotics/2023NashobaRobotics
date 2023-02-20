@@ -1,4 +1,4 @@
-package frc.robot.commands.score;
+package frc.robot.commands.score.temp;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,7 +10,7 @@ import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.Constants.Field.TargetLevel;
 
 
-public class PrepHeightCommand extends CommandBase {
+public class OppositePrepHeightCommand extends CommandBase {
     TargetLevel targetLevel;
     double targetPos;
 
@@ -19,10 +19,8 @@ public class PrepHeightCommand extends CommandBase {
     boolean joystick0;
     boolean joystick02;
     boolean gotToStart;
-    boolean atSetPoint2;
-    double setPos2;
 
-    public PrepHeightCommand(TargetLevel targetLevel) {
+    public OppositePrepHeightCommand(TargetLevel targetLevel) {
         this.targetLevel = targetLevel;
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
@@ -30,25 +28,22 @@ public class PrepHeightCommand extends CommandBase {
     public void initialize() {
         switch(targetLevel) {
             case HIGH: 
-             GrabberSubsystem.getInstance().orientPos(-3);
-             ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
+             GrabberSubsystem.getInstance().orientPos(3);
+             ArmSubsystem.getInstance().pivot(-Constants.Arm.HIGH_ANGLE);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;
-             setPos2 = Constants.Arm.HIGH_ANGLE;
              break;
             case MID: 
-             GrabberSubsystem.getInstance().orientPos(-3);
-             ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE);
+             GrabberSubsystem.getInstance().orientPos(3);
+             ArmSubsystem.getInstance().pivot(-Constants.Arm.MID_ANGLE);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
              targetPos = Constants.Arm.MID_EXTEND_NU;
-             setPos2 = Constants.Arm.MID_ANGLE;
              break;
            case LOW: 
-            GrabberSubsystem.getInstance().orientPos(-3);
-            ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE);
+            GrabberSubsystem.getInstance().orientPos(3);
+            ArmSubsystem.getInstance().pivot(-Constants.Arm.LOW_ANGLE);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
             targetPos = Constants.Arm.LOW_EXTEND_NU;
-            setPos2 = Constants.Arm.LOW_ANGLE;
             break;
         }
         gotToStart = false;
@@ -76,26 +71,19 @@ public class PrepHeightCommand extends CommandBase {
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < Constants.TAU / 40){
-                atSetPoint2 = true;
-                lastPos2 = ArmSubsystem.getInstance().getAngle();
-            } 
-    
-            if(atSetPoint2) {
-                double pivotX = RobotContainer.operatorController.getX();
-                pivotX = Math.abs(pivotX) < 0.1 ? 0 : (pivotX-0.1)/0.9;
-                if(pivotX == 0){ // If there isn't any input, maintain the position
-                    // ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
-                    if(!joystick02){
-                        joystick02 = true;
-                        lastPos2 = ArmSubsystem.getInstance().getAngle();
-                    }
-                    ArmSubsystem.getInstance().pivot(lastPos2);
+            double pivotX = RobotContainer.operatorController.getX();
+            pivotX = Math.abs(pivotX) < 0.1 ? 0 : (y-0.1)/0.9;
+            if(pivotX == 0){ // If there isn't any input, maintain the position
+                ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
+                if(!joystick02){
+                    joystick02 = true;
+                    lastPos2 = ArmSubsystem.getInstance().getAngle();
                 }
-                else{
-                    ArmSubsystem.getInstance().setPivot(pivotX*0.1);
-                    joystick02 = false;
-                }
+                ArmSubsystem.getInstance().pivot(lastPos2);
+            }
+            else{
+                ArmSubsystem.getInstance().setPivot(pivotX*0.3);
+                joystick02 = false;
             }
         }
     }

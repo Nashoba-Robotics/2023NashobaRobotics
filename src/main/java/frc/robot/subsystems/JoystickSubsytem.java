@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants;
 import frc.robot.lib.util.JoystickValues;
 
@@ -9,12 +10,12 @@ public class JoystickSubsytem extends SubsystemBase {
     
     private static JoystickSubsytem instance;
 
-    private Joystick rightJoystick;
-    private Joystick leftJoystick;
+    private CommandJoystick rightJoystick;
+    private CommandJoystick leftJoystick;
 
     public JoystickSubsytem() {
-        rightJoystick = new Joystick(Constants.Joystick.RIGHT_JOYSTICK_PORT);
-        leftJoystick = new Joystick(Constants.Joystick.LEFT_JOYSTICK_PORT);
+        rightJoystick = new CommandJoystick(Constants.Joystick.RIGHT_JOYSTICK_PORT);
+        leftJoystick = new CommandJoystick(Constants.Joystick.LEFT_JOYSTICK_PORT);
     }
 
     public static JoystickSubsytem getInstance() {
@@ -31,11 +32,11 @@ public class JoystickSubsytem extends SubsystemBase {
         return new JoystickValues(leftJoystick.getX(), -leftJoystick.getY());
     }
 
-    public Joystick getRightJoystick() {
+    public CommandJoystick getRightJoystick() {
         return rightJoystick;
     }
 
-    public Joystick getLefJoystick() {
+    public CommandJoystick getLeftJoystick() {
         return leftJoystick;
     }
 

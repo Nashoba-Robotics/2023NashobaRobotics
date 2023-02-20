@@ -14,11 +14,11 @@ public class IntakeTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        ArmSubsystem.getInstance().zeroPivot();
-        ArmSubsystem.getInstance().zeroArm();
-        GrabberSubsystem.getInstance().zeroWrist();
+        // ArmSubsystem.getInstance().zeroPivot();
+        // ArmSubsystem.getInstance().zeroArm();
+        // GrabberSubsystem.getInstance().zeroWrist();
 
-        ArmSubsystem.getInstance().extend(0);   //Added this to keep the arm in place as the pivot moves
+        // ArmSubsystem.getInstance().extend(0);   //Added this to keep the arm in place as the pivot moves
     
         SmartDashboard.putNumber("Arm Angle", 0);
         SmartDashboard.putNumber("SetWristNU", 0);

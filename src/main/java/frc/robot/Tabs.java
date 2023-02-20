@@ -156,5 +156,6 @@ public final class Tabs {
         //Camera Stream
         //Odometry
         //
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Competition");
     }
 }

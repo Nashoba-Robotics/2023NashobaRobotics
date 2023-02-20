@@ -187,12 +187,12 @@ public final class Constants {
     public static final double PIVOT_ACCELERATION = 10_000;
 
     public static final double PIVOT_KF_1 = 0.047;
-    public static final double PIVOT_KP_1 = 0.2;
+    public static final double PIVOT_KP_1 = 0.25;
     public static final double PIVOT_KI_1 = 0;
     public static final double PIVOT_KD_1 = 0;
 
     public static final double PIVOT_KF_2 = 0.047;
-    public static final double PIVOT_KP_2 = 0.2;
+    public static final double PIVOT_KP_2 = 0.25;
     public static final double PIVOT_KI_2 = 0;
     public static final double PIVOT_KD_2 = 0;
 
@@ -203,8 +203,8 @@ public final class Constants {
 
     public static final double INTAKE_ANGLE = 112 * Constants.TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 31_629;
-    public static final double MID_EXTEND_NU = 15_000;
+    public static final double HIGH_EXTEND_NU = 43_000;
+    public static final double MID_EXTEND_NU = 22_000;
     public static final double LOW_EXTEND_NU = 0;
 
     public static final double ERROR_ANGLE = 0;

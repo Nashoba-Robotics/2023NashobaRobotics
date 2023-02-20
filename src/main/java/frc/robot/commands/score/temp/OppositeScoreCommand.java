@@ -1,24 +1,22 @@
-package frc.robot.commands.score;
+package frc.robot.commands.score.temp;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
-public class ScoreCommand extends CommandBase {
+public class OppositeScoreCommand extends CommandBase {
     private long startTime;    
 
-    public ScoreCommand() {
+    public OppositeScoreCommand() {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
 
     @Override
     public void initialize() {
         startTime = System.currentTimeMillis();
-        double angleChange = DriverStation.isAutonomous() ? 4 * Constants.TAU/360 : 2 * Constants.TAU/360;
-        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange);
+        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() - 5 * Constants.TAU / 360);
         ArmSubsystem.getInstance().extendNU(1000);
         GrabberSubsystem.getInstance().set(0.1);
     }
@@ -39,7 +37,7 @@ public class ScoreCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - startTime > 5000;
+        return DriverStation.isAutonomous() || Math.abs(ArmSubsystem.getInstance().getPos()-100) < 100 || System.currentTimeMillis() - startTime > 5000;
     }
 
 }

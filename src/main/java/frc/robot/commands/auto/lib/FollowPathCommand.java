@@ -6,6 +6,7 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
@@ -18,7 +19,9 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class FollowPathCommand extends SequentialCommandGroup {
  
     public FollowPathCommand(PathPlannerTrajectory trajectory) {
-        PathPlannerTrajectory fixedTrajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, DriverStation.getAlliance());
+        // PathPlannerTrajectory fixedTrajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, Alliance.Red);
+        // PathPlannerTrajectory fixedTrajectory = PathPlannerTrajectory.transformTrajectoryForAlliance(trajectory, DriverStation.getAlliance());
+        PathPlannerTrajectory fixedTrajectory = trajectory;
 
         //PID controllers for each axis of control
         PIDController xController = new PIDController(Constants.Swerve.Auto.P_X, 0, Constants.Swerve.Auto.D_X);

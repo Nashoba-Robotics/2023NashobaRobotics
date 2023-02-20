@@ -31,8 +31,9 @@ public class ArmTestCommand extends CommandBase{
 
         // SmartDashboard.putNumber("Arm Speed", 0);
         // SmartDashboard.putNumber("Pivot Speed", 0);
-        ArmSubsystem.getInstance().zeroArm();
+        // ArmSubsystem.getInstance().zeroArm();
         SmartDashboard.putNumber("Arm Set Pos", 0);
+        SmartDashboard.putNumber("SetArmNU", 0);
     }
 
     //TODO: See if NU positive goes in the correct direction
@@ -71,7 +72,7 @@ public class ArmTestCommand extends CommandBase{
         // ArmSubsystem.getInstance().pivot(angle);
 
         double pos = SmartDashboard.getNumber("SetArmNU", 0);    //NU
-        ArmSubsystem.getInstance().extend(pos);
+        ArmSubsystem.getInstance().extendNU(pos);
 
         double angle = SmartDashboard.getNumber("Arm Angle", 0);    //Degrees
         angle *= Constants.TAU/360;

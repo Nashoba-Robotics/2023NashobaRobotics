@@ -1,0 +1,62 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.8324073770400287,
+        "y": 4.8884044145148735
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.70747608161883,
+        "y": 4.8874039628421135
+      },
+      "holonomicAngle": 90.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.682992169403143,
+        "y": 4.556248086855149
+      },
+      "prevControl": {
+        "x": 5.244176984080464,
+        "y": 4.8988231309795935
+      },
+      "nextControl": null,
+      "holonomicAngle": -90.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": [
+    {
+      "position": 0.03,
+      "names": [
+        "Start Intake"
+      ]
+    },
+    {
+      "position": 1.0,
+      "names": [
+        "Stop Intake"
+      ]
+    }
+  ]
+}

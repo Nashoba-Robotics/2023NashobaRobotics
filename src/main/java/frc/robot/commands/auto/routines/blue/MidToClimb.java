@@ -1,4 +1,4 @@
-package frc.robot.commands.auto.routines;
+package frc.robot.commands.auto.routines.blue;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;

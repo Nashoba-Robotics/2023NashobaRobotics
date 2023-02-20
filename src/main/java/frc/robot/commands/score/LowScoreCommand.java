@@ -7,20 +7,19 @@ import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
-public class ScoreCommand extends CommandBase {
+public class LowScoreCommand extends CommandBase {
     private long startTime;    
 
-    public ScoreCommand() {
+    public LowScoreCommand() {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
 
     @Override
     public void initialize() {
         startTime = System.currentTimeMillis();
-        double angleChange = DriverStation.isAutonomous() ? 4 * Constants.TAU/360 : 2 * Constants.TAU/360;
-        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange);
+        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
         ArmSubsystem.getInstance().extendNU(1000);
-        GrabberSubsystem.getInstance().set(0.1);
+        GrabberSubsystem.getInstance().set(0.3);
     }
 
     @Override

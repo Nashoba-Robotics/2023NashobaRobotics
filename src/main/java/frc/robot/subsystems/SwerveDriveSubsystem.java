@@ -214,6 +214,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         //return balanceController.calculate(getBalanceAngle());
     }
 
+    public void resetModulesAbsolute() {
+        for(SwerveModule module : modules) {
+            module.resetTurnToAbsolute();
+        }
+    }
+
     @Override
     public void periodic(){
         for(SwerveModule module : modules) module.updateMovePosition();

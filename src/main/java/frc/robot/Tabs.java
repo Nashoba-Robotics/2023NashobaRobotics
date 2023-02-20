@@ -1,6 +1,9 @@
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 
@@ -37,6 +40,7 @@ public final class Tabs {
         private static GenericEntry extendSupply = tab.add("Extend Supply", -1).getEntry();
 
         //Grabber Stuff
+        private static GenericEntry rollerSpeed = tab.add("Roller Speed", 0).getEntry();
         private static GenericEntry topRollerSpeed = tab.add("Top Roller Speed", 0).getEntry();
         private static GenericEntry topRollerStator = tab.add("Top Roller Stator", 0).getEntry();
         private static GenericEntry bottomRollerSpeed = tab.add("Top Roller Speed", -1).getEntry();
@@ -53,6 +57,16 @@ public final class Tabs {
         private static GenericEntry orienterStator = tab.add("Wrist Stator", -1).getEntry();
         private static GenericEntry dispOrienterNU = tab.add("Actual Wrist NU", 0).getEntry();
         private static GenericEntry dispOrienterRad = tab.add("Actual Wrist Angle", 0).getEntry();
+
+        public static void add(Sendable sendable){
+            tab.add(sendable);
+        }
+        public static void add (String name, Sendable sendable){
+            tab.add(name, sendable);
+        }
+        public static void add(String name, Object o){
+            tab.add(name, o);
+        }
 
         public static void displayExtendNU(double NU){
             dispExtendNU.setDouble(NU);
@@ -107,6 +121,9 @@ public final class Tabs {
             return pivotRad.getDouble(0);
         }
 
+        public static double getGrabSpeed(){
+            return rollerSpeed.getDouble(0);
+        }
         public static double getTopSpeed(){
             return topRollerSpeed.getDouble(0);
         }
@@ -128,6 +145,16 @@ public final class Tabs {
         private static GenericEntry odometryY = tab.add("Y", 0).getEntry();
         private static GenericEntry odometryAngle = tab.add("Angle", 0).getEntry();
         private static GenericEntry gyroAngle = tab.add("Gyro Angle", 0).getEntry();
+        
+        public static void add(Sendable sendable){
+            tab.add(sendable);
+        }
+        public static void add (String name, Sendable sendable){
+            tab.add(name, sendable);
+        }
+        public static void add(String name, Object o){
+            tab.add(name, o);
+        }
 
         public static void displayX(double x){
             odometryX.setDouble(x);
@@ -150,6 +177,15 @@ public final class Tabs {
         private static GenericEntry ty = tab.add("ty", 0).getEntry();
         private static GenericEntry tv = tab.add("tv", 0).getEntry();
 
+        public static void add(Sendable sendable){
+            tab.add(sendable);
+        }
+        public static void add (String name, Sendable sendable){
+            tab.add(name, sendable);
+        }
+        public static void add(String name, Object o){
+            tab.add(name, o);
+        }
     }
 
     public static class Comp{
@@ -157,5 +193,15 @@ public final class Tabs {
         //Odometry
         //
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Competition");
+ 
+        public static void add(Sendable sendable){
+            tab.add(sendable);
+        }
+        public static void add (String name, Sendable sendable){
+            tab.add(name, sendable);
+        }
+        public static void add(String name, Object o){
+            tab.add(name, o);
+        }
     }
 }

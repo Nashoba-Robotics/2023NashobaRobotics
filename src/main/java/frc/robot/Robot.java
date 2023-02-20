@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.auto.routines.DumbAuto;
 import frc.robot.commands.auto.routines.blue.LeftTo0ToScore;
@@ -18,8 +19,10 @@ import frc.robot.commands.auto.routines.blue.RightTo3ToScoreAuto;
 import frc.robot.commands.auto.routines.red.REDLeftTo0ToScore;
 import frc.robot.commands.auto.routines.red.REDMidToClimb;
 import frc.robot.commands.auto.routines.red.REDRightTo3ToScoreAuto;
+import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -52,6 +55,17 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(autoChooser);
     Tabs.Comp.tab.add(autoChooser);
 
+    Tabs.Intake.add(ArmSubsystem.getInstance());
+    Tabs.Intake.add(GrabberSubsystem.getInstance());
+    Tabs.Intake.add(new IntakeTestCommand());
+    Tabs.Intake.add(new InstantCommand(
+      () -> ArmSubsystem.getInstance().zeroPivot(),
+      ArmSubsystem.getInstance()
+    ));
+    Tabs.Intake.add(new InstantCommand(
+      () -> ArmSubsystem.getInstance().zeroArm(),
+      ArmSubsystem.getInstance()
+    ));
     ArmSubsystem.getInstance().zeroArm();
   }
 

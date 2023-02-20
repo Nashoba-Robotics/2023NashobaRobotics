@@ -85,7 +85,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // LimelightSubsystem.getInstance().defaultLED();
     autoChooser.getSelected().schedule();
-    CandleSubsystem.getInstance().set(CandleState.AUTO);
+    // CandleSubsystem.getInstance().set(CandleState.AUTO);
   }
 
   @Override
@@ -103,7 +103,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-
+    
   }
 
   @Override

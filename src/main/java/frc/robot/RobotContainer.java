@@ -26,6 +26,7 @@ import frc.robot.commands.test.BalanceTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
+import frc.robot.commands.test.LEDTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
 import frc.robot.commands.score.LowScoreCommand;
 import frc.robot.commands.score.PrepHeightCommand;
@@ -83,6 +84,8 @@ public class RobotContainer {
         ArmSubsystem.getInstance(),
         GrabberSubsystem.getInstance()
     ));
+
+    SmartDashboard.putData(new LEDTestCommand());
   }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);

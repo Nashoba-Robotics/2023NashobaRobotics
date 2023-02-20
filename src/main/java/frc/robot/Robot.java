@@ -49,14 +49,14 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putData(autoChooser);
     Tabs.Comp.tab.add(autoChooser);
 
-    Tabs.Intake.add(ArmSubsystem.getInstance());
-    Tabs.Intake.add(GrabberSubsystem.getInstance());
-    Tabs.Intake.add(new IntakeTestCommand());
-    Tabs.Intake.add(new InstantCommand(
+    Tabs.Intake.tab.add(ArmSubsystem.getInstance());
+    Tabs.Intake.tab.add(GrabberSubsystem.getInstance());
+    Tabs.Intake.tab.add(new IntakeTestCommand());
+    Tabs.Intake.tab.add("Zero Pivot", new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroPivot(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.add(new InstantCommand(
+    Tabs.Intake.tab.add("Zero Arm", new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroArm(),
       ArmSubsystem.getInstance()
     ));

@@ -60,10 +60,10 @@ public class PrepHeightCommand extends CommandBase {
         SmartDashboard.putNumber("Arm nu", ArmSubsystem.getInstance().getPos());
         if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < 500) gotToStart = true;
         if(gotToStart) {
-            double y = RobotContainer.operatorController.getThrottle() * 0.3;
+            double y = RobotContainer.operatorController.getThrottle();
             y = Math.abs(y) < 0.1 ? 0 : (y-0.1)/0.9;    //Put deadzone in Constants
+            y *= 0.3;
             if(y == 0){ // If there isn't any input, maintain the position
-                ArmSubsystem.getInstance().holdArm();
                 if(!joystick0){
                     joystick0 = true;
                     lastPos = ArmSubsystem.getInstance().getPos();
@@ -78,14 +78,13 @@ public class PrepHeightCommand extends CommandBase {
             //Added pivoting manual
             if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < Constants.TAU / 40){
                 atSetPoint2 = true;
-                lastPos2 = ArmSubsystem.getInstance().getAngle();
+                // lastPos2 = ArmSubsystem.getInstance().getAngle();
             } 
     
             if(atSetPoint2) {
                 double pivotX = RobotContainer.operatorController.getX();
                 pivotX = Math.abs(pivotX) < 0.1 ? 0 : (pivotX-0.1)/0.9;
                 if(pivotX == 0){ // If there isn't any input, maintain the position
-                    // ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
                     if(!joystick02){
                         joystick02 = true;
                         lastPos2 = ArmSubsystem.getInstance().getAngle();
@@ -96,6 +95,8 @@ public class PrepHeightCommand extends CommandBase {
                     ArmSubsystem.getInstance().setPivot(pivotX*0.1);
                     joystick02 = false;
                 }
+                SmartDashboard.putBoolean("Manual", joystick02);
+                SmartDashboard.putNumber("SetPoint", lastPos2);
             }
         }
     }

@@ -35,11 +35,12 @@ public class ScoreCommand extends CommandBase {
         GrabberSubsystem.getInstance().orient(0);
         ArmSubsystem.getInstance().stop();
         ArmSubsystem.getInstance().pivot(0);
+        ArmSubsystem.getInstance().extendNU(0);
     }
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - startTime > 5000;
+        return System.currentTimeMillis() - startTime > 2000;
     }
 
 }

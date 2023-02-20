@@ -126,6 +126,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void extendNU(double nu){
+        if(Constants.Logging.ARM) LogManager.appendToLog(nu, "Arm:/Extender/SetNU");
         tromboneSlide.set(ControlMode.MotionMagic, nu);
     }
 

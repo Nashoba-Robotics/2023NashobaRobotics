@@ -180,8 +180,8 @@ public final class Constants {
     public static final double ARM_KI = 0;
     public static final double ARM_KD = 0;
 
-    public static final double ARM_CRUISE_VELOCITY = 5_000;
-    public static final double ARM_ACCELERATION = 5_000;
+    public static final double ARM_CRUISE_VELOCITY = 40_000;
+    public static final double ARM_ACCELERATION = 12_000;
 
     public static final double PIVOT_CRUISE_VELOCITY = 40_000;
     public static final double PIVOT_ACCELERATION = 40_000;
@@ -209,8 +209,8 @@ public final class Constants {
 
     public static final double ERROR_ANGLE = 0;
 
-    public static final int EXTEND_FORWARD_SOFT_LIMIT = 44_000;
-    public static final int EXTEND_REVERSE_SOFT_LIMIT = 50;
+    public static final int EXTEND_FORWARD_SOFT_LIMIT = 50_000;
+    public static final int EXTEND_REVERSE_SOFT_LIMIT = 3000;
 
     public static final int PIVOT_FORWARD_SOFT_LIMIT = 140_000;
     public static final int PIVOT_REVERSE_SOFT_LIMIT = -140_000;

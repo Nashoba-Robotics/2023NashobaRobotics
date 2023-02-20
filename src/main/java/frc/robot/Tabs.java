@@ -43,8 +43,8 @@ public final class Tabs {
         private static GenericEntry rollerSpeed = tab.add("Roller Speed", 0).getEntry();
         private static GenericEntry topRollerSpeed = tab.add("Top Roller Speed", 0).getEntry();
         private static GenericEntry topRollerStator = tab.add("Top Roller Stator", 0).getEntry();
-        private static GenericEntry bottomRollerSpeed = tab.add("Top Roller Speed", -1).getEntry();
-        private static GenericEntry bottomRollerStator = tab.add("Top Roller Stator", -1).getEntry();
+        private static GenericEntry bottomRollerSpeed = tab.add("Bot Roller Speed", -1).getEntry();
+        private static GenericEntry bottomRollerStator = tab.add("Bot Roller Stator", -1).getEntry();
 
         //Arm & Grabber get() stuff
         private static GenericEntry pivotNU = tab.add("Pivot NU", 0).getEntry();
@@ -58,15 +58,15 @@ public final class Tabs {
         private static GenericEntry dispOrienterNU = tab.add("Actual Wrist NU", 0).getEntry();
         private static GenericEntry dispOrienterRad = tab.add("Actual Wrist Angle", 0).getEntry();
 
-        public static void add(Sendable sendable){
-            tab.add(sendable);
-        }
-        public static void add (String name, Sendable sendable){
-            tab.add(name, sendable);
-        }
-        public static void add(String name, Object o){
-            tab.add(name, o);
-        }
+        // public static void add(Sendable sendable){
+        //     tab.add(sendable);
+        // }
+        // public static void add (String name, Sendable sendable){
+        //     tab.add(name, sendable);
+        // }
+        // public static void add(String name, Object o){
+        //     tab.add(name, o);
+        // }
 
         public static void displayExtendNU(double NU){
             dispExtendNU.setDouble(NU);

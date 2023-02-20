@@ -19,9 +19,11 @@ import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
@@ -71,6 +73,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // LimelightSubsystem.getInstance().off();
+    CandleSubsystem.getInstance().set(CandleState.DISABLED);
   }
 
   @Override
@@ -82,6 +85,7 @@ public class Robot extends TimedRobot {
   public void autonomousInit() {
     // LimelightSubsystem.getInstance().defaultLED();
     autoChooser.getSelected().schedule();
+    CandleSubsystem.getInstance().set(CandleState.AUTO);
   }
 
   @Override
@@ -94,6 +98,7 @@ public class Robot extends TimedRobot {
     // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
     // LimelightSubsystem.getInstance().defaultLED();
     ArmSubsystem.getInstance().stop();
+    CandleSubsystem.getInstance().set(CandleState.ENABLED);
   }
 
   @Override

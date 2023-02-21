@@ -40,7 +40,6 @@ public class FollowPathCommand extends SequentialCommandGroup {
             addCommands(
                 new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().resetOdometry(trajectory.getInitialHolonomicPose());}, SwerveDriveSubsystem.getInstance()),
                 swerveController
-                // new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().set(0, 0, 0);}, SwerveDriveSubsystem.getInstance())
             );
 
     }

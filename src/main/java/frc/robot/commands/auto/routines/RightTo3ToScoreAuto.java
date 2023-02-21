@@ -42,7 +42,6 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             map);
 
         addCommands(
-            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/4), SwerveDriveSubsystem.getInstance()),
             new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
             new AutoScoreCommand(),
             command

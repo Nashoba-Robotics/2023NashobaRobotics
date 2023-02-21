@@ -159,6 +159,8 @@ public final class Constants {
 
     public static final double GEAR_RATIO = 48 * 36 / 22.; //TODO: find why 1.15
 
+    public static final double SCORE_NU = -3;
+
   }
 
   public static final class Arm {
@@ -239,7 +241,7 @@ public final class Constants {
   }
 
   public static final class Logging {
-    public static final boolean ARM = true;
+    public static final boolean ARM = false;
     public static final boolean GRABBER = false;
     public static final boolean SWERVE = false;
   }

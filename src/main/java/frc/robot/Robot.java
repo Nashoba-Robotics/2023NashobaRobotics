@@ -5,6 +5,7 @@ import javax.swing.text.StyleContext.SmallAttributeSet;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,6 +19,7 @@ import frc.robot.commands.auto.routines.MidToClimb;
 import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
+import frc.robot.lib.math.NRUnits.Drive;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -84,6 +86,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // LimelightSubsystem.getInstance().defaultLED();
+    SwerveDriveSubsystem.getInstance().setGyro(DriverStation.getAlliance() == Alliance.Blue ? Constants.TAU/4 : -Constants.TAU/4);
     autoChooser.getSelected().schedule();
     // CandleSubsystem.getInstance().set(CandleState.AUTO);
   }

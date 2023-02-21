@@ -70,10 +70,10 @@ public class JoystickValues {
     public JoystickValues applyAngleDeadzone(double deadzone) {
         double angle = Math.atan2(y, x);
 
-        if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) y = 0;
-        angle-=Constants.TAU/4;
-        angle = NRUnits.constrainRad(angle);
-        if(Math.min(Math.abs(angle), Math.abs(Constants.TAU - angle)) < deadzone) x = 0;
+        if(-deadzone < angle && angle < deadzone
+        || -deadzone < Constants.TAU/2 - angle && Constants.TAU/2 - angle < 0) y = 0;
+
+        if(-deadzone < angle - Constants.TAU/4 && angle - Constants.TAU/4 < deadzone) x = 0;
         
         return this;
     }

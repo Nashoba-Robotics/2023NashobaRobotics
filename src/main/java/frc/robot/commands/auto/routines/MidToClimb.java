@@ -13,7 +13,6 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class MidToClimb extends SequentialCommandGroup{
     public MidToClimb(){
         addCommands(
-            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/4), SwerveDriveSubsystem.getInstance()),
             new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
             new AutoScoreCommand(),
             new FollowPathCommand(AutoPaths.midAToClimb).until(SwerveDriveSubsystem.getInstance()::notLevel),

@@ -11,7 +11,6 @@ public class DumbAuto extends SequentialCommandGroup {
     
     public DumbAuto() {
         addCommands(
-            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/4), SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(),
             new MoveBackCommand()  
         );

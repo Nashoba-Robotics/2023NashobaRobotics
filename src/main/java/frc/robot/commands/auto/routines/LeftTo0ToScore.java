@@ -41,7 +41,6 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
             path.getMarkers(),
             map);
         addCommands(
-            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/4), SwerveDriveSubsystem.getInstance()),
             new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
             new AutoScoreCommand(),
             command

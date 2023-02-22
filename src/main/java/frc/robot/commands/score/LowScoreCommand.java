@@ -8,7 +8,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
 public class LowScoreCommand extends CommandBase {
-    private long startTime;    
+    private long startTime;
 
     public LowScoreCommand() {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());

@@ -14,8 +14,8 @@ public class IntakeTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        ArmSubsystem.getInstance().zeroPivot();
-        ArmSubsystem.getInstance().zeroArm();
+        ArmSubsystem.getInstance().zeroPivotSensor();
+        ArmSubsystem.getInstance().zeroArmSensor();
         GrabberSubsystem.getInstance().zeroWrist();
 
         // ArmSubsystem.getInstance().extend(0);   //Added this to keep the arm in place as the pivot moves

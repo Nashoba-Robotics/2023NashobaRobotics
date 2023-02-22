@@ -30,13 +30,13 @@ public class SwerveDriveCommand extends CommandBase {
     public void execute() {
         // double multiplier = (int)SmartDashboard.getNumber("kiddy mode", 0)==1 ? 0.3 : 1;
         // double multiplier = DriverStation.getAlliance() == Alliance.Blue ? 1 : -1;
-        double multiplier = 1; //TODO: test above
+        double multiplier = 1;
 
         SwerveDriveSubsystem.getInstance().set(
             JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
                 Constants.Joystick.MOVE_DEAD_ZONE,
                 Constants.Joystick.MOVE_SENSITIVITY
-            ).multiply(multiplier).swap(),
+            ).multiply(multiplier).swap().applyAngleDeadzone(10 * Constants.TAU/360),
             JoystickSubsytem.getInstance().getRightJoystickValues().shape(
                 Constants.Joystick.TURN_DEAD_ZONE,
                 Constants.Joystick.TURN_SENSITIVITY

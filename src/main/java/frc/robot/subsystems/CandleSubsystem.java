@@ -2,15 +2,18 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
+import com.ctre.phoenix.led.RgbFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
+import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class CandleSubsystem extends SubsystemBase {
     
-    private final static int LED_COUNT = 39;
+    private final static int LED_COUNT = 116;
     // private static final int[] yellow = {0,0,0};
     private static final int[] yellow = {255,80,0};
     private final static int[] purple = {148,0,211};
@@ -52,7 +55,9 @@ public class CandleSubsystem extends SubsystemBase {
                 break;
             case DISABLED:
                 candle.clearAnimation(0);
-                candle.setLEDs(defaultColor[0], defaultColor[1], defaultColor[2]);
+                candle.animate(new RgbFadeAnimation(0.5, 0.2, LED_COUNT, 0));
+                candle.animate(new LarsonAnimation(defaultColor[0], defaultColor[1], defaultColor[2], 0, 0.3, LED_COUNT, BounceMode.Back, 7));
+                // candle.setLEDs(defaultColor[0], defaultColor[1], defaultColor[2]);
                 break;
             case AUTO:
                 candle.animate(new RainbowAnimation());

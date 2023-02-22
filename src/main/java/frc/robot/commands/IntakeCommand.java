@@ -29,8 +29,11 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        ArmSubsystem.getInstance().setCruiseVelocity(400_000);
+        ArmSubsystem.getInstance().setAceleration(60_000);
+
         // Extend is TEMP to test at the same distance
-        ArmSubsystem.getInstance().extend(0);
+        ArmSubsystem.getInstance().extendNU(0);
         ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);
         setPos2 = Constants.Arm.INTAKE_ANGLE * multiplier;
         atSetPoint2 = false;

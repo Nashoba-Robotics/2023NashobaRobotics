@@ -54,7 +54,7 @@ public class RobotContainer {
     // SmartDashboard.putData(new BalanceTestCommand());
     SmartDashboard.putData(new ZeroPivotCommand());
     // SmartDashboard.putData(new ArmTestCommand());
-    SmartDashboard.putData("ZeroArmSensor", new InstantCommand(() -> ArmSubsystem.getInstance().zeroArm(), ArmSubsystem.getInstance()));
+    SmartDashboard.putData("ZeroArmSensor", new InstantCommand(() -> ArmSubsystem.getInstance().zeroArmSensor(), ArmSubsystem.getInstance()));
     SmartDashboard.putData("ZeroWristSensor", new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
     //SmartDashboard.putData(new TestGrabberCommand());
@@ -112,6 +112,7 @@ public class RobotContainer {
 
     resetGyro.onTrue(new InstantCommand(() -> {
       SwerveDriveSubsystem.getInstance().setGyro(0);
+      SwerveDriveSubsystem.getInstance().resetOdometry(SwerveDriveSubsystem.getInstance().getPose());
     }, SwerveDriveSubsystem.getInstance()));
 
     resetModules.onTrue(new InstantCommand(() -> 

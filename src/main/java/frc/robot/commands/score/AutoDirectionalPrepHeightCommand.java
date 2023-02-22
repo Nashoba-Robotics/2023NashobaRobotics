@@ -33,18 +33,10 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     }
 
     public void initialize() {
+        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        ArmSubsystem.getInstance().setDefaultAcceleration();
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
-        switch(DriverStation.getAlliance()) {
-            case Red:
-                scoreFront = gyroAngle < 0 && gyroAngle >= -Constants.TAU / 2;
-                break;
-            case Blue:
-                scoreFront = gyroAngle >= 0 && gyroAngle <= Constants.TAU / 2;
-                break;
-            case Invalid:
-                scoreFront = true;
-                break;
-        }
+        scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
 
         multiplier = scoreFront ? 1 : -1;
 

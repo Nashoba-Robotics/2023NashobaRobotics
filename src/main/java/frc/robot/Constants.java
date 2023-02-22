@@ -75,10 +75,10 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = -251.191;
-    public static final double FRONT_LEFT_OFFSET_DEGREES = 161.191;
-    public static final double BACK_LEFT_OFFSET_DEGREES = 15.82;
-    public static final double BACK_RIGHT_OFFSET_DEGREES = -309.199;
+    public static final double FRONT_RIGHT_OFFSET_DEGREES = -251.191 - 90;
+    public static final double FRONT_LEFT_OFFSET_DEGREES = 161.191 - 90;
+    public static final double BACK_LEFT_OFFSET_DEGREES = 15.82 - 90;
+    public static final double BACK_RIGHT_OFFSET_DEGREES = -309.199 - 90;
 
     public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
@@ -221,7 +221,7 @@ public final class Constants {
 
   public static final class Field {
     public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
-    public static final double K_CARPET = 0.04; // should not be higher than 0.5
+    public static final double K_CARPET = 0.0; // should not be higher than 0.5
 
     public enum TargetLevel {
       HIGH,

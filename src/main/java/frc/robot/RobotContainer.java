@@ -86,11 +86,11 @@ public class RobotContainer {
     SmartDashboard.putData(new LEDTestCommand());
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
     Tabs.Intake.zeroes.add(new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroArm(),
+      () -> ArmSubsystem.getInstance().zeroArmSensor(),
       ArmSubsystem.getInstance()
     ));
     Tabs.Intake.zeroes.add(new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroPivot(),
+      () -> ArmSubsystem.getInstance().zeroPivotSensor(),
       ArmSubsystem.getInstance()
     ));
     Tabs.Intake.zeroes.add(new InstantCommand(

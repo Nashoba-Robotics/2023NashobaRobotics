@@ -1,8 +1,5 @@
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 
@@ -39,6 +36,8 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RobotContainer {
   public Map<String, Command> eventMap = new HashMap<>();
@@ -62,7 +61,6 @@ public class RobotContainer {
     SmartDashboard.putData(new IntakeTestCommand());
     // SmartDashboard.putData(new IntakeCommand());
     // SmartDashboard.putData(new CameraCenterCommand());
-
     // SmartDashboard.putData(new BalanceTestCommand());
 
     // SmartDashboard.putData("Prep High",new PrepHeightCommand(TargetLevel.HIGH));
@@ -86,6 +84,19 @@ public class RobotContainer {
     ));
 
     SmartDashboard.putData(new LEDTestCommand());
+    Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
+    Tabs.Intake.zeroes.add(new InstantCommand(
+      () -> ArmSubsystem.getInstance().zeroArm(),
+      ArmSubsystem.getInstance()
+    ));
+    Tabs.Intake.zeroes.add(new InstantCommand(
+      () -> ArmSubsystem.getInstance().zeroPivot(),
+      ArmSubsystem.getInstance()
+    ));
+    Tabs.Intake.zeroes.add(new InstantCommand(
+      () -> GrabberSubsystem.getInstance().zeroWrist(),
+      GrabberSubsystem.getInstance()
+    ));
   }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);

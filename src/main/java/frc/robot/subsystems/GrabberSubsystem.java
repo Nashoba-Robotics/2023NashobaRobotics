@@ -31,6 +31,9 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber1.setIdleMode(IdleMode.kBrake);
         grabber2.setIdleMode(IdleMode.kBrake);
 
+        grabber1.setSmartCurrentLimit(30);
+        grabber2.setSmartCurrentLimit(30);
+
         orienterController = orienter.getPIDController();
         orienterController.setFF(Constants.Grabber.ORIENTER_KF);
         orienterController.setP(Constants.Grabber.ORIENTER_KP);

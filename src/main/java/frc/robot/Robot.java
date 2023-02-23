@@ -113,6 +113,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
+    // CandleSubsystem.getInstance().set(CandleState.AUTO);
+    CandleSubsystem.getInstance().set(CandleState.WANT_CUBE);
   }
 
   @Override

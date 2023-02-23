@@ -27,11 +27,24 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class TestAutoCommand extends SequentialCommandGroup {
     
     public TestAutoCommand() {
+        Map<String, Command> map = new HashMap<>();
+        map.put("Start Intake", new IntakeCommand(true));
+        map.put("Stop Intake", new InstantCommand(
+            () -> {
+                ArmSubsystem.getInstance().pivot(0);
+                GrabberSubsystem.getInstance().set(-0.1);
+            },
+            ArmSubsystem.getInstance(),
+            GrabberSubsystem.getInstance()
+        ));
 
         PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-rightC-3-rightA", new PathConstraints(2, 2));
-
+        FollowPathWithEvents command = new FollowPathWithEvents(
+            new FollowPathCommand(path),
+            path.getMarkers(),
+            map);
         addCommands(
-            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/4), SwerveDriveSubsystem.getInstance()),
+            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(0), SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.5),
             new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(
@@ -41,7 +54,7 @@ public class TestAutoCommand extends SequentialCommandGroup {
                     );
             }),
             new WaitCommand(0.5),
-            new FollowPathCommand(path)
+            command
         );
     }
 }

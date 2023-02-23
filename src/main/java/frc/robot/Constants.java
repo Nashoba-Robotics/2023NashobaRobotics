@@ -45,10 +45,10 @@ public final class Constants {
     public static final double DIAGONAL = Math.sqrt(WIDTH*WIDTH + LENGTH*LENGTH)/2;
 
     public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
+      new Translation2d(WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, LENGTH/2),
       new Translation2d(-WIDTH/2, LENGTH/2),
-      new Translation2d(-WIDTH/2, -LENGTH/2),
-      new Translation2d(WIDTH/2, -LENGTH/2)
+      new Translation2d(-WIDTH/2, -LENGTH/2)
     );
 
     //School applicable wheel radius

@@ -107,10 +107,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         double b = omega * Constants.Swerve.LENGTH/2;
 
         //The addition of the movement and rotational vector
-        Translation2d t0 = new Translation2d(x+b, y-a);
-        Translation2d t1 = new Translation2d(x+b, y+a);
-        Translation2d t2 = new Translation2d(x-b, y+a);
-        Translation2d t3 = new Translation2d(x-b, y-a);
+        Translation2d t0 = new Translation2d(x-b, y-a);
+        Translation2d t1 = new Translation2d(x+b, y-a);
+        Translation2d t2 = new Translation2d(x+b, y+a);
+        Translation2d t3 = new Translation2d(x-b, y+a);
 
         //convert to polar
         SwerveState[] setStates = SwerveState.fromTranslation2d(

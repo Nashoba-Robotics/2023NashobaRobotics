@@ -53,7 +53,7 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
                 SwerveDriveSubsystem.getInstance().resetOdometry(path.getInitialHolonomicPose());
             }, SwerveDriveSubsystem.getInstance()
             ),
-            new AutoScoreCommand(),
+            //new AutoScoreCommand(),
             command
             // new AutoScoreCommand()
         );

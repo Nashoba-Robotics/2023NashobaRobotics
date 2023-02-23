@@ -25,6 +25,7 @@ import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.LEDTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
+import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
 import frc.robot.commands.score.PrepHeightCommand;
 import frc.robot.commands.score.ScoreCommand;
@@ -85,15 +86,15 @@ public class RobotContainer {
 
     SmartDashboard.putData(new LEDTestCommand());
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
-    Tabs.Intake.zeroes.add(new InstantCommand(
+    Tabs.Intake.zeroes.add("Extend", new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroArmSensor(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.zeroes.add(new InstantCommand(
+    Tabs.Intake.zeroes.add("Pivot",new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroPivotSensor(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.zeroes.add(new InstantCommand(
+    Tabs.Intake.zeroes.add("Wrist", new InstantCommand(
       () -> GrabberSubsystem.getInstance().zeroWrist(),
       GrabberSubsystem.getInstance()
     ));
@@ -114,9 +115,9 @@ public class RobotContainer {
   public void configureButtonBindings(){
     intakeButton.toggleOnTrue(new IntakeCommand(true));
 
-    lowPrepCone.onTrue(new PrepHeightCommand(TargetLevel.LOW));
-    midPrepCone.onTrue(new PrepHeightCommand(TargetLevel.MID));
-    highPrepCone.onTrue(new PrepHeightCommand(TargetLevel.HIGH));
+    lowPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
+    midPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    highPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
 
     scoreCone.toggleOnTrue(new ScoreCommand());
     lowScore.toggleOnTrue(new LowScoreCommand());

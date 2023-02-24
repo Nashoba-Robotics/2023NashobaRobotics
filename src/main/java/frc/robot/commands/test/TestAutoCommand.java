@@ -38,7 +38,7 @@ public class TestAutoCommand extends SequentialCommandGroup {
             GrabberSubsystem.getInstance()
         ));
 
-        PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-rightC-3-rightA", new PathConstraints(2, 2));
+        PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-rightC-3-rightA", new PathConstraints(4, 3));
         FollowPathWithEvents command = new FollowPathWithEvents(
             new FollowPathCommand(path),
             path.getMarkers(),
@@ -54,7 +54,7 @@ public class TestAutoCommand extends SequentialCommandGroup {
                     );
             }),
             new WaitCommand(0.5),
-            command
+            new FollowPathCommand(path)
         );
     }
 }

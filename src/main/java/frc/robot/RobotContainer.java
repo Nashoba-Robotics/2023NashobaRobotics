@@ -22,6 +22,7 @@ import frc.robot.commands.test.ArmTestCommand;
 import frc.robot.commands.test.BalanceTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
+import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.LEDTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
@@ -73,6 +74,8 @@ public class RobotContainer {
     SmartDashboard.putData("Reset Odometery", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()));
 
     SmartDashboard.putData("AutoScore", new AutoScoreCommand());
+    
+    SmartDashboard.putData("DriveTo", new DriveToTestCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(
@@ -124,7 +127,8 @@ public class RobotContainer {
 
     resetGyro.onTrue(new InstantCommand(() -> {
       SwerveDriveSubsystem.getInstance().setGyro(0);
-      SwerveDriveSubsystem.getInstance().resetOdometry(SwerveDriveSubsystem.getInstance().getPose());
+      Pose2d pose = new Pose2d(SwerveDriveSubsystem.getInstance().getPose().getTranslation(), Rotation2d.fromDegrees(0));
+      SwerveDriveSubsystem.getInstance().resetOdometry(pose);
     }, SwerveDriveSubsystem.getInstance()));
 
     resetModules.onTrue(new InstantCommand(() -> 

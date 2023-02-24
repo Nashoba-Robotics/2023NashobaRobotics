@@ -16,6 +16,7 @@ public class ScoreCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        GrabberSubsystem.getInstance().setCurrentLimit(40);
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
         startTime = System.currentTimeMillis();

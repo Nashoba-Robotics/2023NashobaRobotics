@@ -115,6 +115,11 @@ public class GrabberSubsystem extends SubsystemBase{
         orienter.set(0);
     }
 
+    public void setCurrentLimit(int limit) {
+        grabber1.setSmartCurrentLimit(limit);
+        grabber2.setSmartCurrentLimit(limit);
+    }
+
     @Override
     public void periodic() {
         if(Constants.Logging.GRABBER) {
@@ -129,5 +134,8 @@ public class GrabberSubsystem extends SubsystemBase{
             //Orienter
             LogManager.appendToLog(orientEncoder.getPosition(), "Grabber:/Orienter/Position");
         }
+
+        SmartDashboard.putNumber("grabber1", grabber1.getOutputCurrent());
+        SmartDashboard.putNumber("grabber2", grabber2.getOutputCurrent());
     }
 }

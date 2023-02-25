@@ -1,10 +1,16 @@
 package frc.robot.commands.auto.lib;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.Trajectory.State;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -38,10 +44,7 @@ public class FollowPathCommand extends SequentialCommandGroup {
             );
 
             addCommands(
-                new InstantCommand(() -> {SwerveDriveSubsystem.getInstance().resetOdometry(trajectory.getInitialHolonomicPose());}, SwerveDriveSubsystem.getInstance()),
                 swerveController
             );
-
     }
-
 }

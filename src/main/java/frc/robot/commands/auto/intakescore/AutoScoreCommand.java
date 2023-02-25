@@ -19,11 +19,11 @@ public class AutoScoreCommand extends SequentialCommandGroup {
             //new PrepHeightCommand(TargetLevel.HIGH).withTimeout(0.5),
             new SequentialCommandGroup(
                 new InstantCommand(()-> ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU)),
-                new WaitCommand(0.5),
+                new WaitCommand(0.2),
                 new InstantCommand(() -> ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE))
             ),
-            new WaitCommand(2),
-            new ScoreCommand().withTimeout(2),
+            new WaitCommand(1.2),
+            new ScoreCommand().withTimeout(1),
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().stop();
                 ArmSubsystem.getInstance().pivot(0);

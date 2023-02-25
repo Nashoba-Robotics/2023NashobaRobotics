@@ -1,5 +1,6 @@
 package frc.robot.lib.util;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.lib.math.NRUnits;
 
@@ -68,12 +69,12 @@ public class JoystickValues {
 
     //90 deg lock thing
     public JoystickValues applyAngleDeadzone(double deadzone) {
-        double angle = Math.atan2(y, x);
+        double angle = NRUnits.constrainRad(Math.atan2(y, x));
 
         if(-deadzone < angle && angle < deadzone
-        || -deadzone < Constants.TAU/2 - angle && Constants.TAU/2 - angle < 0) y = 0;
+        || -deadzone < Math.abs(angle) - Constants.TAU/2 && Math.abs(angle) - Constants.TAU/2 < 0) y = 0;
 
-        if(-deadzone < angle - Constants.TAU/4 && angle - Constants.TAU/4 < deadzone) x = 0;
+        if(-deadzone < Math.abs(angle) - Constants.TAU/4 && Math.abs(angle) - Constants.TAU/4 < deadzone) x = 0;
         
         return this;
     }

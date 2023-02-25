@@ -42,7 +42,7 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
             map);
         addCommands(
             new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
-            new AutoScoreCommand(),
+            //new AutoScoreCommand(),
             command
         );
     }

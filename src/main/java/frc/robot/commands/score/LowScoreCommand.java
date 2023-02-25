@@ -16,10 +16,11 @@ public class LowScoreCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        GrabberSubsystem.getInstance().setCurrentLimit(40);
         startTime = System.currentTimeMillis();
         ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
         ArmSubsystem.getInstance().extendNU(1000);
-        GrabberSubsystem.getInstance().set(0.3);
+        GrabberSubsystem.getInstance().set(0.7);
     }
 
     @Override

@@ -33,18 +33,18 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     }
 
     public void initialize() {
+        lastPos = 0;
+        lastPos2 = 0;
+        joystick0 = false;
+        joystick02 = false;
+        gotToStart = false;
+        atSetPoint2 = false;
+        setPos2 = 0;
+
+        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        ArmSubsystem.getInstance().setDefaultAcceleration();
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
-        switch(DriverStation.getAlliance()) {
-            case Red:
-                scoreFront = gyroAngle < 0 && gyroAngle >= -Constants.TAU / 2;
-                break;
-            case Blue:
-                scoreFront = gyroAngle >= 0 && gyroAngle <= Constants.TAU / 2;
-                break;
-            case Invalid:
-                scoreFront = true;
-                break;
-        }
+        scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
 
         multiplier = scoreFront ? 1 : -1;
 
@@ -96,7 +96,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < Constants.TAU / 40){
+            if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU / 360){
                 atSetPoint2 = true;
                 // lastPos2 = ArmSubsystem.getInstance().getAngle();
             } 
@@ -110,6 +110,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                         lastPos2 = ArmSubsystem.getInstance().getAngle();
                     }
                     ArmSubsystem.getInstance().pivot(lastPos2);
+                    SmartDashboard.putNumber("lastPos2", lastPos2);
                 }
                 else{
                     ArmSubsystem.getInstance().setPivot(pivotX*0.1);

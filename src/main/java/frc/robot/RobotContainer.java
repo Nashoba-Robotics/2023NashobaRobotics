@@ -22,9 +22,11 @@ import frc.robot.commands.test.ArmTestCommand;
 import frc.robot.commands.test.BalanceTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
+import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.LEDTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
+import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
 import frc.robot.commands.score.PrepHeightCommand;
 import frc.robot.commands.score.ScoreCommand;
@@ -53,7 +55,7 @@ public class RobotContainer {
     // SmartDashboard.putData(new BalanceTestCommand());
     SmartDashboard.putData(new ZeroPivotCommand());
     // SmartDashboard.putData(new ArmTestCommand());
-    SmartDashboard.putData("ZeroArmSensor", new InstantCommand(() -> ArmSubsystem.getInstance().zeroArm(), ArmSubsystem.getInstance()));
+    SmartDashboard.putData("ZeroArmSensor", new InstantCommand(() -> ArmSubsystem.getInstance().zeroArmSensor(), ArmSubsystem.getInstance()));
     SmartDashboard.putData("ZeroWristSensor", new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
     //SmartDashboard.putData(new TestGrabberCommand());
@@ -72,6 +74,8 @@ public class RobotContainer {
     SmartDashboard.putData("Reset Odometery", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()));
 
     SmartDashboard.putData("AutoScore", new AutoScoreCommand());
+    
+    SmartDashboard.putData("DriveTo", new DriveToTestCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(
@@ -85,15 +89,15 @@ public class RobotContainer {
 
     SmartDashboard.putData(new LEDTestCommand());
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
-    Tabs.Intake.zeroes.add(new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroArm(),
+    Tabs.Intake.zeroes.add("Extend", new InstantCommand(
+      () -> ArmSubsystem.getInstance().zeroArmSensor(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.zeroes.add(new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroPivot(),
+    Tabs.Intake.zeroes.add("Pivot",new InstantCommand(
+      () -> ArmSubsystem.getInstance().zeroPivotSensor(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.zeroes.add(new InstantCommand(
+    Tabs.Intake.zeroes.add("Wrist", new InstantCommand(
       () -> GrabberSubsystem.getInstance().zeroWrist(),
       GrabberSubsystem.getInstance()
     ));
@@ -114,15 +118,17 @@ public class RobotContainer {
   public void configureButtonBindings(){
     intakeButton.toggleOnTrue(new IntakeCommand(true));
 
-    lowPrepCone.onTrue(new PrepHeightCommand(TargetLevel.LOW));
-    midPrepCone.onTrue(new PrepHeightCommand(TargetLevel.MID));
-    highPrepCone.onTrue(new PrepHeightCommand(TargetLevel.HIGH));
+    lowPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
+    midPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    highPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
 
     scoreCone.toggleOnTrue(new ScoreCommand());
     lowScore.toggleOnTrue(new LowScoreCommand());
 
     resetGyro.onTrue(new InstantCommand(() -> {
       SwerveDriveSubsystem.getInstance().setGyro(0);
+      Pose2d pose = new Pose2d(SwerveDriveSubsystem.getInstance().getPose().getTranslation(), Rotation2d.fromDegrees(0));
+      SwerveDriveSubsystem.getInstance().resetOdometry(pose);
     }, SwerveDriveSubsystem.getInstance()));
 
     resetModules.onTrue(new InstantCommand(() -> 

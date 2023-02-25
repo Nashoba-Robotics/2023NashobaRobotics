@@ -42,7 +42,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
         odometry = new CarpetOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), Constants.Field.ANGLE_OF_RESISTANCE);
     
-        balanceController = new PIDController(Constants.Swerve.Balance.K_P, Constants.Swerve.Balance.K_I, Constants.Swerve.Balance.K_D);
+        balanceController = new PIDController(Constants.Swerve.Balance.SLOW_K_P, Constants.Swerve.Balance.SLOW_K_I, Constants.Swerve.Balance.SLOW_K_D);
         driftController = new PIDController(Constants.Swerve.DriftCorrection.P, Constants.Swerve.DriftCorrection.I, Constants.Swerve.DriftCorrection.D);
     }
     
@@ -53,6 +53,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             instance = new SwerveDriveSubsystem();
         }
         return instance;
+    }
+
+    public void brake() {
+        modules[0].set(0, Constants.TAU/4);
+        modules[1].set(0, -Constants.TAU/4);
+        modules[2].set(0, Constants.TAU/4);
+        modules[3].set(0, -Constants.TAU/4);
     }
 
     public double getGyroAngle() {
@@ -107,10 +114,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         double b = omega * Constants.Swerve.LENGTH/2;
 
         //The addition of the movement and rotational vector
-        Translation2d t0 = new Translation2d(x+b, y-a);
-        Translation2d t1 = new Translation2d(x+b, y+a);
-        Translation2d t2 = new Translation2d(x-b, y+a);
-        Translation2d t3 = new Translation2d(x-b, y-a);
+        Translation2d t0 = new Translation2d(x-b, y-a);
+        Translation2d t1 = new Translation2d(x+b, y-a);
+        Translation2d t2 = new Translation2d(x+b, y+a);
+        Translation2d t3 = new Translation2d(x-b, y+a);
 
         //convert to polar
         SwerveState[] setStates = SwerveState.fromTranslation2d(
@@ -167,6 +174,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         gyro.setYaw(angle * 180 / Math.PI);
     }
 
+    public void zeroYaw() {
+        gyro.setYaw(0);
+    }
+
     public Pose2d getPose() {
         return odometry.getPoseMeters();
     }
@@ -194,6 +205,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     public void setDesiredLevel(double angle, double deadzone){
         balanceController.setSetpoint(angle);
         balanceController.setTolerance(deadzone);
+    }
+
+    public void setBalancePID(double kP, double kI, double kD){
+        balanceController.setP(kP);
+        balanceController.setI(kI);
+        balanceController.setD(kD);
     }
 
     public boolean balanced(){

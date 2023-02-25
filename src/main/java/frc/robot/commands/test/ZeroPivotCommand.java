@@ -6,7 +6,7 @@ import frc.robot.subsystems.ArmSubsystem;
 public class ZeroPivotCommand extends CommandBase{
     @Override
     public void initialize() {
-        ArmSubsystem.getInstance().zeroPivot();
+        ArmSubsystem.getInstance().zeroPivotSensor();
     }
 
     @Override

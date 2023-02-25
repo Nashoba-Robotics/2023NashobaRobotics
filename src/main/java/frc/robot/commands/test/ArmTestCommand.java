@@ -22,7 +22,7 @@ public class ArmTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        ArmSubsystem.getInstance().zeroPivot();
+        ArmSubsystem.getInstance().zeroPivotSensor();
 
         // Shuffleboard.getTab("Arm Testing");
         // armTab.add("Arm Speed", 0);

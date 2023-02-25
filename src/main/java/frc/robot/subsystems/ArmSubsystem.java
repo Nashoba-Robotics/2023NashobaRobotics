@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
@@ -93,7 +94,7 @@ public class ArmSubsystem extends SubsystemBase {
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
     }
 
-    public void zeroArm(){
+    public void zeroArmSensor(){
         tromboneSlide.setSelectedSensorPosition(0);
     }
 
@@ -105,7 +106,7 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.setSelectedSensorPosition(0);
     }
 
-    public void zeroPivot(){
+    public void zeroPivotSensor(){
         zeroPivot1();
         zeroPivot2();
     }
@@ -121,7 +122,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     //Extends arm to specified position in meters
-    public void extend(double pos){
+    public void extendM(double pos){
        tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Arm.mToNU(pos));
     }
 
@@ -132,10 +133,6 @@ public class ArmSubsystem extends SubsystemBase {
 
     //Basic Percent Output set
     public void set(double speed){
-        if(extended()){
-            //tromboneSlide.set(ControlMode.PercentOutput, 0);
-            return;
-        }
        tromboneSlide.set(ControlMode.PercentOutput, speed);
     }
 
@@ -245,16 +242,36 @@ public class ArmSubsystem extends SubsystemBase {
         return (getStatorCurrent1()+getSupplyCurrent2())/2;
     }
 
+    public void setCruiseVelocity(double cruiseVelocity) {
+        pivot1.configMotionCruiseVelocity(cruiseVelocity);
+        pivot2.configMotionCruiseVelocity(cruiseVelocity);
+    }
+
+    public void setAceleration(double acceleration) {
+        pivot1.configMotionAcceleration(acceleration);
+        pivot2.configMotionAcceleration(acceleration);
+    }
+
+    public void setDefaultCruiseVelocity() {
+        pivot1.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        pivot2.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+    }
+
+    public void setDefaultAcceleration() {
+        pivot1.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        pivot2.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+    }
+
     @Override
     public void periodic() {
         if(Constants.Logging.ARM) {
             //Extender
-            LogManager.appendToLog(tromboneSlide.getSelectedSensorPosition(), "Arm:/Extender/Position");
+            LogManager.appendToLog(NRUnits.Arm.NUToRad(tromboneSlide.getSelectedSensorPosition()), "Arm:/Extender/Position");
             LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
             LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
             
             //Pivot1
-            LogManager.appendToLog(pivot1.getSelectedSensorPosition(), "Arm:/Pivot1/Position");
+            LogManager.appendToLog(NRUnits.Arm.NUToRad(pivot1.getSelectedSensorPosition()), "Arm:/Pivot1/Position");
             LogManager.appendToLog(pivot1.getStatorCurrent(), "Arm:/Pivot1/Stator");
             LogManager.appendToLog(pivot1.getSupplyCurrent(), "Arm:/Pivot1/Supply");
 
@@ -263,5 +280,7 @@ public class ArmSubsystem extends SubsystemBase {
             LogManager.appendToLog(pivot2.getStatorCurrent(), "Arm:/Pivot2/Stator");
             LogManager.appendToLog(pivot2.getSupplyCurrent(), "Arm:/Pivot2/Supply");
         }
+
+        SmartDashboard.putNumber("PivotCurrent", pivot1.getStatorCurrent());
     }
 }

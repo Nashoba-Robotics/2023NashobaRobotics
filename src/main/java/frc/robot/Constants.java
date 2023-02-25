@@ -45,14 +45,14 @@ public final class Constants {
     public static final double DIAGONAL = Math.sqrt(WIDTH*WIDTH + LENGTH*LENGTH)/2;
 
     public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
+      new Translation2d(WIDTH/2, -LENGTH/2),
       new Translation2d(WIDTH/2, LENGTH/2),
       new Translation2d(-WIDTH/2, LENGTH/2),
-      new Translation2d(-WIDTH/2, -LENGTH/2),
-      new Translation2d(WIDTH/2, -LENGTH/2)
+      new Translation2d(-WIDTH/2, -LENGTH/2)
     );
 
     //School applicable wheel radius
-    public static final double WHEELRADIUS = Units.inchesToMeters(1.87);
+    public static final double WHEELRADIUS = Units.inchesToMeters(1.888);
 
     //WPI applicable wheel radius
     // public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
@@ -75,10 +75,10 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = -251.191;
-    public static final double FRONT_LEFT_OFFSET_DEGREES = 161.191;
-    public static final double BACK_LEFT_OFFSET_DEGREES = 15.82;
-    public static final double BACK_RIGHT_OFFSET_DEGREES = -309.199;
+    public static final double FRONT_RIGHT_OFFSET_DEGREES = -251.191 - 90;
+    public static final double FRONT_LEFT_OFFSET_DEGREES = 161.191 - 90;
+    public static final double BACK_LEFT_OFFSET_DEGREES = 15.82 - 90;
+    public static final double BACK_RIGHT_OFFSET_DEGREES = -309.199 - 90;
 
     public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
     public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
@@ -101,11 +101,15 @@ public final class Constants {
     public static final double MOD3_AFF = 0.07;
   
     public static final class Balance{
-      public static final double K_P = 0.001;
-      public static final double K_I = 0.0;
-      public static final double K_D = 0.0;
+      public static final double FAST_K_P = 0.01;
+      public static final double FAST_K_I = 0.0;
+      public static final double FAST_K_D = 0.0;
 
-      public static final double MAX_SPEED_PERCENT = 0.3;
+      public static final double SLOW_K_P = 0.001;
+      public static final double SLOW_K_I = 0.0;
+      public static final double SLOW_K_D = 0.0;
+
+      // public static final double MAX_SPEED_PERCENT = 0.3;
     }
 
     public static final class Auto {
@@ -150,7 +154,7 @@ public final class Constants {
     public static final double INTAKE_SPEED = -0.7;
     public static final double SCORE_SPEED = 0.1;
     public static final double MAX_TURN_SPEED = 0.4;
-    public static final double INTAKE_ANGLE = 7;
+    public static final double INTAKE_ANGLE = 6;
     public static final double HIGH_ANGLE = 0;
     public static final double MID_ANGLE = 0;
     public static final double LOW_ANGLE = 0;
@@ -183,10 +187,10 @@ public final class Constants {
     public static final double ARM_KD = 0;
 
     public static final double ARM_CRUISE_VELOCITY = 40_000;
-    public static final double ARM_ACCELERATION = 12_000;
+    public static final double ARM_ACCELERATION = 15_000;
 
-    public static final double PIVOT_CRUISE_VELOCITY = 40_000;
-    public static final double PIVOT_ACCELERATION = 40_000;
+    public static final double PIVOT_CRUISE_VELOCITY = 50_000;
+    public static final double PIVOT_ACCELERATION = 45_000;
 
     public static final double PIVOT_KF_1 = 0.045;
     public static final double PIVOT_KP_1 = 0.3;
@@ -203,7 +207,7 @@ public final class Constants {
     public static final double MID_ANGLE = 65 * TAU/360;
     public static final double LOW_ANGLE = 105 * TAU/360;
 
-    public static final double INTAKE_ANGLE = 112 * Constants.TAU/360;
+    public static final double INTAKE_ANGLE = 110 * Constants.TAU/360;
 
     public static final double HIGH_EXTEND_NU = 43_000;
     public static final double MID_EXTEND_NU = 22_000;
@@ -212,7 +216,7 @@ public final class Constants {
     public static final double ERROR_ANGLE = 0;
 
     public static final int EXTEND_FORWARD_SOFT_LIMIT = 50_000;
-    public static final int EXTEND_REVERSE_SOFT_LIMIT = 3000;
+    public static final int EXTEND_REVERSE_SOFT_LIMIT = 3_000;
 
     public static final int PIVOT_FORWARD_SOFT_LIMIT = 140_000;
     public static final int PIVOT_REVERSE_SOFT_LIMIT = -140_000;
@@ -220,7 +224,7 @@ public final class Constants {
   }
 
   public static final class Field {
-    public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
+    public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(Constants.TAU/2);
     public static final double K_CARPET = 0.04; // should not be higher than 0.5
 
     public enum TargetLevel {

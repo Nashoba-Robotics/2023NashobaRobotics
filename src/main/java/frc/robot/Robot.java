@@ -57,14 +57,15 @@ public class Robot extends TimedRobot {
     Tabs.Intake.tab.add(GrabberSubsystem.getInstance());
     Tabs.Intake.tab.add(new IntakeTestCommand());
     Tabs.Intake.tab.add("Zero Pivot", new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroPivot(),
+      () -> ArmSubsystem.getInstance().zeroPivotSensor(),
       ArmSubsystem.getInstance()
     ));
     Tabs.Intake.tab.add("Zero Arm", new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroArm(),
+      () -> ArmSubsystem.getInstance().zeroArmSensor(),
       ArmSubsystem.getInstance()
     ));
-    ArmSubsystem.getInstance().zeroArm();
+    ArmSubsystem.getInstance().zeroArmSensor();
+    ArmSubsystem.getInstance().zeroPivotSensor();
   }
 
   @Override
@@ -86,9 +87,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // LimelightSubsystem.getInstance().defaultLED();
-    SwerveDriveSubsystem.getInstance().setGyro(DriverStation.getAlliance() == Alliance.Blue ? Constants.TAU/4 : -Constants.TAU/4);
+    // SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/4);
     autoChooser.getSelected().schedule();
-    // CandleSubsystem.getInstance().set(CandleState.AUTO);
+    CandleSubsystem.getInstance().set(CandleState.AUTO);
   }
 
   @Override
@@ -112,6 +113,8 @@ public class Robot extends TimedRobot {
   @Override
   public void testInit() {
     CommandScheduler.getInstance().cancelAll();
+    // CandleSubsystem.getInstance().set(CandleState.AUTO);
+    CandleSubsystem.getInstance().set(CandleState.WANT_CUBE);
   }
 
   @Override

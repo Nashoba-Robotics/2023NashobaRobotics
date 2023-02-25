@@ -23,7 +23,7 @@ public class DriveToTestCommand extends CommandBase {
             new PathConstraints(Constants.Swerve.Auto.MAX_SPEED, Constants.Swerve.Auto.MAX_ACCELERATION), 
             List.of(
                 new PathPoint(SwerveDriveSubsystem.getInstance().getPose().getTranslation(), Rotation2d.fromDegrees(0), SwerveDriveSubsystem.getInstance().getPose().getRotation()),
-                new PathPoint(new Translation2d(0, 2), Rotation2d.fromDegrees(90), Rotation2d.fromDegrees(-90))
+                new PathPoint(new Translation2d(1, 0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0))
             )
         );
 

@@ -28,6 +28,8 @@ public class PrepHeightCommand extends CommandBase {
     }
 
     public void initialize() {
+        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        ArmSubsystem.getInstance().setDefaultAcceleration();
         switch(targetLevel) {
             case HIGH: 
              GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU);
@@ -76,7 +78,7 @@ public class PrepHeightCommand extends CommandBase {
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < Constants.TAU / 40){
+            if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 2 * Constants.TAU / 360){
                 atSetPoint2 = true;
                 // lastPos2 = ArmSubsystem.getInstance().getAngle();
             } 

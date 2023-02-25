@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Constants.Grabber;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
 public class IntakeCommand extends CommandBase {
-    boolean joystick02 = false;
+    boolean joystick02;
     double lastPos2;
 
     double setPos2;
@@ -29,11 +30,17 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        GrabberSubsystem.getInstance().setCurrentLimit(30);
+
+        ArmSubsystem.getInstance().setCruiseVelocity(400_000);
+        ArmSubsystem.getInstance().setAceleration(60_000);
+
         // Extend is TEMP to test at the same distance
-        ArmSubsystem.getInstance().extend(0);
+        ArmSubsystem.getInstance().extendNU(3_000);
         ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);
         setPos2 = Constants.Arm.INTAKE_ANGLE * multiplier;
         atSetPoint2 = false;
+        joystick02 = false;
         GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE * multiplier);
         lastPos2 = ArmSubsystem.getInstance().getAngle();
     }
@@ -43,9 +50,9 @@ public class IntakeCommand extends CommandBase {
         GrabberSubsystem.getInstance().intake();
         SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
 
-        if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < Constants.TAU / 40){
+        if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU/360){
             atSetPoint2 = true;
-            lastPos2 = ArmSubsystem.getInstance().getAngle();
+            // lastPos2 = ArmSubsystem.getInstance().getAngle();
         } 
 
         if(atSetPoint2) {
@@ -68,6 +75,7 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        GrabberSubsystem.getInstance().setCurrentLimit(10);
         ArmSubsystem.getInstance().pivot(0);
         GrabberSubsystem.getInstance().orient(0);
         GrabberSubsystem.getInstance().set(-0.1);   //Make the grabber hold it

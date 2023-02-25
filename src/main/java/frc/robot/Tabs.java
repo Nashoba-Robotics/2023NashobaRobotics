@@ -82,7 +82,8 @@ public final class Tabs {
             .getEntry();
         
         private static ShuffleboardLayout values = tab.getLayout("Display Values", BuiltInLayouts.kGrid)
-            ;
+            .withPosition(2, 1)
+            .withSize(4, 3);
         private static GenericEntry dispExtendNU = values.add("Actual Extend NU", 0)
             .withPosition(0, 0)
             .getEntry();
@@ -115,9 +116,8 @@ public final class Tabs {
             .getEntry();
 
         public static ShuffleboardLayout zeroes = tab.getLayout("Zeroes", BuiltInLayouts.kList)
-            .withPosition(7, 0)
+            .withPosition(7, 1)
             .withSize(1, 3);
-
 
         public static void displayExtendNU(double NU){
             dispExtendNU.setDouble(NU);

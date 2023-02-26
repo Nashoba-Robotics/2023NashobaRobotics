@@ -66,7 +66,7 @@ public class IntakeTestCommand extends CommandBase{
         GrabberSubsystem.getInstance().orientPos(wristNU);
 
         double wristSpeed = Tabs.Intake.getGrabSpeed();
-        GrabberSubsystem.getInstance().set(-wristSpeed, wristSpeed);
+        GrabberSubsystem.getInstance().set(wristSpeed, wristSpeed);
 
         Tabs.Intake.displayExtendNU(ArmSubsystem.getInstance().getPos());
         Tabs.Intake.displayExtendCurrent(

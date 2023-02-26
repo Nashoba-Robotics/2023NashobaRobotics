@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class ScoreCommand extends CommandBase {
     private long startTime;    
@@ -16,12 +17,20 @@ public class ScoreCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
+        boolean scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
+
+        int multiplier = scoreFront ? 1 : -1;
+
+
         GrabberSubsystem.getInstance().setCurrentLimit(40);
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
         startTime = System.currentTimeMillis();
-        double angleChange = DriverStation.isAutonomous() ? 4 * Constants.TAU/360 : 2 * Constants.TAU/360;
-        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange);
+
+
+        double angleChange = DriverStation.isAutonomous() ? 3 * Constants.TAU/360 : 2 * Constants.TAU/360;
+        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
         ArmSubsystem.getInstance().extendNU(1000);
         GrabberSubsystem.getInstance().set(0.1);
     }

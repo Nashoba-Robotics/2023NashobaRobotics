@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.balance;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.Swerve;
@@ -21,7 +22,7 @@ public class BalanceCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        SwerveDriveSubsystem.getInstance().setDesiredLevel(1, 1);
+        
         switch(b){
             case QUICK:
                 SwerveDriveSubsystem.getInstance().setBalancePID(
@@ -29,6 +30,7 @@ public class BalanceCommand extends CommandBase{
                     Constants.Swerve.Balance.FAST_K_I, 
                     Constants.Swerve.Balance.FAST_K_D
                 );
+                SwerveDriveSubsystem.getInstance().setDesiredLevel(0, 12);
                 break;
             case SLOW:
                 SwerveDriveSubsystem.getInstance().setBalancePID(
@@ -36,17 +38,22 @@ public class BalanceCommand extends CommandBase{
                     Constants.Swerve.Balance.SLOW_K_I, 
                     Constants.Swerve.Balance.SLOW_K_D
                 );
+                SwerveDriveSubsystem.getInstance().setDesiredLevel(0, 8);
                 break;
         }
     }
 
     @Override
     public void execute() {
+        double change = -SwerveDriveSubsystem.getInstance().getChange();
         SwerveDriveSubsystem.getInstance().set(
-            1.5*SwerveDriveSubsystem.getInstance().getChange(), 
+            change, 
             0,
             0
         );
+
+        
+
     }
 
     @Override
@@ -56,6 +63,9 @@ public class BalanceCommand extends CommandBase{
 
     @Override
     public boolean isFinished() {
+        if(b == Balance.QUICK){
+            return SwerveDriveSubsystem.getInstance().getRoll() > 0;
+        }
         return SwerveDriveSubsystem.getInstance().balanced();
     }
 }

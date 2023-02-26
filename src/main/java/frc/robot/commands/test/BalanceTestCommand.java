@@ -14,8 +14,8 @@ public class BalanceTestCommand extends CommandBase{
         //pigeon = new PigeonIMU(0);
 
         pigeonController = new PIDController(0.001, 0, 0);
-        pigeonController.setSetpoint(1);
-        pigeonController.setTolerance(1);
+        pigeonController.setSetpoint(0.05);
+        pigeonController.setTolerance(0.01);
     }
 
     @Override

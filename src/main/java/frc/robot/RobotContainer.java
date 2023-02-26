@@ -16,6 +16,9 @@ import frc.robot.commands.ArmAngleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.auto.balance.AutoBalanceCommand;
+import frc.robot.commands.auto.balance.BalanceCommand;
+import frc.robot.commands.auto.balance.BalanceCommand.Balance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.test.ArmTestCommand;
@@ -46,7 +49,7 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureButtonBindings();
-    SmartDashboard.putData(new SwerveDriveCommand());
+    // SmartDashboard.putData(new SwerveDriveCommand());
     SmartDashboard.putData(new TestAutoCommand());
     // SmartDashboard.putData(new SwerveDriveTestCommand());
     //SmartDashboard.putData(new RunMotorCommand());
@@ -59,7 +62,7 @@ public class RobotContainer {
     SmartDashboard.putData("ZeroWristSensor", new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
     //SmartDashboard.putData(new TestGrabberCommand());
-    SmartDashboard.putData(new ManualExtensionCommand());
+    // SmartDashboard.putData(new ManualExtensionCommand());
     SmartDashboard.putData(new IntakeTestCommand());
     // SmartDashboard.putData(new IntakeCommand());
     // SmartDashboard.putData(new CameraCenterCommand());
@@ -70,12 +73,18 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Arm command", new ArmAngleCommand(0));
     // SmartDashboard.putData("Score Command", new ScoreCommand());
 
-    SmartDashboard.putData("Reset Gyro", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(0), SwerveDriveSubsystem.getInstance()));
-    SmartDashboard.putData("Reset Odometery", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()));
+    // SmartDashboard.putData("Reset Gyro", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(0), SwerveDriveSubsystem.getInstance()));
+    // SmartDashboard.putData("Reset Odometery", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()));
 
-    SmartDashboard.putData("AutoScore", new AutoScoreCommand());
+    // SmartDashboard.putData("AutoScore", new AutoScoreCommand());
+
+    SmartDashboard.putData("Brake", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().brake()));
     
     SmartDashboard.putData("DriveTo", new DriveToTestCommand());
+
+    SmartDashboard.putData("Balance", new AutoBalanceCommand());
+
+    SmartDashboard.putData(new AutoScoreCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(

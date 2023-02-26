@@ -117,10 +117,34 @@ public class SwerveModule {
         turn *= 180/Math.PI;
         setDeg(move, turn);
     }
+
+    public void set(double move, double turn, boolean optimizeTurn){
+        turn *= 180/Math.PI;
+        setDeg(move, turn, optimizeTurn);
+    }
     
     //Move input in percent, Turn input in degrees
     public void setDeg(double move, double turn) {
         if(move == 0){
+            moveMotor.set(ControlMode.PercentOutput, 0);
+            return;
+        }
+        double currentPos =  turnMotor.getSelectedSensorPosition();
+        double lastTurn = NRUnits.constrainDeg(NRUnits.Drive.NUToDeg(currentPos));
+
+        double angle = findLowestAngle(turn, lastTurn);
+        double angleChange = findAngleChange(angle, lastTurn);
+        
+        double nextPos = currentPos + NRUnits.Drive.degToNU(angleChange);
+
+        SmartDashboard.putNumber("ActualAngle"+modNumber, getAngle() * Constants.TAU / 360);
+
+        turnMotor.set(ControlMode.MotionMagic, nextPos);
+        moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
+    }
+
+    public void setDeg(double move, double turn, boolean optimizeTurn) {
+        if(move == 0 && optimizeTurn){
             moveMotor.set(ControlMode.PercentOutput, 0);
             return;
         }

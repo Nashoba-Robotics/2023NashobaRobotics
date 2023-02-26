@@ -107,7 +107,14 @@ public class GrabberSubsystem extends SubsystemBase{
 
     public double getCurrent() {
         // Average
-        return (grabber1.getOutputCurrent() + grabber2.getOutputCurrent()) / 2;
+        return (getTopGrabCurrent()+getBotGrabCurrent()) / 2;
+    }
+
+    public double getTopGrabCurrent(){
+        return grabber1.getOutputCurrent();
+    }
+    public double getBotGrabCurrent(){
+        return grabber2.getOutputCurrent();
     }
 
     public void stop() {

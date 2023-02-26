@@ -124,10 +124,10 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        
+        GrabberSubsystem.getInstance().orientPos(3 * multiplier);
     }
 
     public boolean isFinished() {
-        return DriverStation.isAutonomous();
+        return false;
     }
 }

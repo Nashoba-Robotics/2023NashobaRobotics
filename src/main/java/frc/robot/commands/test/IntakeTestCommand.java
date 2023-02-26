@@ -66,7 +66,7 @@ public class IntakeTestCommand extends CommandBase{
         GrabberSubsystem.getInstance().orientPos(wristNU);
 
         double wristSpeed = Tabs.Intake.getGrabSpeed();
-        GrabberSubsystem.getInstance().set(wristSpeed);
+        GrabberSubsystem.getInstance().set(-wristSpeed, wristSpeed);
 
         Tabs.Intake.displayExtendNU(ArmSubsystem.getInstance().getPos());
         Tabs.Intake.displayExtendCurrent(
@@ -76,8 +76,8 @@ public class IntakeTestCommand extends CommandBase{
 
         Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getAngle());
         Tabs.Intake.displayPivotCurrent(
-            ArmSubsystem.getInstance().getArmStatorCurrent(), 
-            ArmSubsystem.getInstance().getArmSupplyCurrent()
+            ArmSubsystem.getInstance().getPivotStatorCurrent(), 
+            ArmSubsystem.getInstance().getPivotSupplyCurrent()
         );
 
         Tabs.Intake.displayOrienterNU(GrabberSubsystem.getInstance().getOrientPos());

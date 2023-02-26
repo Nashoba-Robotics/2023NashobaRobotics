@@ -6,7 +6,9 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.Grabber;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class IntakeCommand extends CommandBase {
     boolean joystick02;
@@ -70,6 +72,12 @@ public class IntakeCommand extends CommandBase {
                 ArmSubsystem.getInstance().setPivot(pivotX*0.13);
                 joystick02 = false;
             }
+        }
+
+        if(GrabberSubsystem.getInstance().getTopGrabCurrent() > 25) {
+            GrabberSubsystem.getInstance().setCurrentLimit(10);
+            GrabberSubsystem.getInstance().set(-0.1);
+            CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
         }
     }
 

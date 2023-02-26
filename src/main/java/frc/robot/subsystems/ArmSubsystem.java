@@ -197,6 +197,14 @@ public class ArmSubsystem extends SubsystemBase {
         return tromboneSlide.getSupplyCurrent();
     }
 
+    public double getPivotStatorCurrent() {
+        return pivot1.getStatorCurrent();
+    }
+
+    public double getPivotSupplyCurrent() {
+        return pivot1.getSupplyCurrent();
+    }
+
     //This is TEMPORARY
     public double getPivotPos(int n){
         if(n == 1){

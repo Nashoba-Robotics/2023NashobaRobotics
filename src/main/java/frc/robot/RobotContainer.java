@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.ArmAngleCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeCubeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.auto.balance.AutoBalanceCommand;
@@ -30,9 +31,11 @@ import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.LEDTestCommand;
 import frc.robot.commands.test.RunMotorCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
+import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
 import frc.robot.commands.score.PrepHeightCommand;
 import frc.robot.commands.score.ScoreCommand;
+import frc.robot.commands.score.ScoreCubeCommand;
 import frc.robot.commands.test.SwerveDriveTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
 import frc.robot.commands.test.TestGrabberCommand;
@@ -49,6 +52,10 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureButtonBindings();
+
+    SmartDashboard.putData(new IntakeCubeCommand());
+    SmartDashboard.putData(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    SmartDashboard.putData(new ScoreCubeCommand());
     // SmartDashboard.putData(new SwerveDriveCommand());
     SmartDashboard.putData(new TestAutoCommand());
     // SmartDashboard.putData(new SwerveDriveTestCommand());

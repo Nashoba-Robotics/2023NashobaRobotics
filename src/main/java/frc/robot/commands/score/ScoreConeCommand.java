@@ -1,73 +1,57 @@
 package frc.robot.commands.score;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.SwerveDriveSubsystem;
 
-//will be the full auto score routine of cones
 public class ScoreConeCommand extends CommandBase {
-    private TargetLevel targetLevel;
-    private int startTime;
+    private long startTime;    
 
-    public ScoreConeCommand(TargetLevel targetLevel) {
-        this.targetLevel = targetLevel;
-        addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
+    public ScoreConeCommand() {
+        addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
 
     @Override
     public void initialize() {
-        startTime = (int)System.currentTimeMillis();
-        switch(targetLevel) {
-            case HIGH:
-                ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
-                GrabberSubsystem.getInstance().orient(Constants.Grabber.HIGH_ANGLE);
-            break;
-            case MID:
-                ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE);
-                GrabberSubsystem.getInstance().orient(Constants.Grabber.MID_ANGLE);
-            break;
-            case LOW:
-                ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE);
-                GrabberSubsystem.getInstance().orient(Constants.Grabber.LOW_ANGLE);
-            break;
-        }
-      
+        double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
+        boolean scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
+
+        int multiplier = scoreFront ? 1 : -1;
+
+
+        GrabberSubsystem.getInstance().setCurrentLimit(40);
+        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        ArmSubsystem.getInstance().setDefaultAcceleration();
+        startTime = System.currentTimeMillis();
+
+
+        double angleChange = DriverStation.isAutonomous() ? 3 * Constants.TAU/360 : 2 * Constants.TAU/360;
+        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
+        ArmSubsystem.getInstance().extendNU(1000);
+        GrabberSubsystem.getInstance().set(0.1);
     }
 
     @Override
     public void execute() {
-        switch(targetLevel) {
-            case HIGH:
-               if(Math.abs(ArmSubsystem.getInstance().getAngle() - Constants.Arm.HIGH_ANGLE) < Constants.Arm.ERROR_ANGLE &&
-                  Math.abs(GrabberSubsystem.getInstance().getOrientation() - Constants.Arm.HIGH_ANGLE) < Constants.Grabber.ERROR_ANGLE) {
-                 GrabberSubsystem.getInstance().score();
-               } 
-            break;
-            case MID:
-               if(Math.abs(ArmSubsystem.getInstance().getAngle() - Constants.Arm.MID_ANGLE) < Constants.Arm.ERROR_ANGLE &&
-                  Math.abs(GrabberSubsystem.getInstance().getOrientation() - Constants.Arm.MID_ANGLE) < Constants.Grabber.ERROR_ANGLE) {
-                  GrabberSubsystem.getInstance().score();
-               } 
-            break;
-            case LOW:
-                if(Math.abs(ArmSubsystem.getInstance().getAngle() - Constants.Arm.LOW_ANGLE) < Constants.Arm.ERROR_ANGLE &&
-                   Math.abs(GrabberSubsystem.getInstance().getOrientation() - Constants.Arm.LOW_ANGLE) < Constants.Grabber.ERROR_ANGLE) {
-                  GrabberSubsystem.getInstance().score();
-                } 
-            break;
-        }
+        
+        
     }
-    
+
     @Override
     public void end(boolean interrupted) {
+        GrabberSubsystem.getInstance().set(0);
+        GrabberSubsystem.getInstance().orient(0);
+        ArmSubsystem.getInstance().stop();
         ArmSubsystem.getInstance().pivot(0);
+        ArmSubsystem.getInstance().extendNU(0);
     }
 
     @Override
     public boolean isFinished() {
-       return System.currentTimeMillis() - startTime > 5000;
+        return System.currentTimeMillis() - startTime > 2000;
     }
 
 }

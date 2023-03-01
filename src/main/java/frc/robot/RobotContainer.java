@@ -22,28 +22,25 @@ import frc.robot.commands.auto.balance.BalanceCommand;
 import frc.robot.commands.auto.balance.BalanceCommand.Balance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
-import frc.robot.commands.test.ArmTestCommand;
-import frc.robot.commands.test.BalanceTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
-import frc.robot.commands.test.LEDTestCommand;
-import frc.robot.commands.test.RunMotorCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
 import frc.robot.commands.score.PrepHeightCommand;
-import frc.robot.commands.score.ScoreCommand;
+import frc.robot.commands.score.ScoreConeCommand;
 import frc.robot.commands.score.ScoreCubeCommand;
-import frc.robot.commands.test.SwerveDriveTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
-import frc.robot.commands.test.TestGrabberCommand;
 import frc.robot.commands.test.ZeroPivotCommand;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.subsystems.CandleSubsystem.CandleState;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -68,12 +65,7 @@ public class RobotContainer {
     SmartDashboard.putData("ZeroArmSensor", new InstantCommand(() -> ArmSubsystem.getInstance().zeroArmSensor(), ArmSubsystem.getInstance()));
     SmartDashboard.putData("ZeroWristSensor", new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
-    //SmartDashboard.putData(new TestGrabberCommand());
-    // SmartDashboard.putData(new ManualExtensionCommand());
-    SmartDashboard.putData(new IntakeTestCommand());
-    // SmartDashboard.putData(new IntakeCommand());
     // SmartDashboard.putData(new CameraCenterCommand());
-    // SmartDashboard.putData(new BalanceTestCommand());
 
     // SmartDashboard.putData("Prep High",new PrepHeightCommand(TargetLevel.HIGH));
     // SmartDashboard.putData("Prep Mid", new PrepHeightCommand(TargetLevel.MID));
@@ -103,7 +95,6 @@ public class RobotContainer {
         GrabberSubsystem.getInstance()
     ));
 
-    SmartDashboard.putData(new LEDTestCommand());
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
     Tabs.Intake.zeroes.add("Extend", new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroArmSensor(),
@@ -125,21 +116,55 @@ public class RobotContainer {
   Trigger midPrepCone = operatorController.button(3); //A
   Trigger highPrepCone = operatorController.button(4);  //X
 
-  Trigger scoreCone = operatorController.button(8); //RT
+  Trigger score = operatorController.button(8); //RT
   Trigger lowScore = operatorController.button(7);  //LT
+
+  //Left cone Right cube
+
+  Trigger cone = operatorController.button(5);  //LB
+  Trigger cube = operatorController.button(6);  //RB
 
   Trigger resetGyro = JoystickSubsytem.getInstance().getLeftJoystick().button(1);
   Trigger resetModules = JoystickSubsytem.getInstance().getRightJoystick().button(1);
 
   public void configureButtonBindings(){
-    intakeButton.toggleOnTrue(new IntakeCommand(true));
+    cone.onTrue(new InstantCommand(
+      () -> CandleSubsystem.getInstance().set(CandleState.WANT_CONE),
+      CandleSubsystem.getInstance()
+      ));
+    cone.onFalse(new InstantCommand(
+      () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
+      CandleSubsystem.getInstance()
+    ));
 
-    lowPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
-    midPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    cube.onTrue(new InstantCommand(
+      () -> CandleSubsystem.getInstance().set(CandleState.WANT_CUBE),
+      CandleSubsystem.getInstance()
+    ));
+    cube.onFalse(new InstantCommand(
+      () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
+      CandleSubsystem.getInstance()
+    ));
+    
+    intakeButton.and(cone).toggleOnTrue(new IntakeCommand(true));
 
-    scoreCone.toggleOnTrue(new ScoreCommand());
-    lowScore.toggleOnTrue(new LowScoreCommand());
+    lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
+    midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    highPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+
+    score.and(cone).toggleOnTrue(new ScoreConeCommand());
+    lowScore.and(cone).toggleOnTrue(new LowScoreCommand());
+
+    intakeButton.and(cube).toggleOnTrue(new IntakeCubeCommand());
+
+    lowPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.LOW));
+    midPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    highPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+
+    score.and(cube).toggleOnTrue(new ScoreCubeCommand());
+    lowScore.and(cube).toggleOnTrue(new LowScoreCommand());
+
+
 
     resetGyro.onTrue(new InstantCommand(() -> {
       SwerveDriveSubsystem.getInstance().setGyro(0);

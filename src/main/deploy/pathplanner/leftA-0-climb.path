@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 14.710667370052686,
-        "y": 0.47960506177422585
+        "x": 1.7955882065610285,
+        "y": 5.070110653041819
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.523073883754607,
-        "y": 0.548120070599115
+        "x": 2.795588206561028,
+        "y": 5.070110653041819
       },
-      "holonomicAngle": -90.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,18 +24,18 @@
     },
     {
       "anchorPoint": {
-        "x": 10.017389265547761,
-        "y": 0.9135334509985259
+        "x": 6.477447142928473,
+        "y": 4.5905055912675925
       },
       "prevControl": {
-        "x": 11.204982751845847,
-        "y": 0.7879226014862292
+        "x": 5.2213386478055,
+        "y": 4.430637237342851
       },
       "nextControl": {
-        "x": 11.204982751845847,
-        "y": 0.7879226014862292
+        "x": 5.2213386478055,
+        "y": 4.430637237342851
       },
-      "holonomicAngle": 90.0,
+      "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
@@ -49,15 +49,15 @@
     },
     {
       "anchorPoint": {
-        "x": 14.7,
-        "y": 1.63
+        "x": 5.244176984080464,
+        "y": 3.1745287422198785
       },
       "prevControl": {
-        "x": 14.711419168137478,
-        "y": 0.01989729261509765
+        "x": 5.860812063504469,
+        "y": 3.1631095740823967
       },
       "nextControl": null,
-      "holonomicAngle": -90.0,
+      "holonomicAngle": 0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -72,13 +72,13 @@
   ],
   "markers": [
     {
-      "position": 0.20363636363637289,
+      "position": 0.4654545454545394,
       "names": [
         "Start Intake"
       ]
     },
     {
-      "position": 1.1781818181817605,
+      "position": 1.2654545454545358,
       "names": [
         "Stop Intake"
       ]

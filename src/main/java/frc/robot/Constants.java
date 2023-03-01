@@ -1,16 +1,10 @@
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.GrabberSubsystem;
 
 public final class Constants {
 
@@ -210,7 +204,7 @@ public final class Constants {
 
     public static final double INTAKE_ANGLE = 110 * Constants.TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 49_000;
+    public static final double HIGH_EXTEND_NU = 43_000;
     public static final double MID_EXTEND_NU = 22_000;
     public static final double LOW_EXTEND_NU = 0;
 

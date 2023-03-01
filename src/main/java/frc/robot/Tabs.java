@@ -114,6 +114,9 @@ public final class Tabs {
         private static GenericEntry bottomRollerStator = values.add("Bot Roller Stator", -1)
             .withPosition(3, 1)
             .getEntry();
+        private static GenericEntry encoderAngle = values.add("Sensor Angle", 0)
+            .withPosition(2, 2)
+            .getEntry();
 
         public static ShuffleboardLayout zeroes = tab.getLayout("Zeroes", BuiltInLayouts.kList)
             .withPosition(7, 0)
@@ -147,6 +150,28 @@ public final class Tabs {
         }
         public static void displayOrienterNU(double NU){
             dispOrienterNU.setDouble(NU);
+        }
+        public static void displayEncoder(double angle){
+            encoderAngle.setDouble(angle);
+        }
+
+        public static void resetExtendEntry(){
+            setExtendNU.setDouble(0);
+        }
+        public static void resetPivotAngleEntry(){
+            pivotDeg.setDouble(0);
+        }
+        public static void resetGrabSpeed(){
+            rollerSpeed.setDouble(0);
+        }
+        public static void resetOrienter(){
+            setOrienterNU.setDouble(0);
+        }
+        public static void resetAll(){
+            resetExtendEntry();
+            resetPivotAngleEntry();
+            resetGrabSpeed();
+            resetOrienter();
         }
 
         public static double getExtendNU(){

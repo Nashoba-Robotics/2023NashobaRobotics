@@ -1,7 +1,5 @@
 package frc.robot.commands.score;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -98,7 +96,6 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             //Added pivoting manual
             if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU / 360){
                 atSetPoint2 = true;
-                // lastPos2 = ArmSubsystem.getInstance().getAngle();
             } 
     
             if(atSetPoint2) {

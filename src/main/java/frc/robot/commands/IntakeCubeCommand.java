@@ -3,12 +3,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
-import frc.robot.Constants.Grabber;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class IntakeCubeCommand extends CommandBase {
     boolean joystick02;
@@ -16,13 +12,6 @@ public class IntakeCubeCommand extends CommandBase {
 
     double setPos2;
     boolean atSetPoint2;
-
-
-    // public IntakeCommand(double armAngle, double wristAngle) {
-    //     addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
-
-    //     this.armAngle = armAngle;
-    // }
 
     public IntakeCubeCommand(){
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());

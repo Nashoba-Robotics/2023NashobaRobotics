@@ -278,6 +278,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             LogManager.appendToLog(gyro.getYaw(), "Gyro:/Yaw");
             LogManager.appendToLog(gyro.getPitch(), "Gyro:/Pitch");
             LogManager.appendToLog(gyro.getRoll(), "Gyro:/Roll");
+
+            LogManager.appendToLog(odometry.getPoseMeters().getX(), "Swerve:/Odometry/X");
+            LogManager.appendToLog(odometry.getPoseMeters().getY(), "Swerve:/Odometry/Y");
+            LogManager.appendToLog(odometry.getPoseMeters().getRotation().getDegrees(), "Swerve:/Odometry/Angle");
         }
     }
 }

@@ -119,6 +119,14 @@ public class NRUnits {
             return angle;
         }
 
+        public static double degToNU(double angle){
+            //Covnert deg to rad
+            angle *= Constants.TAU/360;
+
+            //Yes... I'm lazy
+            return radToNU(angle);
+        }
+
         public static double NUToRad(double pos){
             //Convert to rotations
             pos /= 2048;

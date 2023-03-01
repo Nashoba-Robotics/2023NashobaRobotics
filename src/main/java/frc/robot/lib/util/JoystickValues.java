@@ -1,6 +1,5 @@
 package frc.robot.lib.util;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.lib.math.NRUnits;
 

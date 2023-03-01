@@ -1,16 +1,10 @@
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.GrabberSubsystem;
 
 public final class Constants {
 
@@ -52,10 +46,10 @@ public final class Constants {
     );
 
     //School applicable wheel radius
-    public static final double WHEELRADIUS = Units.inchesToMeters(1.888);
+    // public static final double WHEELRADIUS = Units.inchesToMeters(1.888);
 
     //WPI applicable wheel radius
-    // public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
+    public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
     
     //Maximum velocity in NU/100ms
     public static final double MAX_NATIVE_VELOCITY = 22_000;
@@ -105,7 +99,7 @@ public final class Constants {
       public static final double FAST_K_I = 0.0;
       public static final double FAST_K_D = 0.0;
 
-      public static final double SLOW_K_P = 0.001;
+      public static final double SLOW_K_P = 0.005;
       public static final double SLOW_K_I = 0.0;
       public static final double SLOW_K_D = 0.0;
 
@@ -154,7 +148,8 @@ public final class Constants {
     public static final double INTAKE_SPEED = -0.7;
     public static final double SCORE_SPEED = 0.1;
     public static final double MAX_TURN_SPEED = 0.4;
-    public static final double INTAKE_ANGLE = 6;
+    public static final double INTAKE_ANGLE = 5;
+    // public static final double INTAKE_ANGLE = 7.5;
     public static final double HIGH_ANGLE = 0;
     public static final double MID_ANGLE = 0;
     public static final double LOW_ANGLE = 0;
@@ -203,7 +198,7 @@ public final class Constants {
     public static final double PIVOT_KD_2 = 0;
 
     //Scorign (Radians)
-    public static final double HIGH_ANGLE = TAU / 6;
+    public static final double HIGH_ANGLE = 61 * TAU/360;
     public static final double MID_ANGLE = 65 * TAU/360;
     public static final double LOW_ANGLE = 105 * TAU/360;
 
@@ -215,7 +210,7 @@ public final class Constants {
 
     public static final double ERROR_ANGLE = 0;
 
-    public static final int EXTEND_FORWARD_SOFT_LIMIT = 50_000;
+    public static final int EXTEND_FORWARD_SOFT_LIMIT = 55_000;
     public static final int EXTEND_REVERSE_SOFT_LIMIT = 3_000;
 
     public static final int PIVOT_FORWARD_SOFT_LIMIT = 140_000;
@@ -224,7 +219,12 @@ public final class Constants {
   }
 
   public static final class Field {
-    public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(Constants.TAU/2);
+    //school
+    // public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(Constants.TAU/2);
+
+    //wpi
+    public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
+
     public static final double K_CARPET = 0.04; // should not be higher than 0.5
 
     public enum TargetLevel {

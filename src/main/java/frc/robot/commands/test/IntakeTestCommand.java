@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
+import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
@@ -14,46 +15,44 @@ public class IntakeTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        ArmSubsystem.getInstance().zeroPivotSensor();
-        ArmSubsystem.getInstance().zeroArmSensor();
-        GrabberSubsystem.getInstance().zeroWrist();
+        Tabs.Intake.resetAll();
 
-        // ArmSubsystem.getInstance().extend(0);   //Added this to keep the arm in place as the pivot moves
-    
-        SmartDashboard.putNumber("Arm Angle", 0);
-        SmartDashboard.putNumber("SetWristNU", 0);
+        ArmSubsystem.getInstance().setCruiseVelocity(20_000);
+        ArmSubsystem.getInstance().setAceleration(20_000);
 
-        SmartDashboard.putNumber("Intake Speed", 0);
-        SmartDashboard.putNumber("Extend NU", 0);
+        ArmSubsystem.getInstance().resetPivotNU();
     }
 
     @Override
     public void execute() {
-        double wristAngle = SmartDashboard.getNumber("SetWristNU", 0); //In NU
-        // wristAngle *= Constants.TAU/360;    //For some reason, 1200 seemed best for intaking, and 1500 seemed good for scoring
-        GrabberSubsystem.getInstance().orientPos(wristAngle);
+        double armAngle = Tabs.Intake.getPivotAngle();  //Input in degrees. Calculates in radians
+        ArmSubsystem.getInstance().pivot(armAngle);
 
-        double wristSpeed = SmartDashboard.getNumber("Intake Speed", 0);
-        // GrabberSubsystem.getInstance().set(wristSpeed, -wristSpeed); //Used -0.7 to intake
-        GrabberSubsystem.getInstance().set(wristSpeed); //Used -0.7 to intake
-
-        double pivotAngle = SmartDashboard.getNumber("Arm Angle", 0);   //In degrees
-        pivotAngle *= Constants.TAU/360; 
-        ArmSubsystem.getInstance().pivot(pivotAngle);   //107 degrees seemed good for intaking
-
-        double extendNU = SmartDashboard.getNumber("Extend NU", 0);
-
+        double extendNU = Tabs.Intake.getExtendNU();
         ArmSubsystem.getInstance().extendNU(extendNU);
 
-        SmartDashboard.putNumber("Pivot NU", ArmSubsystem.getInstance().getPivotPos(1));
-        SmartDashboard.putNumber("Pivot Angle Actual", ArmSubsystem.getInstance().getPivotAngleDeg(1));
+        double wristNU = Tabs.Intake.getOrienterNU();
+        GrabberSubsystem.getInstance().orientPos(wristNU);
 
-        SmartDashboard.putNumber("Wrist NU", GrabberSubsystem.getInstance().getPosition());
-        SmartDashboard.putNumber("Actual Wrist Angle", GrabberSubsystem.getInstance().getOrientation() * 360 / Constants.TAU);
+        double wristSpeed = Tabs.Intake.getGrabSpeed();
+        GrabberSubsystem.getInstance().set(wristSpeed, wristSpeed);
 
-        // LogManager.appendToLog(wristAngle, "Wrist:/SetState");
-        // LogManager.appendToLog(GrabberSubsystem.getInstance().getOrientPos(), "Wrist:/ActualState");
-        
+        Tabs.Intake.displayExtendNU(ArmSubsystem.getInstance().getPos());
+        Tabs.Intake.displayExtendCurrent(
+            ArmSubsystem.getInstance().getArmStatorCurrent(), 
+            ArmSubsystem.getInstance().getArmSupplyCurrent()
+        );
+
+        Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getAngle());
+        Tabs.Intake.displayPivotCurrent(
+            ArmSubsystem.getInstance().getPivotStatorCurrent(), 
+            ArmSubsystem.getInstance().getPivotSupplyCurrent()
+        );
+
+        Tabs.Intake.displayOrienterNU(GrabberSubsystem.getInstance().getOrientPos());
+        Tabs.Intake.displayTopStator(GrabberSubsystem.getInstance().getTopGrabCurrent());
+        Tabs.Intake.displayBotStator(GrabberSubsystem.getInstance().getBotGrabCurrent());
+        Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderAngle());
     }
 
     @Override

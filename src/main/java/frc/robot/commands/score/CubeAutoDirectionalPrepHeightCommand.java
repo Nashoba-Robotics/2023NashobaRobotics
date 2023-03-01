@@ -10,7 +10,7 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.Constants.Field.TargetLevel;
 
 
-public class AutoDirectionalPrepHeightCommand extends CommandBase {
+public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     TargetLevel targetLevel;
     double targetPos;
 
@@ -25,7 +25,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     boolean scoreFront;
     int multiplier;
 
-    public AutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
+    public CubeAutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
         this.targetLevel = targetLevel;
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
@@ -48,21 +48,21 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
         switch(targetLevel) {
             case HIGH: 
-             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+            //  GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
              ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;
              setPos2 = Constants.Arm.HIGH_ANGLE * multiplier;
              break;
             case MID: 
-             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+            //  GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
              ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
              targetPos = Constants.Arm.MID_EXTEND_NU;
              setPos2 = Constants.Arm.MID_ANGLE * multiplier;
              break;
            case LOW: 
-            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+            // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
             ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
             targetPos = Constants.Arm.LOW_EXTEND_NU;
@@ -96,6 +96,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             //Added pivoting manual
             if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU / 360){
                 atSetPoint2 = true;
+                // lastPos2 = ArmSubsystem.getInstance().getAngle();
             } 
     
             if(atSetPoint2) {
@@ -121,7 +122,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        GrabberSubsystem.getInstance().orientPos(3 * multiplier);
+        // GrabberSubsystem.getInstance().orientPos(3 * multiplier);
     }
 
     public boolean isFinished() {

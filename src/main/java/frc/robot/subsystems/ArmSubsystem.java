@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,6 +16,7 @@ import frc.robot.lib.math.NRUnits;
 public class ArmSubsystem extends SubsystemBase {
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
+    private CANCoder encoder;
 
     // private DigitalInput extendSwitch;
     // private DigitalInput retractSwitch;
@@ -24,6 +26,9 @@ public class ArmSubsystem extends SubsystemBase {
 
         pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
+
+        encoder = new CANCoder(4, "drivet");  //CHECK THAT IT GOES IN THE CORRECT DIRECTION!!!!
+        encoder.configMagnetOffset(-17.490234375);
 
         // extendSwitch = new DigitalInput(Constants.Arm.EXTEND_SWITCH_PORT);
         // retractSwitch = new DigitalInput(Constants.Arm.RETRACT_SWITCH_PORT);
@@ -146,11 +151,21 @@ public class ArmSubsystem extends SubsystemBase {
         return false;
     }
 
+    public double getEncoderAngle(){
+        return encoder.getAbsolutePosition();
+    }
+
+    public void resetPivotNU(){
+        pivot1.setSelectedSensorPosition(NRUnits.Arm.degToNU(getEncoderAngle()));
+        pivot2.setSelectedSensorPosition(NRUnits.Arm.degToNU(getEncoderAngle()));
+    }
+
     //Pivots arm to specified angle (radians) (0 = upright)
     public void pivot(double angle){
         //How does motion magic work with 2 motors?
         angle = NRUnits.Arm.radToNU(angle);
         if(Constants.Logging.ARM) LogManager.appendToLog(angle, "Arm:/Pivot2/SetPosition");
+
         pivot1.set(ControlMode.MotionMagic,angle);
         pivot2.set(ControlMode.MotionMagic, angle);
     }
@@ -195,6 +210,14 @@ public class ArmSubsystem extends SubsystemBase {
     
     public double getArmSupplyCurrent() {
         return tromboneSlide.getSupplyCurrent();
+    }
+
+    public double getPivotStatorCurrent() {
+        return pivot1.getStatorCurrent();
+    }
+
+    public double getPivotSupplyCurrent() {
+        return pivot1.getSupplyCurrent();
     }
 
     //This is TEMPORARY

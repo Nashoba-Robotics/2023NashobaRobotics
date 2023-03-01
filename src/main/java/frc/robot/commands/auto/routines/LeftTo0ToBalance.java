@@ -11,17 +11,19 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeCubeCommand;
+import frc.robot.commands.auto.balance.AutoBalanceCommand;
+import frc.robot.commands.auto.balance.routine.backToBalance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
-public class LeftTo0ToScore extends SequentialCommandGroup{
+public class LeftTo0ToBalance extends SequentialCommandGroup {
     
-    public LeftTo0ToScore() {
+    public LeftTo0ToBalance() {
         Map<String, Command> map = new HashMap<>();
-        map.put("Start Intake", new IntakeCommand(true));
+        map.put("Start Intake", new IntakeCubeCommand());
         map.put("Stop Intake", new InstantCommand(
             () -> {
                 ArmSubsystem.getInstance().pivot(0);
@@ -30,16 +32,22 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
             ArmSubsystem.getInstance(),
             GrabberSubsystem.getInstance()
         ));
-        PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-leftA-0-leftC", new PathConstraints(2, 2));
-        
+        PathPlannerTrajectory path = PathPlanner.loadPath("leftA-0-climb", new PathConstraints(2, 2));
+
         FollowPathWithEvents command = new FollowPathWithEvents(
             new FollowPathCommand(path),
             path.getMarkers(),
             map);
+            
         addCommands(
-            new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
+            new InstantCommand(() -> {
+                GrabberSubsystem.getInstance().zeroWrist();
+                ArmSubsystem.getInstance().resetPivotNU();
+            }, GrabberSubsystem.getInstance(), ArmSubsystem.getInstance()),
             new AutoScoreCommand(),
-            command
+            command,
+            new backToBalance(),
+            new AutoBalanceCommand()
         );
     }
 

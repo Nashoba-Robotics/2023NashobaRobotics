@@ -80,7 +80,6 @@ public class PrepHeightCommand extends CommandBase {
             //Added pivoting manual
             if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 2 * Constants.TAU / 360){
                 atSetPoint2 = true;
-                // lastPos2 = ArmSubsystem.getInstance().getAngle();
             } 
     
             if(atSetPoint2) {

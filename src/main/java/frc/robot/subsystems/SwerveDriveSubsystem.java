@@ -31,7 +31,14 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.Misc.GYRO_PORT, "drivet");
         gyro.configFactoryDefault();
+        gyro.configMountPose(0, 0.308, -0.483);
         fieldCentric = true;
+
+        /*
+         * :-0.263672 '
+    Pitch :0.307617 '
+    Roll  :-0.483398 
+         */
 
         modules = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD0_AFF),
@@ -56,10 +63,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void brake() {
-        modules[0].set(0, Constants.TAU/4);
-        modules[1].set(0, -Constants.TAU/4);
-        modules[2].set(0, Constants.TAU/4);
-        modules[3].set(0, -Constants.TAU/4);
+        modules[0].set(0, Constants.TAU/8, false);
+        modules[1].set(0, -Constants.TAU/8, false);
+        modules[2].set(0, Constants.TAU/8, false);
+        modules[3].set(0, -Constants.TAU/8, false);
     }
 
     public double getGyroAngle() {
@@ -218,16 +225,24 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public boolean isLevel(){
-        return Math.abs(getPitch() - 1.5) < 0.7;
+        return Math.abs(getRoll()) < 0.5;
     }
 
     public boolean notLevel() {
         return !isLevel();
     }
 
+    public boolean levelNegative() {
+        return getRoll() < -1;
+    }
+
+    public boolean levelPositive() {
+        return getRoll() > 1;
+    }
+
     //TODO: Add algorithm to check whether to use Pitch or Roll (Maybe averaging the values?)
     public double getChange(){
-        return balanceController.calculate(getPitch());
+        return balanceController.calculate(getRoll());
         //return balanceController.calculate(getBalanceAngle());
     }
 
@@ -248,6 +263,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
         SmartDashboard.putNumber("gyro angle", getGyroAngle());
 
+        SmartDashboard.putNumber("Pitch", getPitch());
+        SmartDashboard.putNumber("Roll", getRoll());
+        SmartDashboard.putNumber("Change", getChange());
+        SmartDashboard.putBoolean("At Setpoint",balanced());
+
         if(Constants.Logging.SWERVE) {
             for(SwerveModule module : modules) {
                 SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
@@ -258,6 +278,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             LogManager.appendToLog(gyro.getYaw(), "Gyro:/Yaw");
             LogManager.appendToLog(gyro.getPitch(), "Gyro:/Pitch");
             LogManager.appendToLog(gyro.getRoll(), "Gyro:/Roll");
+
+            LogManager.appendToLog(odometry.getPoseMeters().getX(), "Swerve:/Odometry/X");
+            LogManager.appendToLog(odometry.getPoseMeters().getY(), "Swerve:/Odometry/Y");
+            LogManager.appendToLog(odometry.getPoseMeters().getRotation().getDegrees(), "Swerve:/Odometry/Angle");
         }
     }
 }

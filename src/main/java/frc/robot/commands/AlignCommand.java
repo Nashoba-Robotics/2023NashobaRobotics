@@ -12,7 +12,6 @@ import frc.robot.subsystems.LimelightSubsystem.TargetType;
 public class AlignCommand extends CommandBase {
     
     private PIDController turnController;
-    private PIDController xController;
     private PIDController yController;
     private long startTime;
 
@@ -23,7 +22,6 @@ public class AlignCommand extends CommandBase {
         addRequirements(SwerveDriveSubsystem.getInstance(), LimelightSubsystem.getInstance());
 
         turnController = new PIDController(0, 0, 0);
-        xController = new PIDController(0, 0, 0);
         yController = new PIDController(0, 0, 0);
         this.t = t;
         this.level = level;
@@ -44,26 +42,16 @@ public class AlignCommand extends CommandBase {
         turnController.setSetpoint(0);
         turnController.setTolerance(0);
 
-        if(level == TargetLevel.HIGH) {
-            xController.setSetpoint(Constants.Field.HIGH_TAPE_CAMERA_HEIGHT);
-        } else if(level == TargetLevel.MID) {
-            xController.setSetpoint(Constants.Field.MID_TAPE_CAMERA_HEIGHT);
-        } else {
-            //TODO: add case for low
-        }
-        xController.setTolerance(0);
-
-        yController.setSetpoint(Constants.TAU / 4);
+        yController.setSetpoint(0);
         yController.setTolerance(0);
     }
 
     @Override
     public void execute() {
         double turnGain = turnController.calculate(-LimelightSubsystem.getInstance().getTX());
-        double xGain = xController.calculate(LimelightSubsystem.getInstance().getTY()); //field relative
-        double yGain = yController.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle());
+        double yGain = yController.calculate(LimelightSubsystem.getInstance().getTX());
 
-        SwerveDriveSubsystem.getInstance().set(xGain, yGain, turnGain);
+        SwerveDriveSubsystem.getInstance().set(0, yGain, turnGain);
     }
 
     @Override
@@ -74,8 +62,7 @@ public class AlignCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(SwerveDriveSubsystem.getInstance().getGyroAngle() - Constants.TAU/4) < Constants.TAU / 12
-            || System.currentTimeMillis() - startTime < 5000;
+        return System.currentTimeMillis() - startTime > 5000;
     }
 
 }

@@ -32,7 +32,7 @@ public class RightTo3ToBalance extends SequentialCommandGroup {
             ArmSubsystem.getInstance(),
             GrabberSubsystem.getInstance()
         ));
-        PathPlannerTrajectory path = PathPlanner.loadPath("rightA-0-climb", new PathConstraints(2, 2));
+        PathPlannerTrajectory path = PathPlanner.loadPath("rightC-3-climb", new PathConstraints(2, 2));
 
         FollowPathWithEvents command = new FollowPathWithEvents(
             new FollowPathCommand(path),

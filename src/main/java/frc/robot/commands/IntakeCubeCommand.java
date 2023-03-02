@@ -21,12 +21,12 @@ public class IntakeCubeCommand extends CommandBase {
     public void initialize() {
         GrabberSubsystem.getInstance().setCurrentLimit(30);
 
-        ArmSubsystem.getInstance().setCruiseVelocity(20_000);
-        ArmSubsystem.getInstance().setAceleration(20_000);
+        ArmSubsystem.getInstance().setCruiseVelocity(40_000);
+        ArmSubsystem.getInstance().setAceleration(40_000);
 
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extendNU(3_000);
-        ArmSubsystem.getInstance().pivot(-108 * Constants.TAU/360);
+        ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.INTAKE_ANGLE);
         // setPos2 = -108;
         atSetPoint2 = false;
         joystick02 = false;

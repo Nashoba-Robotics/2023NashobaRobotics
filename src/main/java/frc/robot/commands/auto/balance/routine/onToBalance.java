@@ -11,7 +11,7 @@ public class onToBalance extends CommandBase {
 
     @Override
     public void initialize() {
-        SwerveDriveSubsystem.getInstance().set(0.7, 0, 0);
+        SwerveDriveSubsystem.getInstance().set(-0.7, 0, 0);
     }
 
     @Override

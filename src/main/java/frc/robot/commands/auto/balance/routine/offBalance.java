@@ -12,7 +12,7 @@ public class offBalance extends CommandBase {
 
     @Override
     public void initialize() {
-        SwerveDriveSubsystem.getInstance().set(0.3, 0, 0);
+        SwerveDriveSubsystem.getInstance().set(-0.3, 0, 0);
     }
 
     @Override

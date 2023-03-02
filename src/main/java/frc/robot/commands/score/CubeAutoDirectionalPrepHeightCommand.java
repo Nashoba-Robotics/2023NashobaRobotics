@@ -21,6 +21,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     boolean gotToStart;
     boolean atSetPoint2;
     double setPos2;
+    double setPos3;
 
     boolean scoreFront;
     int multiplier;
@@ -38,35 +39,39 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         gotToStart = false;
         atSetPoint2 = false;
         setPos2 = 0;
+        setPos3 = 0;
 
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
         scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
 
-        multiplier = scoreFront ? 1 : -1;
+        multiplier = scoreFront ? -1 : 1;
 
         switch(targetLevel) {
             case HIGH: 
             //  GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
-             ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE * multiplier);
-             ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
-             targetPos = Constants.Arm.HIGH_EXTEND_NU;
-             setPos2 = Constants.Arm.HIGH_ANGLE * multiplier;
+             ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.HIGH_ANGLE * multiplier);
+             ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.HIGH_EXTEND_NU);
+             targetPos = Constants.Arm.Cube.HIGH_EXTEND_NU;
+             setPos2 = Constants.Arm.Cube.HIGH_ANGLE * multiplier;
+             setPos3 = -9;
              break;
             case MID: 
             //  GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
-             ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE * multiplier);
-             ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
-             targetPos = Constants.Arm.MID_EXTEND_NU;
-             setPos2 = Constants.Arm.MID_ANGLE * multiplier;
+             ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.MID_ANGLE * multiplier);
+             ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.MID_EXTEND_NU);
+             targetPos = Constants.Arm.Cube.MID_EXTEND_NU;
+             setPos2 = Constants.Arm.Cube.MID_ANGLE * multiplier;
+             setPos3 = -9;
              break;
            case LOW: 
             // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
-            ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
-            ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
-            targetPos = Constants.Arm.LOW_EXTEND_NU;
-            setPos2 = Constants.Arm.LOW_ANGLE * multiplier;
+            ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.LOW_ANGLE * multiplier);
+            ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.LOW_EXTEND_NU);
+            targetPos = Constants.Arm.Cube.LOW_EXTEND_NU;
+            setPos2 = Constants.Arm.Cube.LOW_ANGLE * multiplier;
+            setPos3 = -9;
             break;
         }
         gotToStart = false;
@@ -96,7 +101,6 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
             //Added pivoting manual
             if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU / 360){
                 atSetPoint2 = true;
-                // lastPos2 = ArmSubsystem.getInstance().getAngle();
             } 
     
             if(atSetPoint2) {
@@ -117,6 +121,11 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
                 SmartDashboard.putBoolean("Manual", joystick02);
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
+
+            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 += 0.5 * multiplier;
+            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 -= 0.5 * multiplier;
+
+            GrabberSubsystem.getInstance().orient(setPos3);
         }
     }
 

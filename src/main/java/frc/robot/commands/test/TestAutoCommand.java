@@ -38,7 +38,7 @@ public class TestAutoCommand extends SequentialCommandGroup {
             GrabberSubsystem.getInstance()
         ));
 
-        PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-rightC-3-rightA", new PathConstraints(4, 3));
+        PathPlannerTrajectory path = PathPlanner.loadPath("testPath", new PathConstraints(2, 2));
         FollowPathWithEvents command = new FollowPathWithEvents(
             new FollowPathCommand(path),
             path.getMarkers(),

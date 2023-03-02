@@ -167,7 +167,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     public void setStates(SwerveModuleState[] states) {
         for(int i = 0; i < modules.length; i++) {
-            SmartDashboard.putNumber("SetAngle"+i, states[i].angle.getDegrees());
+            // SmartDashboard.putNumber("SetAngle"+i, states[i].angle.getDegrees());
             modules[i].set(states[i]);
         }
     }

@@ -42,7 +42,7 @@ public class ScoreCubeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().set(0);
-        GrabberSubsystem.getInstance().orient(0);
+        // GrabberSubsystem.getInstance().orient(0);
         ArmSubsystem.getInstance().stop();
         ArmSubsystem.getInstance().pivot(0);
         ArmSubsystem.getInstance().extendNU(0);

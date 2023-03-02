@@ -158,7 +158,7 @@ public final class Constants {
 
     public static final double GEAR_RATIO = 48 * 36 / 22.; //TODO: find why 1.15
 
-    public static final double SCORE_NU = -3;
+    public static final double SCORE_NU = -7.5;
 
   }
 
@@ -198,14 +198,14 @@ public final class Constants {
     public static final double PIVOT_KD_2 = 0;
 
     //Scorign (Radians)
-    public static final double HIGH_ANGLE = 61 * TAU/360;
-    public static final double MID_ANGLE = 65 * TAU/360;
+    public static final double HIGH_ANGLE = 62.5 * TAU/360;
+    public static final double MID_ANGLE = 67 * TAU/360;
     public static final double LOW_ANGLE = 105 * TAU/360;
 
-    public static final double INTAKE_ANGLE = 110 * Constants.TAU/360;
+    public static final double INTAKE_ANGLE = 112.25 * Constants.TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 43_000;
-    public static final double MID_EXTEND_NU = 22_000;
+    public static final double HIGH_EXTEND_NU = 46_000;
+    public static final double MID_EXTEND_NU = 17_500;
     public static final double LOW_EXTEND_NU = 0;
 
     public static final double ERROR_ANGLE = 0;
@@ -216,6 +216,17 @@ public final class Constants {
     public static final int PIVOT_FORWARD_SOFT_LIMIT = 140_000;
     public static final int PIVOT_REVERSE_SOFT_LIMIT = -140_000;
     
+    public static final class Cube{
+      public static final double HIGH_ANGLE = -61 * TAU/360;
+      public static final double MID_ANGLE = -62 * TAU/360;
+      public static final double LOW_ANGLE = -105 * TAU/360;
+
+      public static final double INTAKE_ANGLE = -111 * Constants.TAU/360;
+
+      public static final double HIGH_EXTEND_NU = 48_000;
+      public static final double MID_EXTEND_NU = 20_000;
+      public static final double LOW_EXTEND_NU = 0;
+    }
   }
 
   public static final class Field {
@@ -225,7 +236,7 @@ public final class Constants {
     //wpi
     public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
 
-    public static final double K_CARPET = 0.04; // should not be higher than 0.5
+    public static final double K_CARPET = 0.0; // should not be higher than 0.5
 
     public enum TargetLevel {
       HIGH,

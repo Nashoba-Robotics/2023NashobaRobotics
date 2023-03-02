@@ -7,6 +7,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
+import frc.robot.Constants.Grabber;
 import frc.robot.Constants.Field.TargetLevel;
 
 
@@ -21,6 +22,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     boolean gotToStart;
     boolean atSetPoint2;
     double setPos2;
+    double setPos3;
 
     boolean scoreFront;
     int multiplier;
@@ -38,6 +40,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         gotToStart = false;
         atSetPoint2 = false;
         setPos2 = 0;
+        setPos3 = 0;
 
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
@@ -53,6 +56,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
              ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;
              setPos2 = Constants.Arm.HIGH_ANGLE * multiplier;
+             setPos3 = Constants.Grabber.SCORE_NU * multiplier;
              break;
             case MID: 
              GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
@@ -60,6 +64,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
              ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
              targetPos = Constants.Arm.MID_EXTEND_NU;
              setPos2 = Constants.Arm.MID_ANGLE * multiplier;
+             setPos3 = Constants.Grabber.SCORE_NU * multiplier;
              break;
            case LOW: 
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
@@ -67,6 +72,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
             targetPos = Constants.Arm.LOW_EXTEND_NU;
             setPos2 = Constants.Arm.LOW_ANGLE * multiplier;
+            setPos3 = Constants.Grabber.SCORE_NU * multiplier;
             break;
         }
         gotToStart = false;
@@ -74,8 +80,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
     @Override
     public void execute() {
-        SmartDashboard.putBoolean("manual", gotToStart);
-        SmartDashboard.putNumber("Arm nu", ArmSubsystem.getInstance().getPos());
+        // SmartDashboard.putBoolean("manual", gotToStart);
+        // SmartDashboard.putNumber("Arm nu", ArmSubsystem.getInstance().getPos());
         if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < 500) gotToStart = true;
         if(gotToStart) {
             double y = RobotContainer.operatorController.getThrottle() ;
@@ -116,12 +122,17 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 SmartDashboard.putBoolean("Manual", joystick02);
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
+
+            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 += 0.5 * multiplier;
+            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 -= 0.5 * multiplier;
+
+            GrabberSubsystem.getInstance().orient(setPos3);
         }
     }
 
     @Override
     public void end(boolean interrupted) {
-        GrabberSubsystem.getInstance().orientPos(3 * multiplier);
+        GrabberSubsystem.getInstance().orientPos(-2 * multiplier);
     }
 
     public boolean isFinished() {

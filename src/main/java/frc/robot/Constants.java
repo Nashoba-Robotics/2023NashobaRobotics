@@ -204,7 +204,7 @@ public final class Constants {
 
     public static final double INTAKE_ANGLE = 112.25 * Constants.TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 46_000;
+    public static final double HIGH_EXTEND_NU = 47_000;
     public static final double MID_EXTEND_NU = 17_500;
     public static final double LOW_EXTEND_NU = 0;
 
@@ -256,8 +256,8 @@ public final class Constants {
   }
 
   public static final class Logging {
-    public static final boolean ARM = false;
-    public static final boolean GRABBER = false;
-    public static final boolean SWERVE = false;
+    public static final boolean ARM = true;
+    public static final boolean GRABBER = true;
+    public static final boolean SWERVE = true;
   }
 }

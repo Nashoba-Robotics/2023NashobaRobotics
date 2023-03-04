@@ -85,7 +85,8 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         if(gotToStart) {
             double y = RobotContainer.operatorController.getThrottle() ;
             y = Math.abs(y) < 0.1 ? 0 : (y-0.1)/0.9;    //Put deadzone in Constants
-            y *= 0.3;
+            if(y < 0) y *= 0.6;
+            else y *= 0.3;
             if(y == 0){ // If there isn't any input, maintain the position
                 if(!joystick0){
                     joystick0 = true;
@@ -122,10 +123,10 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
 
-            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 += 0.5 * multiplier;
-            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 -= 0.5 * multiplier;
+            // if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.5 * multiplier;
+            // if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.5 * multiplier;
 
-            GrabberSubsystem.getInstance().orient(setPos3);
+            // GrabberSubsystem.getInstance().orient(setPos3);
         }
     }
 

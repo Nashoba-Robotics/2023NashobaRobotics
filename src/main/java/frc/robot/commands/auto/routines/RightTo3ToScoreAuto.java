@@ -55,9 +55,9 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
                     );
             }, SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.5),
-            // new AutoScoreCommand(),
-            command
-            // new AutoScoreCubeCommand()
+            new AutoScoreCommand(),
+            command,
+            new AutoScoreCubeCommand()
         );
     }
 }

@@ -64,7 +64,7 @@ public class BalanceCommand extends CommandBase{
     @Override
     public boolean isFinished() {
         if(b == Balance.QUICK){
-            return SwerveDriveSubsystem.getInstance().getRoll() > 0;
+            return SwerveDriveSubsystem.getInstance().getRoll() < 0;
         }
         return SwerveDriveSubsystem.getInstance().balanced();
     }

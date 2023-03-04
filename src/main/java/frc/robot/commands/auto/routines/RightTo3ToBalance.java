@@ -11,6 +11,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants;
 import frc.robot.commands.IntakeCubeCommand;
 import frc.robot.commands.auto.balance.AutoBalanceCommand;
 import frc.robot.commands.auto.balance.routine.backToBalance;
@@ -18,6 +19,7 @@ import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class RightTo3ToBalance extends SequentialCommandGroup {
     
@@ -43,6 +45,7 @@ public class RightTo3ToBalance extends SequentialCommandGroup {
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().zeroWrist();
                 ArmSubsystem.getInstance().resetPivotNU();
+                SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
             }, GrabberSubsystem.getInstance(), ArmSubsystem.getInstance()),
             new AutoScoreCommand(),
             command,

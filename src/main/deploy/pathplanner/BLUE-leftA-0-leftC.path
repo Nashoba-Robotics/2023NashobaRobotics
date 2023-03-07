@@ -2,15 +2,15 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.8324073770400287,
-        "y": 4.8884044145148735
+        "x": 1.8184265428359916,
+        "y": 5.024433980491892
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.960144293571555,
-        "y": 4.88851911598054
+        "x": 4.946163459367518,
+        "y": 5.024548681957559
       },
-      "holonomicAngle": 90.0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -24,18 +24,18 @@
     },
     {
       "anchorPoint": {
-        "x": 6.503968670712067,
-        "y": 4.636806749575038
+        "x": 6.648734664990697,
+        "y": 4.624763095680038
       },
       "prevControl": {
-        "x": 6.225645564271898,
-        "y": 4.8514705425702065
+        "x": 6.370411558550528,
+        "y": 4.839426888675207
       },
       "nextControl": {
-        "x": 6.225645564271898,
-        "y": 4.8514705425702065
+        "x": 6.370411558550528,
+        "y": 4.839426888675207
       },
-      "holonomicAngle": -90.0,
+      "holonomicAngle": 180.0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
@@ -49,40 +49,15 @@
     },
     {
       "anchorPoint": {
-        "x": 2.798939277480203,
-        "y": 4.733729488063372
+        "x": 1.8983607197983627,
+        "y": 4.396379732930406
       },
       "prevControl": {
-        "x": 3.5088729025815706,
-        "y": 4.80591434108256
-      },
-      "nextControl": {
-        "x": 1.9207275056033628,
-        "y": 4.644434397041872
-      },
-      "holonomicAngle": 90.0,
-      "isReversal": false,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 1.7,
-        "y": 3.85
-      },
-      "prevControl": {
-        "x": 3.0069333672636214,
-        "y": 3.85
+        "x": 2.640606648734664,
+        "y": 4.36212222851796
       },
       "nextControl": null,
-      "holonomicAngle": 90.0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -97,13 +72,13 @@
   ],
   "markers": [
     {
-      "position": 1.327734375000002,
+      "position": 1.2218181818181928,
       "names": [
         "Stop Intake"
       ]
     },
     {
-      "position": 0.03,
+      "position": 0.3,
       "names": [
         "Start Intake"
       ]

@@ -198,8 +198,8 @@ public final class Constants {
     public static final double PIVOT_KD_2 = 0;
 
     //Scorign (Radians)
-    public static final double HIGH_ANGLE = 62.5 * TAU/360;
-    public static final double MID_ANGLE = 67 * TAU/360;
+    public static final double HIGH_ANGLE = 63 * TAU/360;
+    public static final double MID_ANGLE = 68 * TAU/360;
     public static final double LOW_ANGLE = 105 * TAU/360;
 
     public static final double INTAKE_ANGLE = 112.25 * Constants.TAU/360;

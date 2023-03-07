@@ -30,7 +30,7 @@ public class ScoreConeCommand extends CommandBase {
 
         double angleChange = DriverStation.isAutonomous() ? 2 * Constants.TAU/360 : 2 * Constants.TAU/360;
         ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
-        GrabberSubsystem.getInstance().orientPos(-2 * multiplier);
+        GrabberSubsystem.getInstance().orientPos(-0 * multiplier);
         ArmSubsystem.getInstance().extendNU(1000);
         GrabberSubsystem.getInstance().set(0.1);
     }

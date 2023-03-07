@@ -46,7 +46,7 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
         addCommands(
             new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
             new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2), SwerveDriveSubsystem.getInstance()),
-            new WaitCommand(0.5),
+            new WaitCommand(0.1),
             new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(
                     PathPlannerTrajectory.transformTrajectoryForAlliance(
@@ -54,7 +54,7 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
                         DriverStation.getAlliance()).getInitialHolonomicPose()
                     );
             }, SwerveDriveSubsystem.getInstance()),
-            new WaitCommand(0.5),
+            new WaitCommand(0.1),
             new AutoScoreCommand(),
             command,
             new AutoScoreCubeCommand()

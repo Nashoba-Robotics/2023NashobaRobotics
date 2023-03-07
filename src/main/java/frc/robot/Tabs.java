@@ -83,7 +83,7 @@ public final class Tabs {
         
         private static ShuffleboardLayout values = tab.getLayout("Display Values", BuiltInLayouts.kGrid)
             .withPosition(2, 1)
-            .withSize(4, 3);
+            .withSize(5, 3);
         private static GenericEntry dispExtendNU = values.add("Actual Extend NU", 0)
             .withPosition(0, 0)
             .getEntry();
@@ -116,6 +116,10 @@ public final class Tabs {
             .getEntry();
         private static GenericEntry encoderAngle = values.add("Sensor Angle", 0)
             .withPosition(2, 2)
+            .getEntry();
+        private static GenericEntry actualMM = values.add("Extend MM", 0)
+            .getEntry();
+        private static GenericEntry pivotOutput = values.add("Pivot Output", 0)
             .getEntry();
 
         public static ShuffleboardLayout zeroes = tab.getLayout("Zeroes", BuiltInLayouts.kList)
@@ -153,6 +157,12 @@ public final class Tabs {
         }
         public static void displayEncoder(double angle){
             encoderAngle.setDouble(angle);
+        }
+        public static void displayPivotOutput(double out){
+            pivotOutput.setDouble(out);
+        }
+        public static void displayMM(double NU){
+            actualMM.setDouble(NU/58.4);
         }
 
         public static void resetExtendEntry(){

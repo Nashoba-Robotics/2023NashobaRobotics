@@ -53,6 +53,10 @@ public class IntakeTestCommand extends CommandBase{
         Tabs.Intake.displayTopStator(GrabberSubsystem.getInstance().getTopGrabCurrent());
         Tabs.Intake.displayBotStator(GrabberSubsystem.getInstance().getBotGrabCurrent());
         Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderAngle());
+
+        Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
+        Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getPivotOutput());
+        SmartDashboard.putNumber("AAAAAAAAAAAHHHHHHHHHHHH", ArmSubsystem.getInstance().getPivotOutput());
     }
 
     @Override

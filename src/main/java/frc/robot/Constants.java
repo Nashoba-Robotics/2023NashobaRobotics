@@ -181,8 +181,8 @@ public final class Constants {
     public static final double ARM_KI = 0;
     public static final double ARM_KD = 0;
 
-    public static final double ARM_CRUISE_VELOCITY = 20_000;  //40_000
-    public static final double ARM_ACCELERATION = 15_000;
+    public static final double ARM_CRUISE_VELOCITY = 50_000;  //40_000
+    public static final double ARM_ACCELERATION = 20_000;
 
     public static final double PIVOT_CRUISE_VELOCITY = 50_000;
     public static final double PIVOT_ACCELERATION = 45_000;

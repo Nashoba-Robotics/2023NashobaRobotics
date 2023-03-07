@@ -131,6 +131,13 @@ public class ArmSubsystem extends SubsystemBase {
         return pivot1.getMotorOutputVoltage();
     }
 
+    public double getPivotSpeed(){
+        double pivotSpeed1 = pivot1.getSelectedSensorVelocity();
+        double pivotSpeed2 = pivot2.getSelectedSensorVelocity();
+
+        return (pivotSpeed1+pivotSpeed2)/2;
+    }
+
     //Extends arm to specified position in meters
     public void extendM(double pos){
        tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Arm.mToNU(pos));
@@ -178,11 +185,11 @@ public class ArmSubsystem extends SubsystemBase {
 
         ff *= -Math.sin(angle);
 
-        pivot1.set(ControlMode.MotionMagic,angle);
-        pivot2.set(ControlMode.MotionMagic, angle);
+        // pivot1.set(ControlMode.MotionMagic, NU);
+        // pivot2.set(ControlMode.MotionMagic, NU);
         
-        // pivot1.set(ControlMode.MotionMagic,angle, DemandType.ArbitraryFeedForward, ff);
-        // pivot2.set(ControlMode.MotionMagic, angle, DemandType.ArbitraryFeedForward, ff);
+        pivot1.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
+        pivot2.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
     }
 
     public void setPivot(double speed){
@@ -284,14 +291,22 @@ public class ArmSubsystem extends SubsystemBase {
         return (getStatorCurrent1()+getSupplyCurrent2())/2;
     }
 
-    public void setCruiseVelocity(double cruiseVelocity) {
+    public void setPivotCruiseVelocity(double cruiseVelocity) {
         pivot1.configMotionCruiseVelocity(cruiseVelocity);
         pivot2.configMotionCruiseVelocity(cruiseVelocity);
     }
 
-    public void setAceleration(double acceleration) {
+    public void setPivotAcceleration(double acceleration) {
         pivot1.configMotionAcceleration(acceleration);
         pivot2.configMotionAcceleration(acceleration);
+    }
+
+    public void setExtendCruiseVelocity(double cruiseVelocity) {
+        tromboneSlide.configMotionCruiseVelocity(cruiseVelocity);
+    }
+
+    public void setExtendAcceleration(double acceleration) {
+        tromboneSlide.configMotionAcceleration(acceleration);
     }
 
     public void setDefaultCruiseVelocity() {

@@ -29,6 +29,7 @@ import frc.robot.commands.test.ControllerTestCommand;
 import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ManualGrabberCommand;
+import frc.robot.commands.test.PrepTestCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
@@ -92,6 +93,8 @@ public class RobotContainer {
     SmartDashboard.putData(new AutoScoreCommand());
 
     SmartDashboard.putData(new ManualGrabberCommand());
+
+    SmartDashboard.putData(new PrepTestCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(

@@ -17,8 +17,8 @@ public class IntakeTestCommand extends CommandBase{
     public void initialize() {
         Tabs.Intake.resetAll();
 
-        ArmSubsystem.getInstance().setCruiseVelocity(20_000);
-        ArmSubsystem.getInstance().setAceleration(20_000);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(20_000);
+        ArmSubsystem.getInstance().setPivotAcceleration(20_000);
 
         ArmSubsystem.getInstance().resetPivotNU();
     }
@@ -56,7 +56,6 @@ public class IntakeTestCommand extends CommandBase{
 
         Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
         Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getPivotOutput());
-        SmartDashboard.putNumber("AAAAAAAAAAAHHHHHHHHHHHH", ArmSubsystem.getInstance().getPivotOutput());
     }
 
     @Override

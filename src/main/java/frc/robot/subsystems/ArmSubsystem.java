@@ -126,6 +126,10 @@ public class ArmSubsystem extends SubsystemBase {
         setPivot(0);
     }
 
+    public double getOutput(){
+        return tromboneSlide.getMotorOutputPercent();
+    }
+
     //Extends arm to specified position in meters
     public void extendM(double pos){
        tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Arm.mToNU(pos));

@@ -17,7 +17,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeCubeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.commands.auto.balance.AutoBalanceCommand;
+// import frc.robot.commands.auto.balance.AutoBalanceCommand;
 import frc.robot.commands.auto.balance.BalanceCommand;
 import frc.robot.commands.auto.balance.BalanceCommand.Balance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
@@ -50,9 +50,9 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    SmartDashboard.putData(new IntakeCubeCommand());
-    SmartDashboard.putData(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
-    SmartDashboard.putData(new ScoreCubeCommand());
+    // SmartDashboard.putData(new IntakeCubeCommand());
+    // SmartDashboard.putData(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    // SmartDashboard.putData(new ScoreCubeCommand());
     // SmartDashboard.putData(new SwerveDriveCommand());
     SmartDashboard.putData(new TestAutoCommand());
     // SmartDashboard.putData(new SwerveDriveTestCommand());
@@ -81,7 +81,7 @@ public class RobotContainer {
     
     SmartDashboard.putData("DriveTo", new DriveToTestCommand());
 
-    SmartDashboard.putData("Balance", new AutoBalanceCommand());
+    // SmartDashboard.putData("Balance", new AutoBalanceCommand());
 
     SmartDashboard.putData(new AutoScoreCommand());
 

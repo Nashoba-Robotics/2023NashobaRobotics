@@ -117,9 +117,9 @@ public final class Tabs {
         private static GenericEntry encoderAngle = values.add("Sensor Angle", 0)
             .withPosition(2, 2)
             .getEntry();
-        private static GenericEntry pivotPercentOutput = values.add("Pivot Percent Output", 0)
+        private static GenericEntry actualMM = values.add("Extend MM", 0)
             .getEntry();
-        private static GenericEntry extendMM = values.add("Extend mm", 0)
+        private static GenericEntry pivotOutput = values.add("Pivot Output", 0)
             .getEntry();
 
         public static ShuffleboardLayout zeroes = tab.getLayout("Zeroes", BuiltInLayouts.kList)
@@ -157,11 +157,11 @@ public final class Tabs {
         public static void displayEncoder(double angle){
             encoderAngle.setDouble(angle);
         }
-        public static void displayOutput(double out){
-            pivotPercentOutput.setDouble(out);
+        public static void displayPivotOutput(double out){
+            pivotOutput.setDouble(out);
         }
         public static void displayMM(double NU){
-            extendMM.setDouble(NU/58.4);
+            actualMM.setDouble(NU/58.4);
         }
 
         public static void resetExtendEntry(){

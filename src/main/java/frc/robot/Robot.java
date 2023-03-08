@@ -108,6 +108,8 @@ public class Robot extends TimedRobot {
     ArmSubsystem.getInstance().stop();
     CandleSubsystem.getInstance().set(CandleState.ENABLED);
     ArmSubsystem.getInstance().resetPivotNU();
+
+    SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
   }
 
   @Override

@@ -13,7 +13,7 @@ public class AutoBalanceCommand extends SequentialCommandGroup{
     public AutoBalanceCommand(){
         addCommands(
             new InstantCommand(
-                () -> ArmSubsystem.getInstance().pivot(Math.PI/2),
+                () -> ArmSubsystem.getInstance().pivot(-Math.PI/2),
                 ArmSubsystem.getInstance()
             ),
             new BalanceCommand(Balance.QUICK),

@@ -16,7 +16,7 @@ public class throughBalance extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return SwerveDriveSubsystem.getInstance().levelNegative();
+        return SwerveDriveSubsystem.getInstance().levelPositive();
     }
 
 }

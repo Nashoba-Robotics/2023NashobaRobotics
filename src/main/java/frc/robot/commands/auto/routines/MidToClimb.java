@@ -7,12 +7,14 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants;
 import frc.robot.commands.auto.balance.AutoBalanceCommand;
 import frc.robot.commands.auto.balance.routine.backToBalance;
 import frc.robot.commands.auto.balance.routine.offBalance;
 import frc.robot.commands.auto.balance.routine.onToBalance;
 import frc.robot.commands.auto.balance.routine.throughBalance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -23,7 +25,8 @@ public class MidToClimb extends SequentialCommandGroup{
         addCommands(
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().zeroWrist();
-                SwerveDriveSubsystem.getInstance().setGyro(0);
+                SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
+                ArmSubsystem.getInstance().pivot(0);
             }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(),
             new onToBalance(),

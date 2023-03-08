@@ -6,17 +6,17 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.Field.TargetLevel;
-import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
-import frc.robot.commands.score.ScoreConeCommand;
+import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
+import frc.robot.commands.score.ScoreCubeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
-public class AutoScoreCommand extends SequentialCommandGroup {
+public class AutoScoreCubeCommand extends SequentialCommandGroup {
     
-    public AutoScoreCommand() {
+    public AutoScoreCubeCommand() {
         addCommands(
-            new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH).withTimeout(2),
-            new ScoreConeCommand().withTimeout(1),
+            new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH).withTimeout(2),
+            new ScoreCubeCommand().withTimeout(1),
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().stop();
                 ArmSubsystem.getInstance().pivot(0);

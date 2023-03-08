@@ -45,7 +45,7 @@ public class BalanceCommand extends CommandBase{
 
     @Override
     public void execute() {
-        double change = -SwerveDriveSubsystem.getInstance().getChange();
+        double change = SwerveDriveSubsystem.getInstance().getChange();
         SwerveDriveSubsystem.getInstance().set(
             change, 
             0,
@@ -64,7 +64,7 @@ public class BalanceCommand extends CommandBase{
     @Override
     public boolean isFinished() {
         if(b == Balance.QUICK){
-            return SwerveDriveSubsystem.getInstance().getRoll() > 0;
+            return SwerveDriveSubsystem.getInstance().getRoll() < 0;
         }
         return SwerveDriveSubsystem.getInstance().balanced();
     }

@@ -5,6 +5,7 @@ import com.pathplanner.lib.PathPlanner;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,19 +18,23 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeCubeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.commands.auto.balance.AutoBalanceCommand;
+// import frc.robot.commands.auto.balance.AutoBalanceCommand;
 import frc.robot.commands.auto.balance.BalanceCommand;
 import frc.robot.commands.auto.balance.BalanceCommand.Balance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
+import frc.robot.commands.test.ControllerTestCommand;
 import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
+import frc.robot.commands.test.ManualGrabberCommand;
+import frc.robot.commands.test.PrepTestCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
 import frc.robot.commands.score.PrepHeightCommand;
+import frc.robot.commands.score.PukeCommand;
 import frc.robot.commands.score.ScoreConeCommand;
 import frc.robot.commands.score.ScoreCubeCommand;
 import frc.robot.commands.test.TestAutoCommand;
@@ -50,9 +55,9 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    SmartDashboard.putData(new IntakeCubeCommand());
-    SmartDashboard.putData(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
-    SmartDashboard.putData(new ScoreCubeCommand());
+    // SmartDashboard.putData(new IntakeCubeCommand());
+    // SmartDashboard.putData(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    // SmartDashboard.putData(new ScoreCubeCommand());
     // SmartDashboard.putData(new SwerveDriveCommand());
     SmartDashboard.putData(new TestAutoCommand());
     // SmartDashboard.putData(new SwerveDriveTestCommand());
@@ -72,6 +77,8 @@ public class RobotContainer {
     SmartDashboard.putData("Zero Arm command", new ArmAngleCommand(0));
     // SmartDashboard.putData("Score Command", new ScoreCommand());
 
+    // SmartDashboard.putData(new ControllerTestCommand());
+
     // SmartDashboard.putData("Reset Gyro", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(0), SwerveDriveSubsystem.getInstance()));
     // SmartDashboard.putData("Reset Odometery", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()));
 
@@ -81,9 +88,13 @@ public class RobotContainer {
     
     SmartDashboard.putData("DriveTo", new DriveToTestCommand());
 
-    SmartDashboard.putData("Balance", new AutoBalanceCommand());
+    // SmartDashboard.putData("Balance", new AutoBalanceCommand());
 
     SmartDashboard.putData(new AutoScoreCommand());
+
+    SmartDashboard.putData(new ManualGrabberCommand());
+
+    SmartDashboard.putData(new PrepTestCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(
@@ -124,8 +135,14 @@ public class RobotContainer {
   Trigger cone = operatorController.button(5);  //LB
   Trigger cube = operatorController.button(6);  //RB
 
+  Trigger puke = operatorController.button(10); //+
+
   Trigger resetGyro = JoystickSubsytem.getInstance().getLeftJoystick().button(1);
   Trigger resetModules = JoystickSubsytem.getInstance().getRightJoystick().button(1);
+
+  Trigger climb90 = JoystickSubsytem.getInstance().getRightJoystick().button(11);
+  Trigger climbOpp = JoystickSubsytem.getInstance().getRightJoystick().button(12);
+  Trigger setArm0 = JoystickSubsytem.getInstance().getRightJoystick().button(13);
 
   public void configureButtonBindings(){
     cone.onTrue(new InstantCommand(
@@ -164,6 +181,8 @@ public class RobotContainer {
     score.and(cube).toggleOnTrue(new ScoreCubeCommand());
     lowScore.and(cube).toggleOnTrue(new LowScoreCommand());
 
+    puke.toggleOnTrue(new PukeCommand());
+
 
 
     resetGyro.onTrue(new InstantCommand(() -> {
@@ -175,6 +194,30 @@ public class RobotContainer {
     resetModules.onTrue(new InstantCommand(() -> 
       SwerveDriveSubsystem.getInstance().resetModulesAbsolute(),
       SwerveDriveSubsystem.getInstance()
+    ));
+
+    climb90.onTrue(new InstantCommand(
+      () -> {
+        ArmSubsystem.getInstance().pivot(Constants.TAU/4);
+        ArmSubsystem.getInstance().extendNU(3_000);
+      },
+      ArmSubsystem.getInstance()
+    ));
+
+    climbOpp.onTrue(new InstantCommand(
+      () -> {
+        ArmSubsystem.getInstance().pivot(-Constants.TAU/4);
+        ArmSubsystem.getInstance().extendNU(3_000);
+      },
+      ArmSubsystem.getInstance()
+    ));
+
+    setArm0.onTrue(new InstantCommand(
+      () -> {
+        ArmSubsystem.getInstance().pivot(0);
+        ArmSubsystem.getInstance().extendNU(3_000);
+      },
+      ArmSubsystem.getInstance()
     ));
   }
 }

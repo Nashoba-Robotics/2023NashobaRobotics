@@ -181,8 +181,8 @@ public final class Constants {
     public static final double ARM_KI = 0;
     public static final double ARM_KD = 0;
 
-    public static final double ARM_CRUISE_VELOCITY = 40_000;
-    public static final double ARM_ACCELERATION = 15_000;
+    public static final double ARM_CRUISE_VELOCITY = 50_000;  //40_000
+    public static final double ARM_ACCELERATION = 20_000;
 
     public static final double PIVOT_CRUISE_VELOCITY = 50_000;
     public static final double PIVOT_ACCELERATION = 45_000;
@@ -198,13 +198,13 @@ public final class Constants {
     public static final double PIVOT_KD_2 = 0;
 
     //Scorign (Radians)
-    public static final double HIGH_ANGLE = 62.5 * TAU/360;
-    public static final double MID_ANGLE = 67 * TAU/360;
+    public static final double HIGH_ANGLE = 63 * TAU/360;
+    public static final double MID_ANGLE = 68 * TAU/360;
     public static final double LOW_ANGLE = 105 * TAU/360;
 
     public static final double INTAKE_ANGLE = 112.25 * Constants.TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 46_000;
+    public static final double HIGH_EXTEND_NU = 47_000;
     public static final double MID_EXTEND_NU = 17_500;
     public static final double LOW_EXTEND_NU = 0;
 
@@ -256,8 +256,8 @@ public final class Constants {
   }
 
   public static final class Logging {
-    public static final boolean ARM = false;
-    public static final boolean GRABBER = false;
-    public static final boolean SWERVE = false;
+    public static final boolean ARM = true;
+    public static final boolean GRABBER = true;
+    public static final boolean SWERVE = true;
   }
 }

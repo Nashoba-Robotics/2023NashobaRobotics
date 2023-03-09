@@ -17,8 +17,8 @@ public class IntakeTestCommand extends CommandBase{
     public void initialize() {
         Tabs.Intake.resetAll();
 
-        ArmSubsystem.getInstance().setCruiseVelocity(20_000);
-        ArmSubsystem.getInstance().setAceleration(20_000);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(20_000);
+        ArmSubsystem.getInstance().setPivotAcceleration(20_000);
 
         ArmSubsystem.getInstance().resetPivotNU();
     }
@@ -53,6 +53,9 @@ public class IntakeTestCommand extends CommandBase{
         Tabs.Intake.displayTopStator(GrabberSubsystem.getInstance().getTopGrabCurrent());
         Tabs.Intake.displayBotStator(GrabberSubsystem.getInstance().getBotGrabCurrent());
         Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderAngle());
+
+        Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
+        Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getPivotOutput());
     }
 
     @Override

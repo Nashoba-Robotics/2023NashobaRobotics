@@ -15,10 +15,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.auto.routines.DumbAuto;
-import frc.robot.commands.auto.routines.LeftTo0ToBalance;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;
 import frc.robot.commands.auto.routines.MidToClimb;
-import frc.robot.commands.auto.routines.RightTo3ToBalance;
 import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
@@ -50,8 +48,8 @@ public class Robot extends TimedRobot {
     autoChooser.setDefaultOption("MidClimb", new MidToClimb());
     autoChooser.addOption("Far2Score", new RightTo3ToScoreAuto());
     autoChooser.addOption("Close2Score", new LeftTo0ToScore());
-    autoChooser.addOption("FarClimb", new RightTo3ToBalance());
-    autoChooser.addOption("CloseClimb", new LeftTo0ToBalance());
+    // autoChooser.addOption("FarClimb", new RightTo3ToBalance());
+    // autoChooser.addOption("CloseClimb", new LeftTo0ToBalance());
     autoChooser.addOption("Test", new TestAutoCommand());
     autoChooser.addOption("Dumb Auto", new DumbAuto());
     autoChooser.addOption("Gracious Professionalism", null);
@@ -110,6 +108,8 @@ public class Robot extends TimedRobot {
     ArmSubsystem.getInstance().stop();
     CandleSubsystem.getInstance().set(CandleState.ENABLED);
     ArmSubsystem.getInstance().resetPivotNU();
+
+    SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
   }
 
   @Override

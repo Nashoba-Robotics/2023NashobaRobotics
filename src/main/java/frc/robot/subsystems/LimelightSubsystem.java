@@ -32,7 +32,7 @@ public class LimelightSubsystem extends SubsystemBase {
     NetworkTableEntry tidEntry;
     
     //Classifier/Detector Entries
-    NetworkTableEntry tclassEntry;
+    NetworkTableEntry tClassEntry;
 
 
     boolean isTarget;
@@ -40,6 +40,7 @@ public class LimelightSubsystem extends SubsystemBase {
     double tx;
     double ty;
     double tagID;
+    String object;
 
     public enum TargetType{
         APRIL_TAG,
@@ -55,6 +56,8 @@ public class LimelightSubsystem extends SubsystemBase {
         tidEntry = nt.getEntry("tid");
 
         pipeline = nt.getEntry("pipeline");
+
+        tClassEntry = nt.getEntry("tclass");
     }
 
     public static LimelightSubsystem getInstance(){
@@ -103,6 +106,11 @@ public class LimelightSubsystem extends SubsystemBase {
         ledMode.setNumber(mode);
     }
 
+    //Tells what the object that it sees is
+    public String classify(){
+        return object;
+    }
+
     public void on(){
         setLEDMode(3);
     }
@@ -118,6 +126,7 @@ public class LimelightSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         isTarget = tvEntry.getDouble(0) == 1;
+        pipeline = nt.getEntry("pipeline");
         if(isTarget){   //Only update information if we see a target
             if(getPipeline() == Constants.Limelight.APRIL_TAG_PIPELINE){
                 if(DriverStation.getAlliance() == Alliance.Red)
@@ -127,6 +136,9 @@ public class LimelightSubsystem extends SubsystemBase {
                 else
                     robotPos = nt.getEntry("botpose").getDoubleArray(new double[6]);
                 tagID = tidEntry.getDouble(-1);
+            }
+            else if(getPipeline() == Constants.Limelight.DETECTION_PIPELINE){
+                object = tClassEntry.getString("N/A");
             }
             // The camera is sideways
             tx = tyEntry.getDouble(0);

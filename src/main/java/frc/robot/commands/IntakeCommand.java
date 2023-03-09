@@ -27,8 +27,8 @@ public class IntakeCommand extends CommandBase {
     public void initialize() {
         GrabberSubsystem.getInstance().setCurrentLimit(30);
 
-        ArmSubsystem.getInstance().setCruiseVelocity(400_000);
-        ArmSubsystem.getInstance().setAceleration(60_000);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(400_000);
+        ArmSubsystem.getInstance().setPivotAcceleration(60_000);
 
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extendNU(3_000);

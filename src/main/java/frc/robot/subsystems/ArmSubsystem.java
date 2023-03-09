@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -22,7 +23,7 @@ public class ArmSubsystem extends SubsystemBase {
     // private DigitalInput retractSwitch;
 
     public ArmSubsystem(){
-        tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT);
+        tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT, "drivet");
 
         pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
@@ -126,6 +127,17 @@ public class ArmSubsystem extends SubsystemBase {
         setPivot(0);
     }
 
+    public double getPivotOutput(){
+        return pivot1.getMotorOutputVoltage();
+    }
+
+    public double getPivotSpeed(){
+        double pivotSpeed1 = pivot1.getSelectedSensorVelocity();
+        double pivotSpeed2 = pivot2.getSelectedSensorVelocity();
+
+        return (pivotSpeed1+pivotSpeed2)/2;
+    }
+
     //Extends arm to specified position in meters
     public void extendM(double pos){
        tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Arm.mToNU(pos));
@@ -163,11 +175,21 @@ public class ArmSubsystem extends SubsystemBase {
     //Pivots arm to specified angle (radians) (0 = upright)
     public void pivot(double angle){
         //How does motion magic work with 2 motors?
-        angle = NRUnits.Arm.radToNU(angle);
-        if(Constants.Logging.ARM) LogManager.appendToLog(angle, "Arm:/Pivot2/SetPosition");
+        double NU = NRUnits.Arm.radToNU(angle);
+        if(Constants.Logging.ARM) LogManager.appendToLog(NU, "Arm:/Pivot2/SetPosition");
 
-        pivot1.set(ControlMode.MotionMagic,angle);
-        pivot2.set(ControlMode.MotionMagic, angle);
+        double ff = 0;
+        if(NU >= 8552.632){
+            ff = 0.00000076 * tromboneSlide.getSelectedSensorPosition()-0.00653;
+        }
+
+        ff *= -Math.sin(angle);
+
+        // pivot1.set(ControlMode.MotionMagic, NU);
+        // pivot2.set(ControlMode.MotionMagic, NU);
+        
+        pivot1.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
+        pivot2.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
     }
 
     public void setPivot(double speed){
@@ -191,6 +213,10 @@ public class ArmSubsystem extends SubsystemBase {
     //Returns the angle of the arm
     public double getAngle(){
         return (getPivotAngle(1) + getPivotAngle(2))/2;
+    }
+
+    public double getExtendNU(){
+        return tromboneSlide.getSelectedSensorPosition();
     }
 
     //Returns the extension of the arm in meters
@@ -265,14 +291,22 @@ public class ArmSubsystem extends SubsystemBase {
         return (getStatorCurrent1()+getSupplyCurrent2())/2;
     }
 
-    public void setCruiseVelocity(double cruiseVelocity) {
+    public void setPivotCruiseVelocity(double cruiseVelocity) {
         pivot1.configMotionCruiseVelocity(cruiseVelocity);
         pivot2.configMotionCruiseVelocity(cruiseVelocity);
     }
 
-    public void setAceleration(double acceleration) {
+    public void setPivotAcceleration(double acceleration) {
         pivot1.configMotionAcceleration(acceleration);
         pivot2.configMotionAcceleration(acceleration);
+    }
+
+    public void setExtendCruiseVelocity(double cruiseVelocity) {
+        tromboneSlide.configMotionCruiseVelocity(cruiseVelocity);
+    }
+
+    public void setExtendAcceleration(double acceleration) {
+        tromboneSlide.configMotionAcceleration(acceleration);
     }
 
     public void setDefaultCruiseVelocity() {

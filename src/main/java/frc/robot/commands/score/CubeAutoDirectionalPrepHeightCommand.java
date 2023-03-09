@@ -50,12 +50,12 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
 
         switch(targetLevel) {
             case HIGH: 
-            //  GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+            //  GrabberSubsystem.getInstance().orientPos(1);
              ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.HIGH_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.Cube.HIGH_EXTEND_NU;
              setPos2 = Constants.Arm.Cube.HIGH_ANGLE * multiplier;
-             setPos3 = -9;
+             setPos3 = GrabberSubsystem.getInstance().getOrientPos();
              break;
             case MID: 
             //  GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
@@ -63,7 +63,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
              ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.MID_EXTEND_NU);
              targetPos = Constants.Arm.Cube.MID_EXTEND_NU;
              setPos2 = Constants.Arm.Cube.MID_ANGLE * multiplier;
-             setPos3 = -9;
+             setPos3 = GrabberSubsystem.getInstance().getOrientPos();
              break;
            case LOW: 
             // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
@@ -71,7 +71,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
             ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.LOW_EXTEND_NU);
             targetPos = Constants.Arm.Cube.LOW_EXTEND_NU;
             setPos2 = Constants.Arm.Cube.LOW_ANGLE * multiplier;
-            setPos3 = -9;
+            setPos3 = GrabberSubsystem.getInstance().getOrientPos();
             break;
         }
         gotToStart = false;
@@ -85,7 +85,8 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         if(gotToStart) {
             double y = RobotContainer.operatorController.getThrottle() ;
             y = Math.abs(y) < 0.1 ? 0 : (y-0.1)/0.9;    //Put deadzone in Constants
-            y *= 0.3;
+            if(y < 0) y *= 0.6;
+            else y *= 0.3;
             if(y == 0){ // If there isn't any input, maintain the position
                 if(!joystick0){
                     joystick0 = true;
@@ -122,10 +123,10 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
 
-            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 += 0.5 * multiplier;
-            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 -= 0.5 * multiplier;
+            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.15 * multiplier;
+            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.15 * multiplier;
 
-            GrabberSubsystem.getInstance().orient(setPos3);
+            GrabberSubsystem.getInstance().orientPos(setPos3);
         }
     }
 

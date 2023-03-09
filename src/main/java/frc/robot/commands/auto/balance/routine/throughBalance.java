@@ -11,12 +11,12 @@ public class throughBalance extends CommandBase {
 
     @Override
     public void initialize() {
-        SwerveDriveSubsystem.getInstance().set(-0.3, 0, 0);
+        SwerveDriveSubsystem.getInstance().set(0.3, 0, 0);
     }
 
     @Override
     public boolean isFinished() {
-        return SwerveDriveSubsystem.getInstance().levelNegative();
+        return SwerveDriveSubsystem.getInstance().levelPositive();
     }
 
 }

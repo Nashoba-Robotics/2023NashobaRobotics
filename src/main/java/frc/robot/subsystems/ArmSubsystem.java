@@ -23,7 +23,7 @@ public class ArmSubsystem extends SubsystemBase {
     // private DigitalInput retractSwitch;
 
     public ArmSubsystem(){
-        tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT);
+        tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT, "drivet");
 
         pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");

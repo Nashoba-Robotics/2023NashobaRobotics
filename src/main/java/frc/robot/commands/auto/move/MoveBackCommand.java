@@ -1,6 +1,5 @@
-package frc.robot.commands.auto;
+package frc.robot.commands.auto.move;
 
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 

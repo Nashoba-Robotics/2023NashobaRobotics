@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.routines;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,28 +36,35 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             ArmSubsystem.getInstance(),
             GrabberSubsystem.getInstance()
         ));
-        PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-rightC-3-rightA", new PathConstraints(2, 2));
+        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA", new PathConstraints(3.5, 2.5), new PathConstraints(3.5, 2.5));
         
-        FollowPathWithEvents command = new FollowPathWithEvents(
-            new FollowPathCommand(path),
-            path.getMarkers(),
+        FollowPathWithEvents path1 = new FollowPathWithEvents(
+            new FollowPathCommand(path.get(0)),
+            path.get(0).getMarkers(),
+            map);
+
+        FollowPathWithEvents path2 = new FollowPathWithEvents(
+            new FollowPathCommand(path.get(1)),
+            path.get(1).getMarkers(),
             map);
 
 
         addCommands(
             new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
+            new InstantCommand(() -> GrabberSubsystem.getInstance().set(0), GrabberSubsystem.getInstance()),
             new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2), SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.1),
             new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(
                     PathPlannerTrajectory.transformTrajectoryForAlliance(
-                        path,
+                        path.get(0),
                         DriverStation.getAlliance()).getInitialHolonomicPose()
                     );
             }, SwerveDriveSubsystem.getInstance()),
-            new WaitCommand(0.1),
             new AutoScoreCommand(),
-            command,
+            path1,
+            new WaitCommand(0.3),
+            path2,
             new AutoScoreCubeCommand()
         );
     }

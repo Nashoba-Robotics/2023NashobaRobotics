@@ -8,7 +8,7 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class CameraTestCommand extends CommandBase{
     
     public CameraTestCommand() {
-        LimelightSubsystem.getInstance().setPipeline(1);
+        // LimelightSubsystem.getInstance().setPipeline(1);
         addRequirements(SwerveDriveSubsystem.getInstance());
     }
 

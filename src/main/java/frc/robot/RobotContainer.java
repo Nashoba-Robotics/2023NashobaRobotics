@@ -5,6 +5,7 @@ import com.pathplanner.lib.PathPlanner;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,16 +18,20 @@ import frc.robot.commands.ArmAngleCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeCubeCommand;
 import frc.robot.commands.ManualExtensionCommand;
+import frc.robot.commands.ManualResetOdometryCommand;
 import frc.robot.commands.SwerveDriveCommand;
 // import frc.robot.commands.auto.balance.AutoBalanceCommand;
 import frc.robot.commands.auto.balance.BalanceCommand;
 import frc.robot.commands.auto.balance.BalanceCommand.Balance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
+import frc.robot.commands.auto.move.DriveToCommand;
+import frc.robot.commands.auto.move.TranslateToCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.ControllerTestCommand;
 import frc.robot.commands.test.DriveToTestCommand;
+import frc.robot.commands.test.FollowObjectCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ManualGrabberCommand;
 import frc.robot.commands.test.PrepTestCommand;
@@ -55,26 +60,33 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
+    SmartDashboard.putData("ResetOdometry", new ManualResetOdometryCommand());
+    SmartDashboard.putData("GoToPos", new DriveToCommand(new Translation2d(2.7, 3.45)));
+    // SmartDashboard.putData("GoToPos", new DriveToCommand(FieldLocations.Blue.LEFT_A));
+
+    // SmartDashboard.putData("Translate", new TranslateToCommand(new Translation2d(1, 0)));
+
+    // SmartDashboard.putData(new FollowObjectCommand());
     // SmartDashboard.putData(new IntakeCubeCommand());
     // SmartDashboard.putData(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
     // SmartDashboard.putData(new ScoreCubeCommand());
     // SmartDashboard.putData(new SwerveDriveCommand());
-    SmartDashboard.putData(new TestAutoCommand());
+    // SmartDashboard.putData(new TestAutoCommand());
     // SmartDashboard.putData(new SwerveDriveTestCommand());
     //SmartDashboard.putData(new RunMotorCommand());
     // SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
     // SmartDashboard.putData(new CameraTestCommand());
     // SmartDashboard.putData(new BalanceTestCommand());
-    SmartDashboard.putData(new ZeroPivotCommand());
+    // SmartDashboard.putData(new ZeroPivotCommand());
     // SmartDashboard.putData(new ArmTestCommand());
-    SmartDashboard.putData("ZeroArmSensor", new InstantCommand(() -> ArmSubsystem.getInstance().zeroArmSensor(), ArmSubsystem.getInstance()));
-    SmartDashboard.putData("ZeroWristSensor", new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
+    // SmartDashboard.putData("ZeroArmSensor", new InstantCommand(() -> ArmSubsystem.getInstance().zeroArmSensor(), ArmSubsystem.getInstance()));
+    // SmartDashboard.putData("ZeroWristSensor", new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()));
 
     // SmartDashboard.putData(new CameraCenterCommand());
 
     // SmartDashboard.putData("Prep High",new PrepHeightCommand(TargetLevel.HIGH));
     // SmartDashboard.putData("Prep Mid", new PrepHeightCommand(TargetLevel.MID));
-    SmartDashboard.putData("Zero Arm command", new ArmAngleCommand(0));
+    // SmartDashboard.putData("Zero Arm command", new ArmAngleCommand(0));
     // SmartDashboard.putData("Score Command", new ScoreCommand());
 
     // SmartDashboard.putData(new ControllerTestCommand());
@@ -84,7 +96,7 @@ public class RobotContainer {
 
     // SmartDashboard.putData("AutoScore", new AutoScoreCommand());
 
-    SmartDashboard.putData("Brake", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().brake()));
+    // SmartDashboard.putData("Brake", new InstantCommand(() -> SwerveDriveSubsystem.getInstance().brake()));
     
     SmartDashboard.putData("DriveTo", new DriveToTestCommand());
 
@@ -144,6 +156,8 @@ public class RobotContainer {
   Trigger climbOpp = JoystickSubsytem.getInstance().getRightJoystick().button(12);
   Trigger setArm0 = JoystickSubsytem.getInstance().getRightJoystick().button(13);
 
+  Trigger align = JoystickSubsytem.getInstance().getRightJoystick().button(2);
+
   public void configureButtonBindings(){
     cone.onTrue(new InstantCommand(
       () -> CandleSubsystem.getInstance().set(CandleState.WANT_CONE),
@@ -167,7 +181,7 @@ public class RobotContainer {
 
     lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    highPrepCone.and(cone).onTrue(new PrepTestCommand());
 
     score.and(cone).toggleOnTrue(new ScoreConeCommand());
     lowScore.and(cone).toggleOnTrue(new LowScoreCommand());
@@ -182,6 +196,8 @@ public class RobotContainer {
     lowScore.and(cube).toggleOnTrue(new LowScoreCommand());
 
     puke.toggleOnTrue(new PukeCommand());
+
+    align.onTrue(new DriveToCommand(new Translation2d(1.78, 3.48)));
 
 
 

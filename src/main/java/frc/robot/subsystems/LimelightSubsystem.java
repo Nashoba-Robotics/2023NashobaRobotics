@@ -67,10 +67,10 @@ public class LimelightSubsystem extends SubsystemBase {
 
     // Gets the 2d position of the robot using the april tag it sees
     public Pose2d getRobotPose(){
-        int pipeline = getPipeline();
-        setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
+        // int pipeline = getPipeline();
+        // setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
         Pose2d pose = new Pose2d(robotPos[0], robotPos[1], new Rotation2d(robotPos[3], robotPos[4]));
-        setPipeline(pipeline);
+        // setPipeline(pipeline);
         return pose;
     }
 
@@ -98,7 +98,7 @@ public class LimelightSubsystem extends SubsystemBase {
     // (We can set the node to be or point of interest to make targeting easier)
     // Switches pipeline taking input as the integer version of the pipeline
     public void setPipeline(int index){
-        pipeline.setInteger(index);
+        pipeline.setNumber(Constants.Limelight.APRIL_TAG_PIPELINE);
     }
 
     //0 = follow pipeline, 1 = force off, 2 = force blink, 3 = force on

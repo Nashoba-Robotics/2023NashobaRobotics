@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants;
+import frc.robot.Constants.Limelight;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 /*
@@ -47,4 +49,50 @@ public class FollowPathCommand extends SequentialCommandGroup {
                 swerveController
             );
     }
+
+
+    public FollowPathCommand(PathPlannerTrajectory trajectory, boolean jank) {
+        //PID controllers for each axis of control
+        PIDController xController = new PIDController(Constants.Swerve.Auto.P_X, 0, Constants.Swerve.Auto.D_X);
+        PIDController yController = new PIDController(Constants.Swerve.Auto.P_Y, 0, Constants.Swerve.Auto.D_Y);
+        PIDController thetaController = new PIDController(Constants.Swerve.Auto.P_THETA, 0, 0);
+        thetaController.enableContinuousInput(-Constants.TAU/2, Constants.TAU/2);
+
+        PPSwerveControllerCommand swerveController;
+        
+        if(jank){
+            swerveController = new PPSwerveControllerCommand(
+                trajectory,
+                SwerveDriveSubsystem.getInstance()::getPose,
+                Constants.Swerve.KINEMATICS,
+                xController,
+                yController,
+                thetaController,
+                SwerveDriveSubsystem.getInstance()::setStates,
+                true
+                );
+
+                addCommands(
+                    swerveController
+                );
+        }
+        else{
+            swerveController = new PPSwerveControllerCommand(
+                trajectory,
+                SwerveDriveSubsystem.getInstance()::getPose,
+                Constants.Swerve.KINEMATICS,
+                xController,
+                yController,
+                thetaController,
+                SwerveDriveSubsystem.getInstance()::setStates,
+                true,
+                SwerveDriveSubsystem.getInstance()
+                );
+
+                addCommands(
+                    swerveController
+                );
+        }
+    }
+
 }

@@ -67,11 +67,14 @@ public class IntakeCommand extends CommandBase {
             }
         }
 
-        // if(GrabberSubsystem.getInstance().getTopGrabCurrent() > 25) {
-        //     GrabberSubsystem.getInstance().setCurrentLimit(10);
-        //     GrabberSubsystem.getInstance().set(-0.1);
-        //     CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
-        // }
+        if(GrabberSubsystem.getInstance().getTopGrabCurrent() > 30) {
+            // GrabberSubsystem.getInstance().setCurrentLimit(10);
+            // GrabberSubsystem.getInstance().set(-0.1);
+            CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
+        }
+        else{
+            CandleSubsystem.getInstance().set(CandleState.WANT_CONE);
+        }
     }
 
     @Override

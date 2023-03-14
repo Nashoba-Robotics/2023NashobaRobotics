@@ -9,15 +9,15 @@ public final class FieldLocations {
         public final static double INTAKE_X = 6.53;
 
         public final static Translation2d LEFT_A = new Translation2d(SCORE_X, 4.96);
-        public final static Translation2d LEFT_B = new Translation2d(SCORE_X, 0);
+        public final static Translation2d LEFT_B = new Translation2d(SCORE_X, 4.42);
         public final static Translation2d LEFT_C = new Translation2d(SCORE_X, 3.85);
 
         public final static Translation2d MID_A = new Translation2d(SCORE_X, 3.28);
         public final static Translation2d MID_B = new Translation2d(SCORE_X, 2.73);
-        public final static Translation2d MID_C = new Translation2d(SCORE_X, 0);
+        public final static Translation2d MID_C = new Translation2d(SCORE_X, 2.20);
 
         public final static Translation2d RIGHT_A = new Translation2d(SCORE_X, 1.60);
-        public final static Translation2d RIGHT_B = new Translation2d(SCORE_X, 0);
+        public final static Translation2d RIGHT_B = new Translation2d(SCORE_X, 1.05);
         public final static Translation2d RIGHT_C = new Translation2d(SCORE_X, 0.50);
 
         public final static Translation2d PIECE_0 = new Translation2d(INTAKE_X, 4.64);

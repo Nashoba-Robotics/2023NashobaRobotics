@@ -140,7 +140,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //Extends arm to specified position in meters
     public void extendM(double pos){
-       tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Arm.mToNU(pos));
+       tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Extension.mToNU(pos));
     }
 
     public void extendNU(double nu){
@@ -168,14 +168,14 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void resetPivotNU(){
-        pivot1.setSelectedSensorPosition(NRUnits.Arm.degToNU(getEncoderAngle()));
-        pivot2.setSelectedSensorPosition(NRUnits.Arm.degToNU(getEncoderAngle()));
+        pivot1.setSelectedSensorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
+        pivot2.setSelectedSensorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
     }
 
     //Pivots arm to specified angle (radians) (0 = upright)
     public void pivot(double angle){
         //How does motion magic work with 2 motors?
-        double NU = NRUnits.Arm.radToNU(angle);
+        double NU = NRUnits.Pivot.radToNU(angle);
         if(Constants.Logging.ARM) LogManager.appendToLog(NU, "Arm:/Pivot2/SetPosition");
 
         double ff = 0;
@@ -205,6 +205,10 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.set(ControlMode.MotionMagic, pivotPos2);
     }
 
+    public double getExtendNUSpeed(){
+        return tromboneSlide.getSelectedSensorVelocity();
+    }
+
     public void holdArm(){
         double armPos = getPos();
         tromboneSlide.set(ControlMode.MotionMagic, armPos);
@@ -223,7 +227,7 @@ public class ArmSubsystem extends SubsystemBase {
     public double getLength(){
         double pos = getPos();
 
-        return NRUnits.Arm.NUToM(pos);
+        return NRUnits.Extension.NUToM(pos);
     }
 
     public double getPos(){
@@ -259,7 +263,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //This is also TEMPORARY
     public double getPivotAngle(int n){
-        return NRUnits.Arm.NUToRad(getPivotPos(n));
+        return NRUnits.Pivot.NUToRad(getPivotPos(n));
     }
 
     //This is TEMPORARY as well
@@ -323,12 +327,12 @@ public class ArmSubsystem extends SubsystemBase {
     public void periodic() {
         if(Constants.Logging.ARM) {
             //Extender
-            LogManager.appendToLog(NRUnits.Arm.NUToRad(tromboneSlide.getSelectedSensorPosition()), "Arm:/Extender/Position");
+            LogManager.appendToLog(NRUnits.Pivot.NUToRad(tromboneSlide.getSelectedSensorPosition()), "Arm:/Extender/Position");
             LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
             LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
             
             //Pivot1
-            LogManager.appendToLog(NRUnits.Arm.NUToRad(pivot1.getSelectedSensorPosition()), "Arm:/Pivot1/Position");
+            LogManager.appendToLog(NRUnits.Pivot.NUToRad(pivot1.getSelectedSensorPosition()), "Arm:/Pivot1/Position");
             LogManager.appendToLog(pivot1.getStatorCurrent(), "Arm:/Pivot1/Stator");
             LogManager.appendToLog(pivot1.getSupplyCurrent(), "Arm:/Pivot1/Supply");
 

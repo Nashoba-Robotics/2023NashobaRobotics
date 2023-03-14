@@ -39,7 +39,8 @@ public class CandleSubsystem extends SubsystemBase {
         WANT_CONE,
         WANT_CUBE,
         HAVE_CONE,
-        HAVE_CUBE
+        HAVE_CUBE,
+        FORDIANI
     }
 
     public void set(CandleState state) {
@@ -74,6 +75,10 @@ public class CandleSubsystem extends SubsystemBase {
                 break;
             case HAVE_CUBE:
                 candle.animate(new StrobeAnimation(purple[0], purple[1], purple[2], 0, 0.01, LED_COUNT));
+                break;
+            case FORDIANI:
+                candle.clearAnimation(0);
+                candle.setLEDs(255, 0, 0);
                 break;
         }
 

@@ -104,8 +104,29 @@ public class NRUnits {
             return speed/Constants.Swerve.MAX_NATIVE_VELOCITY;
         }
     }
+
+    public static class Extension {
+        public static double mToNU(double m){
+            m /= Constants.Arm.PITCH_DIAMETER*Math.PI;
+            m *= Constants.Arm.EXTENSION_GEARRATION;
+            m *= 2048;
     
-    public static class Arm {
+            return m;
+        }
+    
+        public static double NUToM(double pos){
+            //Convert into rotations
+            pos /= 2048;
+            //Account for gear ratio
+            pos /= Constants.Arm.EXTENSION_GEARRATION;
+            //Calculate the distance that corresponds to with pitch diameter of pulley
+            pos *= Constants.Arm.PITCH_DIAMETER * Math.PI;
+    
+            return pos;
+        }
+    }
+    
+    public static class Pivot {
         public static double radToNU(double angle){
             //Convert angle into rotations
             angle /= Constants.TAU;
@@ -140,24 +161,6 @@ public class NRUnits {
             return pos;
         }
     
-        public static double mToNU(double m){
-            m /= Constants.Arm.PITCH_DIAMETER*Math.PI;
-            m *= Constants.Arm.EXTENSION_GEARRATION;
-            m *= 2048;
-    
-            return m;
-        }
-    
-        public static double NUToM(double pos){
-            //Convert into rotations
-            pos /= 2048;
-            //Account for gear ratio
-            pos /= Constants.Arm.EXTENSION_GEARRATION;
-            //Calculate the distance that corresponds to with pitch diameter of pulley
-            pos *= Constants.Arm.PITCH_DIAMETER * Math.PI;
-    
-            return pos;
-        }
     }    
 
     public static class Grabber {

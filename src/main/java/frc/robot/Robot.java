@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.auto.intakescore.AutoScoreCommand;
+import frc.robot.commands.auto.intakescore.AutoScoreTest;
 import frc.robot.commands.auto.routines.DumbAuto;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;
 import frc.robot.commands.auto.routines.MidToClimb;
@@ -52,6 +54,7 @@ public class Robot extends TimedRobot {
     // autoChooser.addOption("CloseClimb", new LeftTo0ToBalance());
     autoChooser.addOption("Test", new TestAutoCommand());
     autoChooser.addOption("Dumb Auto", new DumbAuto());
+    autoChooser.addOption("Score", new AutoScoreTest());
     autoChooser.addOption("Gracious Professionalism", null);
 
     Tabs.Comp.tab.add(autoChooser);
@@ -109,7 +112,7 @@ public class Robot extends TimedRobot {
     CandleSubsystem.getInstance().set(CandleState.ENABLED);
     ArmSubsystem.getInstance().resetPivotNU();
 
-    SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
+    // SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
   }
 
   @Override

@@ -49,8 +49,17 @@ public class ScoreConeCommand extends CommandBase {
         GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().orient(0);
         // ArmSubsystem.getInstance().stop();
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(50_000);
+        if(DriverStation.isAutonomous()){   //If it pivots faster when retracting, it will tip -> Don't want that in auto
+            ArmSubsystem.getInstance().setPivotAcceleration(25_000);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
+
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(30_000);
+            ArmSubsystem.getInstance().setExtendAcceleration(40_000);
+        }
+        else{
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(50_000);
+        }
         ArmSubsystem.getInstance().pivot(0);
         ArmSubsystem.getInstance().extendNU(0);
     }

@@ -36,6 +36,7 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             ArmSubsystem.getInstance(),
             GrabberSubsystem.getInstance()
         ));
+        map.clear();
         List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA", new PathConstraints(3.5, 2.5), new PathConstraints(3.5, 2.5));
         
         FollowPathWithEvents path1 = new FollowPathWithEvents(
@@ -61,11 +62,11 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
                         DriverStation.getAlliance()).getInitialHolonomicPose()
                     );
             }, SwerveDriveSubsystem.getInstance()),
-            new AutoScoreCommand(),
+            // new AutoScoreCommand(),
             path1,
             new WaitCommand(0.3),
-            path2,
-            new AutoScoreCubeCommand()
+            path2
+            // new AutoScoreCubeCommand()
         );
     }
 }

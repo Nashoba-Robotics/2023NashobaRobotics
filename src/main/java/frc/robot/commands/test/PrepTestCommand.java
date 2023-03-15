@@ -92,7 +92,7 @@ public class PrepTestCommand extends CommandBase{
         double extendSpeed = l0 * Math.tan(pivotAngle)/Math.cos(pivotAngle)*pivotSpeed;
         extendSpeed = mpsToNU(extendSpeed);
 
-        ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed);
+        ArmSubsystem.getInstance().setExtendCruiseVelocity(Math.max(extendSpeed, 5_000));
 
         if(Math.abs(ArmSubsystem.getInstance().getExtendNU() - Constants.Arm.HIGH_EXTEND_NU) < 1000){
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);

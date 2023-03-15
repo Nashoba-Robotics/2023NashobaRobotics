@@ -29,6 +29,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     private PIDController balanceController;
     private PIDController driftController;
+    private PIDController cardinalController;
 
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.Misc.GYRO_PORT, "drivet");
@@ -53,6 +54,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     
         balanceController = new PIDController(Constants.Swerve.Balance.SLOW_K_P, Constants.Swerve.Balance.SLOW_K_I, Constants.Swerve.Balance.SLOW_K_D);
         driftController = new PIDController(Constants.Swerve.DriftCorrection.P, Constants.Swerve.DriftCorrection.I, Constants.Swerve.DriftCorrection.D);
+        cardinalController = new PIDController(0.01, 0, 0.0);
+        cardinalController.setTolerance(2);
 
         LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
     }
@@ -64,6 +67,21 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             instance = new SwerveDriveSubsystem();
         }
         return instance;
+    }
+
+    public void setCardinalTarget(double angle){
+        cardinalController.setSetpoint(angle);
+    }
+
+    public double getCardinalGain(){
+        return cardinalController.calculate(gyro.getYaw());
+    }
+
+    public double getYaw(){
+        return gyro.getYaw();
+    }
+    public boolean atCardinalAngle(){
+        return cardinalController.atSetpoint();
     }
 
     public void brake() {

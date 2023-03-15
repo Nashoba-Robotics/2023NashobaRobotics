@@ -63,7 +63,7 @@ public class RobotContainer {
     // SmartDashboard.putData(new SwerveDriveTestCommand());
     //SmartDashboard.putData(new RunMotorCommand());
     // SmartDashboard.putData(new FollowPathCommand(PathPlanner.loadPath("testPath", new PathConstraints(4, 2))));
-    // SmartDashboard.putData(new CameraTestCommand());
+    SmartDashboard.putData(new CameraTestCommand());
     // SmartDashboard.putData(new BalanceTestCommand());
     SmartDashboard.putData(new ZeroPivotCommand());
     // SmartDashboard.putData(new ArmTestCommand());

@@ -7,7 +7,6 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.Constants.Grabber;
 import frc.robot.Constants.Field.TargetLevel;
 
 
@@ -44,9 +43,11 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
+
+        //Assuming that we are oriented correctly to score the cone, the way the arm goes down will change
+        //Really just making all of the normal values negative of what they are in order to reflect them vertically
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
         scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
-
         multiplier = scoreFront ? 1 : -1;
 
         switch(targetLevel) {
@@ -80,8 +81,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
     @Override
     public void execute() {
-        // SmartDashboard.putBoolean("manual", gotToStart);
-        // SmartDashboard.putNumber("Arm nu", ArmSubsystem.getInstance().getPos());
+        //Manual Extension:
+        //Make sure that the arm has reached its desired extend position before we allow manual movement to happen
         if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < 500) gotToStart = true;
         if(gotToStart) {
             double y = RobotContainer.operatorController.getThrottle() ;
@@ -89,9 +90,10 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             if(y < 0) y *= 0.6;
             else y *= 0.3;
             if(y == 0){ // If there isn't any input, maintain the position
-                if(!joystick0){
-                    joystick0 = true;
+                if(!joystick0){ //When the joystick is first zeroed
+                    joystick0 = true;   //Flag variable to see if the joystick was zeroed
                     lastPos = ArmSubsystem.getInstance().getPos();
+                    // ^ Without this, the arm goes in bit by bit because gravity, lastPos reads that position and tells the extension to go there
                 }
                 ArmSubsystem.getInstance().extendNU(lastPos);
             }
@@ -100,7 +102,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 joystick0 = false;
             }
 
-            //Added pivoting manual
+            //Manual Pivot:
+            //All of the logic is the same compared to the extension
             if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU / 360){
                 atSetPoint2 = true;
             } 
@@ -124,6 +127,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
 
+            //Manual Wrist:
             if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.15 * multiplier;
             if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.15 * multiplier;
 

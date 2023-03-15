@@ -91,6 +91,14 @@ public class NRUnits {
             return NU;
         }
 
+        public static double MToNU(double m){
+            m /= Constants.TAU*Constants.Swerve.WHEELRADIUS;
+            m *= Constants.Swerve.MOVE_GEAR_RATIO;
+            m *= 2048;
+
+            return m;
+        }
+
         //Converts to NU/100ms then to 
         public static double toPercentOutput(double mps){
             //Convert to rotations per second
@@ -141,22 +149,32 @@ public class NRUnits {
         }
     
         public static double mToNU(double m){
-            m /= Constants.Arm.PITCH_DIAMETER*Math.PI;
-            m *= Constants.Arm.EXTENSION_GEARRATION;
-            m *= 2048;
+            m *= 1000;  //Convert to mm
+            m /= Constants.Arm.MM_PER_NU;   //Convert to NU
     
             return m;
         }
     
         public static double NUToM(double pos){
-            //Convert into rotations
-            pos /= 2048;
-            //Account for gear ratio
-            pos /= Constants.Arm.EXTENSION_GEARRATION;
-            //Calculate the distance that corresponds to with pitch diameter of pulley
-            pos *= Constants.Arm.PITCH_DIAMETER * Math.PI;
+            pos *= Constants.Arm.MM_PER_NU;    //Convert to mm
+            pos /= 1000;    //conert to m
     
             return pos;
+        }
+
+        public static double NUtoMPS(double NU){
+            //Converts NU/100ms to meters/s
+            NU = NUToM(NU);
+            NU *= 10;
+    
+            return NU;
+        }
+
+        public static double mpsToNU(double mps){
+            mps = mToNU(mps);
+            mps /= 10;
+    
+            return mps;
         }
     }    
 

@@ -164,9 +164,10 @@ public final class Constants {
 
   public static final class Arm {
     public static final double PIVOT_GEARRATIO = 4*4*4*72/22; //4^3*72 rotations of the motor = 22 rotation of the sprocket
-    public static final double EXTENSION_GEARRATION = 5/1;  //5 rotations of the motor = 1 rotation of the pulley
-    public static final double PITCH_DIAMETER = Units.inchesToMeters(1.12);
-    // One rotation of pulley = 3.5437
+    public static final double NU_PER_MM = 58.4;
+    public static final double MM_PER_NU = 0.0171;
+
+    public static final double l0 = 0.690;  //Initial length of arm in meters
 
     public static final int PIVOT_PORT_1 = 13;
     public static final int PIVOT_PORT_2 = 15;
@@ -175,6 +176,8 @@ public final class Constants {
 
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
+
+    public static final double ENCODER_OFFSET = -17.490234375;
 
     public static final double ARM_KF = 0.047;
     public static final double ARM_KP = 0.2;

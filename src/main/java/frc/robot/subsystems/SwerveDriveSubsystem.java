@@ -149,6 +149,24 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         modules[3].set(speed, angle);
     }
 
+    public void setAngle(double angle){ //rad
+        modules[0].turn(angle);
+        modules[1].turn(angle);
+        modules[2].turn(angle);
+        modules[3].turn(angle);
+    }
+
+    public void driveNU(double NU){
+        modules[0].setMovePos(NU);
+        modules[1].setMovePos(NU);
+        modules[2].setMovePos(NU);
+        modules[3].setMovePos(NU);
+    }
+
+    public double getMod1NU(){
+        return modules[0].getNU();
+    }
+
     private boolean resetting = false;
 
     public void resetOdometry(Pose2d pose) {

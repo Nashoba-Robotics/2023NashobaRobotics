@@ -19,20 +19,14 @@ public class ArmSubsystem extends SubsystemBase {
     private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
     private CANCoder encoder;
 
-    // private DigitalInput extendSwitch;
-    // private DigitalInput retractSwitch;
-
     public ArmSubsystem(){
         tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT, "drivet");
 
         pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
 
-        encoder = new CANCoder(4, "drivet");  //CHECK THAT IT GOES IN THE CORRECT DIRECTION!!!!
-        encoder.configMagnetOffset(-17.490234375);
-
-        // extendSwitch = new DigitalInput(Constants.Arm.EXTEND_SWITCH_PORT);
-        // retractSwitch = new DigitalInput(Constants.Arm.RETRACT_SWITCH_PORT);
+        encoder = new CANCoder(4, "drivet");
+        encoder.configMagnetOffset(Constants.Arm.ENCODER_OFFSET);
 
         config();
     }

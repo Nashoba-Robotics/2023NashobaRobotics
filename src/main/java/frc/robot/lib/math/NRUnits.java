@@ -112,8 +112,39 @@ public class NRUnits {
             return speed/Constants.Swerve.MAX_NATIVE_VELOCITY;
         }
     }
+
+    public static class Extension {
+        public static double mToNU(double m){
+            m *= 1000;  //Convert to mm
+            m /= Constants.Arm.MM_PER_NU;   //Convert to NU
     
-    public static class Arm {
+            return m;
+        }
+    
+        public static double NUToM(double pos){
+            pos *= Constants.Arm.MM_PER_NU;    //Convert to mm
+            pos /= 1000;    //conert to m
+    
+            return pos;
+        }
+
+        public static double NUtoMPS(double NU){
+            //Converts NU/100ms to meters/s
+            NU = NUToM(NU);
+            NU *= 10;
+    
+            return NU;
+        }
+
+        public static double mpsToNU(double mps){
+            mps = mToNU(mps);
+            mps /= 10;
+    
+            return mps;
+        }
+    }
+    
+    public static class Pivot {
         public static double radToNU(double angle){
             //Convert angle into rotations
             angle /= Constants.TAU;
@@ -147,35 +178,7 @@ public class NRUnits {
     
             return pos;
         }
-    
-        public static double mToNU(double m){
-            m *= 1000;  //Convert to mm
-            m /= Constants.Arm.MM_PER_NU;   //Convert to NU
-    
-            return m;
-        }
-    
-        public static double NUToM(double pos){
-            pos *= Constants.Arm.MM_PER_NU;    //Convert to mm
-            pos /= 1000;    //conert to m
-    
-            return pos;
-        }
 
-        public static double NUtoMPS(double NU){
-            //Converts NU/100ms to meters/s
-            NU = NUToM(NU);
-            NU *= 10;
-    
-            return NU;
-        }
-
-        public static double mpsToNU(double mps){
-            mps = mToNU(mps);
-            mps /= 10;
-    
-            return mps;
-        }
     }    
 
     public static class Grabber {

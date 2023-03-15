@@ -9,6 +9,8 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class ScoreConeCommand extends CommandBase {
     private long startTime;    
+    private boolean retractFirst;
+    private double retractTarget1;
 
     public ScoreConeCommand() {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
@@ -28,10 +30,11 @@ public class ScoreConeCommand extends CommandBase {
         startTime = System.currentTimeMillis();
 
 
-        double angleChange = DriverStation.isAutonomous() ? 2 * Constants.TAU/360 : 2 * Constants.TAU/360;
+        double angleChange = DriverStation.isAutonomous() ? 3 * Constants.TAU/360 : 0 * Constants.TAU/360;
         ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
-        GrabberSubsystem.getInstance().orientPos(-0 * multiplier);
-        ArmSubsystem.getInstance().extendNU(1000);
+        GrabberSubsystem.getInstance().orientPos(4 * multiplier);
+        double currentExtend = ArmSubsystem.getInstance().getExtendNU();
+        ArmSubsystem.getInstance().extendNU(currentExtend-13_000);
         GrabberSubsystem.getInstance().set(0.1);
     }
 
@@ -45,13 +48,25 @@ public class ScoreConeCommand extends CommandBase {
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().orient(0);
-        ArmSubsystem.getInstance().stop();
+        // ArmSubsystem.getInstance().stop();
+        if(DriverStation.isAutonomous()){   //If it pivots faster when retracting, it will tip -> Don't want that in auto
+            ArmSubsystem.getInstance().setPivotAcceleration(25_000);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
+
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(30_000);
+            ArmSubsystem.getInstance().setExtendAcceleration(40_000);
+        }
+        else{
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(50_000);
+        }
         ArmSubsystem.getInstance().pivot(0);
         ArmSubsystem.getInstance().extendNU(0);
     }
 
     @Override
     public boolean isFinished() {
+        if(DriverStation.isAutonomous()) return System.currentTimeMillis() - startTime > 500;
         return System.currentTimeMillis() - startTime > 2000;
     }
 

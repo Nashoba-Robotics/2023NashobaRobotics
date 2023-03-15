@@ -6,6 +6,8 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -51,6 +53,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     
         balanceController = new PIDController(Constants.Swerve.Balance.SLOW_K_P, Constants.Swerve.Balance.SLOW_K_I, Constants.Swerve.Balance.SLOW_K_D);
         driftController = new PIDController(Constants.Swerve.DriftCorrection.P, Constants.Swerve.DriftCorrection.I, Constants.Swerve.DriftCorrection.D);
+
+        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
     }
     
     private static SwerveDriveSubsystem instance;
@@ -270,10 +274,65 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         }
     }
 
+    public double getXVelocity() {
+        ChassisSpeeds speed = Constants.Swerve.KINEMATICS.toChassisSpeeds(
+            modules[0].getSwerveState(),
+            modules[1].getSwerveState(),
+            modules[2].getSwerveState(),
+            modules[3].getSwerveState());
+
+        return speed.vxMetersPerSecond;
+    }
+
+    public double getYVelocity() {
+        ChassisSpeeds speed = Constants.Swerve.KINEMATICS.toChassisSpeeds(
+            modules[0].getSwerveState(),
+            modules[1].getSwerveState(),
+            modules[2].getSwerveState(),
+            modules[3].getSwerveState());
+
+        return speed.vyMetersPerSecond;
+    }
+
+    public double getVelocity() {
+        ChassisSpeeds speed = Constants.Swerve.KINEMATICS.toChassisSpeeds(
+            modules[0].getSwerveState(),
+            modules[1].getSwerveState(),
+            modules[2].getSwerveState(),
+            modules[3].getSwerveState());
+
+        return Math.abs(Math.sqrt(speed.vxMetersPerSecond*speed.vxMetersPerSecond + speed.vyMetersPerSecond*speed.vyMetersPerSecond));
+    }
+
     @Override
     public void periodic(){
         for(SwerveModule module : modules) module.updateMovePosition();
-        if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+        // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
+        SmartDashboard.putNumber("Pipeline", LimelightSubsystem.getInstance().getPipeline());
+
+        if(false && LimelightSubsystem.getInstance().isTarget()) {
+            double limelightWeight = 0.8;
+            double odometryWeight = 1 - limelightWeight;
+
+            Translation2d limelightPose = LimelightSubsystem.getInstance().getRobotPose().getTranslation();
+                Translation2d odometryPose = SwerveDriveSubsystem.getInstance().getPose().getTranslation();
+                Pose2d currPose = new Pose2d(limelightPose.getX() * limelightWeight + odometryPose.getX() * odometryWeight, limelightPose.getY() * limelightWeight + odometryPose.getY() * odometryWeight, Rotation2d.fromRadians(SwerveDriveSubsystem.getInstance().getGyroAngle()));
+                SwerveDriveSubsystem.getInstance().resetOdometry(currPose);
+        }
+
+        // if(LimelightSubsystem.getInstance().getPipeline() == Constants.Limelight.APRIL_TAG_PIPELINE && LimelightSubsystem.getInstance().isTarget()) {
+        //     Pose2d pose = new Pose2d(LimelightSubsystem.getInstance().getRobotPose().getTranslation(), Rotation2d.fromRadians(getGyroAngle()));
+        //     resetOdometry(pose);
+        //     SmartDashboard.putBoolean("Using Limelight", true);
+        // } else {
+            if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+        //     SmartDashboard.putBoolean("Using Limelight", false);
+        // }
+
+        SmartDashboard.putNumber("RobotVelocity", getVelocity());
+        SmartDashboard.putNumber("XVelocity", getXVelocity());
+        SmartDashboard.putNumber("YVelocity", getYVelocity());
+
         Pose2d pose = odometry.getPoseMeters();
 
         SmartDashboard.putNumber("x", pose.getX());

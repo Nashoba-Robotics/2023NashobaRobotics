@@ -68,10 +68,13 @@ public class IntakeCommand extends CommandBase {
         }
 
         SmartDashboard.putNumber("Top Stator", GrabberSubsystem.getInstance().getTopGrabCurrent());
-        if(GrabberSubsystem.getInstance().getTopGrabCurrent() > 20) {
+        if(GrabberSubsystem.getInstance().getTopGrabCurrent() > 30) {
             // GrabberSubsystem.getInstance().setCurrentLimit(10);
             // GrabberSubsystem.getInstance().set(-0.1);
             CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
+        }
+        else{
+            CandleSubsystem.getInstance().set(CandleState.WANT_CONE);
         }
     }
 

@@ -1,5 +1,6 @@
 package frc.robot.commands.score;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -13,6 +14,7 @@ import frc.robot.Constants.Field.TargetLevel;
 public class AutoDirectionalPrepHeightCommand extends CommandBase {
     TargetLevel targetLevel;
     double targetPos;
+    boolean autoDir = true;
 
     double lastPos;
     double lastPos2;
@@ -27,6 +29,12 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     int multiplier;
 
     public AutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
+        this.targetLevel = targetLevel;
+        addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
+    }
+
+    public AutoDirectionalPrepHeightCommand(TargetLevel targetLevel, boolean autoDir){
+        this.autoDir = autoDir;
         this.targetLevel = targetLevel;
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
@@ -52,9 +60,14 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
         switch(targetLevel) {
             case HIGH: 
-             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
-             ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE * multiplier);
-             ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
+            if(!autoDir) multiplier = 1;
+            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU*multiplier);
+            if(multiplier == 1) ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
+            if(multiplier == -1) ArmSubsystem.getInstance().pivot(-(Constants.Arm.HIGH_ANGLE));
+             if(DriverStation.isAutonomous()){
+                ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU-2100);
+             }
+             else ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;
              setPos2 = Constants.Arm.HIGH_ANGLE * multiplier;
              setPos3 = Constants.Grabber.SCORE_NU * multiplier;

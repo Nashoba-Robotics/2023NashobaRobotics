@@ -15,6 +15,7 @@ public class PukeCommand extends CommandBase{
     public void initialize() {
         // TODO Auto-generated method stub
         super.initialize();
+        GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().setOrientSpeed(0.3);
     }
 

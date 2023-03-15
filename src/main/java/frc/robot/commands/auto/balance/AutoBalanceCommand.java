@@ -18,11 +18,11 @@ public class AutoBalanceCommand extends SequentialCommandGroup{
             ),
             new BalanceCommand(Balance.QUICK),
             new WaitCommand(0.25),
-            new BalanceCommand(Balance.SLOW),
-            new InstantCommand(
-                () -> SwerveDriveSubsystem.getInstance().brake(),
-                SwerveDriveSubsystem.getInstance()
-            )
+            new BalanceCommand(Balance.SLOW)
+            // new InstantCommand(
+            //     () -> SwerveDriveSubsystem.getInstance().brake(),
+            //     SwerveDriveSubsystem.getInstance()
+            // )
         );
     }
 }

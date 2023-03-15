@@ -60,6 +60,8 @@ public class SwerveModule {
         moveMotor.config_kI(0, Constants.Swerve.MOVE_KI);
         moveMotor.config_kD(0, Constants.Swerve.MOVE_KD);
 
+        moveMotor.configVoltageCompSaturation(12);
+
         //Turn motor configuratoin
         turnMotor.configFactoryDefault();
         turnMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -69,6 +71,8 @@ public class SwerveModule {
         turnMotor.config_kI(0, Constants.Swerve.TURN_KI);
         turnMotor.config_kD(0, Constants.Swerve.TURN_KD);
         turnMotor.setInverted(InvertType.InvertMotorOutput);
+
+        turnMotor.configVoltageCompSaturation(12);
 
         int cruiseVelocity = 22_000;
         turnMotor.configMotionCruiseVelocity(cruiseVelocity);
@@ -298,5 +302,13 @@ public class SwerveModule {
     }
     public double getNU(){
         return moveMotor.getSelectedSensorPosition();
+    }
+    
+    public SwerveModuleState getSwerveState() {
+        return new SwerveModuleState(
+                NRUnits.Drive.NUToMPS(moveMotor.getSelectedSensorVelocity()),
+                // Rotation2d.fromRadians(NRUnits.Drive.NUToRad(turnMotor.getSelectedSensorPosition()))
+                Rotation2d.fromRadians(getAbsAngle())
+            );
     }
 }

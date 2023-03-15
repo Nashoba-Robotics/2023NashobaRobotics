@@ -13,7 +13,13 @@ public class IntakeCubeCommand extends CommandBase {
     double setPos2;
     boolean atSetPoint2;
 
+    boolean to90 = false;
+
     public IntakeCubeCommand(){
+        addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
+    }
+    public IntakeCubeCommand(boolean to90){
+        this.to90 = to90;
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
     }
 
@@ -65,9 +71,10 @@ public class IntakeCubeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().setCurrentLimit(10);
-        ArmSubsystem.getInstance().pivot(0);
+        if(!to90)ArmSubsystem.getInstance().pivot(0);
+        else ArmSubsystem.getInstance().pivot(-Constants.TAU/4);
         // GrabberSubsystem.getInstance().orient(0);
-        GrabberSubsystem.getInstance().set(0);   //Make the grabber hold it
+        GrabberSubsystem.getInstance().set(0.05, -0.05);   //Make the grabber hold it
     }
 
     @Override

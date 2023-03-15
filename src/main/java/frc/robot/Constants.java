@@ -113,10 +113,10 @@ public final class Constants {
       public static final double MAX_TURNING_SPEED = 1; // r/s
       public static final double MAX_TURNING_ACCELERATION = 0.5; // r/s^2
 
-      public static final double P_X = 5;
-      public static final double D_X = 0;
-      public static final double P_Y = 5;
-      public static final double D_Y = 0;
+      public static final double P_X = 5; //5;
+      public static final double D_X = 0; //0.005;
+      public static final double P_Y = 5; //5;
+      public static final double D_Y = 0; //0.005;
       public static final double P_THETA = 5;
       public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(
       MAX_TURNING_SPEED,
@@ -147,7 +147,7 @@ public final class Constants {
 
     public static final double INTAKE_SPEED = -0.7;
     public static final double SCORE_SPEED = 0.1;
-    public static final double MAX_TURN_SPEED = 0.4;
+    public static final double MAX_TURN_SPEED = 0.6;
     public static final double INTAKE_ANGLE = 5;
     // public static final double INTAKE_ANGLE = 7.5;
     public static final double HIGH_ANGLE = 0;
@@ -158,7 +158,7 @@ public final class Constants {
 
     public static final double GEAR_RATIO = 48 * 36 / 22.; //TODO: find why 1.15
 
-    public static final double SCORE_NU = -7.5;
+    public static final double SCORE_NU = -8.5;
 
   }
 
@@ -201,13 +201,13 @@ public final class Constants {
     public static final double PIVOT_KD_2 = 0;
 
     //Scorign (Radians)
-    public static final double HIGH_ANGLE = 63 * TAU/360;
+    public static final double HIGH_ANGLE = 62 * TAU/360;
     public static final double MID_ANGLE = 68 * TAU/360;
     public static final double LOW_ANGLE = 105 * TAU/360;
 
     public static final double INTAKE_ANGLE = 112.25 * Constants.TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 47_000;
+    public static final double HIGH_EXTEND_NU = 47_000; //47_000-2_600
     public static final double MID_EXTEND_NU = 17_500;
     public static final double LOW_EXTEND_NU = 0;
 
@@ -237,9 +237,9 @@ public final class Constants {
     // public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(Constants.TAU/2);
 
     //wpi
-    public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(0);
+    public static final Rotation2d ANGLE_OF_RESISTANCE = Rotation2d.fromRadians(Constants.TAU/2);
 
-    public static final double K_CARPET = 0.0; // should not be higher than 0.5
+    public static final double K_CARPET = 0.04; // should not be higher than 0.5
 
     public enum TargetLevel {
       HIGH,

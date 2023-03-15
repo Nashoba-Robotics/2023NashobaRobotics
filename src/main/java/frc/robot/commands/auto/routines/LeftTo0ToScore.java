@@ -1,6 +1,7 @@
 package frc.robot.commands.auto.routines;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.pathplanner.lib.PathConstraints;
@@ -27,36 +28,44 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
     
     public LeftTo0ToScore() {
         Map<String, Command> map = new HashMap<>();
-        map.put("Start Intake", new IntakeCubeCommand());
-        map.put("Stop Intake", new InstantCommand(
-            () -> {
-                ArmSubsystem.getInstance().pivot(0);
-                GrabberSubsystem.getInstance().set(-0.1);
-            },
-            ArmSubsystem.getInstance(),
-            GrabberSubsystem.getInstance()
-        ));
-        PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-leftA-0-leftC", new PathConstraints(2, 2));
+        // map.put("Start Intake", new IntakeCubeCommand());
+        // map.put("Stop Intake", new InstantCommand(
+        //     () -> {
+        //         ArmSubsystem.getInstance().pivot(0);
+        //         GrabberSubsystem.getInstance().set(-0.1);
+        //     },
+        //     ArmSubsystem.getInstance(),
+        //     GrabberSubsystem.getInstance()
+        // ));
         
-        FollowPathWithEvents command = new FollowPathWithEvents(
-            new FollowPathCommand(path),
-            path.getMarkers(),
+        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-leftA-0-leftC", new PathConstraints(2, 1.5), new PathConstraints(2, 2));
+        
+        FollowPathWithEvents path1 = new FollowPathWithEvents(
+            new FollowPathCommand(path.get(0)),
+            path.get(0).getMarkers(),
             map);
+
+        FollowPathWithEvents path2 = new FollowPathWithEvents(
+            new FollowPathCommand(path.get(1)),
+            path.get(1).getMarkers(),
+            map);
+
         addCommands(
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().zeroWrist();
                 SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
             }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
-            new WaitCommand(0.1),
             new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(PathPlannerTrajectory.transformTrajectoryForAlliance(
-                    path,
+                    path.get(0),
                     DriverStation.getAlliance()).getInitialHolonomicPose());
             }, SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.1),
-            new AutoScoreCommand(),
-            command,
-            new AutoScoreCubeCommand()
+            // new AutoScoreCommand(),
+            path1,
+            new WaitCommand(0.6),
+            path2
+            // new AutoScoreCubeCommand()
         );
     }
 

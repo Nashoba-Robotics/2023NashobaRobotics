@@ -4,6 +4,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -60,6 +62,9 @@ public class ArmSubsystem extends SubsystemBase {
 
         tromboneSlide.configReverseSoftLimitEnable(true);
         tromboneSlide.configReverseSoftLimitThreshold(Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT);
+
+        tromboneSlide.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.2));
+        tromboneSlide.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.2));
 
         pivot1.configFactoryDefault();
         pivot1.setNeutralMode(NeutralMode.Brake);

@@ -60,6 +60,11 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
                     path.get(0),
                     DriverStation.getAlliance()).getInitialHolonomicPose());
             }, SwerveDriveSubsystem.getInstance()),
+            new InstantCommand(() -> {
+                SwerveDriveSubsystem.getInstance().resetOdometry(PathPlannerTrajectory.transformTrajectoryForAlliance(
+                    path.get(0),
+                    DriverStation.getAlliance()).getInitialHolonomicPose());
+            }, SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.1),
             // new AutoScoreCommand(),
             path1,

@@ -27,16 +27,15 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class RightTo3ToScoreAuto extends SequentialCommandGroup{
     public RightTo3ToScoreAuto(){
         Map<String, Command> map = new HashMap<>();
-        map.put("Start Intake", new IntakeCubeCommand());
-        map.put("Stop Intake", new InstantCommand(
-            () -> {
-                ArmSubsystem.getInstance().pivot(0);
-                GrabberSubsystem.getInstance().set(0.1, -0.1);
-            },
-            ArmSubsystem.getInstance(),
-            GrabberSubsystem.getInstance()
-        ));
-        map.clear();
+        // map.put("Start Intake", new IntakeCubeCommand());
+        // map.put("Stop Intake", new InstantCommand(
+        //     () -> {
+        //         ArmSubsystem.getInstance().pivot(0);
+        //         GrabberSubsystem.getInstance().set(0.1, -0.1);
+        //     },
+        //     ArmSubsystem.getInstance(),
+        //     GrabberSubsystem.getInstance()
+        // ));
         List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA", new PathConstraints(3.5, 2.5), new PathConstraints(3.5, 2.5));
         
         FollowPathWithEvents path1 = new FollowPathWithEvents(
@@ -51,10 +50,12 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
 
 
         addCommands(
-            new InstantCommand(() -> GrabberSubsystem.getInstance().zeroWrist(), GrabberSubsystem.getInstance()),
-            new InstantCommand(() -> GrabberSubsystem.getInstance().set(0), GrabberSubsystem.getInstance()),
-            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2), SwerveDriveSubsystem.getInstance()),
-            new WaitCommand(0.1),
+            new InstantCommand(() -> {
+                GrabberSubsystem.getInstance().zeroWrist();
+                GrabberSubsystem.getInstance().set(0);
+                SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
+            }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
+            new WaitCommand(0.05),
             new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(
                     PathPlannerTrajectory.transformTrajectoryForAlliance(
@@ -62,7 +63,15 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
                         DriverStation.getAlliance()).getInitialHolonomicPose()
                     );
             }, SwerveDriveSubsystem.getInstance()),
-            // new AutoScoreCommand(),
+            new InstantCommand(() -> {
+                SwerveDriveSubsystem.getInstance().resetOdometry(
+                    PathPlannerTrajectory.transformTrajectoryForAlliance(
+                        path.get(0),
+                        DriverStation.getAlliance()).getInitialHolonomicPose()
+                    );
+            }, SwerveDriveSubsystem.getInstance()),
+            new WaitCommand(0.05),
+            new AutoScoreCommand(),
             path1,
             new WaitCommand(0.3),
             path2

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
+import frc.robot.Tabs;
 import frc.robot.lib.math.SwerveMath;
 import frc.robot.lib.math.NRUnits;
 import frc.robot.lib.util.CarpetOdometry;
@@ -339,6 +340,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("y", pose.getY());
         SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
         SmartDashboard.putNumber("gyro angle", getGyroAngle());
+        Tabs.Comp.displayGyro(getGyroAngle());
 
         SmartDashboard.putNumber("Pitch", getPitch());
         SmartDashboard.putNumber("Roll", getRoll());

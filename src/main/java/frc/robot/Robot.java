@@ -1,20 +1,14 @@
 package frc.robot;
 
-import javax.swing.text.StyleContext.SmallAttributeSet;
-
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreTest;
 import frc.robot.commands.auto.routines.DumbAuto;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;
@@ -22,11 +16,9 @@ import frc.robot.commands.auto.routines.MidToClimb;
 import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
-import frc.robot.lib.math.NRUnits.Drive;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 

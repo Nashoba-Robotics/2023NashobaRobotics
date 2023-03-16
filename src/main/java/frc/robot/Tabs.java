@@ -265,8 +265,10 @@ public final class Tabs {
     public static class Comp{
         //Camera Stream
         //Odometry
-        //
+        
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Competition");
+
+        private static GenericEntry gyroAngle = tab.add("Gyro", 0).getEntry();
  
         public static void add(Sendable sendable){
             tab.add(sendable);
@@ -282,6 +284,10 @@ public final class Tabs {
         }
         public static void add(String name, Object o){
             tab.add(name, o);
+        }
+
+        public static void displayGyro(double angle){
+            gyroAngle.setDouble(angle);
         }
     }
 }

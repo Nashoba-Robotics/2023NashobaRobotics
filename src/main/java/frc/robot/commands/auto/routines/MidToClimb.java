@@ -22,10 +22,8 @@ import frc.robot.commands.auto.balance.routine.throughBalance;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.move.TranslateToCommand;
 import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
-import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class MidToClimb extends SequentialCommandGroup{
     PathPlannerTrajectory path = PathPlanner.loadPath("BLUE-midA-climb", new PathConstraints(4, 3));

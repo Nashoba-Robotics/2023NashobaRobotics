@@ -26,14 +26,10 @@ public class TranslateToCommand extends CommandBase {
 
     private PathPlannerTrajectory trajectory;
 
-    private Timer timer;
-
-
     public TranslateToCommand(Translation2d translation, Rotation2d endRotation) {
         // addRequirements(SwerveDriveSubsystem.getInstance());
         this.translation = translation;
         this.endRotation = endRotation;
-        timer = new Timer();
     }
 
     @Override
@@ -43,7 +39,7 @@ public class TranslateToCommand extends CommandBase {
         Rotation2d heading = translation.getX() < 0 ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
 
         trajectory = PathPlanner.generatePath(
-            new PathConstraints(3.5, 2), 
+            new PathConstraints(3.5, 2.5), 
             List.of(
                 new PathPoint(currPosition.getTranslation(), heading, currPosition.getRotation()),
                 new PathPoint(new Translation2d(currPosition.getX() + translation.getX(), currPosition.getY() + translation.getY()), heading, endRotation)
@@ -51,23 +47,13 @@ public class TranslateToCommand extends CommandBase {
         );
 
         command = new FollowPathCommand(trajectory, true);
-        timer.reset();
-        timer.start();
 
         CommandScheduler.getInstance().schedule(command);
     }
 
     @Override
-    public void execute() {
-        SmartDashboard.putNumber("Time", timer.get());
-        SmartDashboard.putBoolean("Ben", isFinished());
-    }
-    @Override
     public void end(boolean interrupted) {
         command.cancel();
-        SmartDashboard.putBoolean("AAAAAAAAAAAAAAAAAAAAAHHHHHHHHHH", true);
-        timer.stop();
-        timer.reset();
     }
 
     @Override

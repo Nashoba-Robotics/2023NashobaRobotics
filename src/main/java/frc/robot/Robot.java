@@ -25,7 +25,7 @@ import frc.robot.subsystems.CandleSubsystem.CandleState;
 public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   SendableChooser<Command> autoChooser;
-  HttpCamera camera = new HttpCamera("Front Cam", "http://10.17.68.11:5801/");
+  HttpCamera camera = new HttpCamera("Front Cam", "http://10.17.68.11:5800/");
 
   @Override
   public void robotInit() {

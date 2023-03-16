@@ -39,9 +39,6 @@ public class MidToClimb extends SequentialCommandGroup{
             new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));
             }, SwerveDriveSubsystem.getInstance()),
-            new InstantCommand(() -> {
-                SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));
-            }, SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(), //<-- This makes us tip a bit
             new WaitCommand(1), //<-- This makes sure the tip does not mess up the end conditions :)
             new ParallelCommandGroup(

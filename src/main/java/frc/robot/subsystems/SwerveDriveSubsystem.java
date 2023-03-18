@@ -69,13 +69,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return instance;
     }
 
-    public void setCardinalTarget(double angle){
-        cardinalController.setSetpoint(angle);
-    }
+    // public void setCardinalTarget(double angle){
+    //     cardinalController.setSetpoint(angle);
+    // }
 
-    public double getCardinalGain(){
-        return cardinalController.calculate(gyro.getYaw());
-    }
+    // public double getCardinalGain(){
+    //     return cardinalController.calculate(gyro.getYaw());
+    // }
 
     public double getYaw(){
         return gyro.getYaw();

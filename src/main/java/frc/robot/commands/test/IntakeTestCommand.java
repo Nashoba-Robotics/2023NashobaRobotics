@@ -60,10 +60,10 @@ public class IntakeTestCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        ArmSubsystem.getInstance().stop();
-        GrabberSubsystem.getInstance().stop();
-        ArmSubsystem.getInstance().setPivot(0);
-        ArmSubsystem.getInstance().reset();
+        // ArmSubsystem.getInstance().stop();
+        // GrabberSubsystem.getInstance().stop();
+        // ArmSubsystem.getInstance().setPivot(0);
+        // ArmSubsystem.getInstance().reset();
     }
 
     @Override

@@ -19,6 +19,7 @@ import frc.robot.commands.auto.intakescore.AutoScoreTest;
 import frc.robot.commands.auto.routines.DumbAuto;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;
 import frc.robot.commands.auto.routines.MidToClimb;
+import frc.robot.commands.auto.routines.MidToClimbTo1;
 import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
@@ -47,7 +48,8 @@ public class Robot extends TimedRobot {
     // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
 
     autoChooser = new SendableChooser<>();
-    autoChooser.setDefaultOption("MidClimb", new MidToClimb());
+    autoChooser.setDefaultOption("MidClimb+Cube", new MidToClimbTo1());
+    autoChooser.addOption("MidClimbOnly", new MidToClimb());
     autoChooser.addOption("Far2Score", new RightTo3ToScoreAuto());
     autoChooser.addOption("Close2Score", new LeftTo0ToScore());
     // autoChooser.addOption("FarClimb", new RightTo3ToBalance());
@@ -71,6 +73,7 @@ public class Robot extends TimedRobot {
       () -> ArmSubsystem.getInstance().zeroArmSensor(),
       ArmSubsystem.getInstance()
     ));
+    
     ArmSubsystem.getInstance().zeroArmSensor();
     ArmSubsystem.getInstance().zeroPivotSensor();
   }

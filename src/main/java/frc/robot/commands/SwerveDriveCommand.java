@@ -18,8 +18,8 @@ public class SwerveDriveCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        SwerveDriveSubsystem.getInstance().setGyro(SwerveDriveSubsystem.getInstance().getGyroAngle());
-        SwerveDriveSubsystem.getInstance().setCardinalTarget(90);
+        // SwerveDriveSubsystem.getInstance().setGyro(SwerveDriveSubsystem.getInstance().getGyroAngle());
+        // SwerveDriveSubsystem.getInstance().setCardinalTarget(90);
     }
 
     @Override

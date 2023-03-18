@@ -53,8 +53,8 @@ public class ScoreConeCommand extends CommandBase {
             ArmSubsystem.getInstance().setPivotAcceleration(25_000);
             ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
 
-            ArmSubsystem.getInstance().setExtendCruiseVelocity(30_000);
-            ArmSubsystem.getInstance().setExtendAcceleration(40_000);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(40_000);
+            ArmSubsystem.getInstance().setExtendAcceleration(20_000);
         }
         else{
             ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);

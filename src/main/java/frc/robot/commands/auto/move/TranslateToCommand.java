@@ -10,7 +10,9 @@ import com.pathplanner.lib.PathPoint;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -37,6 +39,8 @@ public class TranslateToCommand extends CommandBase {
         Pose2d currPosition = SwerveDriveSubsystem.getInstance().getPose();
 
         Rotation2d heading = translation.getX() < 0 ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
+
+        if(DriverStation.getAlliance() == Alliance.Red) translation = new Translation2d(translation.getX(), -translation.getY());
 
         trajectory = PathPlanner.generatePath(
             new PathConstraints(3.5, 2.5), 

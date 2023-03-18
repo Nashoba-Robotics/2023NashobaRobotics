@@ -64,7 +64,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             if(multiplier == 1) ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
             if(multiplier == -1) ArmSubsystem.getInstance().pivot(-(Constants.Arm.HIGH_ANGLE));
              if(DriverStation.isAutonomous()){
-                ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU-2100);
+                ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU-1300);
              }
              else ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;

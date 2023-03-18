@@ -1,4 +1,4 @@
-package frc.robot.commands.test;
+package frc.robot.commands.score;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -9,7 +9,7 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
-public class PrepTestCommand extends CommandBase{
+public class PrepHighConeCommand extends CommandBase{
     double l0 = 0.690;
     double targetPos;
     double setPos2;
@@ -23,7 +23,7 @@ public class PrepTestCommand extends CommandBase{
     boolean gotToStart;
     boolean atSetPoint2;
 
-    public PrepTestCommand(){
+    public PrepHighConeCommand(){
         addRequirements(ArmSubsystem.getInstance());
     }
 
@@ -92,7 +92,7 @@ public class PrepTestCommand extends CommandBase{
         double extendSpeed = l0 * Math.tan(pivotAngle)/Math.cos(pivotAngle)*pivotSpeed;
         extendSpeed = mpsToNU(extendSpeed);
 
-        ArmSubsystem.getInstance().setExtendCruiseVelocity(Math.max(extendSpeed, 5_000));
+        ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed);
 
         if(Math.abs(ArmSubsystem.getInstance().getExtendNU() - Constants.Arm.HIGH_EXTEND_NU) < 1000){
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);

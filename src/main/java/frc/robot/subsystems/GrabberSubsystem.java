@@ -25,6 +25,7 @@ public class GrabberSubsystem extends SubsystemBase{
         grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
         grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushless);
 
+
         orienter = new CANSparkMax(Constants.Grabber.WRIST_PORT, MotorType.kBrushless);
         orientEncoder = orienter.getEncoder();
 

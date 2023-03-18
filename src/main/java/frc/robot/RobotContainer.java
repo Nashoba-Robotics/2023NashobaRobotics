@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.ArmAngleCommand;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeCubeCommand;
 import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.ManualResetOdometryCommand;
 import frc.robot.commands.SwerveDriveCommand;
@@ -27,6 +25,9 @@ import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.auto.move.DriveToCommand;
 import frc.robot.commands.auto.move.TranslateToCommand;
+import frc.robot.commands.intake.DoubleStationIntakeCommand;
+import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.ControllerTestCommand;
@@ -34,11 +35,12 @@ import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.FollowObjectCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ManualGrabberCommand;
-import frc.robot.commands.test.PrepTestCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
 import frc.robot.commands.score.PrepHeightCommand;
+import frc.robot.commands.score.PrepHighConeCommand;
+import frc.robot.commands.score.PrepHighCubeCommand;
 import frc.robot.commands.score.PukeCommand;
 import frc.robot.commands.score.ScoreConeCommand;
 import frc.robot.commands.score.ScoreCubeCommand;
@@ -63,6 +65,8 @@ public class RobotContainer {
     SmartDashboard.putData("ResetOdometry", new ManualResetOdometryCommand());
     SmartDashboard.putData("GoToPos", new DriveToCommand(new Translation2d(2.7, 3.45)));
     // SmartDashboard.putData("GoToPos", new DriveToCommand(FieldLocations.Blue.LEFT_A));
+
+    // SmartDashboard.putData(new SingleSparkTestCommand());
 
     // SmartDashboard.putData("Translate", new TranslateToCommand(new Translation2d(1, 0)));
 
@@ -106,7 +110,9 @@ public class RobotContainer {
 
     SmartDashboard.putData(new ManualGrabberCommand());
 
-    SmartDashboard.putData(new PrepTestCommand());
+    SmartDashboard.putData(new PrepHighConeCommand());
+
+    SmartDashboard.putData(new PrepHighCubeCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(
@@ -138,6 +144,8 @@ public class RobotContainer {
   Trigger lowPrepCone = operatorController.button(1); //Y
   Trigger midPrepCone = operatorController.button(3); //A
   Trigger highPrepCone = operatorController.button(4);  //X
+
+  Trigger doubleStationIntake = operatorController.button(9); //-
 
   Trigger score = operatorController.button(8); //RT
   Trigger lowScore = operatorController.button(7);  //LT
@@ -176,12 +184,14 @@ public class RobotContainer {
       () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
       CandleSubsystem.getInstance()
     ));
+
+    doubleStationIntake.toggleOnTrue(new DoubleStationIntakeCommand());
     
     intakeButton.and(cone).toggleOnTrue(new IntakeCommand(true));
 
     lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cone).onTrue(new PrepTestCommand());
+    highPrepCone.and(cone).onTrue(new PrepHighConeCommand());
 
     score.and(cone).toggleOnTrue(new ScoreConeCommand());
     lowScore.and(cone).toggleOnTrue(new LowScoreCommand());
@@ -190,7 +200,7 @@ public class RobotContainer {
 
     lowPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    highPrepCone.and(cube).onTrue(new PrepHighCubeCommand());
 
     score.and(cube).toggleOnTrue(new ScoreCubeCommand());
     lowScore.and(cube).toggleOnTrue(new LowScoreCommand());
@@ -198,8 +208,6 @@ public class RobotContainer {
     puke.toggleOnTrue(new PukeCommand());
 
     align.onTrue(new DriveToCommand(new Translation2d(1.78, 3.48)));
-
-
 
     resetGyro.onTrue(new InstantCommand(() -> {
       SwerveDriveSubsystem.getInstance().setGyro(0);

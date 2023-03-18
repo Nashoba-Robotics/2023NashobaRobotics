@@ -13,6 +13,7 @@ public class AutoScoreTest extends SequentialCommandGroup{
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().zeroWrist();
                 ArmSubsystem.getInstance().resetPivotNU();
+                ArmSubsystem.getInstance().zeroArmSensor();
                 SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
             }, GrabberSubsystem.getInstance(), ArmSubsystem.getInstance()),
             new AutoScoreCommand()

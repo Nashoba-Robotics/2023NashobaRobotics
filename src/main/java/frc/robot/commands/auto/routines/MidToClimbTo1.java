@@ -44,7 +44,7 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
                 SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));
             }, SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(), //<-- This makes us tip a bit
-            new WaitCommand(1), //<-- This makes sure the tip does not mess up the end conditions :)
+            new WaitCommand(1.25), //<-- This makes sure the tip does not mess up the end conditions :)
             new ParallelCommandGroup(
                 new onToBalance(),
                 new InstantCommand(
@@ -56,7 +56,7 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
             new offBalance(),
             new WaitCommand(0.1),
             new ParallelCommandGroup(
-                translateTo.withTimeout(2),
+                translateTo.withTimeout(1.75),
                 new IntakeCubeCommand(true).withTimeout(1.5)
             ),
             translateBack.until(SwerveDriveSubsystem.getInstance()::notLevel),

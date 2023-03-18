@@ -145,15 +145,14 @@ public class RobotContainer {
   Trigger midPrepCone = operatorController.button(3); //A
   Trigger highPrepCone = operatorController.button(4);  //X
 
-  Trigger doubleStationIntake = operatorController.button(9); //-
+  Trigger doubleStationIntake = operatorController.button(14); //screenshot
 
   Trigger score = operatorController.button(8); //RT
-  Trigger lowScore = operatorController.button(7);  //LT
-
   //Left cone Right cube
 
   Trigger cone = operatorController.button(5);  //LB
   Trigger cube = operatorController.button(6);  //RB
+  Trigger doubleStation = operatorController.button(7); //LT
 
   Trigger puke = operatorController.button(10); //+
 
@@ -185,6 +184,17 @@ public class RobotContainer {
       CandleSubsystem.getInstance()
     ));
 
+    doubleStation.onTrue(
+      new InstantCommand(
+        ()-> CandleSubsystem.getInstance().set(CandleState.DOUBLE_STATION),
+        CandleSubsystem.getInstance()
+        )
+    );
+    doubleStation.onFalse(new InstantCommand(
+      () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
+      CandleSubsystem.getInstance()
+      ));
+
     doubleStationIntake.toggleOnTrue(new DoubleStationIntakeCommand());
     
     intakeButton.and(cone).toggleOnTrue(new IntakeCommand(true));
@@ -194,8 +204,6 @@ public class RobotContainer {
     highPrepCone.and(cone).onTrue(new PrepHighConeCommand());
 
     score.and(cone).toggleOnTrue(new ScoreConeCommand());
-    lowScore.and(cone).toggleOnTrue(new LowScoreCommand());
-
     intakeButton.and(cube).toggleOnTrue(new IntakeCubeCommand());
 
     lowPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.LOW));
@@ -203,8 +211,6 @@ public class RobotContainer {
     highPrepCone.and(cube).onTrue(new PrepHighCubeCommand());
 
     score.and(cube).toggleOnTrue(new ScoreCubeCommand());
-    lowScore.and(cube).toggleOnTrue(new LowScoreCommand());
-
     puke.toggleOnTrue(new PukeCommand());
 
     align.onTrue(new DriveToCommand(new Translation2d(1.78, 3.48)));

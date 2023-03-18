@@ -11,6 +11,7 @@ public class ScoreConeCommand extends CommandBase {
     private long startTime;    
     private boolean retractFirst;
     private double retractTarget1;
+    private boolean low;
 
     public ScoreConeCommand() {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
@@ -22,6 +23,7 @@ public class ScoreConeCommand extends CommandBase {
         boolean scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
 
         int multiplier = scoreFront ? 1 : -1;
+        low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;
 
 
         GrabberSubsystem.getInstance().setCurrentLimit(40);
@@ -29,13 +31,19 @@ public class ScoreConeCommand extends CommandBase {
         ArmSubsystem.getInstance().setDefaultAcceleration();
         startTime = System.currentTimeMillis();
 
-
-        double angleChange = DriverStation.isAutonomous() ? 3 * Constants.TAU/360 : 0 * Constants.TAU/360;
-        ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
-        GrabberSubsystem.getInstance().orientPos(4 * multiplier);
-        double currentExtend = ArmSubsystem.getInstance().getExtendNU();
-        ArmSubsystem.getInstance().extendNU(currentExtend-13_000);
-        GrabberSubsystem.getInstance().set(0.1);
+        if(low){
+            GrabberSubsystem.getInstance().setCurrentLimit(50);
+            GrabberSubsystem.getInstance().set(0.7);
+            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
+        } 
+        else{
+            double angleChange = DriverStation.isAutonomous() ? 3 * Constants.TAU/360 : 0 * Constants.TAU/360;
+            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
+            GrabberSubsystem.getInstance().orientPos(4 * multiplier);
+            double currentExtend = ArmSubsystem.getInstance().getExtendNU();
+            ArmSubsystem.getInstance().extendNU(currentExtend-13_000);
+            GrabberSubsystem.getInstance().set(0.1);
+        }
     }
 
     @Override

@@ -254,6 +254,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return !isLevel();
     }
 
+    public boolean reallyNotLevel() {
+        return !(Math.abs(getRoll()) < 8);
+    }
+
     public boolean levelNegative() {
         return getRoll() < -1;
     }

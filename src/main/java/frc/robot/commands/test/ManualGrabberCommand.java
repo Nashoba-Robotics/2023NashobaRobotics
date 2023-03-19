@@ -13,14 +13,16 @@ public class ManualGrabberCommand extends CommandBase{
 
     @Override
     public void initialize() {
+        SmartDashboard.putNumber("Orient Speed", 0.05);
         GrabberSubsystem.getInstance().orient(0);
         setPos3 = 0;
     }
 
     @Override
     public void execute() {
-        if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.05;
-        if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.05;
+        double speed = SmartDashboard.getNumber("Orient Speed", 0.05);
+        if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= speed;
+        if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += speed;
         
         SmartDashboard.putNumber("Set Pos Grab", setPos3);
         GrabberSubsystem.getInstance().orient(setPos3);

@@ -63,9 +63,9 @@ public class PrepHighCubeCommand extends CommandBase{
 
         multiplier = 1;
 
-        double prepAngle = 0;
-        if(multiplier == 1) prepAngle = Constants.Arm.Cube.HIGH_ANGLE + (1)*Constants.TAU/360;
-        else prepAngle = -(Constants.Arm.Cube.HIGH_ANGLE - 0.1*Constants.TAU/360);
+        double prepAngle = Constants.Arm.Cube.HIGH_ANGLE;
+        // if(multiplier == 1) prepAngle = Constants.Arm.Cube.HIGH_ANGLE + (1)*Constants.TAU/360;
+        // else prepAngle = -(Constants.Arm.Cube.HIGH_ANGLE - 0.1*Constants.TAU/360);
 
         ArmSubsystem.getInstance().pivot(prepAngle);
         ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.HIGH_EXTEND_NU);

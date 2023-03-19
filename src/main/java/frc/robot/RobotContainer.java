@@ -106,6 +106,8 @@ public class RobotContainer {
 
     // SmartDashboard.putData("Balance", new AutoBalanceCommand());
 
+    SmartDashboard.putData(new ManualGrabberCommand());
+
     SmartDashboard.putData(new AutoScoreCommand());
 
     SmartDashboard.putData(new ManualGrabberCommand());
@@ -126,7 +128,7 @@ public class RobotContainer {
 
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
     Tabs.Intake.zeroes.add("Extend", new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroArmSensor(),
+      () -> ArmSubsystem.getInstance().resetPivotNU(),
       ArmSubsystem.getInstance()
     ));
     Tabs.Intake.zeroes.add("Pivot",new InstantCommand(
@@ -164,6 +166,8 @@ public class RobotContainer {
   Trigger setArm0 = JoystickSubsytem.getInstance().getRightJoystick().button(13);
 
   Trigger align = JoystickSubsytem.getInstance().getRightJoystick().button(2);
+
+  Trigger eStop = JoystickSubsytem.getInstance().getRightJoystick().button(8);
 
   public void configureButtonBindings(){
     cone.onTrue(new InstantCommand(
@@ -248,6 +252,11 @@ public class RobotContainer {
         ArmSubsystem.getInstance().extendNU(3_000);
       },
       ArmSubsystem.getInstance()
+    ));
+
+    eStop.onTrue(new InstantCommand(
+      () -> SwerveDriveSubsystem.getInstance().set(0, 0, 0),
+      SwerveDriveSubsystem.getInstance()
     ));
   }
 }

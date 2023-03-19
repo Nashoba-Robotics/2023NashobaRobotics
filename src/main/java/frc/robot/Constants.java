@@ -223,7 +223,7 @@ public final class Constants {
     public static final int PIVOT_REVERSE_SOFT_LIMIT = -140_000;
     
     public static final class Cube{
-      public static final double HIGH_ANGLE = -61 * TAU/360;
+      public static final double HIGH_ANGLE = -59 * TAU/360;
       public static final double MID_ANGLE = -62 * TAU/360;
       public static final double LOW_ANGLE = -105 * TAU/360;
 

@@ -1,10 +1,13 @@
 package frc.robot.commands.auto.routines;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -15,23 +18,25 @@ import frc.robot.commands.auto.balance.AutoBalanceCommand;
 import frc.robot.commands.auto.balance.routine.offBalance;
 import frc.robot.commands.auto.balance.routine.onToBalance;
 import frc.robot.commands.auto.balance.routine.throughBalance;
-import frc.robot.commands.auto.balance.routine.waitUntilLevel;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
+import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.auto.move.TranslateToCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
-public class MidToClimbTo1 extends SequentialCommandGroup{
+public class MidToClimbTo1Fixed extends SequentialCommandGroup{
 
-    public MidToClimbTo1(){
+    public MidToClimbTo1Fixed(){
 
         // Command translateTo = new TranslateToCommand(new Translation2d(1.55, 0.25), Rotation2d.fromRadians(Constants.TAU/2));
         // Command translateBack = new TranslateToCommand(new Translation2d(-4, -0.35), Rotation2d.fromRadians(Constants.TAU/2));
 
         Command translateTo = new TranslateToCommand(new Translation2d(1.55, -0.25), Rotation2d.fromRadians(Constants.TAU/2));
         Command translateBack = new TranslateToCommand(new Translation2d(-4, 0.35), Rotation2d.fromRadians(Constants.TAU/2));
+
+        PathPlannerTrajectory trajectory = PathPlanner.loadPath("offClimb-2-climb", new PathConstraints(4, 3.5));
 
         addCommands(
             new InstantCommand(() -> {
@@ -46,7 +51,6 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
             }, SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(), //<-- This makes us tip a bit
             new WaitCommand(1.25), //<-- This makes sure the tip does not mess up the end conditions :)
-            new waitUntilLevel(),
             new ParallelCommandGroup(
                 new onToBalance(),
                 new InstantCommand(
@@ -57,11 +61,24 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
             new throughBalance(),
             new offBalance(),
             new WaitCommand(0.1),
+            new InstantCommand(() -> {
+                SwerveDriveSubsystem.getInstance().resetOdometry(
+                    PathPlannerTrajectory.transformTrajectoryForAlliance(
+                        trajectory,
+                        DriverStation.getAlliance()).getInitialHolonomicPose()
+                    );
+            }, SwerveDriveSubsystem.getInstance()),
             new ParallelCommandGroup(
-                translateTo.withTimeout(2),
+                new FollowPathCommand(trajectory),
                 new IntakeCubeCommand(true).withTimeout(1.5)
-            ),
-            translateBack.until(SwerveDriveSubsystem.getInstance()::notLevel),
+            ).until(SwerveDriveSubsystem.getInstance()::notLevel),
+            // new ParallelCommandGroup(
+            //     translateTo.withTimeout(1.75),
+            //     new IntakeCubeCommand(true).withTimeout(1.5)
+            // ),
+            // translateBack.until(SwerveDriveSubsystem.getInstance()::notLevel),
+            // new InstantCommand(() -> CandleSubsystem.getInstance().set(CandleState.WANT_CUBE))
+            // new backToBalance(),
             new AutoBalanceCommand()
         );
     }

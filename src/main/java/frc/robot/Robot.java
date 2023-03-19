@@ -69,12 +69,12 @@ public class Robot extends TimedRobot {
       () -> ArmSubsystem.getInstance().zeroPivotSensor(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.tab.add("Zero Arm", new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroArmSensor(),
+    Tabs.Intake.tab.add("Reset Encoder", new InstantCommand(
+      () -> ArmSubsystem.getInstance().resetPivotNU(),
       ArmSubsystem.getInstance()
     ));
     
-    ArmSubsystem.getInstance().zeroArmSensor();
+    ArmSubsystem.getInstance().resetPivotNU();
     ArmSubsystem.getInstance().zeroPivotSensor();
   }
 
@@ -109,11 +109,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
+    CommandScheduler.getInstance().cancelAll();
+    SwerveDriveSubsystem.getInstance().set(0, 0, 0);
     // LimelightSubsystem.getInstance().defaultLED();
     ArmSubsystem.getInstance().stop();
     CandleSubsystem.getInstance().set(CandleState.ENABLED);
     ArmSubsystem.getInstance().resetPivotNU();
+    CommandScheduler.getInstance().schedule(new SwerveDriveCommand());
 
     // SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
   }

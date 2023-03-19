@@ -102,10 +102,6 @@ public class ArmSubsystem extends SubsystemBase {
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
     }
 
-    public void zeroArmSensor(){
-        tromboneSlide.setSelectedSensorPosition(0);
-    }
-
     public void zeroPivot1(){
         pivot1.setSelectedSensorPosition(0);
     }

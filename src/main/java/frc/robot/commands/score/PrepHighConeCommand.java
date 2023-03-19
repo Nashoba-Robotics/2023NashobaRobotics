@@ -146,8 +146,8 @@ public class PrepHighConeCommand extends CommandBase{
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
 
-            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.15 * multiplier;
-            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.15 * multiplier;
+            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.5 * multiplier;
+            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.5 * multiplier;
 
             GrabberSubsystem.getInstance().orientPos(setPos3);
         }

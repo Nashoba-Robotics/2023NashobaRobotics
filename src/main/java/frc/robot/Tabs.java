@@ -284,4 +284,32 @@ public final class Tabs {
             tab.add(name, o);
         }
     }
+
+    public static class Misc{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Miscelaneous");
+
+        public static void add(Sendable sendable){
+            tab.add(sendable);
+        }
+        public static ComplexWidget add(String name, Sendable sendable){
+            return tab.add(name, sendable);
+        }
+        public static ComplexWidget add(String name, Sendable sendable, int x, int y){
+            return add(name, sendable).withPosition(x, y);
+        }
+        public static ComplexWidget add(String name, Sendable sendable, int x, int y, int w, int h){
+            return add(name, sendable, x, y).withSize(w, h);
+        }
+        public static void add(String name, Object o){
+            tab.add(name, o);
+        }
+
+        //Temporary button stuff
+        private static GenericEntry buttonPushed = tab.add("Pushed", false).getEntry();
+
+        public static void displayPush(boolean pushed){
+            buttonPushed.setBoolean(pushed);
+        }
+
+    }
 }

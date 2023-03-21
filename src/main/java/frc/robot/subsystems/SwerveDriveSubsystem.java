@@ -179,6 +179,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         resetting = false;
     }
 
+    public void resetOdometryOverrideAngle(Pose2d pose, Rotation2d angle) {
+        resetting = true;
+        odometry.resetPosition(angle, getSwerveModulePositions(), pose);
+        resetting = false;
+    }
+
     public SwerveModulePosition[] getSwerveModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[modules.length];
         for(int i = 0; i < modules.length; i++) {

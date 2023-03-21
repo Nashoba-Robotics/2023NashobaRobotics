@@ -1,0 +1,25 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Competition/SendableChooser[0]": "String Chooser",
+      "/Shuffleboard/Intake/ArmSubsystem": "Subsystem",
+      "/Shuffleboard/Intake/GrabberSubsystem": "Subsystem",
+      "/Shuffleboard/Intake/Intake Test": "Command",
+      "/Shuffleboard/Intake/IntakeTestCommand": "Command",
+      "/Shuffleboard/Intake/Reset Encoder": "Command",
+      "/Shuffleboard/Intake/Zero Pivot": "Command",
+      "/Shuffleboard/Intake/Zeroes/Extend": "Command",
+      "/Shuffleboard/Intake/Zeroes/Pivot": "Command",
+      "/Shuffleboard/Intake/Zeroes/Wrist": "Command",
+      "/SmartDashboard/AutoScoreCommand": "Command",
+      "/SmartDashboard/ButtonTestCommand": "Command",
+      "/SmartDashboard/DriveTo": "Command",
+      "/SmartDashboard/GoToPos": "Command",
+      "/SmartDashboard/ManualGrabberCommand": "Command",
+      "/SmartDashboard/PrepHighConeCommand": "Command",
+      "/SmartDashboard/PrepHighCubeCommand": "Command",
+      "/SmartDashboard/ResetOdometry": "Command"
+    }
+  }
+}

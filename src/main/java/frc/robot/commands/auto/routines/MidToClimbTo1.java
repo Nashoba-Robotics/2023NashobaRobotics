@@ -37,13 +37,10 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().zeroWrist();
                 SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
-                SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180)));
+                SwerveDriveSubsystem.getInstance().resetOdometryOverrideAngle(new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180)), Rotation2d.fromDegrees(180));
                 ArmSubsystem.getInstance().pivot(0);
                 ArmSubsystem.getInstance().resetPivotNU();
             }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
-            new InstantCommand(() -> {
-                SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));
-            }, SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(), //<-- This makes us tip a bit
             new WaitCommand(1.25), //<-- This makes sure the tip does not mess up the end conditions :)
             new waitUntilLevel(),
@@ -57,6 +54,7 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
             new throughBalance(),
             new offBalance(),
             new WaitCommand(0.1),
+            new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
             new ParallelCommandGroup(
                 translateTo.withTimeout(2),
                 new IntakeCubeCommand(true).withTimeout(1.5)

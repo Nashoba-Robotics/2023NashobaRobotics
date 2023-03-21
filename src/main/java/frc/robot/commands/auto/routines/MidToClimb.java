@@ -45,7 +45,7 @@ public class MidToClimb extends SequentialCommandGroup{
             ),
             new throughBalance(),
             new offBalance(),
-            new WaitCommand(0.25),
+            new WaitCommand(0.5),
             new backToBalance(),
             new AutoBalanceCommand()
         );

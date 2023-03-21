@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreTest;
+import frc.robot.commands.auto.move.MoveBackCommand;
 import frc.robot.commands.auto.routines.DumbAuto;
+import frc.robot.commands.auto.routines.DumbAutoNoScore;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;
 import frc.robot.commands.auto.routines.MidToClimb;
 import frc.robot.commands.auto.routines.MidToClimbTo1;
@@ -57,7 +59,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Test", new TestAutoCommand());
     autoChooser.addOption("Dumb Auto", new DumbAuto());
     autoChooser.addOption("Score", new AutoScoreTest());
-    autoChooser.addOption("Gracious Professionalism", null);
+    autoChooser.addOption("Gracious Professionalism", new DumbAutoNoScore());
 
     Tabs.Comp.tab.add(autoChooser);
     Tabs.Comp.tab.add("Front Camera", camera);

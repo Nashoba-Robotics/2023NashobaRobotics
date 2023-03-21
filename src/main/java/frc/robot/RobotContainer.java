@@ -28,6 +28,7 @@ import frc.robot.commands.auto.move.TranslateToCommand;
 import frc.robot.commands.intake.DoubleStationIntakeCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
+import frc.robot.commands.test.ButtonTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.ControllerTestCommand;
@@ -106,15 +107,17 @@ public class RobotContainer {
 
     // SmartDashboard.putData("Balance", new AutoBalanceCommand());
 
-    SmartDashboard.putData(new ManualGrabberCommand());
+    // SmartDashboard.putData(new ManualGrabberCommand());
 
-    SmartDashboard.putData(new AutoScoreCommand());
+    // SmartDashboard.putData(new AutoScoreCommand());
 
-    SmartDashboard.putData(new ManualGrabberCommand());
+    // SmartDashboard.putData(new ManualGrabberCommand());
 
-    SmartDashboard.putData(new PrepHighConeCommand());
+    // SmartDashboard.putData(new PrepHighConeCommand());
 
-    SmartDashboard.putData(new PrepHighCubeCommand());
+    // SmartDashboard.putData(new PrepHighCubeCommand());
+
+    SmartDashboard.putData(new ButtonTestCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(

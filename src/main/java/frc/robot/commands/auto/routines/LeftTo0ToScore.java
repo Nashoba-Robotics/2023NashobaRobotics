@@ -76,9 +76,11 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
             }, SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.1),
             new AutoScoreCommand(),
+            new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
             path1,
             new WaitCommand(0.6),
             path2,
+            new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
             new AutoScoreCubeCommand(),
             path3
         );

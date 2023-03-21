@@ -65,8 +65,8 @@ public class PrepHighConeCommand extends CommandBase{
         multiplier = scoreFront ? 1 : -1;
 
         double prepAngle = 0;
-        if(multiplier == 1) prepAngle = Constants.Arm.HIGH_ANGLE + (1)*Constants.TAU/360;
-        else prepAngle = -(Constants.Arm.HIGH_ANGLE - 0.1*Constants.TAU/360);
+        if(multiplier == 1) prepAngle = Constants.Arm.HIGH_ANGLE + (0)*Constants.TAU/360;
+        else prepAngle = -(Constants.Arm.HIGH_ANGLE - 1.1*Constants.TAU/360);
 
         ArmSubsystem.getInstance().pivot(prepAngle);
         ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);

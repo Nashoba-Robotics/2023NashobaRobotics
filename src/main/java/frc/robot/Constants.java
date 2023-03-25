@@ -18,6 +18,7 @@ public final class Constants {
   public static final class Joystick {
     public static final int LEFT_JOYSTICK_PORT = 1;
     public static final int RIGHT_JOYSTICK_PORT = 0;
+    public static final int OPERATOR_PORT = 2;
 
     public static final double MOVE_DEAD_ZONE = 0.15;
     public static final double TURN_DEAD_ZONE = 0.1;
@@ -26,6 +27,13 @@ public final class Constants {
 
     public static final double MOVE_SENSITIVITY = 1.5;
     public static final double TURN_SENSITIVITY = 1;
+
+    public static final double MANUAL_EXTEND_DEADZONE = 0.1;
+    public static final double MANUAL_PIVOT_DEADZONE = 0.1;
+
+    public static final double MANUAL_EXTEND_SENSITIVITY = 0;
+    public static final double MANUAL_PIVOT_SENSITIVITY = 0;
+    public static final double MANUAL_WRIST_SENSITIVITY = 0.5;
   }
   
   public static final class Swerve {
@@ -162,7 +170,6 @@ public final class Constants {
     public static final double GEAR_RATIO = 48 * 36 / 22.; //TODO: find why 1.15
 
     public static final double SCORE_NU = -8.5;
-
   }
 
   public static final class Arm {

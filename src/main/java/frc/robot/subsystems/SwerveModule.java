@@ -166,6 +166,7 @@ public class SwerveModule {
         moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
     }
 
+    //radian input
     public void turn(double turn){
         turn *= 360/Constants.TAU;
         double currentPos =  turnMotor.getSelectedSensorPosition();
@@ -176,8 +177,13 @@ public class SwerveModule {
         
         double nextPos = currentPos + NRUnits.Drive.degToNU(angleChange);
 
-
         turnMotor.set(ControlMode.MotionMagic, nextPos);
+    }
+
+    //NU: How many ADDITIONAL NU you want to move   turn: radians
+    public void moveNUDeg(double NU, double turn){
+        turn(turn);
+        setMovePos(NU);
     }
 
     // MPS, Rotation 2D

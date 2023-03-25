@@ -20,14 +20,9 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     boolean joystick02;
     boolean gotToStart;
     boolean atSetPoint2;
-<<<<<<< HEAD
-    double setPos2;
-    double setPos3;
-    boolean resetEncoder;
-=======
     double targetPivot;
     double targetWrist;
->>>>>>> 90730b1855bf25fcd8a23ea0a3e95686564be369
+    boolean resetEncoder;
 
     boolean scoreFront;
     int multiplier;
@@ -46,6 +41,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         atSetPoint2 = false;
         targetPivot = 0;
         targetWrist = 0;
+        resetEncoder = false;
 
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
@@ -135,9 +131,9 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
             if(RobotContainer.operatorController.pov(0).getAsBoolean()) targetWrist -= 0.15 * multiplier;
             if(RobotContainer.operatorController.pov(180).getAsBoolean()) targetWrist += 0.15 * multiplier;
 
-            GrabberSubsystem.getInstance().orientPos(setPos3);
+            GrabberSubsystem.getInstance().orientPos(targetWrist);
 
-            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-setPos2) <= Constants.Arm.INTAKE_DEADZONE){
+            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.INTAKE_DEADZONE){
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             }

@@ -157,7 +157,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
             GrabberSubsystem.getInstance().orientPos(targetWrist);
 
-            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-setPos2) <= Constants.Arm.INTAKE_DEADZONE){
+            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.INTAKE_DEADZONE){
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             }

@@ -10,9 +10,12 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreTest;
+import frc.robot.commands.auto.move.MoveBackCommand;
 import frc.robot.commands.auto.routines.DumbAuto;
+import frc.robot.commands.auto.routines.DumbAutoNoScore;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;
 import frc.robot.commands.auto.routines.MidToClimb;
+import frc.robot.commands.auto.routines.MidToClimbTo1;
 import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
@@ -39,7 +42,8 @@ public class Robot extends TimedRobot {
     // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
 
     autoChooser = new SendableChooser<>();
-    autoChooser.setDefaultOption("MidClimb", new MidToClimb());
+    autoChooser.setDefaultOption("MidClimb+Cube", new MidToClimbTo1());
+    autoChooser.addOption("MidClimbOnly", new MidToClimb());
     autoChooser.addOption("Far2Score", new RightTo3ToScoreAuto());
     autoChooser.addOption("Close2Score", new LeftTo0ToScore());
     // autoChooser.addOption("FarClimb", new RightTo3ToBalance());
@@ -47,7 +51,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Test", new TestAutoCommand());
     autoChooser.addOption("Dumb Auto", new DumbAuto());
     autoChooser.addOption("Score", new AutoScoreTest());
-    autoChooser.addOption("Gracious Professionalism", null);
+    autoChooser.addOption("Gracious Professionalism", new DumbAutoNoScore());
 
     Tabs.Comp.tab.add(autoChooser);
     Tabs.Comp.tab.add("Front Camera", camera);
@@ -59,11 +63,12 @@ public class Robot extends TimedRobot {
       () -> ArmSubsystem.getInstance().zeroPivotSensor(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.tab.add("Zero Arm", new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroArmSensor(),
+    Tabs.Intake.tab.add("Reset Encoder", new InstantCommand(
+      () -> ArmSubsystem.getInstance().resetPivotNU(),
       ArmSubsystem.getInstance()
     ));
-    ArmSubsystem.getInstance().zeroArmSensor();
+    
+    ArmSubsystem.getInstance().resetPivotNU();
     ArmSubsystem.getInstance().zeroPivotSensor();
   }
 
@@ -98,11 +103,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // SwerveDriveSubsystem.getInstance().set(0, 0, 0);
+    CommandScheduler.getInstance().cancelAll();
+    SwerveDriveSubsystem.getInstance().set(0, 0, 0);
     // LimelightSubsystem.getInstance().defaultLED();
     ArmSubsystem.getInstance().stop();
     CandleSubsystem.getInstance().set(CandleState.ENABLED);
     ArmSubsystem.getInstance().resetPivotNU();
+    CommandScheduler.getInstance().schedule(new SwerveDriveCommand());
 
     // SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
   }

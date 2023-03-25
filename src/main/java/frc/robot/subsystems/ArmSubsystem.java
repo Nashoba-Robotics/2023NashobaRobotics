@@ -57,9 +57,6 @@ public class ArmSubsystem extends SubsystemBase {
         tromboneSlide.configReverseSoftLimitEnable(true);
         tromboneSlide.configReverseSoftLimitThreshold(Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT);
 
-        tromboneSlide.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.2));
-        tromboneSlide.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.2));
-
         pivot1.configFactoryDefault();
         pivot1.setNeutralMode(NeutralMode.Brake);
         pivot1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
@@ -97,10 +94,6 @@ public class ArmSubsystem extends SubsystemBase {
 
         //Positive is extending out
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
-    }
-
-    public void zeroArmSensor(){
-        tromboneSlide.setSelectedSensorPosition(0);
     }
 
     public void zeroPivot1(){
@@ -313,11 +306,15 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setDefaultCruiseVelocity() {
+        tromboneSlide.configMotionCruiseVelocity(40_000);
+
         pivot1.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
         pivot2.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
     }
 
     public void setDefaultAcceleration() {
+        tromboneSlide.configMotionAcceleration(25_000);
+
         pivot1.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
         pivot2.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
     }

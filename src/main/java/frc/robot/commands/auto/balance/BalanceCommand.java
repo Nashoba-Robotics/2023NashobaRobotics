@@ -38,7 +38,7 @@ public class BalanceCommand extends CommandBase{
                     Constants.Swerve.Balance.SLOW_K_I, 
                     Constants.Swerve.Balance.SLOW_K_D
                 );
-                SwerveDriveSubsystem.getInstance().setDesiredLevel(0, 10.5);
+                SwerveDriveSubsystem.getInstance().setDesiredLevel(0, 10.7);
                 break;
         }
     }

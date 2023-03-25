@@ -65,7 +65,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             if(multiplier == 1) ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
             if(multiplier == -1) ArmSubsystem.getInstance().pivot(-(Constants.Arm.HIGH_ANGLE));
              if(DriverStation.isAutonomous()){
-                ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU-2100);
+                ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU-1300);
              }
              else ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;
@@ -140,9 +140,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
 
-            //Manual Wrist:
-            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.15 * multiplier;
-            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.15 * multiplier;
+            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.5 * multiplier;
+            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.5 * multiplier;
 
             GrabberSubsystem.getInstance().orientPos(setPos3);
         }

@@ -70,13 +70,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return instance;
     }
 
-    public void setCardinalTarget(double angle){
-        cardinalController.setSetpoint(angle);
-    }
+    // public void setCardinalTarget(double angle){
+    //     cardinalController.setSetpoint(angle);
+    // }
 
-    public double getCardinalGain(){
-        return cardinalController.calculate(gyro.getYaw());
-    }
+    // public double getCardinalGain(){
+    //     return cardinalController.calculate(gyro.getYaw());
+    // }
 
     public double getYaw(){
         return gyro.getYaw();
@@ -198,6 +198,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         resetting = false;
     }
 
+    public void resetOdometryOverrideAngle(Pose2d pose, Rotation2d angle) {
+        resetting = true;
+        odometry.resetPosition(angle, getSwerveModulePositions(), pose);
+        resetting = false;
+    }
+
     public SwerveModulePosition[] getSwerveModulePositions() {
         SwerveModulePosition[] positions = new SwerveModulePosition[modules.length];
         for(int i = 0; i < modules.length; i++) {
@@ -271,6 +277,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     public boolean notLevel() {
         return !isLevel();
+    }
+
+    public boolean reallyNotLevel() {
+        return !(Math.abs(getRoll()) < 8);
     }
 
     public boolean levelNegative() {

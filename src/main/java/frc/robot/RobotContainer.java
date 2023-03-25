@@ -9,19 +9,27 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
-import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeCubeCommand;
+import frc.robot.commands.ArmAngleCommand;
+import frc.robot.commands.ManualExtensionCommand;
 import frc.robot.commands.ManualResetOdometryCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.move.DriveToCommand;
+import frc.robot.commands.auto.move.TranslateToCommand;
+import frc.robot.commands.intake.DoubleStationIntakeCommand;
+import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeCubeCommand;
+import frc.robot.commands.test.ButtonTestCommand;
+import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.CameraTestCommand;
 import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.ManualGrabberCommand;
-import frc.robot.commands.test.PrepTestCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.LowScoreCommand;
+import frc.robot.commands.score.PrepHeightCommand;
+import frc.robot.commands.score.PrepHighConeCommand;
+import frc.robot.commands.score.PrepHighCubeCommand;
 import frc.robot.commands.score.PukeCommand;
 import frc.robot.commands.score.ScoreConeCommand;
 import frc.robot.commands.score.ScoreCubeCommand;
@@ -44,6 +52,8 @@ public class RobotContainer {
     SmartDashboard.putData("ResetOdometry", new ManualResetOdometryCommand());
     SmartDashboard.putData("GoToPos", new DriveToCommand(new Translation2d(2.7, 3.45)));
     // SmartDashboard.putData("GoToPos", new DriveToCommand(FieldLocations.Blue.LEFT_A));
+
+    // SmartDashboard.putData(new SingleSparkTestCommand());
 
     // SmartDashboard.putData("Translate", new TranslateToCommand(new Translation2d(1, 0)));
 
@@ -83,11 +93,17 @@ public class RobotContainer {
 
     // SmartDashboard.putData("Balance", new AutoBalanceCommand());
 
-    SmartDashboard.putData(new AutoScoreCommand());
+    // SmartDashboard.putData(new ManualGrabberCommand());
 
-    SmartDashboard.putData(new ManualGrabberCommand());
+    // SmartDashboard.putData(new AutoScoreCommand());
 
-    SmartDashboard.putData(new PrepTestCommand());
+    // SmartDashboard.putData(new ManualGrabberCommand());
+
+    // SmartDashboard.putData(new PrepHighConeCommand());
+
+    // SmartDashboard.putData(new PrepHighCubeCommand());
+
+    SmartDashboard.putData(new ButtonTestCommand());
 
     eventMap.put("Intake Start", new IntakeCommand(true));
     eventMap.put("Stop Intake", new InstantCommand(
@@ -101,7 +117,7 @@ public class RobotContainer {
 
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
     Tabs.Intake.zeroes.add("Extend", new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroArmSensor(),
+      () -> ArmSubsystem.getInstance().resetPivotNU(),
       ArmSubsystem.getInstance()
     ));
     Tabs.Intake.zeroes.add("Pivot",new InstantCommand(
@@ -120,13 +136,14 @@ public class RobotContainer {
   Trigger midPrepCone = operatorController.button(3); //A
   Trigger highPrepCone = operatorController.button(4);  //X
 
-  Trigger score = operatorController.button(8); //RT
-  Trigger lowScore = operatorController.button(7);  //LT
+  Trigger doubleStationIntake = operatorController.button(14); //screenshot
 
+  Trigger score = operatorController.button(8); //RT
   //Left cone Right cube
 
   Trigger cone = operatorController.button(5);  //LB
   Trigger cube = operatorController.button(6);  //RB
+  Trigger doubleStation = operatorController.button(7); //LT
 
   Trigger puke = operatorController.button(10); //+
 
@@ -138,6 +155,8 @@ public class RobotContainer {
   Trigger setArm0 = JoystickSubsytem.getInstance().getRightJoystick().button(13);
 
   Trigger align = JoystickSubsytem.getInstance().getRightJoystick().button(2);
+
+  Trigger eStop = JoystickSubsytem.getInstance().getRightJoystick().button(8);
 
   public void configureButtonBindings(){
     cone.onTrue(new InstantCommand(
@@ -157,30 +176,37 @@ public class RobotContainer {
       () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
       CandleSubsystem.getInstance()
     ));
+
+    doubleStation.onTrue(
+      new InstantCommand(
+        ()-> CandleSubsystem.getInstance().set(CandleState.DOUBLE_STATION),
+        CandleSubsystem.getInstance()
+        )
+    );
+    doubleStation.onFalse(new InstantCommand(
+      () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
+      CandleSubsystem.getInstance()
+      ));
+
+    doubleStationIntake.toggleOnTrue(new DoubleStationIntakeCommand());
     
     intakeButton.and(cone).toggleOnTrue(new IntakeCommand(true));
 
     lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cone).onTrue(new PrepTestCommand());
+    highPrepCone.and(cone).onTrue(new PrepHighConeCommand());
 
     score.and(cone).toggleOnTrue(new ScoreConeCommand());
-    lowScore.and(cone).toggleOnTrue(new LowScoreCommand());
-
     intakeButton.and(cube).toggleOnTrue(new IntakeCubeCommand());
 
     lowPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    highPrepCone.and(cube).onTrue(new PrepHighCubeCommand());
 
     score.and(cube).toggleOnTrue(new ScoreCubeCommand());
-    lowScore.and(cube).toggleOnTrue(new LowScoreCommand());
-
     puke.toggleOnTrue(new PukeCommand());
 
     align.onTrue(new DriveToCommand(new Translation2d(1.78, 3.48)));
-
-
 
     resetGyro.onTrue(new InstantCommand(() -> {
       SwerveDriveSubsystem.getInstance().setGyro(0);
@@ -215,6 +241,11 @@ public class RobotContainer {
         ArmSubsystem.getInstance().extendNU(3_000);
       },
       ArmSubsystem.getInstance()
+    ));
+
+    eStop.onTrue(new InstantCommand(
+      () -> SwerveDriveSubsystem.getInstance().set(0, 0, 0),
+      SwerveDriveSubsystem.getInstance()
     ));
   }
 }

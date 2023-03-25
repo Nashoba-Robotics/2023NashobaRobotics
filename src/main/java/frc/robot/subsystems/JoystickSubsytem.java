@@ -39,4 +39,11 @@ public class JoystickSubsytem extends SubsystemBase {
         return leftJoystick;
     }
 
+    public boolean getLeftButtonValue(int index) {
+        return leftJoystick.button(index).getAsBoolean();
+    }
+    public boolean getRightButtonValue(int index){
+        return rightJoystick.button(index).getAsBoolean();
+    }
+
 }

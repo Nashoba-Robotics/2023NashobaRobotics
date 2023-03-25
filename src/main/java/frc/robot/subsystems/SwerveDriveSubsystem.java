@@ -132,10 +132,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Set y", y);
 
         if(fieldCentric) {
-            double a = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
+            double angleDiff = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
             double r = Math.sqrt(x*x + y*y); //magnitude of translation vector
-            x = r * Math.cos(a);
-            y = r * Math.sin(a);
+            x = r * Math.cos(angleDiff);
+            y = r * Math.sin(angleDiff);
         }
         
         //Repeated equations
@@ -202,6 +202,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     public void setFieldCentric(boolean fieldCentric) {
         this.fieldCentric = fieldCentric;
+    }
+
+    public boolean isFieldCentric() {
+        return this.fieldCentric;
     }
 
     //radians

@@ -51,9 +51,6 @@ public class BalanceCommand extends CommandBase{
             0,
             0
         );
-
-        
-
     }
 
     @Override

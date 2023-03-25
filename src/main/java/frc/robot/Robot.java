@@ -118,6 +118,7 @@ public class Robot extends TimedRobot {
     CandleSubsystem.getInstance().set(CandleState.ENABLED);
     ArmSubsystem.getInstance().resetPivotNU();
     CommandScheduler.getInstance().schedule(new SwerveDriveCommand());
+    LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
 
     // SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
   }

@@ -15,6 +15,7 @@ import frc.robot.Constants.Field.TargetLevel;
 public class AutoDirectionalPrepHeightCommand extends CommandBase {
     TargetLevel targetLevel;
     double targetPos;
+    double targetAngle;
     boolean autoDir = true;
 
     double lastPos;
@@ -25,6 +26,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     boolean atSetPoint2;
     double setPos2;
     double setPos3;
+
+    boolean resetEncoder;
 
     boolean scoreFront;
     int multiplier;
@@ -49,6 +52,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         atSetPoint2 = false;
         setPos2 = 0;
         setPos3 = 0;
+        resetEncoder = false;
 
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
@@ -80,6 +84,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
              setPos3 = Constants.Grabber.SCORE_NU * multiplier;
              break;
            case LOW: 
+             ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
+             ArmSubsystem.getInstance().setPivotAcceleration(60_000);
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
             ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
@@ -141,6 +147,11 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.5 * multiplier;
 
             GrabberSubsystem.getInstance().orientPos(setPos3);
+
+            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-setPos2) <= Constants.Arm.INTAKE_DEADZONE){
+                ArmSubsystem.getInstance().resetPivotNU();
+                resetEncoder = true;
+            }
         }
     }
 

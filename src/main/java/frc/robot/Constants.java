@@ -149,7 +149,7 @@ public final class Constants {
     public static final double SCORE_SPEED = 0.1;
     public static final double MAX_TURN_SPEED = 0.6;
 
-    public static final double INTAKE_ANGLE = 5;
+    public static final double INTAKE_ANGLE = 4;
     // public static final double INTAKE_ANGLE = 7.5;
     public static final double DOUBLE_STATION_POS = 14;
 
@@ -170,6 +170,8 @@ public final class Constants {
     public static final double EXTENSION_GEARRATION = 5/1;  //5 rotations of the motor = 1 rotation of the pulley
     public static final double PITCH_DIAMETER = Units.inchesToMeters(1.12);
     // One rotation of pulley = 3.5437
+
+    public static final double ABSOLUTE_ENCODER_OFFSET = -17.490234375;
 
     public static final int PIVOT_PORT_1 = 13;
     public static final int PIVOT_PORT_2 = 15;
@@ -203,9 +205,10 @@ public final class Constants {
     //Scorign (Radians)
     public static final double HIGH_ANGLE = 62 * TAU/360;
     public static final double MID_ANGLE = 68 * TAU/360;
-    public static final double LOW_ANGLE = 105 * TAU/360;
+    public static final double LOW_ANGLE = 104 * TAU/360;
 
-    public static final double INTAKE_ANGLE = 112.25 * Constants.TAU/360; //112.5
+    public static final double INTAKE_ANGLE = 112.4 * Constants.TAU/360; //112.5
+    public static final double INTAKE_DEADZONE = 0.1;
 
     public static final double DOUBLE_STATION_ANGLE = 43 * TAU/360;
     public static final double DOUBLE_STATION_EXTEND_NU = 14_000;
@@ -259,11 +262,12 @@ public final class Constants {
     public static final int APRIL_TAG_PIPELINE = 1;
     public static final int CLASSIFICATION_PIPELINE = 2;
     public static final int DETECTION_PIPELINE = 3;
+    public static final int CONE_CAM = 7;
   }
 
   public static final class Logging {
-    public static final boolean ARM = true;
-    public static final boolean GRABBER = true;
-    public static final boolean SWERVE = true;
+    public static final boolean ARM = false;
+    public static final boolean GRABBER = false;
+    public static final boolean SWERVE = false;
   }
 }

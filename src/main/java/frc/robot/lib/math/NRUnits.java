@@ -107,22 +107,31 @@ public class NRUnits {
 
     public static class Extension {
         public static double mToNU(double m){
-            m /= Constants.Arm.PITCH_DIAMETER*Math.PI;
-            m *= Constants.Arm.EXTENSION_GEARRATION;
-            m *= 2048;
+            m *= 1000;  //Convert m to mm
+            m *= 58.4;  //Found through experimentation: 1mm = 58.4NU
     
             return m;
         }
     
         public static double NUToM(double pos){
-            //Convert into rotations
-            pos /= 2048;
-            //Account for gear ratio
-            pos /= Constants.Arm.EXTENSION_GEARRATION;
-            //Calculate the distance that corresponds to with pitch diameter of pulley
-            pos *= Constants.Arm.PITCH_DIAMETER * Math.PI;
+            pos /= 58.4;
+            pos /= 1000;
     
             return pos;
+        }
+
+        public static double mpsToNU(double mps){
+            mps = mToNU(mps);
+            mps /= 10;
+
+            return mps;
+        }
+
+        public static double NUToMPS(double NU){
+            NU *= 10;
+            NU = NUToM(NU);
+
+            return 10;
         }
     }
     

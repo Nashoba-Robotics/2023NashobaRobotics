@@ -4,8 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -21,9 +19,6 @@ public class ArmSubsystem extends SubsystemBase {
     private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
     private CANCoder encoder;
 
-    // private DigitalInput extendSwitch;
-    // private DigitalInput retractSwitch;
-
     public ArmSubsystem(){
         tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT, "drivet");
 
@@ -31,10 +26,7 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
 
         encoder = new CANCoder(4, "drivet");  //CHECK THAT IT GOES IN THE CORRECT DIRECTION!!!!
-        encoder.configMagnetOffset(-17.490234375);
-
-        // extendSwitch = new DigitalInput(Constants.Arm.EXTEND_SWITCH_PORT);
-        // retractSwitch = new DigitalInput(Constants.Arm.RETRACT_SWITCH_PORT);
+        encoder.configMagnetOffset(Constants.Arm.ABSOLUTE_ENCODER_OFFSET);
 
         config();
     }

@@ -23,6 +23,8 @@ public class PrepHighConeCommand extends CommandBase{
     boolean gotToStart;
     boolean atSetPoint2;
 
+    boolean resetEncoder;
+
     public PrepHighConeCommand(){
         addRequirements(ArmSubsystem.getInstance());
     }
@@ -150,6 +152,11 @@ public class PrepHighConeCommand extends CommandBase{
             if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.5 * multiplier;
 
             GrabberSubsystem.getInstance().orientPos(setPos3);
+        }
+
+        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-setPos2) <= Constants.Arm.INTAKE_DEADZONE){
+            ArmSubsystem.getInstance().resetPivotNU();
+            resetEncoder = true;
         }
     }
 

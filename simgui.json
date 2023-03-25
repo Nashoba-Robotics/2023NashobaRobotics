@@ -3,6 +3,7 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/Shuffleboard/Competition/SendableChooser[0]": "String Chooser",
+      "/Shuffleboard/Drive Test/DriveSpeedCommand": "Command",
       "/Shuffleboard/Intake/ArmSubsystem": "Subsystem",
       "/Shuffleboard/Intake/GrabberSubsystem": "Subsystem",
       "/Shuffleboard/Intake/Intake Test": "Command",
@@ -20,6 +21,13 @@
       "/SmartDashboard/PrepHighConeCommand": "Command",
       "/SmartDashboard/PrepHighCubeCommand": "Command",
       "/SmartDashboard/ResetOdometry": "Command"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "open": true
+      }
     }
   }
 }

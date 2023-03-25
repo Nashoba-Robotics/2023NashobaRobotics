@@ -406,4 +406,86 @@ public final class Tabs {
         }
 
     }
+
+    public static class DriveTest{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Drive Test");
+
+        private static GenericEntry move = tab.add("Move", 0).getEntry();
+
+        private static GenericEntry driveSpeed = tab.add("Drive Speed", 0).getEntry();
+        private static GenericEntry actualSpeed = tab.add("Actual Speed", 0).getEntry();
+
+        private static GenericEntry pivotAngle = tab.add("Pivot Angle Deg", 0).getEntry();
+        private static GenericEntry actualPivotAngle = tab.add("Actual Pivot Angle", 0).getEntry();
+
+        private static GenericEntry grabberAngle = tab.add("Grabber NU", 0).getEntry();
+
+        private static GenericEntry grabberCurrent = tab.add("Grabber Current", 0).getEntry();
+        private static GenericEntry grabberSpeed = tab.add("Grabber Speed", 0.7).getEntry();
+
+        public static void displayActualSpeed(double speed){
+            actualSpeed.setDouble(speed);
+        }
+        public static void displayActualAngle(double angle) {
+            actualPivotAngle.setDouble(angle);
+        }
+        public static void displayMove(){
+            move.setDouble(0);
+        }
+
+        public static void displayGrabberCurrent(double current) {
+            grabberCurrent.setDouble(current);
+        }
+
+        public static double getGrabberSpeed() {
+            return grabberSpeed.getDouble(0.7);
+        }
+
+        public static double getDriveSpeed(){
+            return driveSpeed.getDouble(0);
+        }
+        public static double getPivotAngle(){
+            return pivotAngle.getDouble(0);
+        }
+        public static double grabberAngle(){
+            return grabberAngle.getDouble(0);
+        }
+        public static boolean move(){
+            return move.getDouble(0) == 1;
+        }
+    }
+
+    public static class GrabberTest{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Grabber Test");
+
+        private static GenericEntry frontRollerSpeed = tab.add("Front Speed", 0).getEntry();
+        private static GenericEntry backRollerSpeed = tab.add("Back Speed", 0).getEntry();
+
+        private static GenericEntry runFront = tab.add("Run Front", 0).getEntry();
+        private static GenericEntry runBack = tab.add("Run Back", 0).getEntry();
+
+        private static GenericEntry frontCurrent = tab.add("Front Curr", 0).getEntry();
+        private static GenericEntry backCurrent = tab.add("Back Curr", 0).getEntry();
+
+        public static double getFrontSpeed(){
+            return frontRollerSpeed.getDouble(0);
+        }
+        public static double getBackSpeed(){
+            return backRollerSpeed.getDouble(0);
+        }
+
+        public static double moveFront(){
+            return runFront.getDouble(0);
+        }
+        public static double moveBack(){
+            return runBack.getDouble(0);
+        }
+
+        public static void displayFrontCurrent(double curr){
+            frontCurrent.setDouble(curr);
+        }
+        public static void displayBackCurrent(double curr){
+            backCurrent.setDouble(curr);
+        }
+    }
 }

@@ -27,9 +27,6 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
 
     public MidToClimbTo1(){
 
-        // Command translateTo = new TranslateToCommand(new Translation2d(1.55, 0.25), Rotation2d.fromRadians(Constants.TAU/2));
-        // Command translateBack = new TranslateToCommand(new Translation2d(-4, -0.35), Rotation2d.fromRadians(Constants.TAU/2));
-
         Command translateTo = new TranslateToCommand(new Translation2d(1.55, -0.25), Rotation2d.fromRadians(Constants.TAU/2));
         Command translateBack = new TranslateToCommand(new Translation2d(-4, 0.35), Rotation2d.fromRadians(Constants.TAU/2));
 

@@ -24,6 +24,8 @@ public class ScoreCubeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
+        ArmSubsystem.getInstance().setPivotAcceleration(50_000);
         GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().orient(0);
 

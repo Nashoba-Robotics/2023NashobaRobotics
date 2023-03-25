@@ -7,6 +7,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class IntakeCommand extends CommandBase {
@@ -15,6 +16,8 @@ public class IntakeCommand extends CommandBase {
 
     double setPos2;
     boolean atSetPoint2;
+
+    boolean resetEncoder;
 
     int multiplier;
 
@@ -39,13 +42,16 @@ public class IntakeCommand extends CommandBase {
         GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE * multiplier);
         lastPos2 = ArmSubsystem.getInstance().getAngle();
 
+        resetEncoder = false;
+
         ArmSubsystem.getInstance().resetPivotNU();
+        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM);
     }
 
     @Override
     public void execute() {
         GrabberSubsystem.getInstance().intake();
-        SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
+        SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
         if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU/360){
             atSetPoint2 = true;
@@ -76,6 +82,11 @@ public class IntakeCommand extends CommandBase {
         else{
             CandleSubsystem.getInstance().set(CandleState.WANT_CONE);
         }
+
+        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+            ArmSubsystem.getInstance().resetPivotNU();
+            resetEncoder = true;
+        }
     }
 
     @Override
@@ -85,6 +96,8 @@ public class IntakeCommand extends CommandBase {
         ArmSubsystem.getInstance().pivot(0);
         GrabberSubsystem.getInstance().orient(0);
         GrabberSubsystem.getInstance().set(-0.1);   //Make the grabber hold it
+        
+        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
     }
 
     @Override

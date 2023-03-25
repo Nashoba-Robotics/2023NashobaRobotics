@@ -48,7 +48,7 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     private LimelightSubsystem(){
-        nt = NetworkTableInstance.getDefault().getTable("limelight");
+        nt = NetworkTableInstance.getDefault().getTable("limelight-front");
 
         txEntry = nt.getEntry("tx");
         tyEntry = nt.getEntry("ty");
@@ -67,10 +67,7 @@ public class LimelightSubsystem extends SubsystemBase {
 
     // Gets the 2d position of the robot using the april tag it sees
     public Pose2d getRobotPose(){
-        // int pipeline = getPipeline();
-        // setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
         Pose2d pose = new Pose2d(robotPos[0], robotPos[1], new Rotation2d(robotPos[3], robotPos[4]));
-        // setPipeline(pipeline);
         return pose;
     }
 

@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.FireAnimation;
 import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
+import com.ctre.phoenix.led.RgbFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
@@ -41,6 +43,7 @@ public class CandleSubsystem extends SubsystemBase {
         HAVE_CONE,
         HAVE_CUBE,
         DOUBLE_STATION,
+        FUN,
         FORDIANI
     }
 
@@ -80,6 +83,11 @@ public class CandleSubsystem extends SubsystemBase {
             case DOUBLE_STATION:
                 candle.clearAnimation(0);
                 candle.setLEDs(0, 0, 255);
+                break;
+            case FUN:
+                Animation a = new RgbFadeAnimation(0.7, 0.7, LED_COUNT);
+                candle.clearAnimation(0);
+                candle.animate(a);
                 break;
             case FORDIANI:
                 candle.clearAnimation(0);

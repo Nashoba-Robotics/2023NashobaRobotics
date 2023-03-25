@@ -22,6 +22,8 @@ public class PrepHighCubeCommand extends CommandBase{
     boolean gotToStart;
     boolean atSetPoint2;
 
+    boolean resetEncoder;
+
     public PrepHighCubeCommand(){
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
     }
@@ -79,6 +81,8 @@ public class PrepHighCubeCommand extends CommandBase{
         targetPos = Constants.Arm.Cube.HIGH_EXTEND_NU;
         setPos2 = prepAngle;
         setPos3 = -9;
+
+        resetEncoder = false;
     }
 
     @Override
@@ -146,6 +150,10 @@ public class PrepHighCubeCommand extends CommandBase{
 
             GrabberSubsystem.getInstance().orientPos(setPos3);
 
+            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-setPos2) <= Constants.Arm.INTAKE_DEADZONE){
+                ArmSubsystem.getInstance().resetPivotNU();
+                resetEncoder = true;
+            }
         }
     }
 

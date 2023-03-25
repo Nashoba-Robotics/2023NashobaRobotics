@@ -78,6 +78,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     //     return cardinalController.calculate(gyro.getYaw());
     // }
 
+    public void moveyNU(int y) {
+        double angleDiff = Math.atan2(y, 0) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
+
+    }
+
     public double getYaw(){
         return gyro.getYaw();
     }
@@ -115,15 +120,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return gyro.getRoll();
     }
 
-    public void set(JoystickValues joystickValues, double omega, boolean driftCorrection) {
-        if(driftCorrection) {
-            if(omega == 0 && (joystickValues.x != 0 || joystickValues.y != 0)) {
-                short[] xyz = new short[3];
-                gyro.getBiasedAccelerometer(xyz);
-                omega = driftController.calculate(xyz[0], omega * Constants.Swerve.DriftCorrection.MAX_ANGULAR_VELOCITY);
-                SmartDashboard.putNumber("omega", omega);
-            }
-        }
+    public void set(JoystickValues joystickValues, double omega) {
         set(joystickValues.x, joystickValues.y, omega);
     }
 
@@ -133,10 +130,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Set y", y);
 
         if(fieldCentric) {
-            double a = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
+            double angleDiff = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
             double r = Math.sqrt(x*x + y*y); //magnitude of translation vector
-            x = r * Math.cos(a);
-            y = r * Math.sin(a);
+            x = r * Math.cos(angleDiff);
+            y = r * Math.sin(angleDiff);
         }
         
         //Repeated equations
@@ -221,6 +218,10 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     public void setFieldCentric(boolean fieldCentric) {
         this.fieldCentric = fieldCentric;
+    }
+
+    public boolean isFieldCentric() {
+        return this.fieldCentric;
     }
 
     //radians
@@ -339,24 +340,17 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
         SmartDashboard.putNumber("Pipeline", LimelightSubsystem.getInstance().getPipeline());
 
-        if(false && LimelightSubsystem.getInstance().isTarget()) {
-            double limelightWeight = 0.8;
-            double odometryWeight = 1 - limelightWeight;
+        // if(LimelightSubsystem.getInstance().isTarget()) {
+        //     double limelightWeight = 0.8;
+        //     double odometryWeight = 1 - limelightWeight;
 
-            Translation2d limelightPose = LimelightSubsystem.getInstance().getRobotPose().getTranslation();
-                Translation2d odometryPose = SwerveDriveSubsystem.getInstance().getPose().getTranslation();
-                Pose2d currPose = new Pose2d(limelightPose.getX() * limelightWeight + odometryPose.getX() * odometryWeight, limelightPose.getY() * limelightWeight + odometryPose.getY() * odometryWeight, Rotation2d.fromRadians(SwerveDriveSubsystem.getInstance().getGyroAngle()));
-                SwerveDriveSubsystem.getInstance().resetOdometry(currPose);
-        }
-
-        // if(LimelightSubsystem.getInstance().getPipeline() == Constants.Limelight.APRIL_TAG_PIPELINE && LimelightSubsystem.getInstance().isTarget()) {
-        //     Pose2d pose = new Pose2d(LimelightSubsystem.getInstance().getRobotPose().getTranslation(), Rotation2d.fromRadians(getGyroAngle()));
-        //     resetOdometry(pose);
-        //     SmartDashboard.putBoolean("Using Limelight", true);
-        // } else {
-            if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
-        //     SmartDashboard.putBoolean("Using Limelight", false);
+        //     Translation2d limelightPose = LimelightSubsystem.getInstance().getRobotPose().getTranslation();
+        //         Translation2d odometryPose = SwerveDriveSubsystem.getInstance().getPose().getTranslation();
+        //         Pose2d currPose = new Pose2d(limelightPose.getX() * limelightWeight + odometryPose.getX() * odometryWeight, limelightPose.getY() * limelightWeight + odometryPose.getY() * odometryWeight, Rotation2d.fromRadians(SwerveDriveSubsystem.getInstance().getGyroAngle()));
+        //         SwerveDriveSubsystem.getInstance().resetOdometry(currPose);
         // }
+
+        if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
 
         SmartDashboard.putNumber("RobotVelocity", getVelocity());
         SmartDashboard.putNumber("XVelocity", getXVelocity());

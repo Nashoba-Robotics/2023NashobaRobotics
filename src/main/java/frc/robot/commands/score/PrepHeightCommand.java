@@ -22,6 +22,8 @@ public class PrepHeightCommand extends CommandBase {
     boolean atSetPoint2;
     double setPos2;
 
+    boolean resetEncoder;
+
     public PrepHeightCommand(TargetLevel targetLevel) {
         this.targetLevel = targetLevel;
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
@@ -54,6 +56,7 @@ public class PrepHeightCommand extends CommandBase {
             break;
         }
         gotToStart = false;
+        resetEncoder = false;
     }
 
     @Override
@@ -100,6 +103,8 @@ public class PrepHeightCommand extends CommandBase {
                 SmartDashboard.putNumber("SetPoint", lastPos2);
             }
         }
+
+        
     }
 
     @Override

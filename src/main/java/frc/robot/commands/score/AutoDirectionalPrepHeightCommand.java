@@ -30,7 +30,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
     double targetWrist;
 
-    
+    boolean resetEncoder;    
 
     public AutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
         this.targetLevel = targetLevel;
@@ -51,6 +51,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         pivotMan0 = false;
         gotToStart = false;
         atPivot = false;
+        resetEncoder = false;
         targetPivot = 0;
         targetWrist = 0;
 
@@ -86,6 +87,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
              targetWrist = Constants.Grabber.SCORE_NU * multiplier;
              break;
            case LOW: 
+             ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
+             ArmSubsystem.getInstance().setPivotAcceleration(60_000);
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
             ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
@@ -150,6 +153,11 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             if(RobotContainer.operatorController.pov(180).getAsBoolean()) targetWrist += Constants.Joystick.MANUAL_WRIST_SENSITIVITY * multiplier;
 
             GrabberSubsystem.getInstance().orientPos(targetWrist);
+
+            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.INTAKE_DEADZONE){
+                ArmSubsystem.getInstance().resetPivotNU();
+                resetEncoder = true;
+            }
         }
     }
 

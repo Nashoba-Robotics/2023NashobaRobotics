@@ -1,61 +1,69 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class SwerveDriveCommand extends CommandBase {
-    boolean wantToFlip = false;
+    boolean squareUp;
+    PIDController controller;
 
     public SwerveDriveCommand() {
         addRequirements(
             SwerveDriveSubsystem.getInstance(),
             JoystickSubsytem.getInstance()
         );
-    }
 
-    @Override
-    public void initialize() {
-        // SwerveDriveSubsystem.getInstance().setGyro(SwerveDriveSubsystem.getInstance().getGyroAngle());
-        // SwerveDriveSubsystem.getInstance().setCardinalTarget(90);
+        controller = new PIDController(1.2, 0, 0.01);
+        controller.setSetpoint(0);
+        controller.setTolerance(Constants.TAU/100);
+        controller.enableContinuousInput(-Constants.TAU/2, Constants.TAU/2);
+
+        squareUp = false;
     }
 
     @Override
     public void execute() {
-        double multiplier = 1;
+        if(JoystickSubsytem.getInstance().getRightButtonValue(3)) SwerveDriveSubsystem.getInstance().setFieldCentric(true);
+        if(JoystickSubsytem.getInstance().getLeftButtonValue(4)) SwerveDriveSubsystem.getInstance().setFieldCentric(false);
 
-        // if(!wantToFlip)  WIP
-        SwerveDriveSubsystem.getInstance().set(
-            JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
-                Constants.Joystick.MOVE_DEAD_ZONE,
-                Constants.Joystick.MOVE_SENSITIVITY
-            ).multiply(multiplier).swap().applyAngleDeadzone(10 * Constants.TAU/360),
-            JoystickSubsytem.getInstance().getRightJoystickValues().shape(
-                Constants.Joystick.TURN_DEAD_ZONE,
-                Constants.Joystick.TURN_SENSITIVITY
-            ).x,
-            false
+        if(JoystickSubsytem.getInstance().getRightButtonValue(1)){
+            double angle = SwerveDriveSubsystem.getInstance().getGyroAngle();
+            controller.setSetpoint(
+                angle < Constants.TAU/4 &&
+                angle > -Constants.TAU/4 ? 
+                0:
+                Constants.TAU/2
             );
-        // else{    WIP
-        //     if(SwerveDriveSubsystem.getInstance().atCardinalAngle()){
-        //         SwerveDriveSubsystem.getInstance().set(
-        //             JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
-        //                 Constants.Joystick.MOVE_DEAD_ZONE,
-        //                 Constants.Joystick.MOVE_SENSITIVITY
-        //             ).multiply(multiplier).swap().applyAngleDeadzone(10 * Constants.TAU/360),
-        //             0,
-        //             false
-        //         );
-        //     }
-        // }
-        // if(SwerveDriveSubsystem.getInstance().atCardinalAngle()){
-        //     wantToFlip = false;
-        // }
-        // if(JoystickSubsytem.getInstance().getRightJoystick().button(5).debounce(1).getAsBoolean()){
-        //     wantToFlip = !wantToFlip;
-        // }
+            squareUp = true;
+        }
+
+        if(squareUp) {
+            SwerveDriveSubsystem.getInstance().set(
+                JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
+                    Constants.Joystick.MOVE_DEAD_ZONE,
+                    Constants.Joystick.MOVE_SENSITIVITY
+                ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
+                -controller.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle())
+                );
+        } else {
+            SwerveDriveSubsystem.getInstance().set(
+                JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
+                    Constants.Joystick.MOVE_DEAD_ZONE,
+                    Constants.Joystick.MOVE_SENSITIVITY
+                ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
+                JoystickSubsytem.getInstance().getRightJoystickValues().shape(
+                    Constants.Joystick.TURN_DEAD_ZONE,
+                    Constants.Joystick.TURN_SENSITIVITY
+                ).x
+                );
+        }
+
+        if(controller.atSetpoint() || JoystickSubsytem.getInstance().getRightJoystickValues().x > 0.5){
+            squareUp = false;
+        } 
     }
     @Override
     public void end(boolean interrupted) {

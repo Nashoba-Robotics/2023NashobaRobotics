@@ -13,7 +13,7 @@ import frc.robot.Constants.Field.TargetLevel;
 public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     TargetLevel targetLevel;
     double targetPos;
-
+    
     double lastPos;
     double lastPos2;
     boolean joystick0;
@@ -22,6 +22,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     boolean atSetPoint2;
     double targetPivot;
     double targetWrist;
+    boolean resetEncoder;
 
     boolean scoreFront;
     int multiplier;
@@ -40,6 +41,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         atSetPoint2 = false;
         targetPivot = 0;
         targetWrist = 0;
+        resetEncoder = false;
 
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
@@ -67,6 +69,8 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
              break;
            case LOW: 
             // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(60_000);
             ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.LOW_EXTEND_NU);
             targetPos = Constants.Arm.Cube.LOW_EXTEND_NU;
@@ -75,6 +79,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
             break;
         }
         gotToStart = false;
+        resetEncoder = false;
     }
 
     @Override
@@ -127,6 +132,11 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
             if(RobotContainer.operatorController.pov(180).getAsBoolean()) targetWrist += 0.15 * multiplier;
 
             GrabberSubsystem.getInstance().orientPos(targetWrist);
+
+            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.INTAKE_DEADZONE){
+                ArmSubsystem.getInstance().resetPivotNU();
+                resetEncoder = true;
+            }
         }
     }
 

@@ -91,8 +91,8 @@ public class PrepHighConeCommand extends CommandBase{
         double pivotSpeed = ArmSubsystem.getInstance().getPivotSpeed();
         pivotSpeed = NUToRadiansPerSecond(pivotSpeed);
 
-        double extendSpeed = l0 * Math.tan(pivotAngle)/Math.cos(pivotAngle)*pivotSpeed;
-        extendSpeed = mpsToNU(extendSpeed);
+        double extendSpeed = Constants.Arm.l0 * Math.tan(pivotAngle)/Math.cos(pivotAngle)*pivotSpeed;
+        extendSpeed = NRUnits.Extension.mpsToNU(extendSpeed);
 
         ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed);
 

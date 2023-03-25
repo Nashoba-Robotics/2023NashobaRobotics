@@ -12,9 +12,12 @@ public class JoystickSubsytem extends SubsystemBase {
     private CommandJoystick rightJoystick;
     private CommandJoystick leftJoystick;
 
+    private CommandJoystick operatorController;
+
     public JoystickSubsytem() {
         rightJoystick = new CommandJoystick(Constants.Joystick.RIGHT_JOYSTICK_PORT);
         leftJoystick = new CommandJoystick(Constants.Joystick.LEFT_JOYSTICK_PORT);
+        operatorController = new CommandJoystick(Constants.Joystick.OPERATOR_PORT);
     }
 
     public static JoystickSubsytem getInstance() {
@@ -46,4 +49,27 @@ public class JoystickSubsytem extends SubsystemBase {
         return rightJoystick.button(index).getAsBoolean();
     }
 
+    public CommandJoystick getOperatorController(){
+        return operatorController;
+    }
+
+    //Pushing up/down on right joystick
+    public double getManualExtend(){
+        double y = operatorController.getThrottle();
+        y = Math.abs(y) < Constants.Joystick.MANUAL_EXTEND_DEADZONE ? 
+        0 : 
+        (y-Constants.Joystick.MANUAL_EXTEND_DEADZONE)/(1-Constants.Joystick.MANUAL_EXTEND_DEADZONE);
+        // ^ Keeps the joystick input between 0-1 rather than 0.1-1
+    
+        return operatorController.getThrottle();
+    }
+    //Pushing left/right on left joystick
+    public double getManualPivot(){
+        double x = operatorController.getX();
+        x = Math.abs(x) < Constants.Joystick.MANUAL_PIVOT_DEADZONE ? 
+        0 : 
+        (x-Constants.Joystick.MANUAL_PIVOT_DEADZONE)/(1-Constants.Joystick.MANUAL_PIVOT_DEADZONE);
+
+        return x;
+    }
 }

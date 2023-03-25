@@ -166,6 +166,26 @@ public class SwerveModule {
         moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
     }
 
+    //radian input
+    public void turn(double turn){
+        turn *= 360/Constants.TAU;
+        double currentPos =  turnMotor.getSelectedSensorPosition();
+        double lastTurn = NRUnits.constrainDeg(NRUnits.Drive.NUToDeg(currentPos));
+
+        double angle = findLowestAngle(turn, lastTurn);
+        double angleChange = findAngleChange(angle, lastTurn);
+        
+        double nextPos = currentPos + NRUnits.Drive.degToNU(angleChange);
+
+        turnMotor.set(ControlMode.MotionMagic, nextPos);
+    }
+
+    //NU: How many ADDITIONAL NU you want to move   turn: radians
+    public void moveNUDeg(double NU, double turn){
+        turn(turn);
+        setMovePos(NU);
+    }
+
     // MPS, Rotation 2D
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
@@ -275,6 +295,21 @@ public class SwerveModule {
         lastMovePosition = temp;
     }
 
+    public void setMovePos(double NU){
+        moveMotor.configMotionCruiseVelocity(20_000);
+        moveMotor.configMotionAcceleration(20_000);
+        
+        double currPos = moveMotor.getSelectedSensorPosition();
+        moveMotor.set(ControlMode.MotionMagic, currPos+NU);
+    }
+
+    public void setMoveSpeed(double s){
+        moveMotor.set(ControlMode.PercentOutput, -0.1);
+    }
+    public double getNU(){
+        return moveMotor.getSelectedSensorPosition();
+    }
+    
     public SwerveModuleState getSwerveState() {
         return new SwerveModuleState(
                 NRUnits.Drive.NUToMPS(moveMotor.getSelectedSensorVelocity()),

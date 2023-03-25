@@ -25,8 +25,8 @@ public class ArmSubsystem extends SubsystemBase {
         pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
 
-        encoder = new CANCoder(4, "drivet");  //CHECK THAT IT GOES IN THE CORRECT DIRECTION!!!!
-        encoder.configMagnetOffset(Constants.Arm.ABSOLUTE_ENCODER_OFFSET);
+        encoder = new CANCoder(4, "drivet");
+        encoder.configMagnetOffset(Constants.Arm.ENCODER_OFFSET);
 
         config();
     }

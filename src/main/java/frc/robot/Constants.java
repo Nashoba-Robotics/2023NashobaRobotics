@@ -18,6 +18,7 @@ public final class Constants {
   public static final class Joystick {
     public static final int LEFT_JOYSTICK_PORT = 1;
     public static final int RIGHT_JOYSTICK_PORT = 0;
+    public static final int OPERATOR_PORT = 2;
 
     public static final double MOVE_DEAD_ZONE = 0.15;
     public static final double TURN_DEAD_ZONE = 0.1;
@@ -26,6 +27,13 @@ public final class Constants {
 
     public static final double MOVE_SENSITIVITY = 1.5;
     public static final double TURN_SENSITIVITY = 1;
+
+    public static final double MANUAL_EXTEND_DEADZONE = 0.1;
+    public static final double MANUAL_PIVOT_DEADZONE = 0.1;
+
+    public static final double MANUAL_EXTEND_SENSITIVITY = 0;
+    public static final double MANUAL_PIVOT_SENSITIVITY = 0;
+    public static final double MANUAL_WRIST_SENSITIVITY = 0.5;
   }
   
   public static final class Swerve {
@@ -162,14 +170,14 @@ public final class Constants {
     public static final double GEAR_RATIO = 48 * 36 / 22.; //TODO: find why 1.15
 
     public static final double SCORE_NU = -8.5;
-
   }
 
   public static final class Arm {
     public static final double PIVOT_GEARRATIO = 4*4*4*72/22; //4^3*72 rotations of the motor = 22 rotation of the sprocket
-    public static final double EXTENSION_GEARRATION = 5/1;  //5 rotations of the motor = 1 rotation of the pulley
-    public static final double PITCH_DIAMETER = Units.inchesToMeters(1.12);
-    // One rotation of pulley = 3.5437
+    public static final double NU_PER_MM = 58.4;
+    public static final double MM_PER_NU = 0.0171;
+
+    public static final double l0 = 0.690;  //Initial length of arm in meters
 
     public static final double ABSOLUTE_ENCODER_OFFSET = -17.490234375;
 
@@ -180,6 +188,8 @@ public final class Constants {
 
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
+
+    public static final double ENCODER_OFFSET = -17.490234375;
 
     public static final double ARM_KF = 0.047;
     public static final double ARM_KP = 0.2;

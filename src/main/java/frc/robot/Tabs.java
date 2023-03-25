@@ -1,14 +1,14 @@
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
+import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import frc.robot.lib.math.NRUnits;
 
 //We're going to try to use Shuffleboard tabs for testing in order to keep the main tab more organized
 //  For each Subsystem, we have a tab and GenericEntry for every value we want to read/set
@@ -265,8 +265,61 @@ public final class Tabs {
     public static class Comp{
         //Camera Stream
         //Odometry
-        //
+        
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Competition");
+
+        private static GenericEntry gyroAngle = tab.add("Gyro", 0).getEntry();
+        
+        /*
+         * Falcon Angle         Target Angle        Pivot Error
+         * Encoder Angle        Target Angle        Encoder Error
+         * Extend NU            Target Extend       Extend Error
+         * Wrist NU             Target Wrist        Wrist Error
+         */
+        private static ShuffleboardLayout error = tab.getLayout("Errors", BuiltInLayouts.kGrid)
+            .withSize(3, 4);
+        
+        //Actual
+        private static GenericEntry pivotAngle = error.add("Actual Pivot", 0)
+            .withPosition(0, 0)    
+            .getEntry();
+        private static GenericEntry encoderAngle = error.add("Encoder Angle", 0)
+            .withPosition(0, 1)
+            .getEntry();
+        private static GenericEntry extendNU = error.add("Extend NU", 0)
+            .withPosition(0, 2)
+            .getEntry();
+        private static GenericEntry wristNU = error.add("Wrist NU", 0)
+            .withPosition(0, 3)
+            .getEntry();
+
+        //Target
+        private static GenericEntry targetPivot = error.add("Target Pivot", 0)  
+            .withPosition(1, 0)
+            .getEntry();
+        private static GenericEntry targetEncoder = error.add("Target Encoder", 0)  //Should be the same as above
+            .withPosition(1, 1)
+            .getEntry();
+        private static GenericEntry targetExtend = error.add("Target Extend", 0)
+            .withPosition(1, 2)    
+            .getEntry();
+        private static GenericEntry targetWrist = error.add("Target Wrist", 0)
+            .withPosition(1, 3)
+            .getEntry();
+
+        //Error
+        private static GenericEntry pivotError = error.add("Pivot Error", 0)
+            .withPosition(2, 0)
+            .getEntry();
+        private static GenericEntry encoderError = error.add("Encoder Error", 0)
+            .withPosition(2, 1)
+            .getEntry();
+        private static GenericEntry extendError = error.add("Extend Error", 0)
+            .withPosition(2, 2)
+            .getEntry();
+        private static GenericEntry wristError = error.add("Wrist Error", 0)
+            .withPosition(2, 3)
+            .getEntry();
  
         public static void add(Sendable sendable){
             tab.add(sendable);
@@ -282,6 +335,47 @@ public final class Tabs {
         }
         public static void add(String name, Object o){
             tab.add(name, o);
+        }
+
+        public static void displayGyro(double angle){
+            gyroAngle.setDouble(angle);
+        }
+
+        public static void displayPivotAngle(double rad){
+            rad *= 360/Constants.TAU;
+
+            pivotAngle.setDouble(rad);
+            
+            double error = targetPivot.getDouble(0) - pivotAngle.getDouble(0);
+            pivotError.setDouble(error);
+        }
+        public static void displayEncoderAngle(double deg){
+            encoderAngle.setDouble(deg);
+
+            double error = targetPivot.getDouble(0) - encoderAngle.getDouble(0);
+            encoderError.setDouble(error);
+        }
+        public static void displayExtendNU(double NU){
+            extendNU.setDouble(NU);
+
+            double error = targetExtend.getDouble(0) - extendNU.getDouble(0);
+            extendNU.setDouble(error);
+        }
+        public static void displayWristNU(double NU){
+            wristNU.setDouble(NU);
+
+            double error = targetWrist.getDouble(0) - wristNU.getDouble(0);
+            wristError.setDouble(error);
+        }
+
+        public static void setPivotTarget(double target){
+            targetPivot.setDouble(target);
+        }
+        public static void setExtendTarget(double target){
+            targetExtend.setDouble(target);
+        }
+        public static void setWristTarget(double target){
+            targetWrist.setDouble(target);
         }
     }
 

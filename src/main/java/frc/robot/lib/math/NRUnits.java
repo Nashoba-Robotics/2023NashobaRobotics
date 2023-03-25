@@ -91,6 +91,14 @@ public class NRUnits {
             return NU;
         }
 
+        public static double MToNU(double m){
+            m /= Constants.TAU*Constants.Swerve.WHEELRADIUS;
+            m *= Constants.Swerve.MOVE_GEAR_RATIO;
+            m *= 2048;
+
+            return m;
+        }
+
         //Converts to NU/100ms then to 
         public static double toPercentOutput(double mps){
             //Convert to rotations per second
@@ -107,19 +115,30 @@ public class NRUnits {
 
     public static class Extension {
         public static double mToNU(double m){
+<<<<<<< HEAD
             m *= 1000;  //Convert m to mm
             m *= 58.4;  //Found through experimentation: 1mm = 58.4NU
+=======
+            m *= 1000;  //Convert to mm
+            m /= Constants.Arm.MM_PER_NU;   //Convert to NU
+>>>>>>> 90730b1855bf25fcd8a23ea0a3e95686564be369
     
             return m;
         }
     
         public static double NUToM(double pos){
+<<<<<<< HEAD
             pos /= 58.4;
             pos /= 1000;
+=======
+            pos *= Constants.Arm.MM_PER_NU;    //Convert to mm
+            pos /= 1000;    //conert to m
+>>>>>>> 90730b1855bf25fcd8a23ea0a3e95686564be369
     
             return pos;
         }
 
+<<<<<<< HEAD
         public static double mpsToNU(double mps){
             mps = mToNU(mps);
             mps /= 10;
@@ -133,6 +152,22 @@ public class NRUnits {
 
             return 10;
         }
+=======
+        public static double NUtoMPS(double NU){
+            //Converts NU/100ms to meters/s
+            NU = NUToM(NU);
+            NU *= 10;
+    
+            return NU;
+        }
+
+        public static double mpsToNU(double mps){
+            mps = mToNU(mps);
+            mps /= 10;
+    
+            return mps;
+        }
+>>>>>>> 90730b1855bf25fcd8a23ea0a3e95686564be369
     }
     
     public static class Pivot {
@@ -169,7 +204,7 @@ public class NRUnits {
     
             return pos;
         }
-    
+
     }    
 
     public static class Grabber {

@@ -56,7 +56,6 @@ public class ScoreConeCommand extends CommandBase {
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().orient(0);
-        // ArmSubsystem.getInstance().stop();
         if(DriverStation.isAutonomous()){   //If it pivots faster when retracting, it will tip -> Don't want that in auto
             ArmSubsystem.getInstance().setPivotAcceleration(25_000);
             ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
@@ -64,7 +63,7 @@ public class ScoreConeCommand extends CommandBase {
             ArmSubsystem.getInstance().setExtendCruiseVelocity(40_000);
             ArmSubsystem.getInstance().setExtendAcceleration(20_000);
         }
-        else{
+        else{   //Go fast in teleop VROOM
             ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
             ArmSubsystem.getInstance().setPivotAcceleration(50_000);
         }
@@ -74,7 +73,6 @@ public class ScoreConeCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if(DriverStation.isAutonomous()) return System.currentTimeMillis() - startTime > 500;
         return System.currentTimeMillis() - startTime > 2000;
     }
 

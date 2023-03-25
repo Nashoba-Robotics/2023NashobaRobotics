@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
+import frc.robot.Tabs;
 import frc.robot.lib.math.NRUnits;
 
 public class GrabberSubsystem extends SubsystemBase{
@@ -145,5 +146,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
         SmartDashboard.putNumber("grabber1", grabber1.getOutputCurrent());
         SmartDashboard.putNumber("grabber2", grabber2.getOutputCurrent());
+
+        Tabs.Comp.displayWristNU(getOrientPos());
     }
 }

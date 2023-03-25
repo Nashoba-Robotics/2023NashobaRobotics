@@ -1,8 +1,6 @@
 package frc.robot.commands.score;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.simulation.JoystickSim;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -39,6 +37,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
 
+    //When don't we want to use auto directional? IN AUTO!! to make sure that at least the first game piece is scored
     public AutoDirectionalPrepHeightCommand(TargetLevel targetLevel, boolean autoDir){
         this.autoDir = autoDir;
         this.targetLevel = targetLevel;
@@ -65,7 +64,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         multiplier = scoreFront ? 1 : -1;
 
         switch(targetLevel) {
-            case HIGH: 
+            case HIGH:  //<-- Only used in autoscore
             if(!autoDir) multiplier = 1;
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU*multiplier);
             if(multiplier == 1) ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
@@ -98,7 +97,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         gotToStart = false;
 
         //On-the-field Diagnostic information
-        Tabs.Comp.setPivotTarget(targetPivot);
+        Tabs.Comp.setPivotTarget(targetPivot * 360/Constants.TAU);
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setWristTarget(targetWrist);
     }
@@ -107,11 +106,12 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     public void execute() {
         //Manual Extension:
         //Make sure that the arm has reached its desired extend position before we allow manual movement to happen
-        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < 500) gotToStart = true;
+        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
         if(gotToStart){
             double y = JoystickSubsytem.getInstance().getManualExtend();   //Deadzone math
-            if(y < 0) y *= 0.6;
-            else y *= 0.3;
+            if(y < 0) y *= Constants.Joystick.MANUAL_EXTEND_OUT_SENSITIVITY; //Negative is extend out
+            else if(y > 0) y *= Constants.Joystick.MANUAL_EXTEND_IN_SENSITIVITY;    //Positive is retract in
+            
             if(y == 0){ // If there isn't any input, maintain the position
                 if(!extensionMan0){ //When the joystick is first zeroed
                     extensionMan0 = true;   //Flag variable to see if the joystick was zeroed
@@ -121,32 +121,29 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 ArmSubsystem.getInstance().extendNU(lastPos);
             }
             else{   //If the joystick is moving, we move the arm at a percent output
-                ArmSubsystem.getInstance().set(-y*0.3);
+                ArmSubsystem.getInstance().set(-y);
                 extensionMan0 = false;  //The joystick is not zero, so we are moving
             }
 
             //Manual Pivot:
             //All of the logic is the same as the extension
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < 0.5 * Constants.TAU / 360){
+            if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
                 atPivot = true;
             } 
     
             if(atPivot) {
-                double pivotX = JoystickSubsytem.getInstance().getManualPivot();
+                double pivotX = JoystickSubsytem.getInstance().getManualPivot()*Constants.Joystick.MANUAL_PIVOT_SENSITIVITY;
                 if(pivotX == 0){ // If there isn't any input, maintain the position
                     if(!pivotMan0){
                         pivotMan0 = true;
                         lastPivot = ArmSubsystem.getInstance().getAngle();
                     }
                     ArmSubsystem.getInstance().pivot(lastPivot);
-                    SmartDashboard.putNumber("lastPos2", lastPivot);
                 }
                 else{
-                    ArmSubsystem.getInstance().setPivot(pivotX*0.1);
+                    ArmSubsystem.getInstance().setPivot(pivotX);
                     pivotMan0 = false;
                 }
-                SmartDashboard.putBoolean("Manual", pivotMan0);
-                SmartDashboard.putNumber("SetPoint", lastPivot);
             }
 
             if(RobotContainer.operatorController.pov(0).getAsBoolean()) targetWrist -= Constants.Joystick.MANUAL_WRIST_SENSITIVITY * multiplier;

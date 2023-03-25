@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
+import frc.robot.Tabs;
 import frc.robot.lib.math.NRUnits;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -339,5 +340,9 @@ public class ArmSubsystem extends SubsystemBase {
         }
 
         SmartDashboard.putNumber("PivotCurrent", pivot1.getStatorCurrent());
+
+        Tabs.Comp.displayPivotAngle(getAngle());
+        Tabs.Comp.displayEncoderAngle(getEncoderAngle());
+        Tabs.Comp.displayExtendNU(getExtendNU());
     }
 }

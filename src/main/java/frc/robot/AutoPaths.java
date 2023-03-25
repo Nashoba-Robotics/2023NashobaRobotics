@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
     Stores trajectories for auto
 */
 //NOT IN USE
+//PathPlanner GUI instead
 public final class AutoPaths {
     public static final PathPlannerTrajectory testTrajectory = PathPlanner.generatePath(
         new PathConstraints(Constants.Swerve.Auto.MAX_SPEED, Constants.Swerve.Auto.MAX_ACCELERATION), 

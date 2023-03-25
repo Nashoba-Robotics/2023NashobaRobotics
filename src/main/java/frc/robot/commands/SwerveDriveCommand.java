@@ -26,14 +26,10 @@ public class SwerveDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(JoystickSubsytem.getInstance().getRightButtonValue(3)){
-            SwerveDriveSubsystem.getInstance().setFieldCentric(true);
-        }
-        if(JoystickSubsytem.getInstance().getLeftButtonValue(4)){
-            SwerveDriveSubsystem.getInstance().setFieldCentric(false);
-        }
+        if(JoystickSubsytem.getInstance().getRightButtonValue(3)) SwerveDriveSubsystem.getInstance().setFieldCentric(true);
+        if(JoystickSubsytem.getInstance().getLeftButtonValue(4)) SwerveDriveSubsystem.getInstance().setFieldCentric(false);
 
-        if(JoystickSubsytem.getInstance().getLeftButtonValue(2)){
+        if(JoystickSubsytem.getInstance().getRightButtonValue(1)){
             double angle = SwerveDriveSubsystem.getInstance().getGyroAngle();
             controller.setSetpoint(
                 angle < Constants.TAU/4 &&
@@ -50,8 +46,7 @@ public class SwerveDriveCommand extends CommandBase {
                     Constants.Joystick.MOVE_DEAD_ZONE,
                     Constants.Joystick.MOVE_SENSITIVITY
                 ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
-                -controller.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle()),
-                false
+                -controller.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle())
                 );
         } else {
             SwerveDriveSubsystem.getInstance().set(
@@ -62,8 +57,7 @@ public class SwerveDriveCommand extends CommandBase {
                 JoystickSubsytem.getInstance().getRightJoystickValues().shape(
                     Constants.Joystick.TURN_DEAD_ZONE,
                     Constants.Joystick.TURN_SENSITIVITY
-                ).x,
-                false
+                ).x
                 );
         }
 

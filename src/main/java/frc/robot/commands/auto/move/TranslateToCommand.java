@@ -40,7 +40,7 @@ public class TranslateToCommand extends CommandBase {
 
         Rotation2d heading = translation.getX() < 0 ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
 
-        if(DriverStation.getAlliance() == Alliance.Red) translation = new Translation2d(translation.getX(), -translation.getY());
+        // if(DriverStation.getAlliance() == Alliance.Red) translation = new Translation2d(translation.getX(), -translation.getY());
 
         trajectory = PathPlanner.generatePath(
             new PathConstraints(3.5, 2.5), 

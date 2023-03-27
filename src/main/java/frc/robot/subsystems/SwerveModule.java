@@ -182,7 +182,7 @@ public class SwerveModule {
 
     //NU: How many ADDITIONAL NU you want to move   turn: radians
     public void moveNUDeg(double NU, double turn){
-        turn(turn);
+        // turn(turn);
         setMovePos(NU);
     }
 
@@ -269,6 +269,16 @@ public class SwerveModule {
         return turnMotor.getSelectedSensorPosition();
     }
 
+    public double getTurnAngle(){
+        return NRUnits.constrainRad(NRUnits.Drive.NUToRad(getTurnPosition()));
+    }
+
+    // RADIANS
+    public boolean atTargetAngle(double targetAngle){
+        double deadzone = Constants.TAU/12;
+        return Math.abs(getTurnAngle() - targetAngle) < deadzone;
+    }
+
     public void setTurnMotor(double position) {
         turnMotor.set(ControlMode.MotionMagic, position);
     }
@@ -297,7 +307,7 @@ public class SwerveModule {
 
     public void setMovePos(double NU){
         moveMotor.configMotionCruiseVelocity(20_000);
-        moveMotor.configMotionAcceleration(20_000);
+        moveMotor.configMotionAcceleration(8_000);
         
         double currPos = moveMotor.getSelectedSensorPosition();
         moveMotor.set(ControlMode.MotionMagic, currPos+NU);
@@ -316,5 +326,9 @@ public class SwerveModule {
                 // Rotation2d.fromRadians(NRUnits.Drive.NUToRad(turnMotor.getSelectedSensorPosition()))
                 Rotation2d.fromRadians(getAbsAngle())
             );
+    }
+
+    public double getMoveSensorNU() {
+        return moveMotor.getSelectedSensorPosition();
     }
 }

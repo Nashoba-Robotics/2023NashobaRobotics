@@ -10,15 +10,11 @@ public class GrabberTestCommand extends CommandBase{
     }
     @Override
     public void execute() {
-        if(Tabs.GrabberTest.moveFront() == 1){  //<-- Redundant and unnecessary
-            double speed = Tabs.GrabberTest.getFrontSpeed();
-            GrabberSubsystem.getInstance().setLeft(speed);
-        }
+        double speed = Tabs.GrabberTest.getFrontSpeed();
+        GrabberSubsystem.getInstance().setLeft(speed);
 
-        if(Tabs.GrabberTest.moveBack() == 1){
-            double speed = Tabs.GrabberTest.getBackSpeed();
-            GrabberSubsystem.getInstance().setRight(speed);
-        }
+        speed = Tabs.GrabberTest.getBackSpeed();
+        GrabberSubsystem.getInstance().setRight(speed);
 
         Tabs.GrabberTest.displayFrontCurrent(GrabberSubsystem.getInstance().getTopGrabCurrent());
         Tabs.GrabberTest.displayBackCurrent(GrabberSubsystem.getInstance().getBotGrabCurrent());

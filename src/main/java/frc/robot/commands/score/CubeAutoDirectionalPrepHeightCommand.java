@@ -6,26 +6,29 @@ import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.Constants.Field.TargetLevel;
 
 
 public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     TargetLevel targetLevel;
-    double targetPos;
-    
-    double lastPos;
-    double lastPos2;
-    boolean joystick0;
-    boolean joystick02;
-    boolean gotToStart;
-    boolean atSetPoint2;
-    double targetPivot;
-    double targetWrist;
-    boolean resetEncoder;
-
     boolean scoreFront;
     int multiplier;
+
+    boolean resetEncoder;
+
+    double targetPos;
+    double lastPos;
+    boolean extensionMan0;
+    boolean gotToStart;
+
+    double lastPivot;
+    double targetPivot;
+    boolean pivotMan0;
+    boolean atPivot;
+    
+    double targetWrist;
 
     public CubeAutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
         this.targetLevel = targetLevel;
@@ -34,11 +37,11 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
 
     public void initialize() {
         lastPos = 0;
-        lastPos2 = 0;
-        joystick0 = false;
-        joystick02 = false;
+        lastPivot = 0;
+        extensionMan0 = false;
+        pivotMan0 = false;
         gotToStart = false;
-        atSetPoint2 = false;
+        atPivot = false;
         targetPivot = 0;
         targetWrist = 0;
         resetEncoder = false;
@@ -84,52 +87,45 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
 
     @Override
     public void execute() {
-        SmartDashboard.putBoolean("manual", gotToStart);
-        SmartDashboard.putNumber("Arm nu", ArmSubsystem.getInstance().getPos());
-        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < 500) gotToStart = true;
+        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
         if(gotToStart) {
-            double y = RobotContainer.operatorController.getThrottle() ;
-            y = Math.abs(y) < 0.1 ? 0 : (y-0.1)/0.9;    //Put deadzone in Constants
-            if(y < 0) y *= 0.6;
-            else y *= 0.3;
+            double y = JoystickSubsytem.getInstance().getManualExtend();
+            if(y < 0) y *= Constants.Joystick.MANUAL_EXTEND_OUT_SENSITIVITY; //Negative is extend out
+            else if(y > 0) y *= Constants.Joystick.MANUAL_EXTEND_IN_SENSITIVITY;    //Positive is retract in
+
             if(y == 0){ // If there isn't any input, maintain the position
-                if(!joystick0){
-                    joystick0 = true;
+                if(!extensionMan0){
+                    extensionMan0 = true;
                     lastPos = ArmSubsystem.getInstance().getPos();
                 }
                 ArmSubsystem.getInstance().extendNU(lastPos);
             }
             else{
-                ArmSubsystem.getInstance().set(-y*0.3);
-                joystick0 = false;
+                ArmSubsystem.getInstance().set(-y);
+                extensionMan0 = false;
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < 0.5 * Constants.TAU / 360){
-                atSetPoint2 = true;
+            if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+                atPivot = true;
             } 
-    
-            if(atSetPoint2) {
-                double pivotX = RobotContainer.operatorController.getX() * multiplier;
-                pivotX = Math.abs(pivotX) < 0.1 ? 0 : (pivotX-0.1)/0.9;
+            if(atPivot) {
+                double pivotX = JoystickSubsytem.getInstance().getManualPivot()*Constants.Joystick.MANUAL_PIVOT_SENSITIVITY;
                 if(pivotX == 0){ // If there isn't any input, maintain the position
-                    if(!joystick02){
-                        joystick02 = true;
-                        lastPos2 = ArmSubsystem.getInstance().getAngle();
+                    if(!pivotMan0){
+                        pivotMan0 = true;
+                        lastPivot = ArmSubsystem.getInstance().getAngle();
                     }
-                    ArmSubsystem.getInstance().pivot(lastPos2);
-                    SmartDashboard.putNumber("lastPos2", lastPos2);
+                    ArmSubsystem.getInstance().pivot(lastPivot);
                 }
                 else{
-                    ArmSubsystem.getInstance().setPivot(pivotX*0.1);
-                    joystick02 = false;
+                    ArmSubsystem.getInstance().setPivot(pivotX);
+                    pivotMan0 = false;
                 }
-                SmartDashboard.putBoolean("Manual", joystick02);
-                SmartDashboard.putNumber("SetPoint", lastPos2);
             }
 
-            if(RobotContainer.operatorController.pov(0).getAsBoolean()) targetWrist -= 0.15 * multiplier;
-            if(RobotContainer.operatorController.pov(180).getAsBoolean()) targetWrist += 0.15 * multiplier;
+            if(RobotContainer.operatorController.pov(0).getAsBoolean()) targetWrist -= Constants.Joystick.MANUAL_WRIST_SENSITIVITY * multiplier;
+            if(RobotContainer.operatorController.pov(180).getAsBoolean()) targetWrist += Constants.Joystick.MANUAL_WRIST_SENSITIVITY * multiplier;
 
             GrabberSubsystem.getInstance().orientPos(targetWrist);
 

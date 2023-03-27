@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,6 +22,16 @@ public class GrabberSubsystem extends SubsystemBase{
     private CANSparkMax orienter;
     private SparkMaxPIDController orienterController;
     private RelativeEncoder orientEncoder;
+
+    //LIDAR
+    private SerialPort lidar = new SerialPort(115200, SerialPort.Port.kUSB1);
+    private byte[] recieve = new byte[18];  //There are 9 bytes of data that are useful to us
+    /*  *There is a weird problem where the lidar does not read the bytes in correct order, so we're going to be reading 18 bytes instead of 9
+     *  2 Headers of value 89
+     *  2 Distance values after that 
+     *  2 Strength values
+     *  2 Temperature values
+     */
 
     public GrabberSubsystem(){
         grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
@@ -127,6 +138,20 @@ public class GrabberSubsystem extends SubsystemBase{
     public void setCurrentLimit(int limit) {
         grabber1.setSmartCurrentLimit(limit);
         grabber2.setSmartCurrentLimit(limit);
+    }
+
+    public double getLidarDist(){
+        recieve = lidar.read(18);
+
+        for(int i = 0; i < recieve.length; i++){
+            if(recieve[i] == 89){
+                if(recieve[i+1] == 89)
+                    return recieve[i+2];    //The data will look something along the lines of _ 89 89 x _ _
+                else
+                    return recieve[i+1];
+            }
+        }
+        return -1.2;    //Random arbitrary value that tells us it's not working
     }
 
     @Override

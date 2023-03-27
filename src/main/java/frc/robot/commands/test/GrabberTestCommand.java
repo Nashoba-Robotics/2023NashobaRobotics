@@ -10,7 +10,7 @@ public class GrabberTestCommand extends CommandBase{
     }
     @Override
     public void execute() {
-        if(Tabs.GrabberTest.moveFront() == 1){
+        if(Tabs.GrabberTest.moveFront() == 1){  //<-- Redundant and unnecessary
             double speed = Tabs.GrabberTest.getFrontSpeed();
             GrabberSubsystem.getInstance().setLeft(speed);
         }

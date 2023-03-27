@@ -31,8 +31,9 @@ public final class Constants {
     public static final double MANUAL_EXTEND_DEADZONE = 0.1;
     public static final double MANUAL_PIVOT_DEADZONE = 0.1;
 
-    public static final double MANUAL_EXTEND_SENSITIVITY = 0;
-    public static final double MANUAL_PIVOT_SENSITIVITY = 0;
+    public static final double MANUAL_EXTEND_OUT_SENSITIVITY = 0.18;
+    public static final double MANUAL_EXTEND_IN_SENSITIVITY = 0.09;
+    public static final double MANUAL_PIVOT_SENSITIVITY = 0.1;
     public static final double MANUAL_WRIST_SENSITIVITY = 0.5;
   }
   
@@ -217,15 +218,16 @@ public final class Constants {
     public static final double MID_ANGLE = 68 * TAU/360;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
+    public static final double HIGH_EXTEND_NU = 47_000; //47_000-2_600
+    public static final double MID_EXTEND_NU = 17_500;
+    public static final double LOW_EXTEND_NU = 0;
+
+    //Intkae
     public static final double INTAKE_ANGLE = 112.4 * Constants.TAU/360; //112.5
     public static final double INTAKE_DEADZONE = 0.1;
 
     public static final double DOUBLE_STATION_ANGLE = 43 * TAU/360;
     public static final double DOUBLE_STATION_EXTEND_NU = 14_000;
-
-    public static final double HIGH_EXTEND_NU = 47_000; //47_000-2_600
-    public static final double MID_EXTEND_NU = 17_500;
-    public static final double LOW_EXTEND_NU = 0;
 
     public static final double ERROR_ANGLE = 0;
 
@@ -234,6 +236,9 @@ public final class Constants {
 
     public static final int PIVOT_FORWARD_SOFT_LIMIT = 140_000;
     public static final int PIVOT_REVERSE_SOFT_LIMIT = -140_000;
+
+    public static final double EXTEND_TARGET_DEADZONE = 500;
+    public static final double PIVOT_TARGET_DEADZONE = 0.5 * TAU / 360;
     
     public static final class Cube{
       public static final double HIGH_ANGLE = -59 * TAU/360;

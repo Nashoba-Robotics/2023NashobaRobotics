@@ -8,7 +8,7 @@ import frc.robot.subsystems.GrabberSubsystem;
 public class AutoPrepHighCone extends CommandBase{
     @Override
     public void initialize() {
-        GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU);
+        GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
 
         ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU-2100);

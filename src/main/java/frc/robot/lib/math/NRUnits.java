@@ -179,6 +179,12 @@ public class NRUnits {
             return pos;
         }
 
+        public static double NUToRPS(double NU){
+            NU *= 10;
+            NU = NUToRad(NU);
+            return NU;
+        }
+
     }    
 
     public static class Grabber {

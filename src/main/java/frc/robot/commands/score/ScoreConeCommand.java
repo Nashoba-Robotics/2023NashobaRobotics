@@ -9,9 +9,6 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class ScoreConeCommand extends CommandBase {
     private long startTime;    
-    private boolean retractFirst;
-    private double retractTarget1;
-    private boolean low;
 
     public ScoreConeCommand() {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
@@ -23,26 +20,25 @@ public class ScoreConeCommand extends CommandBase {
         boolean scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
 
         int multiplier = scoreFront ? 1 : -1;
-        low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;
-
 
         GrabberSubsystem.getInstance().setCurrentLimit(40);
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
         startTime = System.currentTimeMillis();
 
+        boolean low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;
         if(low){
             GrabberSubsystem.getInstance().setCurrentLimit(50);
-            GrabberSubsystem.getInstance().set(0.7);
+            GrabberSubsystem.getInstance().set(Constants.Grabber.LOW_CONE_RELEASE_SPEED);
             ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
         } 
         else{
-            double angleChange = DriverStation.isAutonomous() ? 3 * Constants.TAU/360 : 0 * Constants.TAU/360;
+            double angleChange = DriverStation.isAutonomous() ? Constants.Arm.AUTO_DUNK_ANGLE : Constants.Arm.TELEOP_DUNK_ANGLE;
             ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
-            GrabberSubsystem.getInstance().orientPos(4 * multiplier);
+            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_CONE_NU * multiplier);
             double currentExtend = ArmSubsystem.getInstance().getExtendNU();
-            ArmSubsystem.getInstance().extendNU(currentExtend-13_000);
-            GrabberSubsystem.getInstance().set(0.1);
+            ArmSubsystem.getInstance().extendNU(currentExtend-Constants.Arm.RETRACT_NU);
+            GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_RELEASE_SPEED);
         }
     }
 

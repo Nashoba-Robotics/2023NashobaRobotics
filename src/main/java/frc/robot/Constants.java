@@ -168,9 +168,19 @@ public final class Constants {
 
     public static final double ERROR_ANGLE = 0;
 
-    public static final double GEAR_RATIO = 48 * 36 / 22.; //TODO: find why 1.15
+    public static final double GEAR_RATIO = 48 * 36 / 22.;  //TODO: FIND THIS
 
-    public static final double SCORE_NU = -8.5;
+    //Scorign
+    public static final double PREP_CONE_NU = -8.5;
+    public static final double SCORE_CONE_NU = 4;
+    public static final double CUBE_NU = -9;
+
+    public static final double CONE_RELEASE_SPEED = 0.1; //Speed of rollers to release cone
+    public static final double LOW_CONE_RELEASE_SPEED = 0.7;
+    public static final double CUBE_RELEASE_SPEED = 0.4;
+
+    //Intkae
+    public static final double CUBE_HOLD_SPEED = 0.05;
   }
 
   public static final class Arm {
@@ -221,6 +231,11 @@ public final class Constants {
     public static final double HIGH_EXTEND_NU = 47_000; //47_000-2_600
     public static final double MID_EXTEND_NU = 17_500;
     public static final double LOW_EXTEND_NU = 0;
+
+    public static final double AUTO_DUNK_ANGLE = 3 * TAU/360;
+    public static final double TELEOP_DUNK_ANGLE = 0 * TAU/360;
+
+    public static final double RETRACT_NU = 13_000; //NU to retract back in after scoring to avoid hitting middle node
 
     //Intkae
     public static final double INTAKE_ANGLE = 112.4 * Constants.TAU/360; //112.5

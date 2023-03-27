@@ -78,9 +78,37 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     //     return cardinalController.calculate(gyro.getYaw());
     // }
 
-    public void moveyNU(int y) {
-        double angleDiff = Math.atan2(y, 0) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
+    private double setAngle = 0;
 
+    public void turnModulesToAngle(double angle) {
+        setAngle = NRUnits.constrainRad(angle - getGyroAngle());
+        for(SwerveModule module : modules) {
+            module.turn(setAngle);
+        }
+    }
+
+    public boolean atTurnPos() {
+        boolean atPos = true;
+        for(SwerveModule module : modules) {
+            boolean atAngle = module.atTargetAngle(setAngle)
+            || module.atTargetAngle(setAngle + Constants.TAU/2)
+            || module.atTargetAngle(setAngle - Constants.TAU/2);
+            SmartDashboard.putBoolean("mod"+module.modNumber, atAngle);
+            atPos = atPos && atAngle;
+        }
+        return atPos;
+    }
+
+    public void moveYNU(double y) {
+        setAngle = NRUnits.constrainRad(Math.atan2(y, 0) - getGyroAngle()); //difference between input angle and gyro angle gives desired field relative angle
+
+        for(SwerveModule module : modules) {
+            module.moveNUDeg(y, setAngle);
+        }
+    }
+
+    public void singleModNUTest(int NU) {
+        modules[1].moveNUDeg(NU, 0);
     }
 
     public double getYaw(){
@@ -349,6 +377,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         //         Pose2d currPose = new Pose2d(limelightPose.getX() * limelightWeight + odometryPose.getX() * odometryWeight, limelightPose.getY() * limelightWeight + odometryPose.getY() * odometryWeight, Rotation2d.fromRadians(SwerveDriveSubsystem.getInstance().getGyroAngle()));
         //         SwerveDriveSubsystem.getInstance().resetOdometry(currPose);
         // }
+
+        SmartDashboard.putNumber("mod0Ang", modules[0].getTurnAngle());
+        SmartDashboard.putNumber("mod1Ang", modules[1].getTurnAngle());
+        SmartDashboard.putNumber("mod2Ang", modules[2].getTurnAngle());
+        SmartDashboard.putNumber("mod3Ang", modules[3].getTurnAngle());
+        SmartDashboard.putNumber("angleSetPoint", setAngle);
 
         if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
 

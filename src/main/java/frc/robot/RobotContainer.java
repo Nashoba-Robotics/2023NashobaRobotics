@@ -2,10 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
+import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.GrabberTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.DriveSpeedCommand;
@@ -31,6 +33,8 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
     configureTabs();
+
+    SmartDashboard.putData(new CameraCenterCommand());
   }  
 
   public static CommandJoystick operatorController = new CommandJoystick(2);
@@ -61,7 +65,11 @@ public class RobotContainer {
 
   Trigger eStop = JoystickSubsytem.getInstance().getRightJoystick().button(8);
 
+  Trigger squareUpAndSetArm = JoystickSubsytem.getInstance().getRightJoystick().button(1);
+
   public void configureButtonBindings(){
+    squareUpAndSetArm.onTrue(new InstantCommand(() -> ArmSubsystem.getInstance().pivot(22*Constants.TAU/360), ArmSubsystem.getInstance()));
+
     cone.onTrue(new InstantCommand(
       () -> CandleSubsystem.getInstance().set(CandleState.WANT_CONE),
       CandleSubsystem.getInstance()

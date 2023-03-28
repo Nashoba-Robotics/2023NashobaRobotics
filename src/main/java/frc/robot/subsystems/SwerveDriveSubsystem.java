@@ -58,7 +58,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         cardinalController = new PIDController(0.01, 0, 0.0);
         cardinalController.setTolerance(2);
 
-        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
+        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.REFLECTIVE_TAPE_PIPELINE);
     }
     
     private static SwerveDriveSubsystem instance;

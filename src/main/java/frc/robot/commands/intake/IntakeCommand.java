@@ -45,7 +45,7 @@ public class IntakeCommand extends CommandBase {
         resetEncoder = false;
 
         ArmSubsystem.getInstance().resetPivotNU();
-        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM);
+        // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class IntakeCommand extends CommandBase {
         GrabberSubsystem.getInstance().orient(0);
         GrabberSubsystem.getInstance().set(-0.1);   //Make the grabber hold it
         
-        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
+        // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
     }
 
     @Override

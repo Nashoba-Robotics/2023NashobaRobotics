@@ -34,21 +34,21 @@ public class PrepHeightCommand extends CommandBase {
         ArmSubsystem.getInstance().setDefaultAcceleration();
         switch(targetLevel) {
             case HIGH: 
-             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU);
+             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU);
              ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;
              setPos2 = Constants.Arm.HIGH_ANGLE;
              break;
             case MID: 
-             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU);
+             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU);
              ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
              targetPos = Constants.Arm.MID_EXTEND_NU;
              setPos2 = Constants.Arm.MID_ANGLE;
              break;
            case LOW: 
-            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU);
+            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU);
             ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
             targetPos = Constants.Arm.LOW_EXTEND_NU;

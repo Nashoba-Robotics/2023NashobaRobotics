@@ -1,18 +1,20 @@
 package frc.robot.commands.intake;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
+import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.JoystickSubsytem;
 
 public class IntakeCubeCommand extends CommandBase {
-    boolean joystick02;
-    double lastPos2;
+    double extendNU = 3_000;
 
-    double setPos2;
-    boolean atSetPoint2;
+    boolean pivotMan0;
+    double lastPivot;
+
+    double targetPivot;
+    boolean atPivot;
 
     boolean to90 = false;
 
@@ -34,41 +36,44 @@ public class IntakeCubeCommand extends CommandBase {
         ArmSubsystem.getInstance().setPivotAcceleration(40_000);
 
         // Extend is TEMP to test at the same distance
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(extendNU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.INTAKE_ANGLE);
-        setPos2 = Constants.Arm.Cube.INTAKE_ANGLE;
-        atSetPoint2 = false;
-        joystick02 = false;
-        GrabberSubsystem.getInstance().orientPos(-9);
-        lastPos2 = ArmSubsystem.getInstance().getAngle();
+        targetPivot = Constants.Arm.Cube.INTAKE_ANGLE;
+        atPivot = false;
+        pivotMan0 = false;
+        GrabberSubsystem.getInstance().orientPos(Constants.Grabber.CUBE_NU);
+        lastPivot = ArmSubsystem.getInstance().getAngle();
 
         resetEncoder = false;
+
+        Tabs.Comp.setPivotTarget(targetPivot);
+        Tabs.Comp.setExtendTarget(extendNU);
+        Tabs.Comp.setWristTarget(Constants.Grabber.CUBE_NU);
     }
 
     @Override
     public void execute() {
-        GrabberSubsystem.getInstance().set(0.4, -0.4);
-        SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_INTAKE_SPEED, -Constants.Grabber.CUBE_INTAKE_SPEED);
+        // SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
 
-        if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU/360){
-            atSetPoint2 = true;
-            lastPos2 = ArmSubsystem.getInstance().getAngle();
+        if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+            atPivot = true;
+            lastPivot = ArmSubsystem.getInstance().getAngle();
         } 
 
-        if(atSetPoint2) {
-            double pivotX = RobotContainer.operatorController.getX();
-            pivotX = Math.abs(pivotX) < 0.1 ? 0 : (pivotX-0.1)/0.9;
+        if(atPivot) {
+            double pivotX = JoystickSubsytem.getInstance().getManualPivot();
             if(pivotX == 0){ // If there isn't any input, maintain the position
                 // ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
-                if(!joystick02){
-                    joystick02 = true;
-                    lastPos2 = ArmSubsystem.getInstance().getAngle();
+                if(!pivotMan0){
+                    pivotMan0 = true;
+                    lastPivot = ArmSubsystem.getInstance().getAngle();
                 }
-                ArmSubsystem.getInstance().pivot(lastPos2);
+                ArmSubsystem.getInstance().pivot(lastPivot);
             }
             else{
-                ArmSubsystem.getInstance().setPivot(pivotX*0.13);
-                joystick02 = false;
+                ArmSubsystem.getInstance().setPivot(pivotX);
+                pivotMan0 = false;
             }
         }
 
@@ -83,8 +88,7 @@ public class IntakeCubeCommand extends CommandBase {
         GrabberSubsystem.getInstance().setCurrentLimit(10);
         if(!to90)ArmSubsystem.getInstance().pivot(0);
         else ArmSubsystem.getInstance().pivot(-Constants.TAU/4);
-        // GrabberSubsystem.getInstance().orient(0);
-        GrabberSubsystem.getInstance().set(0.05, -0.05);   //Make the grabber hold it
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_HOLD_SPEED, -Constants.Grabber.CUBE_HOLD_SPEED);   //Make the grabber hold it
     }
 
     @Override

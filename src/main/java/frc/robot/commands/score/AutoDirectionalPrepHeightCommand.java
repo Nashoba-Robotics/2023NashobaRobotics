@@ -67,7 +67,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         switch(targetLevel) {
             case HIGH:  //<-- Only used in autoscore
             if(!autoDir) multiplier = 1;
-            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU*multiplier);
+            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU*multiplier);
             if(multiplier == 1) ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_ANGLE);
             if(multiplier == -1) ArmSubsystem.getInstance().pivot(-(Constants.Arm.HIGH_ANGLE));
              if(DriverStation.isAutonomous()){
@@ -76,25 +76,25 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
              else ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.HIGH_EXTEND_NU;
              targetPivot = Constants.Arm.HIGH_ANGLE * multiplier;
-             targetWrist = Constants.Grabber.SCORE_NU * multiplier;
+             targetWrist = Constants.Grabber.PREP_CONE_NU * multiplier;
              break;
             case MID: 
-             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU * multiplier);
              ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
              targetPos = Constants.Arm.MID_EXTEND_NU;
              targetPivot = Constants.Arm.MID_ANGLE * multiplier;
-             targetWrist = Constants.Grabber.SCORE_NU * multiplier;
+             targetWrist = Constants.Grabber.PREP_CONE_NU * multiplier;
              break;
            case LOW: 
              ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
              ArmSubsystem.getInstance().setPivotAcceleration(60_000);
-            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU * multiplier);
             ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
             targetPos = Constants.Arm.LOW_EXTEND_NU;
             targetPivot = Constants.Arm.LOW_ANGLE * multiplier;
-            targetWrist = Constants.Grabber.SCORE_NU * multiplier;
+            targetWrist = Constants.Grabber.PREP_CONE_NU * multiplier;
             break;
         }
         gotToStart = false;

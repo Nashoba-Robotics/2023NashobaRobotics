@@ -4,20 +4,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class IntakeCommand extends CommandBase {
-    boolean joystick02;
-    double lastPos2;
+    double extendNU = 3_000;
+    
+    boolean pivotMan0;
+    double lastPivot;
 
-    double setPos2;
-    boolean atSetPoint2;
+    double pivotTarget;
+    boolean atPivot;
 
-    boolean resetEncoder;
+    boolean resetEncoder;   // Right now, we are only going to read the absolute encoder twice
+                            // First time is at the beginnig, and the second time is when the arm reaches intake angle
 
     int multiplier;
 
@@ -30,22 +35,25 @@ public class IntakeCommand extends CommandBase {
     public void initialize() {
         GrabberSubsystem.getInstance().setCurrentLimit(30);
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(400_000);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(400_000); //<-- Make sure we are limited by Acceleration
         ArmSubsystem.getInstance().setPivotAcceleration(60_000);
 
-        // Extend is TEMP to test at the same distance
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(extendNU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);
-        setPos2 = Constants.Arm.INTAKE_ANGLE * multiplier;
-        atSetPoint2 = false;
-        joystick02 = false;
+        pivotTarget = Constants.Arm.INTAKE_ANGLE * multiplier;
+        atPivot = false;
+        pivotMan0 = false;
         GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE * multiplier);
-        lastPos2 = ArmSubsystem.getInstance().getAngle();
+        lastPivot = ArmSubsystem.getInstance().getAngle();
 
         resetEncoder = false;
 
         ArmSubsystem.getInstance().resetPivotNU();
-        // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM);
+        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM); //Can get rid of this after adding USB cam
+
+        Tabs.Comp.setPivotTarget(pivotTarget);
+        Tabs.Comp.setExtendTarget(extendNU);
+        Tabs.Comp.setWristTarget(Constants.Grabber.INTAKE_ANGLE);
     }
 
     @Override
@@ -53,23 +61,22 @@ public class IntakeCommand extends CommandBase {
         GrabberSubsystem.getInstance().intake();
         SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
-        if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU/360){
-            atSetPoint2 = true;
+        if(Math.abs(ArmSubsystem.getInstance().getAngle() - pivotTarget) < 0.5 * Constants.TAU/360){
+            atPivot = true;
         } 
 
-        if(atSetPoint2) {
-            double pivotX = RobotContainer.operatorController.getX();
-            pivotX = Math.abs(pivotX) < 0.1 ? 0 : (pivotX-0.1)/0.9;
+        if(atPivot) {
+            double pivotX = JoystickSubsytem.getInstance().getManualPivot();
             if(pivotX == 0){ // If there isn't any input, maintain the position
-                if(!joystick02){
-                    joystick02 = true;
-                    lastPos2 = ArmSubsystem.getInstance().getAngle();
+                if(!pivotMan0){
+                    pivotMan0 = true;
+                    lastPivot = ArmSubsystem.getInstance().getAngle();
                 }
-                ArmSubsystem.getInstance().pivot(lastPos2);
+                ArmSubsystem.getInstance().pivot(lastPivot);
             }
             else{
-                ArmSubsystem.getInstance().setPivot(pivotX*0.13);
-                joystick02 = false;
+                ArmSubsystem.getInstance().setPivot(pivotX);
+                pivotMan0 = false;
             }
         }
 
@@ -95,7 +102,7 @@ public class IntakeCommand extends CommandBase {
         GrabberSubsystem.getInstance().setCurrentLimit(10);
         ArmSubsystem.getInstance().pivot(0);
         GrabberSubsystem.getInstance().orient(0);
-        GrabberSubsystem.getInstance().set(-0.1);   //Make the grabber hold it
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);   //Make the grabber hold it
         
         // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
     }

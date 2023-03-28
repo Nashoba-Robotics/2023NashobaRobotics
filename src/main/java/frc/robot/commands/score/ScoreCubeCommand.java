@@ -1,6 +1,7 @@
 package frc.robot.commands.score;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
@@ -13,7 +14,7 @@ public class ScoreCubeCommand extends CommandBase {
     @Override
     public void initialize() {
         GrabberSubsystem.getInstance().setCurrentLimit(40);
-        GrabberSubsystem.getInstance().set(-0.4, 0.4);
+        GrabberSubsystem.getInstance().set(-Constants.Grabber.CUBE_RELEASE_SPEED, Constants.Grabber.CUBE_RELEASE_SPEED);
     }
 
     @Override

@@ -1,27 +1,30 @@
 package frc.robot.commands.score;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Tabs;
 import frc.robot.lib.math.NRUnits;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.JoystickSubsytem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class PrepHighConeCommand extends CommandBase{
-    double l0 = 0.690;
-    double targetPos;
-    double setPos2;
-    double setPos3;
     double multiplier;
+    double l0 = 0.690;
+
+    double targetPos;
+    double targetPivot;
+    double targetWrist;
+    
 
     double lastPos;
-    double lastPos2;
-    boolean joystick0;
-    boolean joystick02;
+    double lastPivot;
+    boolean extensionMan0;
+    boolean pivotMan0;
     boolean gotToStart;
-    boolean atSetPoint2;
+    boolean atPivot;
 
     boolean resetEncoder;
 
@@ -29,36 +32,36 @@ public class PrepHighConeCommand extends CommandBase{
         addRequirements(ArmSubsystem.getInstance());
     }
 
-    public double NUtoMPS(double NU){
-        //Converts NU/100ms to meters/s
-        NU *= 10;
-        NU /= 58.4;
-        NU /= 1000;
+    // public double NUtoMPS(double NU){
+    //     //Converts NU/100ms to meters/s
+    //     NU *= 10;
+    //     NU /= 58.4;
+    //     NU /= 1000;
 
-        return NU;
-    }
+    //     return NU;
+    // }
 
-    public double mpsToNU(double mps){
-        mps *= 1000;
-        mps *= 58.4;
-        mps /= 10;
+    // public double mpsToNU(double mps){
+    //     mps *= 1000;
+    //     mps *= 58.4;
+    //     mps /= 10;
 
-        return mps;
-    }
+    //     return mps;
+    // }
 
-    private double NUToRadiansPerSecond(double NU) {
-        NU = NRUnits.Pivot.NUToRad(NU);
-        return NU * 10;
-    }
+    // private double NUToRadiansPerSecond(double NU) {
+    //     NU = NRUnits.Pivot.NUToRad(NU);
+    //     return NU * 10;
+    // }
 
     @Override
     public void initialize() {
         lastPos = 0;
-        lastPos2 = 0;
-        joystick0 = false;
-        joystick02 = false;
+        lastPivot = 0;
+        extensionMan0 = false;
+        pivotMan0 = false;
         gotToStart = false;
-        atSetPoint2 = false;
+        atPivot = false;
 
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
 
@@ -80,8 +83,12 @@ public class PrepHighConeCommand extends CommandBase{
         ArmSubsystem.getInstance().setExtendAcceleration(50_000);
 
         targetPos = Constants.Arm.HIGH_EXTEND_NU;
-        setPos2 = prepAngle;
-        setPos3 = Constants.Grabber.SCORE_NU * multiplier;
+        targetPivot = prepAngle;
+        targetWrist = Constants.Grabber.PREP_CONE_NU * multiplier;
+
+        Tabs.Comp.setExtendTarget(targetPos);
+        Tabs.Comp.setPivotTarget(targetPivot);
+        Tabs.Comp.setWristTarget(targetWrist);
     }
 
     @Override
@@ -89,72 +96,64 @@ public class PrepHighConeCommand extends CommandBase{
         //l0 = 0.690m
         double pivotAngle = ArmSubsystem.getInstance().getAngle();
         double pivotSpeed = ArmSubsystem.getInstance().getPivotSpeed();
-        pivotSpeed = NUToRadiansPerSecond(pivotSpeed);
+        pivotSpeed = NRUnits.Pivot.NUToRPS(pivotSpeed);
 
         double extendSpeed = Constants.Arm.l0 * Math.tan(pivotAngle)/Math.cos(pivotAngle)*pivotSpeed;
         extendSpeed = NRUnits.Extension.mpsToNU(extendSpeed);
 
         ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed);
 
-        if(Math.abs(ArmSubsystem.getInstance().getExtendNU() - Constants.Arm.HIGH_EXTEND_NU) < 1000){
-            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
+        //NOTE: Could potentially causes issues when manuallying in
+        if(Math.abs(ArmSubsystem.getInstance().getExtendNU() - Constants.Arm.HIGH_EXTEND_NU) < 1000){   //While extending, we move the wrist to get out of the way of the bottom node
+            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU * multiplier);          //Once we've reached a close enough position, then put the wrist into scoring position
         }
-
-        SmartDashboard.putNumber("Actual NU", ArmSubsystem.getInstance().getExtendNU());
-        SmartDashboard.putNumber("Pivot Speed", ArmSubsystem.getInstance().getExtendNUSpeed());
 
 
         //MANUAL!!!!!!!!!!!!!!!!!
-
-        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < 500) gotToStart = true;
+        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
         if(gotToStart) {
-            double y = RobotContainer.operatorController.getThrottle() ;
-            y = Math.abs(y) < 0.1 ? 0 : (y-0.1)/0.9;    //Put deadzone in Constants
-            if(y < 0) y *= 0.6;
-            else y *= 0.3;
+            double y = JoystickSubsytem.getInstance().getManualExtend();
+            if(y < 0) y *= Constants.Joystick.MANUAL_EXTEND_OUT_SENSITIVITY;
+            else y *= Constants.Joystick.MANUAL_EXTEND_IN_SENSITIVITY;
             if(y == 0){ // If there isn't any input, maintain the position
-                if(!joystick0){
-                    joystick0 = true;
+                if(!extensionMan0){
+                    extensionMan0 = true;
                     lastPos = ArmSubsystem.getInstance().getPos();
                 }
                 ArmSubsystem.getInstance().extendNU(lastPos);
             }
             else{
-                ArmSubsystem.getInstance().set(-y*0.3);
-                joystick0 = false;
+                ArmSubsystem.getInstance().set(-y);
+                extensionMan0 = false;
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 0.5 * Constants.TAU / 360){
-                atSetPoint2 = true;
+            if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+                atPivot = true;
             } 
     
-            if(atSetPoint2) {
-                double pivotX = RobotContainer.operatorController.getX() * multiplier;
-                pivotX = Math.abs(pivotX) < 0.1 ? 0 : (pivotX-0.1)/0.9;
+            if(atPivot) {
+                double pivotX = JoystickSubsytem.getInstance().getManualPivot();
                 if(pivotX == 0){ // If there isn't any input, maintain the position
-                    if(!joystick02){
-                        joystick02 = true;
-                        lastPos2 = ArmSubsystem.getInstance().getAngle();
+                    if(!pivotMan0){
+                        pivotMan0 = true;
+                        lastPivot = ArmSubsystem.getInstance().getAngle();
                     }
-                    ArmSubsystem.getInstance().pivot(lastPos2);
-                    SmartDashboard.putNumber("lastPos2", lastPos2);
+                    ArmSubsystem.getInstance().pivot(lastPivot);
                 }
                 else{
-                    ArmSubsystem.getInstance().setPivot(pivotX*0.1);
-                    joystick02 = false;
+                    ArmSubsystem.getInstance().setPivot(pivotX);
+                    pivotMan0 = false;
                 }
-                SmartDashboard.putBoolean("Manual", joystick02);
-                SmartDashboard.putNumber("SetPoint", lastPos2);
             }
 
-            if(RobotContainer.operatorController.pov(0).getAsBoolean()) setPos3 -= 0.5 * multiplier;
-            if(RobotContainer.operatorController.pov(180).getAsBoolean()) setPos3 += 0.5 * multiplier;
+            if(RobotContainer.operatorController.pov(0).getAsBoolean()) targetWrist -= Constants.Joystick.MANUAL_WRIST_SENSITIVITY * multiplier;
+            if(RobotContainer.operatorController.pov(180).getAsBoolean()) targetWrist += Constants.Joystick.MANUAL_WRIST_SENSITIVITY * multiplier;
 
-            GrabberSubsystem.getInstance().orientPos(setPos3);
+            GrabberSubsystem.getInstance().orientPos(targetWrist);
         }
 
-        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-setPos2) <= Constants.Arm.INTAKE_DEADZONE){
+        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.HIGH_ANGLE){
             ArmSubsystem.getInstance().resetPivotNU();
             resetEncoder = true;
         }
@@ -162,15 +161,17 @@ public class PrepHighConeCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
-        ArmSubsystem.getInstance().setDefaultAcceleration();
+        //TODO: Why is this here? This should be empty: Test and make sure it still works with this gone.
 
-        ArmSubsystem.getInstance().setExtendCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
-        ArmSubsystem.getInstance().setExtendAcceleration(15_000);
+        // ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        // ArmSubsystem.getInstance().setDefaultAcceleration();
 
-        ArmSubsystem.getInstance().pivot(0);
-        ArmSubsystem.getInstance().extendNU(0);
-        GrabberSubsystem.getInstance().orientPos(0);
+        // ArmSubsystem.getInstance().setExtendCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        // ArmSubsystem.getInstance().setExtendAcceleration(15_000);
+
+        // ArmSubsystem.getInstance().pivot(0);
+        // ArmSubsystem.getInstance().extendNU(0);
+        // GrabberSubsystem.getInstance().orientPos(0);
     }
 
     @Override

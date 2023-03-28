@@ -3,6 +3,7 @@ package frc.robot.commands.score;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Tabs;
 import frc.robot.lib.math.NRUnits;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -84,6 +85,10 @@ public class PrepHighConeCommand extends CommandBase{
         targetPos = Constants.Arm.HIGH_EXTEND_NU;
         targetPivot = prepAngle;
         targetWrist = Constants.Grabber.PREP_CONE_NU * multiplier;
+
+        Tabs.Comp.setExtendTarget(targetPos);
+        Tabs.Comp.setPivotTarget(targetPivot);
+        Tabs.Comp.setWristTarget(targetWrist);
     }
 
     @Override

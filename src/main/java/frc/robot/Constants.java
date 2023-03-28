@@ -154,8 +154,6 @@ public final class Constants {
     public static final double ORIENTER_KI = 0.0;
     public static final double ORIENTER_KD = 0.0;
 
-    public static final double INTAKE_SPEED = -0.7;
-    public static final double SCORE_SPEED = 0.1;
     public static final double MAX_TURN_SPEED = 0.6;
 
     public static final double INTAKE_ANGLE = 4;
@@ -168,7 +166,7 @@ public final class Constants {
 
     public static final double ERROR_ANGLE = 0;
 
-    public static final double GEAR_RATIO = 48 * 36 / 22.;  //TODO: FIND THIS
+    public static final double GEAR_RATIO = 48 * 36 / 22.;  //TODO: FIND THIS!!!
 
     //Scorign
     public static final double PREP_CONE_NU = -8.5;
@@ -180,6 +178,9 @@ public final class Constants {
     public static final double CUBE_RELEASE_SPEED = 0.4;
 
     //Intkae
+    public static final double CONE_INTAKE_SPEED = -0.9;  //Wheels spin in, so the value is negative
+    public static final double CUBE_INTAKE_SPEED = 0.4;   //We explicitly state the positive and negative in the command
+    public static final double CONE_HOLD_SPEED = -0.1;
     public static final double CUBE_HOLD_SPEED = 0.05;
   }
 

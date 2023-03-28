@@ -2,11 +2,14 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsytem;
 
 public class IntakeCubeCommand extends CommandBase {
+    double extendNU = 3_000;
+
     boolean pivotMan0;
     double lastPivot;
 
@@ -33,7 +36,7 @@ public class IntakeCubeCommand extends CommandBase {
         ArmSubsystem.getInstance().setPivotAcceleration(40_000);
 
         // Extend is TEMP to test at the same distance
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(extendNU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.INTAKE_ANGLE);
         targetPivot = Constants.Arm.Cube.INTAKE_ANGLE;
         atPivot = false;
@@ -42,11 +45,15 @@ public class IntakeCubeCommand extends CommandBase {
         lastPivot = ArmSubsystem.getInstance().getAngle();
 
         resetEncoder = false;
+
+        Tabs.Comp.setPivotTarget(targetPivot);
+        Tabs.Comp.setExtendTarget(extendNU);
+        Tabs.Comp.setWristTarget(Constants.Grabber.CUBE_NU);
     }
 
     @Override
     public void execute() {
-        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_RELEASE_SPEED, -Constants.Grabber.CUBE_RELEASE_SPEED);
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_INTAKE_SPEED, -Constants.Grabber.CUBE_INTAKE_SPEED);
         // SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
 
         if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){

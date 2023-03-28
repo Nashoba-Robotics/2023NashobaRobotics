@@ -3,6 +3,7 @@ package frc.robot.commands.score;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Tabs;
 import frc.robot.lib.math.NRUnits;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -44,14 +45,14 @@ public class PrepHighCubeCommand extends CommandBase{
 
         multiplier = 1;
 
-        double prepAngle = Constants.Arm.Cube.HIGH_ANGLE;   //Right now, we only score from one side because 
+        double prepAngle = Constants.Arm.Cube.HIGH_ANGLE;   //Right now, we only score from one side because...
 
         // if(multiplier == 1) prepAngle = Constants.Arm.Cube.HIGH_ANGLE + (1)*Constants.TAU/360;
         // else prepAngle = -(Constants.Arm.Cube.HIGH_ANGLE - 0.1*Constants.TAU/360);
 
         ArmSubsystem.getInstance().pivot(prepAngle);
         ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.HIGH_EXTEND_NU);
-        GrabberSubsystem.getInstance().orientPos(-9);
+        GrabberSubsystem.getInstance().orientPos(Constants.Grabber.CUBE_NU);
 
         ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
         ArmSubsystem.getInstance().setPivotAcceleration(55_000);
@@ -60,9 +61,13 @@ public class PrepHighCubeCommand extends CommandBase{
 
         targetPos = Constants.Arm.Cube.HIGH_EXTEND_NU;
         targetPivot = prepAngle;
-        wristPos = -9;
+        wristPos = Constants.Grabber.CUBE_NU;
 
         resetEncoder = false;
+
+        Tabs.Comp.setExtendTarget(targetPos);
+        Tabs.Comp.setPivotTarget(targetPivot);
+        Tabs.Comp.setWristTarget(wristPos);
     }
 
     @Override
@@ -75,11 +80,6 @@ public class PrepHighCubeCommand extends CommandBase{
         extendSpeed = NRUnits.Extension.mpsToNU(extendSpeed);
 
         ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed+5_000);  //NOTE: the +5_000 might be why it tips
-
-        // if(Math.abs(ArmSubsystem.getInstance().getExtendNU() - Constants.Arm.Cube.HIGH_EXTEND_NU) < 1000){
-        //     GrabberSubsystem.getInstance().orientPos(-9);
-        // }
-
 
         //MANUAL!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! AAAAAAAAAAAAAAAAHHHHHHHHHHHHHHHHHHHHHHHHHHHH
 

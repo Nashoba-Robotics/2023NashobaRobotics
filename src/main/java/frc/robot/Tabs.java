@@ -4,11 +4,9 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ComplexWidget;
-import edu.wpi.first.wpilibj.shuffleboard.LayoutType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import frc.robot.lib.math.NRUnits;
 
 //We're going to try to use Shuffleboard tabs for testing in order to keep the main tab more organized
 //  For each Subsystem, we have a tab and GenericEntry for every value we want to read/set
@@ -369,7 +367,7 @@ public final class Tabs {
         }
 
         public static void setPivotTarget(double target){
-            targetPivot.setDouble(target);
+            targetPivot.setDouble(target * 360/Constants.TAU);
         }
         public static void setExtendTarget(double target){
             targetExtend.setDouble(target);

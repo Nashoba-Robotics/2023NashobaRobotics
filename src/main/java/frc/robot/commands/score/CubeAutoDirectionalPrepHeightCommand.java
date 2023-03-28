@@ -3,6 +3,7 @@ package frc.robot.commands.score;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
+import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsytem;
@@ -53,35 +54,36 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         multiplier = scoreFront ? -1 : 1;
 
         switch(targetLevel) {
-            case HIGH: 
-            //  GrabberSubsystem.getInstance().orientPos(1);
+            case HIGH:  //<-- Not used
              ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.HIGH_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.Cube.HIGH_EXTEND_NU;
              targetPivot = Constants.Arm.Cube.HIGH_ANGLE * multiplier;
-             targetWrist = GrabberSubsystem.getInstance().getOrientPos();
+             targetWrist = Constants.Grabber.CUBE_NU;
              break;
             case MID: 
-            //  GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
              ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.MID_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.MID_EXTEND_NU);
              targetPos = Constants.Arm.Cube.MID_EXTEND_NU;
              targetPivot = Constants.Arm.Cube.MID_ANGLE * multiplier;
-             targetWrist = GrabberSubsystem.getInstance().getOrientPos();
+             targetWrist = Constants.Grabber.CUBE_NU;
              break;
            case LOW: 
-            // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_NU * multiplier);
             ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
             ArmSubsystem.getInstance().setPivotAcceleration(60_000);
             ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.LOW_EXTEND_NU);
             targetPos = Constants.Arm.Cube.LOW_EXTEND_NU;
             targetPivot = Constants.Arm.Cube.LOW_ANGLE * multiplier;
-            targetWrist = GrabberSubsystem.getInstance().getOrientPos();
+            targetWrist = Constants.Grabber.CUBE_NU;
             break;
         }
         gotToStart = false;
         resetEncoder = false;
+
+        Tabs.Comp.setExtendTarget(targetPos);
+        Tabs.Comp.setPivotTarget(targetPivot);
+        Tabs.Comp.setWristTarget(Constants.Grabber.CUBE_NU);
     }
 
     @Override

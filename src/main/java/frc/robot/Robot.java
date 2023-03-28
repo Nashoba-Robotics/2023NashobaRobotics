@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreTest;
-import frc.robot.commands.auto.move.MoveBackCommand;
 import frc.robot.commands.auto.routines.DumbAuto;
 import frc.robot.commands.auto.routines.DumbAutoNoScore;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;

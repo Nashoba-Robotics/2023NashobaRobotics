@@ -3,7 +3,6 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.RobotContainer;
 import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
@@ -33,7 +32,7 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        GrabberSubsystem.getInstance().setCurrentLimit(30);
+        // GrabberSubsystem.getInstance().setCurrentLimit(30);
 
         ArmSubsystem.getInstance().setPivotCruiseVelocity(400_000); //<-- Make sure we are limited by Acceleration
         ArmSubsystem.getInstance().setPivotAcceleration(60_000);
@@ -80,8 +79,8 @@ public class IntakeCommand extends CommandBase {
             }
         }
 
-        SmartDashboard.putNumber("Top Stator", GrabberSubsystem.getInstance().getTopGrabCurrent());
-        if(GrabberSubsystem.getInstance().getTopGrabCurrent() > 30) {
+        // SmartDashboard.putNumber("Top Stator", GrabberSubsystem.getInstance().getTopGrabCurrent());
+        if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
             // GrabberSubsystem.getInstance().setCurrentLimit(10);
             // GrabberSubsystem.getInstance().set(-0.1);
             CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
@@ -99,7 +98,7 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().resetPivotNU();
-        GrabberSubsystem.getInstance().setCurrentLimit(10);
+        // GrabberSubsystem.getInstance().setCurrentLimit(10);
         ArmSubsystem.getInstance().pivot(0);
         GrabberSubsystem.getInstance().orient(0);
         GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);   //Make the grabber hold it

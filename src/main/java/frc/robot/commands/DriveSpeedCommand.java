@@ -45,7 +45,7 @@ public class DriveSpeedCommand extends CommandBase{
             Tabs.DriveTest.grabberAngle()
         );
 
-        Tabs.DriveTest.displayGrabberCurrent(GrabberSubsystem.getInstance().getCurrent());
+        Tabs.DriveTest.displayGrabberCurrent(GrabberSubsystem.getInstance().getGrabberCurrent());
     }
 
     @Override

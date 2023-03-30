@@ -143,10 +143,12 @@ public final class Constants {
   }
 
   public static final class Grabber {
+    public static final int FALCON_GRABBER_PORT = 0;
     public static final int LEFT_GRABBER_PORT = 13;
     public static final int RIGHT_GRABBER_PORT = 12;
 
-    public static final int WRIST_PORT = 11;
+    // public static final int WRIST_PORT = 11;
+    public static final int WRIST_PORT = 1;
 
     // TODO: FILL IN PID LOOP VALUES, CHANGE SPEED, AND CALCULATE ANGLES
     public static final double ORIENTER_KF = 0.001;

@@ -30,7 +30,7 @@ public class IntakeCubeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        GrabberSubsystem.getInstance().setCurrentLimit(30);
+        // GrabberSubsystem.getInstance().setCurrentLimit(30);
 
         ArmSubsystem.getInstance().setPivotCruiseVelocity(40_000);
         ArmSubsystem.getInstance().setPivotAcceleration(40_000);
@@ -53,7 +53,7 @@ public class IntakeCubeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_INTAKE_SPEED, -Constants.Grabber.CUBE_INTAKE_SPEED);
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_INTAKE_SPEED);
         // SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
 
         if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
@@ -85,10 +85,10 @@ public class IntakeCubeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        GrabberSubsystem.getInstance().setCurrentLimit(10);
+        // GrabberSubsystem.getInstance().setCurrentLimit(10);
         if(!to90)ArmSubsystem.getInstance().pivot(0);
         else ArmSubsystem.getInstance().pivot(-Constants.TAU/8);
-        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_HOLD_SPEED, -Constants.Grabber.CUBE_HOLD_SPEED);   //Make the grabber hold it
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_HOLD_SPEED);   //Make the grabber hold it
     }
 
     @Override

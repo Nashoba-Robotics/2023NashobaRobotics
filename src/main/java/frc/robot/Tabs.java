@@ -106,11 +106,8 @@ public final class Tabs {
         private static GenericEntry orienterStator = values.add("Wrist Stator", -1)
             .withPosition(2, 1)
             .getEntry();
-        private static GenericEntry topRollerStator = values.add("Top Roller Stator", 0)
+        private static GenericEntry grabberStator = values.add("Top Roller Stator", 0)
             .withPosition(3, 0)
-            .getEntry();
-        private static GenericEntry bottomRollerStator = values.add("Bot Roller Stator", -1)
-            .withPosition(3, 1)
             .getEntry();
         private static GenericEntry encoderAngle = values.add("Sensor Angle", 0)
             .withPosition(2, 2)
@@ -141,10 +138,7 @@ public final class Tabs {
         }
 
         public static void displayTopStator(double stator){
-            topRollerStator.setDouble(stator);
-        }
-        public static void displayBotStator(double stator){
-            bottomRollerStator.setDouble(stator);
+            grabberStator.setDouble(stator);
         }
         public static void displayOrientStator(double stator){
             orienterStator.setDouble(stator);
@@ -295,9 +289,6 @@ public final class Tabs {
         private static GenericEntry targetPivot = error.add("Target Pivot", 0)  
             .withPosition(1, 0)
             .getEntry();
-        private static GenericEntry targetEncoder = error.add("Target Encoder", 0)  //Should be the same as above
-            .withPosition(1, 1)
-            .getEntry();
         private static GenericEntry targetExtend = error.add("Target Extend", 0)
             .withPosition(1, 2)    
             .getEntry();
@@ -357,7 +348,7 @@ public final class Tabs {
             extendNU.setDouble(NU);
 
             double error = targetExtend.getDouble(0) - extendNU.getDouble(0);
-            extendNU.setDouble(error);
+            extendError.setDouble(error);
         }
         public static void displayWristNU(double NU){
             wristNU.setDouble(NU);

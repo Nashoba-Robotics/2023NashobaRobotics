@@ -31,8 +31,8 @@ public class IntakeTestCommand extends CommandBase{
         double wristNU = Tabs.Intake.getOrienterNU();
         GrabberSubsystem.getInstance().orientPos(wristNU);
 
-        double wristSpeed = Tabs.Intake.getGrabSpeed();
-        GrabberSubsystem.getInstance().set(wristSpeed, wristSpeed);
+        double grabberSpeed = Tabs.Intake.getGrabSpeed();
+        GrabberSubsystem.getInstance().set(grabberSpeed);
 
         Tabs.Intake.displayExtendNU(ArmSubsystem.getInstance().getPos());
         Tabs.Intake.displayExtendCurrent(
@@ -47,8 +47,7 @@ public class IntakeTestCommand extends CommandBase{
         );
 
         Tabs.Intake.displayOrienterNU(GrabberSubsystem.getInstance().getOrientPos());
-        Tabs.Intake.displayTopStator(GrabberSubsystem.getInstance().getTopGrabCurrent());
-        Tabs.Intake.displayBotStator(GrabberSubsystem.getInstance().getBotGrabCurrent());
+        Tabs.Intake.displayTopStator(GrabberSubsystem.getInstance().getGrabberCurrent());
         Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderAngle());
 
         Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());

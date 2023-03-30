@@ -13,8 +13,8 @@ public class ScoreCubeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        GrabberSubsystem.getInstance().setCurrentLimit(40);
-        GrabberSubsystem.getInstance().set(-Constants.Grabber.CUBE_RELEASE_SPEED, Constants.Grabber.CUBE_RELEASE_SPEED);
+        // GrabberSubsystem.getInstance().setCurrentLimit(40);
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_RELEASE_SPEED);
     }
 
     @Override

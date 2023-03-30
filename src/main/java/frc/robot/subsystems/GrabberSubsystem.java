@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -16,8 +19,10 @@ import frc.robot.Tabs;
 import frc.robot.lib.math.NRUnits;
 
 public class GrabberSubsystem extends SubsystemBase{
-    private CANSparkMax grabber1;    //I don't know if this is actually how to make a SparkMax instance
-    private CANSparkMax grabber2;
+    // private CANSparkMax grabber1;    //I don't know if this is actually how to make a SparkMax instance
+    // private CANSparkMax grabber2;
+
+    private TalonFX grabber;
 
     private CANSparkMax orienter;
     private SparkMaxPIDController orienterController;
@@ -34,18 +39,20 @@ public class GrabberSubsystem extends SubsystemBase{
      */
 
     public GrabberSubsystem(){
-        grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
-        grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushless);
+        // grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
+        // grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushless);
+        grabber = new TalonFX(Constants.Grabber.FALCON_GRABBER_PORT);
+        grabber.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 0, 0, 0));
 
 
         orienter = new CANSparkMax(Constants.Grabber.WRIST_PORT, MotorType.kBrushless);
         orientEncoder = orienter.getEncoder();
 
-        grabber1.setIdleMode(IdleMode.kBrake);
-        grabber2.setIdleMode(IdleMode.kBrake);
+        // grabber1.setIdleMode(IdleMode.kBrake);
+        // grabber2.setIdleMode(IdleMode.kBrake);
 
-        grabber1.setSmartCurrentLimit(30);
-        grabber2.setSmartCurrentLimit(30);
+        // grabber1.setSmartCurrentLimit(30);
+        // grabber2.setSmartCurrentLimit(30);
 
         orienterController = orienter.getPIDController();
         orienterController.setFF(Constants.Grabber.ORIENTER_KF);
@@ -66,21 +73,24 @@ public class GrabberSubsystem extends SubsystemBase{
         set(Constants.Grabber.CONE_INTAKE_SPEED);
     }
 
-    public void setLeft(double speed){
-        grabber1.set(speed);
-    }
+    // public void setLeft(double speed){
+    //     grabber1.set(speed);
+    // }
 
-    public void setRight(double speed){
-        grabber2.set(speed);
-    }
+    // public void setRight(double speed){
+    //     grabber2.set(speed);
+    // }
 
-    public void set(double leftSpeed, double rightSpeed){
-        setLeft(leftSpeed);
-        setRight(rightSpeed);
-    }
+    // public void set(double leftSpeed, double rightSpeed){
+    //     setLeft(leftSpeed);
+    //     setRight(rightSpeed);
+    // }
 
+    // public void set(double speed){
+    //     set(speed, speed);
+    // }
     public void set(double speed){
-        set(speed, speed);
+        grabber.set(ControlMode.PercentOutput, speed);
     }
 
     //Turns the orienter to specified angle in radians
@@ -113,27 +123,31 @@ public class GrabberSubsystem extends SubsystemBase{
         orientEncoder.setPosition(0);
     }
 
-    public double getCurrent() {
-        // Average
-        return (getTopGrabCurrent()+getBotGrabCurrent()) / 2;
+    public double getGrabberCurrent(){
+        return grabber.getStatorCurrent();
     }
+    // public double getCurrent() {
+    //     // Average
+    //     return (getTopGrabCurrent()+getBotGrabCurrent()) / 2;
+    // }
 
-    public double getTopGrabCurrent(){
-        return grabber1.getOutputCurrent();
-    }
-    public double getBotGrabCurrent(){
-        return grabber2.getOutputCurrent();
-    }
+    // public double getTopGrabCurrent(){
+    //     return grabber1.getOutputCurrent();
+    // }
+    // public double getBotGrabCurrent(){
+    //     return grabber2.getOutputCurrent();
+    // }
 
     public void stop() {
-        grabber1.set(0);
+        //grabber1.set(0);
+        set(0);
         orienter.set(0);
     }
 
-    public void setCurrentLimit(int limit) {
-        grabber1.setSmartCurrentLimit(limit);
-        grabber2.setSmartCurrentLimit(limit);
-    }
+    // public void setCurrentLimit(int limit) {
+    //     // grabber1.setSmartCurrentLimit(limit);
+    //     // grabber2.setSmartCurrentLimit(limit);
+    // }
 
     public double getLidarDist(){
         recieve = lidar.read(18);
@@ -153,19 +167,23 @@ public class GrabberSubsystem extends SubsystemBase{
     public void periodic() {
         if(Constants.Logging.GRABBER) {
             //Grabber1
-            LogManager.appendToLog(grabber1.getEncoder().getVelocity(), "Grabber:/Grabber1/Velocity");
-            LogManager.appendToLog(grabber1.getBusVoltage() * grabber1.getAppliedOutput(), "Grabber:/Grabber1/Voltage");
+            // LogManager.appendToLog(grabber1.getEncoder().getVelocity(), "Grabber:/Grabber1/Velocity");
+            // LogManager.appendToLog(grabber1.getBusVoltage() * grabber1.getAppliedOutput(), "Grabber:/Grabber1/Voltage");
 
-            //Grabber2
-            LogManager.appendToLog(grabber2.getEncoder().getVelocity(), "Grabber:/Grabber2/Velocity");
-            LogManager.appendToLog(grabber2.getBusVoltage() * grabber2.getAppliedOutput(), "Grabber:/Grabber2/Voltage");
+            // //Grabber2
+            // LogManager.appendToLog(grabber2.getEncoder().getVelocity(), "Grabber:/Grabber2/Velocity");
+            // LogManager.appendToLog(grabber2.getBusVoltage() * grabber2.getAppliedOutput(), "Grabber:/Grabber2/Voltage");
+
+            //Grabber
+            LogManager.appendToLog(grabber.getSelectedSensorVelocity(), "Grabber:/Grabber/Velocity");
+            LogManager.appendToLog(grabber.getMotorOutputVoltage(), "Grabber:/Grabber/Voltage");
 
             //Orienter
             LogManager.appendToLog(orientEncoder.getPosition(), "Grabber:/Orienter/Position");
         }
 
-        SmartDashboard.putNumber("grabber1", grabber1.getOutputCurrent());
-        SmartDashboard.putNumber("grabber2", grabber2.getOutputCurrent());
+        // SmartDashboard.putNumber("grabber1", grabber1.getOutputCurrent());
+        // SmartDashboard.putNumber("grabber2", grabber2.getOutputCurrent());
 
         Tabs.Comp.displayWristNU(getOrientPos());
     }

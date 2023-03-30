@@ -21,14 +21,14 @@ public class ScoreConeCommand extends CommandBase {
 
         int multiplier = scoreFront ? 1 : -1;
 
-        GrabberSubsystem.getInstance().setCurrentLimit(40);
+        // GrabberSubsystem.getInstance().setCurrentLimit(40);
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
         startTime = System.currentTimeMillis();
 
         boolean low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;
         if(low){
-            GrabberSubsystem.getInstance().setCurrentLimit(50);
+            // GrabberSubsystem.getInstance().setCurrentLimit(50);
             GrabberSubsystem.getInstance().set(Constants.Grabber.LOW_CONE_RELEASE_SPEED);
             ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
         } 

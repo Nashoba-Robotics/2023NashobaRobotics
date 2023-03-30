@@ -33,7 +33,7 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
         map.put("Stop Intake", new InstantCommand(
             () -> {
                 ArmSubsystem.getInstance().pivot(0);
-                GrabberSubsystem.getInstance().set(0.1, -0.1);
+                GrabberSubsystem.getInstance().set(0.1);    //Don't remember if this is supposed to be positive or negative
             },
             ArmSubsystem.getInstance(),
             GrabberSubsystem.getInstance()

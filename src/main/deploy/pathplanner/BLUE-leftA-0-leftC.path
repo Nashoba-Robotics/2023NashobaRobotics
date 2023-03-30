@@ -24,16 +24,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.98,
-        "y": 4.6
+        "x": 6.85,
+        "y": 4.65
       },
       "prevControl": {
-        "x": 6.701676893559831,
-        "y": 4.814663792995169
+        "x": 6.571676893559831,
+        "y": 4.864663792995169
       },
       "nextControl": {
-        "x": 6.701676893559831,
-        "y": 4.814663792995169
+        "x": 6.571676893559831,
+        "y": 4.864663792995169
       },
       "holonomicAngle": 180.0,
       "isReversal": true,
@@ -50,15 +50,15 @@
     {
       "anchorPoint": {
         "x": 2.25,
-        "y": 4.967338139804485
+        "y": 5.1
       },
       "prevControl": {
         "x": 2.7733118629619526,
-        "y": 5.252780974147366
+        "y": 5.38544283434288
       },
       "nextControl": {
         "x": 1.9987783009754052,
-        "y": 4.830308122154707
+        "y": 4.962969982350222
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -75,15 +75,15 @@
     {
       "anchorPoint": {
         "x": 1.55,
-        "y": 4.83
+        "y": 4.5
       },
       "prevControl": {
         "x": 2.2922459289362997,
-        "y": 4.795742495587555
+        "y": 4.465742495587555
       },
       "nextControl": {
         "x": 2.2922459289362997,
-        "y": 4.795742495587555
+        "y": 4.465742495587555
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -124,12 +124,37 @@
     },
     {
       "anchorPoint": {
-        "x": 7.0,
-        "y": 3.42
+        "x": 5.552494523792466,
+        "y": 4.830308122154706
       },
       "prevControl": {
-        "x": 6.292011575476142,
-        "y": 4.253599274036159
+        "x": 4.814076089577477,
+        "y": 5.19365687549859
+      },
+      "nextControl": {
+        "x": 6.271902116453806,
+        "y": 4.476313909892777
+      },
+      "holonomicAngle": -23.42869280874541,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.95,
+        "y": 3.47
+      },
+      "prevControl": {
+        "x": 6.545962151753363,
+        "y": 3.939613007431143
       },
       "nextControl": null,
       "holonomicAngle": -45.0,
@@ -162,6 +187,12 @@
       "position": 3.5636363636363573,
       "names": [
         "Start Intake Cone"
+      ]
+    },
+    {
+      "position": 1.5999999999999817,
+      "names": [
+        "Prep Score Angle"
       ]
     }
   ]

@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
@@ -122,7 +123,6 @@ public class ArmSubsystem extends SubsystemBase {
         return pivot1.getMotorOutputVoltage();
     }
 
-    //Returns in NU/100ms
     public double getPivotSpeed(){
         double pivotSpeed1 = pivot1.getSelectedSensorVelocity();
         double pivotSpeed2 = pivot2.getSelectedSensorVelocity();

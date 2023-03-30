@@ -77,7 +77,7 @@ public class IntakeCubeCommand extends CommandBase {
             }
         }
 
-        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             ArmSubsystem.getInstance().resetPivotNU();
             resetEncoder = true;
         }
@@ -87,7 +87,7 @@ public class IntakeCubeCommand extends CommandBase {
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().setCurrentLimit(10);
         if(!to90)ArmSubsystem.getInstance().pivot(0);
-        else ArmSubsystem.getInstance().pivot(-Constants.TAU/4);
+        else ArmSubsystem.getInstance().pivot(-Constants.TAU/8);
         GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_HOLD_SPEED, -Constants.Grabber.CUBE_HOLD_SPEED);   //Make the grabber hold it
     }
 

@@ -70,6 +70,7 @@ public class JoystickSubsytem extends SubsystemBase {
         0 : 
         (x-Constants.Joystick.MANUAL_PIVOT_DEADZONE)/(1-Constants.Joystick.MANUAL_PIVOT_DEADZONE);
 
+        x *= Constants.Joystick.MANUAL_PIVOT_SENSITIVITY;
         return x;
     }
 }

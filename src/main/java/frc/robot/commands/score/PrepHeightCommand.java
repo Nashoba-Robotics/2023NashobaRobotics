@@ -99,8 +99,6 @@ public class PrepHeightCommand extends CommandBase {
                     ArmSubsystem.getInstance().setPivot(pivotX*0.1);
                     joystick02 = false;
                 }
-                SmartDashboard.putBoolean("Manual", joystick02);
-                SmartDashboard.putNumber("SetPoint", lastPos2);
             }
         }
 

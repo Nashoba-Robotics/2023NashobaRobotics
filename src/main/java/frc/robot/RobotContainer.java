@@ -68,7 +68,12 @@ public class RobotContainer {
   Trigger squareUpAndSetArm = JoystickSubsytem.getInstance().getRightJoystick().button(1);
 
   public void configureButtonBindings(){
-    squareUpAndSetArm.onTrue(new InstantCommand(() -> ArmSubsystem.getInstance().pivot(22*Constants.TAU/360), ArmSubsystem.getInstance()));
+    squareUpAndSetArm.onTrue(new InstantCommand(() -> {
+      int multiplier = SwerveDriveSubsystem.getInstance().getGyroAngle() < Constants.TAU/4 &&
+        SwerveDriveSubsystem.getInstance().getGyroAngle() > -Constants.TAU/4 ? -1 : 1;
+      ArmSubsystem.getInstance().pivot(multiplier*22*Constants.TAU/360);
+    },
+      ArmSubsystem.getInstance()));
 
     cone.onTrue(new InstantCommand(
       () -> CandleSubsystem.getInstance().set(CandleState.WANT_CONE),

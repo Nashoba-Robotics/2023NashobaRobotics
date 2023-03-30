@@ -12,6 +12,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -38,11 +39,12 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
             GrabberSubsystem.getInstance()
         ));
         map.put("Start Intake Cone", new IntakeCommand(true));
+        map.put("Prep Score Angle", new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance()));
         
         List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-leftA-0-leftC",
         new PathConstraints(4, 3),
-        new PathConstraints(4, 2.5),
-        new PathConstraints(4, 3));
+        new PathConstraints(3.75, 2),
+        new PathConstraints(4, 3.5));
         
         FollowPathWithEvents path1 = new FollowPathWithEvents(
             new FollowPathCommand(path.get(0)),
@@ -76,11 +78,11 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
             }, SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.1),
             new AutoScoreCommand(),
-            new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
+            // new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
             path1,
             new WaitCommand(0.6),
             path2,
-            new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
+            // new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
             new AutoScoreCubeCommand(),
             path3
         );

@@ -240,7 +240,7 @@ public final class Constants {
 
     //Intkae
     public static final double INTAKE_ANGLE = 112.4 * Constants.TAU/360; //112.5
-    public static final double INTAKE_DEADZONE = 0.1;
+    public static final double INTAKE_DEADZONE = 1 * TAU/360;
 
     public static final double DOUBLE_STATION_ANGLE = 43 * TAU/360;
     public static final double DOUBLE_STATION_EXTEND_NU = 14_000;

@@ -1,5 +1,6 @@
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -26,9 +27,17 @@ public class IntakeCommand extends CommandBase {
 
     int multiplier;
 
+    //Data for seeing if we have a cone in the intake
+    double currentThreshold = 28;
+    boolean timerStarted = false;
+    Timer timer;
+
+
     public IntakeCommand(boolean intakeFront){
         multiplier = intakeFront ? 1 : -1;
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
+
+        timer = new Timer();
     }
 
     @Override
@@ -81,13 +90,28 @@ public class IntakeCommand extends CommandBase {
         }
 
         SmartDashboard.putNumber("Top Stator", GrabberSubsystem.getInstance().getTopGrabCurrent());
-        if(GrabberSubsystem.getInstance().getTopGrabCurrent() > 30) {
+        if(GrabberSubsystem.getInstance().getTopGrabCurrent() > currentThreshold) {
             // GrabberSubsystem.getInstance().setCurrentLimit(10);
             // GrabberSubsystem.getInstance().set(-0.1);
-            CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
+            if(!timerStarted){
+                timerStarted = true;
+                timer.start();
+            }
+            if(timer.get() >= 0.5){
+                CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
+                timer.stop();   //Don't remember if resetting the timers stops it.
+                timer.reset();
+                
+                timerStarted = false;
+            }
         }
-        else{
+        else{//When the current is outside of the threshold, we want to stop the lights and reset the timer
             CandleSubsystem.getInstance().set(CandleState.WANT_CONE);
+
+            timer.stop();   
+            timer.reset();
+                
+            timerStarted = false;
         }
 
         if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){

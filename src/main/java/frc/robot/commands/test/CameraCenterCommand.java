@@ -13,8 +13,8 @@ public class CameraCenterCommand extends SequentialCommandGroup{
 
     public CameraCenterCommand(){
         addCommands(
-            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance()),
-            new TranslateToCommand(new Translation2d(0, 1), Rotation2d.fromRadians(0))
+            new InstantCommand(() -> SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0))), SwerveDriveSubsystem.getInstance())
+            // new TranslateToCommand(new Translation2d(0, 1), Rotation2d.fromRadians(0))
         );
     }
 

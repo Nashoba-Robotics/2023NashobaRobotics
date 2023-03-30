@@ -24,6 +24,31 @@
     },
     {
       "anchorPoint": {
+        "x": 4.353481869356901,
+        "y": 0.47960506177422585
+      },
+      "prevControl": {
+        "x": 3.9309726482700813,
+        "y": 0.5367009024616336
+      },
+      "nextControl": {
+        "x": 4.855147034364459,
+        "y": 0.41181247190833964
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
         "x": 6.65,
         "y": 0.87
       },
@@ -95,6 +120,9 @@
       }
     }
   ],
+  "maxVelocity": 4.0,
+  "maxAcceleration": 4.0,
+  "isReversed": null,
   "markers": [
     {
       "position": 0.2909090909090868,
@@ -103,7 +131,7 @@
       ]
     },
     {
-      "position": 1.076363636363629,
+      "position": 2.1236363636363187,
       "names": [
         "Stop Intake"
       ]

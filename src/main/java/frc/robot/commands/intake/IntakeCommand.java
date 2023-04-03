@@ -67,7 +67,7 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void execute() {
         GrabberSubsystem.getInstance().intake();
-        SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
+        // SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
         if(Math.abs(ArmSubsystem.getInstance().getAngle() - pivotTarget) < 0.5 * Constants.TAU/360){
             atPivot = true;
@@ -113,7 +113,16 @@ public class IntakeCommand extends CommandBase {
             timerStarted = false;
         }
 
-        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        // if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        //     ArmSubsystem.getInstance().resetPivotNU();
+        //     resetEncoder = true;
+        // }
+
+        //Check if the arm pivot speed is 0
+        SmartDashboard.putNumber("Pivot NU Speed", ArmSubsystem.getInstance().getPivotSpeed());
+        if(!resetEncoder && 
+        Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10 && 
+        Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             ArmSubsystem.getInstance().resetPivotNU();
             resetEncoder = true;
         }

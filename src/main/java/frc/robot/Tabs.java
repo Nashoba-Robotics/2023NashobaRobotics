@@ -309,6 +309,14 @@ public final class Tabs {
         private static GenericEntry wristError = error.add("Wrist Error", 0)
             .withPosition(2, 3)
             .getEntry();
+
+        private static GenericEntry setPivotOffset = tab.add("Set Pivot Offset", Constants.Arm.ENCODER_OFFSET).getEntry();
+
+        private static GenericEntry grabberRunning = tab.add("Grabber On", false).getEntry();
+
+        public static void displayGrabberRunning(boolean running) {
+            grabberRunning.setBoolean(running);
+        }
  
         public static void add(Sendable sendable){
             tab.add(sendable);
@@ -324,6 +332,10 @@ public final class Tabs {
         }
         public static void add(String name, Object o){
             tab.add(name, o);
+        }
+
+        public static double getPivotOffset(){
+            return setPivotOffset.getDouble(Constants.Arm.ENCODER_OFFSET);
         }
 
         public static void displayGyro(double angle){

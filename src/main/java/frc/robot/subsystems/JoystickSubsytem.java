@@ -65,12 +65,14 @@ public class JoystickSubsytem extends SubsystemBase {
     }
     //Pushing left/right on left joystick
     public double getManualPivot(){
-        double x = operatorController.getX();
+        double x = -operatorController.getX();  //Going down corresponds to positive direction
         x = Math.abs(x) < Constants.Joystick.MANUAL_PIVOT_DEADZONE ? 
         0 : 
-        (x-Constants.Joystick.MANUAL_PIVOT_DEADZONE)/(1-Constants.Joystick.MANUAL_PIVOT_DEADZONE);
+        Math.signum(x)*(Math.abs(x)-Constants.Joystick.MANUAL_PIVOT_DEADZONE)/(1-Constants.Joystick.MANUAL_PIVOT_DEADZONE);
 
-        x *= Constants.Joystick.MANUAL_PIVOT_SENSITIVITY;
+        if(x > 0) x *= Constants.Joystick.MANUAL_PIVOT_DOWN_SENSITIVITY;
+        else x *= Constants.Joystick.MANUAL_PIVOT_UP_SENSITIVITY;
+
         return x;
     }
 }

@@ -7,7 +7,9 @@ import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -28,6 +30,9 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
 
         encoder = new CANCoder(4, "drivet");
+        encoder.configFactoryDefault();
+        encoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
         encoder.configMagnetOffset(Constants.Arm.ENCODER_OFFSET);
 
         config();
@@ -94,6 +99,10 @@ public class ArmSubsystem extends SubsystemBase {
 
         //Positive is extending out
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
+    }
+
+    public void addToAbsoluteOffset(double offset) {
+        encoder.configMagnetOffset(encoder.configGetMagnetOffset() + offset);
     }
 
     public void zeroPivot1(){
@@ -328,7 +337,8 @@ public class ArmSubsystem extends SubsystemBase {
             LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
             
             //Pivot1
-            LogManager.appendToLog(NRUnits.Pivot.NUToRad(pivot1.getSelectedSensorPosition()), "Arm:/Pivot1/Position");
+            LogManager.appendToLog(NRUnits.Pivot.NUToRad(ArmSubsystem.getInstance().getAngle()), "Arm:/RelativeAngle");
+            LogManager.appendToLog(NRUnits.Pivot.NUToRad(getEncoderAngle()), "Arm:/Pivot1/AbsolutePosition");
             LogManager.appendToLog(pivot1.getStatorCurrent(), "Arm:/Pivot1/Stator");
             LogManager.appendToLog(pivot1.getSupplyCurrent(), "Arm:/Pivot1/Supply");
 

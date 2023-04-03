@@ -77,7 +77,14 @@ public class IntakeCubeCommand extends CommandBase {
             }
         }
 
-        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        // if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        //     ArmSubsystem.getInstance().resetPivotNU();
+        //     resetEncoder = true;
+        // }
+
+        if(!resetEncoder && 
+        Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10 && 
+        Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             ArmSubsystem.getInstance().resetPivotNU();
             resetEncoder = true;
         }

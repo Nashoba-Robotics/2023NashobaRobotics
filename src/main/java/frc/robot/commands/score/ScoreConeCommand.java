@@ -29,7 +29,7 @@ public class ScoreConeCommand extends CommandBase {
         boolean low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;
         if(low){
             // GrabberSubsystem.getInstance().setCurrentLimit(50);
-            GrabberSubsystem.getInstance().set(Constants.Grabber.LOW_CONE_RELEASE_SPEED);
+            GrabberSubsystem.getInstance().outtake(Constants.Grabber.LOW_CONE_RELEASE_SPEED);
             ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
         } 
         else{
@@ -64,12 +64,12 @@ public class ScoreConeCommand extends CommandBase {
             ArmSubsystem.getInstance().setPivotAcceleration(50_000);
         }
         ArmSubsystem.getInstance().pivot(0);
-        ArmSubsystem.getInstance().extendNU(0);
+        ArmSubsystem.getInstance().extendNU(3_000);
     }
 
     @Override
     public boolean isFinished() {
-        return System.currentTimeMillis() - startTime > 2000;
+        return System.currentTimeMillis() - startTime > 400;
     }
 
 }

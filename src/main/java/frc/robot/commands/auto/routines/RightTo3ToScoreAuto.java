@@ -37,7 +37,10 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
         //     ArmSubsystem.getInstance(),
         //     GrabberSubsystem.getInstance()
         // ));
-        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA", new PathConstraints(3.5, 1.5), new PathConstraints(3.5, 2.5), new PathConstraints(3.5, 2.5));
+        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA",
+            new PathConstraints(3.5, 1.5),
+            new PathConstraints(3.5, 2.5),
+            new PathConstraints(3.5, 2.5));
         
         FollowPathWithEvents path1 = new FollowPathWithEvents(
             new FollowPathCommand(path.get(0)),

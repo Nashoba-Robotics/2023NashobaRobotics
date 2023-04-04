@@ -1,5 +1,6 @@
 package frc.robot.commands.auto.routines;
 
+import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -27,8 +28,8 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
 
     public MidToClimbTo1(){
 
-        Command translateTo = new TranslateToCommand(new Translation2d(1.55, -0.25), Rotation2d.fromRadians(Constants.TAU/2));
-        Command translateBack = new TranslateToCommand(new Translation2d(-4, 0.35), Rotation2d.fromRadians(Constants.TAU/2));
+        Command translateTo = new TranslateToCommand(new Translation2d(1.55, -0.25), Rotation2d.fromRadians(Constants.TAU/2), new PathConstraints(3.5, 2.5));
+        Command translateBack = new TranslateToCommand(new Translation2d(-4, 0.35), Rotation2d.fromRadians(Constants.TAU/2), new PathConstraints(2.5, 2.5));
 
         addCommands(
             new InstantCommand(() -> {
@@ -39,7 +40,7 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
                 ArmSubsystem.getInstance().resetPivotNU();
             }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(), //<-- This makes us tip a bit
-            new WaitCommand(1.25), //<-- This makes sure the tip does not mess up the end conditions :)
+            new WaitCommand(0.7), //<-- This makes sure the tip does not mess up the end conditions :)
             new waitUntilLevel(),
             new ParallelCommandGroup(
                 new onToBalance(),

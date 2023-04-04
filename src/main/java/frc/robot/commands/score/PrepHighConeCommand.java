@@ -70,21 +70,30 @@ public class PrepHighConeCommand extends CommandBase{
         multiplier = scoreFront ? 1 : -1;
 
         double prepAngle = 0;
-        if(multiplier == 1) prepAngle = Constants.Arm.HIGH_ANGLE + (0)*Constants.TAU/360;
-        else prepAngle = -(Constants.Arm.HIGH_ANGLE - 1.1*Constants.TAU/360);
+        if(multiplier == 1) {
+            prepAngle = Constants.Arm.HIGH_FRONT_ANGLE + (0)*Constants.TAU/360;
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(55_000);
+
+            ArmSubsystem.getInstance().setExtendAcceleration(50_000);
+        }
+        else {
+            prepAngle = -(Constants.Arm.HIGH_FRONT_ANGLE - 1.1*Constants.TAU/360);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(35_000);
+
+            ArmSubsystem.getInstance().setExtendAcceleration(30_000);
+        }
 
         ArmSubsystem.getInstance().pivot(prepAngle);
         ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
         GrabberSubsystem.getInstance().orientPos(-8.5 * multiplier);
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(55_000);
-
-        ArmSubsystem.getInstance().setExtendAcceleration(50_000);
+        
 
         targetPos = Constants.Arm.HIGH_EXTEND_NU;
         targetPivot = prepAngle;
-        targetWrist = Constants.Grabber.PREP_CONE_NU * multiplier;
+        targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
 
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setPivotTarget(targetPivot);
@@ -101,11 +110,12 @@ public class PrepHighConeCommand extends CommandBase{
         double extendSpeed = Constants.Arm.l0 * Math.tan(pivotAngle)/Math.cos(pivotAngle)*pivotSpeed;
         extendSpeed = NRUnits.Extension.mpsToNU(extendSpeed);
 
-        ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed);
+        if(multiplier == 1) ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed + 6000);
+        else ArmSubsystem.getInstance().setExtendCruiseVelocity(extendSpeed);
 
         //NOTE: Could potentially causes issues when manuallying in
         if(Math.abs(ArmSubsystem.getInstance().getExtendNU() - Constants.Arm.HIGH_EXTEND_NU) < 1000){   //While extending, we move the wrist to get out of the way of the bottom node
-            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_NU * multiplier);          //Once we've reached a close enough position, then put the wrist into scoring position
+            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);          //Once we've reached a close enough position, then put the wrist into scoring position
         }
 
 
@@ -153,7 +163,7 @@ public class PrepHighConeCommand extends CommandBase{
             GrabberSubsystem.getInstance().orientPos(targetWrist);
         }
 
-        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.HIGH_ANGLE){
+        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.HIGH_FRONT_ANGLE && Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 100){
             ArmSubsystem.getInstance().resetPivotNU();
             resetEncoder = true;
         }

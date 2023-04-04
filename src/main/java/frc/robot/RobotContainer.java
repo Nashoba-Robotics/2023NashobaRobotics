@@ -11,6 +11,7 @@ import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.GrabberTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.DriveSpeedCommand;
+import frc.robot.commands.SetPivotOffsetCommand;
 import frc.robot.commands.intake.DoubleStationIntakeCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
@@ -35,6 +36,9 @@ public class RobotContainer {
     configureTabs();
 
     SmartDashboard.putData(new CameraCenterCommand());
+    SmartDashboard.putData(new InstantCommand(
+      () -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2)
+    ));
   }  
 
   public static CommandJoystick operatorController = new CommandJoystick(2);
@@ -67,8 +71,20 @@ public class RobotContainer {
 
   Trigger squareUpAndSetArm = JoystickSubsytem.getInstance().getRightJoystick().button(1);
 
+  Trigger resetPivotNU = JoystickSubsytem.getInstance().getRightJoystick().button(10);
+
+  // Trigger testCone = JoystickSubsytem.getInstance().getRightJoystick().button(14);
+  // Trigger testCube = JoystickSubsytem.getInstance().getRightJoystick().button(15);
+
   public void configureButtonBindings(){
-    squareUpAndSetArm.onTrue(new InstantCommand(() -> ArmSubsystem.getInstance().pivot(22*Constants.TAU/360), ArmSubsystem.getInstance()));
+
+    squareUpAndSetArm.onTrue(new InstantCommand(() -> {
+      int multiplier = SwerveDriveSubsystem.getInstance().getGyroAngle() < Constants.TAU/4 &&
+        SwerveDriveSubsystem.getInstance().getGyroAngle() > -Constants.TAU/4 ? -1 : 1;
+        ArmSubsystem.getInstance().pivot(multiplier*22*Constants.TAU/360);
+        ArmSubsystem.getInstance().extendNU(3_000);
+    },
+      ArmSubsystem.getInstance()));
 
     cone.onTrue(new InstantCommand(
       () -> CandleSubsystem.getInstance().set(CandleState.WANT_CONE),
@@ -105,14 +121,14 @@ public class RobotContainer {
 
     lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cone).onTrue(new PrepHighConeCommand());
+    highPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH, true));
 
     score.and(cone).toggleOnTrue(new ScoreConeCommand());
     intakeButton.and(cube).toggleOnTrue(new IntakeCubeCommand());
 
     lowPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cube).onTrue(new PrepHighCubeCommand());
+    highPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
 
     score.and(cube).toggleOnTrue(new ScoreCubeCommand());
     puke.toggleOnTrue(new PukeCommand());
@@ -156,6 +172,10 @@ public class RobotContainer {
       () -> SwerveDriveSubsystem.getInstance().set(0, 0, 0),
       SwerveDriveSubsystem.getInstance()
     ));
+
+    resetPivotNU.onTrue(new InstantCommand(
+      () -> ArmSubsystem.getInstance().resetPivotNU()
+    ));
   }
 
   public void configureTabs() {
@@ -175,5 +195,7 @@ public class RobotContainer {
     Tabs.DriveTest.tab.add(new DriveSpeedCommand());
 
     Tabs.GrabberTest.tab.add(new GrabberTestCommand());
+
+    Tabs.Comp.add(new SetPivotOffsetCommand());
   }
 }

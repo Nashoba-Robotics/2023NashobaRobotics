@@ -15,8 +15,9 @@ public class AutoScoreCommand extends SequentialCommandGroup {
     
     public AutoScoreCommand() {
         addCommands(
+            // new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH, false).withTimeout(5),
             new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH, false).withTimeout(0.8),
-            new ScoreConeCommand().withTimeout(0.8),
+            new ScoreConeCommand().withTimeout(0.7),
             new InstantCommand(() -> {
                 GrabberSubsystem.getInstance().stop();
                 ArmSubsystem.getInstance().pivot(0);

@@ -13,6 +13,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
@@ -36,7 +37,10 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
         //     ArmSubsystem.getInstance(),
         //     GrabberSubsystem.getInstance()
         // ));
-        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA", new PathConstraints(3.5, 2.5), new PathConstraints(3.5, 2.5));
+        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA",
+            new PathConstraints(3.5, 1.5),
+            new PathConstraints(3.5, 2.5),
+            new PathConstraints(3.5, 2.5));
         
         FollowPathWithEvents path1 = new FollowPathWithEvents(
             new FollowPathCommand(path.get(0)),
@@ -47,6 +51,11 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             new FollowPathCommand(path.get(1)),
             path.get(1).getMarkers(),
             map);
+
+        FollowPathWithEvents path3 = new FollowPathWithEvents(
+        new FollowPathCommand(path.get(1)),
+        path.get(1).getMarkers(),
+        map);
 
 
         addCommands(
@@ -73,9 +82,16 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             new WaitCommand(0.05),
             new AutoScoreCommand(),
             path1,
+            path2,
             new WaitCommand(0.3),
-            path2
-            // new AutoScoreCubeCommand()
+            new ParallelCommandGroup(
+                path3,
+                new SequentialCommandGroup(
+                    new WaitCommand(1),
+                    new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance())
+                )
+            ),
+            new AutoScoreCubeCommand()
         );
     }
 }

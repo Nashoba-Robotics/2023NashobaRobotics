@@ -1,5 +1,6 @@
 package frc.robot.commands.score;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
@@ -28,6 +29,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     boolean pivotMan0;
     boolean atPivot;
     
+    boolean atStartDeg;
     double targetWrist;
 
     public CubeAutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
@@ -81,6 +83,8 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         gotToStart = false;
         resetEncoder = false;
 
+        atStartDeg = Math.abs(ArmSubsystem.getInstance().getAngle() - 22*Constants.TAU/360) < 1*Constants.TAU/360;
+
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setPivotTarget(targetPivot);
         Tabs.Comp.setWristTarget(Constants.Grabber.CUBE_NU);
@@ -88,6 +92,15 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
 
     @Override
     public void execute() {
+        if(!DriverStation.isAutonomous() && !atStartDeg && Math.abs(targetPivot) < Constants.TAU/4){
+            ArmSubsystem.getInstance().pivot(-22*Constants.TAU/360 * multiplier);
+            ArmSubsystem.getInstance().extendNU(3_000);
+            if(Math.abs(Math.abs(ArmSubsystem.getInstance().getAngle()) - 22*Constants.TAU/360) < 1*Constants.TAU/360){
+                ArmSubsystem.getInstance().pivot(targetPivot);
+                ArmSubsystem.getInstance().extendNU(targetPos);
+                atStartDeg = true;
+            }
+        }
         if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
         if(gotToStart) {
             double y = JoystickSubsytem.getInstance().getManualExtend();
@@ -111,7 +124,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
                 atPivot = true;
             } 
             if(atPivot) {
-                double pivotX = JoystickSubsytem.getInstance().getManualPivot()*Constants.Joystick.MANUAL_PIVOT_SENSITIVITY;
+                double pivotX = JoystickSubsytem.getInstance().getManualPivot();
                 if(pivotX == 0){ // If there isn't any input, maintain the position
                     if(!pivotMan0){
                         pivotMan0 = true;
@@ -130,10 +143,12 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
 
             GrabberSubsystem.getInstance().orientPos(targetWrist);
 
-            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.INTAKE_DEADZONE){
+            if(!resetEncoder && 
+            Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= 1 * Constants.TAU/360 && 
+            Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10){
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
-            }
+        }
         }
     }
 

@@ -1,5 +1,6 @@
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -25,9 +26,17 @@ public class IntakeCommand extends CommandBase {
 
     int multiplier;
 
+    //Data for seeing if we have a cone in the intake
+    double currentThreshold = 28;
+    boolean timerStarted = false;
+    Timer timer;
+
+
     public IntakeCommand(boolean intakeFront){
         multiplier = intakeFront ? 1 : -1;
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
+
+        timer = new Timer();
     }
 
     @Override
@@ -58,7 +67,7 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void execute() {
         GrabberSubsystem.getInstance().intake();
-        SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
+        // SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
         if(Math.abs(ArmSubsystem.getInstance().getAngle() - pivotTarget) < 0.5 * Constants.TAU/360){
             atPivot = true;
@@ -83,13 +92,37 @@ public class IntakeCommand extends CommandBase {
         if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
             // GrabberSubsystem.getInstance().setCurrentLimit(10);
             // GrabberSubsystem.getInstance().set(-0.1);
-            CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
+            if(!timerStarted){
+                timerStarted = true;
+                timer.start();
+            }
+            if(timer.get() >= 0.5){
+                CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
+                timer.stop();   //Don't remember if resetting the timers stops it.
+                timer.reset();
+                
+                timerStarted = false;
+            }
         }
-        else{
+        else{//When the current is outside of the threshold, we want to stop the lights and reset the timer
             CandleSubsystem.getInstance().set(CandleState.WANT_CONE);
+
+            timer.stop();   
+            timer.reset();
+                
+            timerStarted = false;
         }
 
-        if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        // if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        //     ArmSubsystem.getInstance().resetPivotNU();
+        //     resetEncoder = true;
+        // }
+
+        //Check if the arm pivot speed is 0
+        SmartDashboard.putNumber("Pivot NU Speed", ArmSubsystem.getInstance().getPivotSpeed());
+        if(!resetEncoder && 
+        Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10 && 
+        Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             ArmSubsystem.getInstance().resetPivotNU();
             resetEncoder = true;
         }

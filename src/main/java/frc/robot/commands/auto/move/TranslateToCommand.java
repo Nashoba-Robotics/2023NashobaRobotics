@@ -22,16 +22,22 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class TranslateToCommand extends CommandBase {
 
+    private Translation2d blueTranslation;
+    private Translation2d redTranslation;
     private Translation2d translation;
     private Rotation2d endRotation;
     private Command command;
 
     private PathPlannerTrajectory trajectory;
+    private PathConstraints constraints;
 
-    public TranslateToCommand(Translation2d translation, Rotation2d endRotation) {
+    public TranslateToCommand(Translation2d translation, Rotation2d endRotation, PathConstraints constraints) {
         // addRequirements(SwerveDriveSubsystem.getInstance());
-        this.translation = translation;
+        blueTranslation = translation;
+        redTranslation = new Translation2d(translation.getX(), -translation.getY());
+        this.translation = blueTranslation;
         this.endRotation = endRotation;
+        this.constraints = constraints;
     }
 
     @Override
@@ -40,10 +46,14 @@ public class TranslateToCommand extends CommandBase {
 
         Rotation2d heading = translation.getX() < 0 ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
 
-        // if(DriverStation.getAlliance() == Alliance.Red) translation = new Translation2d(translation.getX(), -translation.getY());
+        if(DriverStation.getAlliance() == Alliance.Red) {
+            translation = redTranslation;
+        } else {
+            translation = blueTranslation;
+        }
 
         trajectory = PathPlanner.generatePath(
-            new PathConstraints(3.5, 2.5), 
+            constraints, 
             List.of(
                 new PathPoint(currPosition.getTranslation(), heading, currPosition.getRotation()),
                 new PathPoint(new Translation2d(currPosition.getX() + translation.getX(), currPosition.getY() + translation.getY()), heading, endRotation)

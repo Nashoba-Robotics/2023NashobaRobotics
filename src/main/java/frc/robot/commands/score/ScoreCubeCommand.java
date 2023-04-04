@@ -7,6 +7,7 @@ import frc.robot.subsystems.GrabberSubsystem;
 
 
 public class ScoreCubeCommand extends CommandBase {
+    double startTime;
     public ScoreCubeCommand() {
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
@@ -14,7 +15,8 @@ public class ScoreCubeCommand extends CommandBase {
     @Override
     public void initialize() {
         // GrabberSubsystem.getInstance().setCurrentLimit(40);
-        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_RELEASE_SPEED);
+        GrabberSubsystem.getInstance().outtake(Constants.Grabber.CUBE_RELEASE_SPEED);
+        startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -25,22 +27,21 @@ public class ScoreCubeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(50_000);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
+        ArmSubsystem.getInstance().setPivotAcceleration(30_000);
+        ArmSubsystem.getInstance().setExtendCruiseVelocity(50_000);
+        ArmSubsystem.getInstance().setExtendAcceleration(50_000);
         GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().orient(0);
-
-        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
-        ArmSubsystem.getInstance().setDefaultAcceleration();
         
         ArmSubsystem.getInstance().stop();
         ArmSubsystem.getInstance().pivot(0);
-        ArmSubsystem.getInstance().extendNU(0);
+        ArmSubsystem.getInstance().extendNU(3_000);
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return System.currentTimeMillis() - startTime > 400;
     }
 
 }

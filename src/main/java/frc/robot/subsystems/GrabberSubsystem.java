@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.InvertType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.revrobotics.CANSparkMax;
@@ -42,10 +44,18 @@ public class GrabberSubsystem extends SubsystemBase{
         // grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
         // grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushless);
         grabber = new TalonFX(Constants.Grabber.FALCON_GRABBER_PORT);
-        grabber.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(false, 0, 0, 0));
+        grabber.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 35, 35, 0.1));
+        grabber.setInverted(InvertType.InvertMotorOutput.InvertMotorOutput);    //Inverting it twice gives us special abilities. Shhhh. keep it a secret
+        grabber.setNeutralMode(NeutralMode.Brake);
+        grabber.config_kF(0, 0.0475);
+        grabber.config_kP(0, 0.35);   //1.5597E-07
+        grabber.config_kI(0, 0.00018);
+        grabber.config_kD(0, 0.15);
+
 
 
         orienter = new CANSparkMax(Constants.Grabber.WRIST_PORT, MotorType.kBrushless);
+        orienter.setInverted(true);
         orientEncoder = orienter.getEncoder();
 
         // grabber1.setIdleMode(IdleMode.kBrake);
@@ -91,6 +101,10 @@ public class GrabberSubsystem extends SubsystemBase{
     // }
     public void set(double speed){
         grabber.set(ControlMode.PercentOutput, speed);
+    }
+    //Input in percent
+    public void outtake(double speed){
+        grabber.set(ControlMode.Velocity, speed*26_000);  //26000 is an estimate of max speed based off of testing
     }
 
     //Turns the orienter to specified angle in radians
@@ -186,5 +200,6 @@ public class GrabberSubsystem extends SubsystemBase{
         // SmartDashboard.putNumber("grabber2", grabber2.getOutputCurrent());
 
         Tabs.Comp.displayWristNU(getOrientPos());
+        Tabs.Comp.displayGrabberRunning(grabber.getStatorCurrent() > 1);
     }
 }

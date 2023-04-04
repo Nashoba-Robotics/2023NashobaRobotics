@@ -98,7 +98,7 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().resetPivotNU();
-        // GrabberSubsystem.getInstance().setCurrentLimit(10);
+        // GrabberSubsystem.getInstance().setCurrentLimit(10)
         ArmSubsystem.getInstance().pivot(0);
         GrabberSubsystem.getInstance().orient(0);
         GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);   //Make the grabber hold it

@@ -304,4 +304,37 @@ public final class Constants {
     public static final boolean GRABBER = true;
     public static final boolean SWERVE = true;
   }
+
+  //Stores the channels all of these are located on in the PDH
+  public static final class PDH{
+    //Swerve Drive modules and sensors
+    public static final int FRONT_RIGHT_TURN_PORT = 0;
+    public static final int FRONT_LEFT_TURN_PORT = 0;
+    public static final int BACK_LEFT_TURN_PORT = 0;
+    public static final int BACK_RIGHT_TURN_PORT = 0;
+
+    public static final int FRONT_RIGHT_MOVE_PORT = 0;
+    public static final int FRONT_LEFT_MOVE_PORT = 0;
+    public static final int BACK_LEFT_MOVE_PORT = 0;
+    public static final int BACK_RIGHT_MOVE_PORT = 0;
+
+    public static final int FRONT_RIGHT_SENSOR_PORT = 0;
+    public static final int FRONT_LEFT_SENSOR_PORT = 0;
+    public static final int BACK_LEFT_SENSOR_PORT = 0;
+    public static final int BACK_RIGHT_SENSOR_PORT = 0;
+
+
+    //Arm
+    public static final int PIVOT_PORT_1 = 0;
+    public static final int PIVOT_PORT_2 = 0;
+
+    public static final int ARM_PORT = 0;
+  
+    public static final int ARM_SENSOR_PORT = 0;
+
+    
+    //Grabber/Intake
+    public static final int GRABBER_PORT = 0;
+    public static final int WRIST_PORT = 0;
+  }
 }

@@ -3,7 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.subsystems.JoystickSubsytem;
+import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class SwerveDriveCommand extends CommandBase {
@@ -13,7 +13,7 @@ public class SwerveDriveCommand extends CommandBase {
     public SwerveDriveCommand() {
         addRequirements(
             SwerveDriveSubsystem.getInstance(),
-            JoystickSubsytem.getInstance()
+            JoystickSubsystem.getInstance()
         );
 
         controller = new PIDController(1.2, 0, 0.01);
@@ -26,10 +26,10 @@ public class SwerveDriveCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if(JoystickSubsytem.getInstance().getRightButtonValue(3)) SwerveDriveSubsystem.getInstance().setFieldCentric(true);
-        if(JoystickSubsytem.getInstance().getLeftButtonValue(4)) SwerveDriveSubsystem.getInstance().setFieldCentric(false);
+        if(JoystickSubsystem.getInstance().getRightButtonValue(3)) SwerveDriveSubsystem.getInstance().setFieldCentric(true);
+        if(JoystickSubsystem.getInstance().getLeftButtonValue(4)) SwerveDriveSubsystem.getInstance().setFieldCentric(false);
 
-        if(JoystickSubsytem.getInstance().getRightButtonValue(1)){
+        if(JoystickSubsystem.getInstance().getRightButtonValue(1)){
             double angle = SwerveDriveSubsystem.getInstance().getGyroAngle();
             controller.setSetpoint(
                 angle < Constants.TAU/4 &&
@@ -42,7 +42,7 @@ public class SwerveDriveCommand extends CommandBase {
 
         if(squareUp) {
             SwerveDriveSubsystem.getInstance().set(
-                JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
+                JoystickSubsystem.getInstance().getLeftJoystickValues().shape(
                     Constants.Joystick.MOVE_DEAD_ZONE,
                     Constants.Joystick.MOVE_SENSITIVITY
                 ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
@@ -50,18 +50,18 @@ public class SwerveDriveCommand extends CommandBase {
                 );
         } else {
             SwerveDriveSubsystem.getInstance().set(
-                JoystickSubsytem.getInstance().getLeftJoystickValues().shape(
+                JoystickSubsystem.getInstance().getLeftJoystickValues().shape(
                     Constants.Joystick.MOVE_DEAD_ZONE,
                     Constants.Joystick.MOVE_SENSITIVITY
                 ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
-                JoystickSubsytem.getInstance().getRightJoystickValues().shape(
+                JoystickSubsystem.getInstance().getRightJoystickValues().shape(
                     Constants.Joystick.TURN_DEAD_ZONE,
                     Constants.Joystick.TURN_SENSITIVITY
                 ).x
                 );
         }
 
-        if(controller.atSetpoint() || JoystickSubsytem.getInstance().getRightJoystickValues().x > 0.5){
+        if(controller.atSetpoint() || JoystickSubsystem.getInstance().getRightJoystickValues().x > 0.5){
             squareUp = false;
         } 
     }

@@ -48,7 +48,7 @@ public class LimelightSubsystem extends SubsystemBase {
     }
 
     private LimelightSubsystem(){
-        nt = NetworkTableInstance.getDefault().getTable("limelight-front");
+        nt = NetworkTableInstance.getDefault().getTable("limelight-back");
 
         txEntry = nt.getEntry("tx");
         tyEntry = nt.getEntry("ty");

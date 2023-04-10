@@ -31,6 +31,8 @@ public class TranslateToCommand extends CommandBase {
     private PathPlannerTrajectory trajectory;
     private PathConstraints constraints;
 
+    private Rotation2d heading;
+
     public TranslateToCommand(Translation2d translation, Rotation2d endRotation, PathConstraints constraints) {
         // addRequirements(SwerveDriveSubsystem.getInstance());
         blueTranslation = translation;
@@ -38,13 +40,26 @@ public class TranslateToCommand extends CommandBase {
         this.translation = blueTranslation;
         this.endRotation = endRotation;
         this.constraints = constraints;
+        this.heading = null;
+    }
+
+    public TranslateToCommand(Translation2d translation, Rotation2d endRotation, Rotation2d heading, PathConstraints constraints) {
+        // addRequirements(SwerveDriveSubsystem.getInstance());
+        blueTranslation = translation;
+        redTranslation = new Translation2d(translation.getX(), -translation.getY());
+        this.translation = blueTranslation;
+        this.endRotation = endRotation;
+        this.constraints = constraints;
+        this.heading = heading;
     }
 
     @Override
     public void initialize() {
         Pose2d currPosition = SwerveDriveSubsystem.getInstance().getPose();
 
-        Rotation2d heading = translation.getX() < 0 ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
+        if(heading == null) {
+            heading = translation.getX() < 0 ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
+        }
 
         if(DriverStation.getAlliance() == Alliance.Red) {
             translation = redTranslation;

@@ -89,6 +89,7 @@ public class Robot extends TimedRobot {
   public void disabledInit() {
     // LimelightSubsystem.getInstance().off();
     CandleSubsystem.getInstance().set(CandleState.DISABLED);
+    // SwerveDriveSubsystem.getInstance().brake();
   }
 
   @Override
@@ -102,6 +103,7 @@ public class Robot extends TimedRobot {
     autoChooser.getSelected().schedule();
     CandleSubsystem.getInstance().set(CandleState.AUTO);
     ArmSubsystem.getInstance().resetPivotNU();
+    ArmSubsystem.getInstance().zeroExtend();
   }
 
   @Override

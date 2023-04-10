@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.subsystems.JoystickSubsytem;
+import frc.robot.subsystems.JoystickSubsystem;
+import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class IntakeCubeCommand extends CommandBase {
     double extendNU = 3_000;
@@ -62,7 +64,7 @@ public class IntakeCubeCommand extends CommandBase {
         } 
 
         if(atPivot) {
-            double pivotX = JoystickSubsytem.getInstance().getManualPivot();
+            double pivotX = JoystickSubsystem.getInstance().getManualPivot();
             if(pivotX == 0){ // If there isn't any input, maintain the position
                 // ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
                 if(!pivotMan0){
@@ -85,8 +87,12 @@ public class IntakeCubeCommand extends CommandBase {
         if(!resetEncoder && 
         Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10 && 
         Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-            ArmSubsystem.getInstance().resetPivotNU();
-            resetEncoder = true;
+            if(Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4) {
+                ArmSubsystem.getInstance().resetPivotNU();
+                resetEncoder = true;
+            } else {
+                CandleSubsystem.getInstance().set(CandleState.BAD);
+            }
         }
     }
 

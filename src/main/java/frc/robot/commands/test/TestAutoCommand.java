@@ -10,6 +10,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -19,6 +20,7 @@ import frc.robot.AutoPaths;
 import frc.robot.Constants;
 import frc.robot.Constants.Grabber;
 import frc.robot.commands.auto.lib.FollowPathCommand;
+import frc.robot.commands.auto.move.TranslateToCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -39,10 +41,10 @@ public class TestAutoCommand extends SequentialCommandGroup {
         // ));
 
         PathPlannerTrajectory path = PathPlanner.loadPath("testPath", new PathConstraints(2, 2));
-        FollowPathWithEvents command = new FollowPathWithEvents(
-            new FollowPathCommand(path),
-            path.getMarkers(),
-            map);
+        // FollowPathWithEvents command = new FollowPathWithEvents(
+        //     new FollowPathCommand(path),
+        //     path.getMarkers(),
+        //     map);
         addCommands(
             new InstantCommand(() -> SwerveDriveSubsystem.getInstance().setGyro(0), SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.5),
@@ -54,7 +56,7 @@ public class TestAutoCommand extends SequentialCommandGroup {
                     );
             }),
             new WaitCommand(0.5),
-            command
+            new TranslateToCommand(new Translation2d(0, 2), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(90), new PathConstraints(2, 1))
         );
     }
 }

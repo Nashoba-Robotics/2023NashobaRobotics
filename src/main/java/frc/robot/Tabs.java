@@ -313,6 +313,8 @@ public final class Tabs {
         private static GenericEntry setPivotOffset = tab.add("Set Pivot Offset", Constants.Arm.ENCODER_OFFSET).getEntry();
 
         private static GenericEntry grabberRunning = tab.add("Grabber On", false).getEntry();
+        
+        private static GenericEntry grabberCurrent = tab.add("Grabber Current", 0).getEntry();
 
         public static void displayGrabberRunning(boolean running) {
             grabberRunning.setBoolean(running);
@@ -367,6 +369,9 @@ public final class Tabs {
 
             double error = targetWrist.getDouble(0) - wristNU.getDouble(0);
             wristError.setDouble(error);
+        }
+        public static void displayGrabberCurrent(double current){
+            grabberCurrent.setDouble(current);
         }
 
         public static void setPivotTarget(double target){

@@ -12,6 +12,7 @@ public class IntakeTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
+        GrabberSubsystem.getInstance().setCurrentLimit(false);
         Tabs.Intake.resetAll();
 
         ArmSubsystem.getInstance().setPivotCruiseVelocity(20_000);

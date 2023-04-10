@@ -11,7 +11,7 @@ public class PukeCommand extends CommandBase{
     @Override
     public void initialize() {
         GrabberSubsystem.getInstance().set(0);
-        GrabberSubsystem.getInstance().setOrientSpeed(0.3);
+        GrabberSubsystem.getInstance().setOrientSpeed(1);
     }
 
     @Override

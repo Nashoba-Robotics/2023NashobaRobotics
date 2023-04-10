@@ -42,6 +42,7 @@ public class CandleSubsystem extends SubsystemBase {
         HAVE_CONE,
         HAVE_CUBE,
         DOUBLE_STATION,
+        BAD,
         FUN,
         FORDIANI
     }
@@ -54,7 +55,9 @@ public class CandleSubsystem extends SubsystemBase {
             case ENABLED:
                 candle.clearAnimation(0);
                 //candle.animate(new StrobeAnimation(0, 255, 0, 0, 1, LED_COUNT));
-                candle.setLEDs(0, 255, 0);
+                // candle.setLEDs(0, 255, 0);
+                candle.setLEDs(255, 255, 255);
+
                 break;
             case DISABLED:
                 candle.clearAnimation(0);
@@ -74,7 +77,9 @@ public class CandleSubsystem extends SubsystemBase {
                 candle.setLEDs(purple[0], purple[1], purple[2]);
                 break;
             case HAVE_CONE:
-                candle.animate(new StrobeAnimation(yellow[0], yellow[1], yellow[2], 0, 0.01, LED_COUNT));
+                //candle.animate(new StrobeAnimation(yellow[0], yellow[1], yellow[2], 0, 0.01, LED_COUNT));
+                candle.clearAnimation(0);
+                candle.setLEDs(0, 230, 0);
                 break;
             case HAVE_CUBE:
                 candle.animate(new StrobeAnimation(purple[0], purple[1], purple[2], 0, 0.01, LED_COUNT));
@@ -82,6 +87,9 @@ public class CandleSubsystem extends SubsystemBase {
             case DOUBLE_STATION:
                 candle.clearAnimation(0);
                 candle.setLEDs(0, 0, 255);
+                break;
+            case BAD:
+                candle.animate(new StrobeAnimation(255, 0, 0, 0, 0.01, LED_COUNT));
                 break;
             case FUN:
                 Animation a = new RgbFadeAnimation(0.7, 0.7, LED_COUNT);

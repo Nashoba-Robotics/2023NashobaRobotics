@@ -20,10 +20,10 @@ public class DriveToTestCommand extends CommandBase {
     @Override
     public void initialize() {
         PathPlannerTrajectory trajectory = PathPlanner.generatePath(
-            new PathConstraints(Constants.Swerve.Auto.MAX_SPEED, Constants.Swerve.Auto.MAX_ACCELERATION), 
+            new PathConstraints(2, 1.5), 
             List.of(
-                new PathPoint(SwerveDriveSubsystem.getInstance().getPose().getTranslation(), Rotation2d.fromDegrees(0), SwerveDriveSubsystem.getInstance().getPose().getRotation()),
-                new PathPoint(new Translation2d(1, 0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0))
+                new PathPoint(SwerveDriveSubsystem.getInstance().getPose().getTranslation(), Rotation2d.fromDegrees(180), SwerveDriveSubsystem.getInstance().getPose().getRotation()),
+                new PathPoint(new Translation2d(1.684, 2.884), Rotation2d.fromDegrees(180), Rotation2d.fromDegrees(0))
             )
         );
 

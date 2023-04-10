@@ -3,7 +3,7 @@ package frc.robot.commands.test;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.JoystickSubsytem;
+import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -31,7 +31,7 @@ public class FollowObjectCommand extends CommandBase {
         double ty = LimelightSubsystem.getInstance().getTY();
         double gain = strafeController.calculate(ty);
 
-        SwerveDriveSubsystem.getInstance().set(JoystickSubsytem.getInstance().getLeftJoystickValues().x, -gain, 0);
+        SwerveDriveSubsystem.getInstance().set(JoystickSubsystem.getInstance().getLeftJoystickValues().x, -gain, 0);
 
         SmartDashboard.putNumber("ty", ty);
 

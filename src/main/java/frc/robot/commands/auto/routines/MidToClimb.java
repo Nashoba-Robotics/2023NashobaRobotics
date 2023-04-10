@@ -35,7 +35,7 @@ public class MidToClimb extends SequentialCommandGroup{
             }, SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(), //<-- This makes us tip a bit
             new WaitCommand(1.25), //<-- This makes sure the tip does not mess up the end conditions :)
-            new waitUntilLevel(),
+            // new waitUntilLevel(),
             new ParallelCommandGroup(
                 new onToBalance(),
                 new InstantCommand(

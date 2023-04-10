@@ -31,8 +31,8 @@ public class GrabberSubsystem extends SubsystemBase{
     private RelativeEncoder orientEncoder;
 
     //LIDAR
-    private SerialPort lidar = new SerialPort(115200, SerialPort.Port.kUSB1);
-    private byte[] recieve = new byte[18];  //There are 9 bytes of data that are useful to us
+    // private SerialPort lidar = new SerialPort(115200, SerialPort.Port.kUSB1);
+    // private byte[] recieve = new byte[18];  //There are 9 bytes of data that are useful to us
     /*  *There is a weird problem where the lidar does not read the bytes in correct order, so we're going to be reading 18 bytes instead of 9
      *  2 Headers of value 89
      *  2 Distance values after that 
@@ -44,6 +44,7 @@ public class GrabberSubsystem extends SubsystemBase{
         // grabber1 = new CANSparkMax(Constants.Grabber.LEFT_GRABBER_PORT, MotorType.kBrushless); //CHANGE: I don't know if the motors will be brushed or brushless
         // grabber2 = new CANSparkMax(Constants.Grabber.RIGHT_GRABBER_PORT, MotorType.kBrushless);
         grabber = new TalonFX(Constants.Grabber.FALCON_GRABBER_PORT);
+        grabber.configFactoryDefault();
         grabber.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 35, 35, 0.1));
         grabber.setInverted(InvertType.InvertMotorOutput.InvertMotorOutput);    //Inverting it twice gives us special abilities. Shhhh. keep it a secret
         grabber.setNeutralMode(NeutralMode.Brake);
@@ -81,6 +82,15 @@ public class GrabberSubsystem extends SubsystemBase{
     //Gets the game piece
     public void intake(){
         set(Constants.Grabber.CONE_INTAKE_SPEED);
+    }
+
+    public void setCurrentLimit(boolean doLimit){
+        grabber.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(doLimit, 35, 35, 0.1));
+    }
+
+    public void setCurrentLimit(double limit, double triggerThresholdCurrent, double triggerThresholdTime){
+        grabber.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, limit, triggerThresholdCurrent, triggerThresholdTime));
+        
     }
 
     // public void setLeft(double speed){
@@ -163,22 +173,23 @@ public class GrabberSubsystem extends SubsystemBase{
     //     // grabber2.setSmartCurrentLimit(limit);
     // }
 
-    public double getLidarDist(){
-        recieve = lidar.read(18);
+    // public double getLidarDist(){
+    //     recieve = lidar.read(18);
 
-        for(int i = 0; i < recieve.length; i++){
-            if(recieve[i] == 89){
-                if(recieve[i+1] == 89)
-                    return recieve[i+2];    //The data will look something along the lines of _ 89 89 x _ _
-                else
-                    return recieve[i+1];
-            }
-        }
-        return -1.2;    //Random arbitrary value that tells us it's not working
-    }
+    //     for(int i = 0; i < recieve.length; i++){
+    //         if(recieve[i] == 89){
+    //             if(recieve[i+1] == 89)
+    //                 return recieve[i+2];    //The data will look something along the lines of _ 89 89 x _ _
+    //             else
+    //                 return recieve[i+1];
+    //         }
+    //     }
+    //     return -1.2;    //Random arbitrary value that tells us it's not working
+    // }
 
     @Override
     public void periodic() {
+        Tabs.Comp.displayGrabberCurrent(getGrabberCurrent());
         if(Constants.Logging.GRABBER) {
             //Grabber1
             // LogManager.appendToLog(grabber1.getEncoder().getVelocity(), "Grabber:/Grabber1/Velocity");
@@ -191,6 +202,8 @@ public class GrabberSubsystem extends SubsystemBase{
             //Grabber
             LogManager.appendToLog(grabber.getSelectedSensorVelocity(), "Grabber:/Grabber/Velocity");
             LogManager.appendToLog(grabber.getMotorOutputVoltage(), "Grabber:/Grabber/Voltage");
+            LogManager.appendToLog(grabber.getStatorCurrent(), "Grabber:/Grabber/StatorCurrent");
+            LogManager.appendToLog(grabber.getSupplyCurrent(), "Grabber:/Grabber/SupplyCurrent");
 
             //Orienter
             LogManager.appendToLog(orientEncoder.getPosition(), "Grabber:/Orienter/Position");
@@ -198,6 +211,7 @@ public class GrabberSubsystem extends SubsystemBase{
 
         // SmartDashboard.putNumber("grabber1", grabber1.getOutputCurrent());
         // SmartDashboard.putNumber("grabber2", grabber2.getOutputCurrent());
+        
 
         Tabs.Comp.displayWristNU(getOrientPos());
         Tabs.Comp.displayGrabberRunning(grabber.getStatorCurrent() > 1);

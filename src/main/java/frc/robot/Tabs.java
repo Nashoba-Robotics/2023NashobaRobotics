@@ -1,5 +1,8 @@
 package frc.robot;
 
+import java.io.FileNotFoundException;
+import java.util.HashMap;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -15,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 public final class Tabs {
     public static class Test{
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Test");
+        private static HashMap<String, GenericEntry> widgets = new HashMap();
 
         public static void add(Sendable sendable){
             tab.add(sendable);
@@ -30,6 +34,25 @@ public final class Tabs {
         }
         public static void add(String name, Object o){
             tab.add(name, o);
+        }
+
+        //New idea to make Shuffleboard tabs easier to deal with
+        public static void put(String name, double value){
+            if(widgets.containsKey(name)){
+                widgets.get(name).setDouble(value);
+            }
+            else{
+                GenericEntry entry = tab.add(name, 0).getEntry();
+                entry.setDouble(value);
+                widgets.put(name, entry);
+            }
+        }
+        public static double getDouble(String name){
+            if(!widgets.containsKey(name)){
+                return -6.9;    //<-- Arbitrary number
+            }
+            
+            return widgets.get(name).getDouble(0);
         }
 
         private static GenericEntry dispTest = tab.add("Testing", 0).getEntry();

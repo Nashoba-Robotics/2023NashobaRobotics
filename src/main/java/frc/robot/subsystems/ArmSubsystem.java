@@ -118,6 +118,10 @@ public class ArmSubsystem extends SubsystemBase {
         zeroPivot2();
     }
 
+    public void zeroExtend(){
+        tromboneSlide.setSelectedSensorPosition(0);
+    }
+
     //Returns arm to upright position
     public void reset(){
         pivot(0);

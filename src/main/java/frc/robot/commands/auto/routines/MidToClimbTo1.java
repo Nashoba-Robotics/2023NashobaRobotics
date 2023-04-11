@@ -29,7 +29,7 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
     public MidToClimbTo1(){
 
         Command translateTo = new TranslateToCommand(new Translation2d(1.55, -0.25), Rotation2d.fromRadians(Constants.TAU/2), new PathConstraints(3.5, 2.5));
-        Command translateBack = new TranslateToCommand(new Translation2d(-4, 0.35), Rotation2d.fromRadians(Constants.TAU/2), new PathConstraints(2.5, 2.5));
+        Command translateBack = new TranslateToCommand(new Translation2d(-4, 0.35), Rotation2d.fromRadians(Constants.TAU/2), new PathConstraints(2.75, 2.75));
 
         addCommands(
             new InstantCommand(() -> {
@@ -41,7 +41,7 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
             }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
             new AutoScoreCommand(), //<-- This makes us tip a bit
             new WaitCommand(0.7), //<-- This makes sure the tip does not mess up the end conditions :)
-            new waitUntilLevel(),
+            // new waitUntilLevel(),
             new ParallelCommandGroup(
                 new onToBalance(),
                 new InstantCommand(

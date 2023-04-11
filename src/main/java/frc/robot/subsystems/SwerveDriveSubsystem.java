@@ -364,11 +364,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     @Override
     public void periodic(){
         for(SwerveModule module : modules) module.updateMovePosition();
+
+        if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
+
         // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
         SmartDashboard.putNumber("Pipeline", LimelightSubsystem.getInstance().getPipeline());
 
+        if(LimelightSubsystem.getInstance().getPipeline() != Constants.Limelight.APRIL_TAG_PIPELINE) LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
         // if(LimelightSubsystem.getInstance().isTarget()) {
-        //     double limelightWeight = 0.8;
+        //     double limelightWeight = 0.1;
         //     double odometryWeight = 1 - limelightWeight;
 
         //     Translation2d limelightPose = LimelightSubsystem.getInstance().getRobotPose().getTranslation();
@@ -382,8 +386,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("mod2Ang", modules[2].getTurnAngle());
         SmartDashboard.putNumber("mod3Ang", modules[3].getTurnAngle());
         SmartDashboard.putNumber("angleSetPoint", setAngle);
-
-        if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
 
         SmartDashboard.putNumber("RobotVelocity", getVelocity());
         SmartDashboard.putNumber("XVelocity", getXVelocity());

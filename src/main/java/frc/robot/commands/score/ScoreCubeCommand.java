@@ -15,7 +15,9 @@ public class ScoreCubeCommand extends CommandBase {
     @Override
     public void initialize() {
         // GrabberSubsystem.getInstance().setCurrentLimit(40);
-        GrabberSubsystem.getInstance().outtake(Constants.Grabber.CUBE_RELEASE_SPEED);
+        // GrabberSubsystem.getInstance().setCurrentLimit(false);
+        GrabberSubsystem.getInstance().setCurrentLimit(45, 45, 0.1);
+        GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_RELEASE_SPEED);
         startTime = System.currentTimeMillis();
     }
 
@@ -27,6 +29,8 @@ public class ScoreCubeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        GrabberSubsystem.getInstance().setCurrentLimit(true);
+
         ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
         ArmSubsystem.getInstance().setPivotAcceleration(30_000);
         ArmSubsystem.getInstance().setExtendCruiseVelocity(50_000);

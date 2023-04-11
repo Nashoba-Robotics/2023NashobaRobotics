@@ -8,7 +8,7 @@ import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.subsystems.JoystickSubsytem;
+import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 
@@ -42,6 +42,7 @@ public class IntakeCommand extends CommandBase {
     @Override
     public void initialize() {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
+        GrabberSubsystem.getInstance().setCurrentLimit(true);
 
         ArmSubsystem.getInstance().setPivotCruiseVelocity(400_000); //<-- Make sure we are limited by Acceleration
         ArmSubsystem.getInstance().setPivotAcceleration(60_000);
@@ -66,7 +67,8 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        GrabberSubsystem.getInstance().intake();
+        GrabberSubsystem.getInstance().
+        intake();
         // SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
         if(Math.abs(ArmSubsystem.getInstance().getAngle() - pivotTarget) < 0.5 * Constants.TAU/360){
@@ -74,7 +76,7 @@ public class IntakeCommand extends CommandBase {
         } 
 
         if(atPivot) {
-            double pivotX = JoystickSubsytem.getInstance().getManualPivot();
+            double pivotX = JoystickSubsystem.getInstance().getManualPivot();
             if(pivotX == 0){ // If there isn't any input, maintain the position
                 if(!pivotMan0){
                     pivotMan0 = true;
@@ -90,8 +92,6 @@ public class IntakeCommand extends CommandBase {
 
         // SmartDashboard.putNumber("Top Stator", GrabberSubsystem.getInstance().getTopGrabCurrent());
         if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
-            // GrabberSubsystem.getInstance().setCurrentLimit(10);
-            // GrabberSubsystem.getInstance().set(-0.1);
             if(!timerStarted){
                 timerStarted = true;
                 timer.start();
@@ -113,28 +113,28 @@ public class IntakeCommand extends CommandBase {
             timerStarted = false;
         }
 
-        // if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-        //     ArmSubsystem.getInstance().resetPivotNU();
-        //     resetEncoder = true;
-        // }
-
         //Check if the arm pivot speed is 0
         SmartDashboard.putNumber("Pivot NU Speed", ArmSubsystem.getInstance().getPivotSpeed());
         if(!resetEncoder && 
-        Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10 && 
+        Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 3.0 && 
         Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-            ArmSubsystem.getInstance().resetPivotNU();
-            resetEncoder = true;
+            if(Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4) {
+                ArmSubsystem.getInstance().resetPivotNU();
+                resetEncoder = true;
+            } else {
+                CandleSubsystem.getInstance().set(CandleState.BAD);
+            }
         }
     }
 
     @Override
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().resetPivotNU();
-        // GrabberSubsystem.getInstance().setCurrentLimit(10)
+        GrabberSubsystem.getInstance().setCurrentLimit(25, 25, 0.1);
+        // GrabberSubsystem.getInstance().setCurrentLimit(10);
         ArmSubsystem.getInstance().pivot(0);
-        GrabberSubsystem.getInstance().orient(0);
-        GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);   //Make the grabber hold it
+        // GrabberSubsystem.getInstance().orient(0);
+        // GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);   //Make the grabber hold it
         
         // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
     }

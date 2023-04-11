@@ -5,23 +5,23 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import frc.robot.Constants;
 import frc.robot.lib.util.JoystickValues;
 
-public class JoystickSubsytem extends SubsystemBase {
+public class JoystickSubsystem extends SubsystemBase {
     
-    private static JoystickSubsytem instance;
+    private static JoystickSubsystem instance;
 
     private CommandJoystick rightJoystick;
     private CommandJoystick leftJoystick;
 
     private CommandJoystick operatorController;
 
-    public JoystickSubsytem() {
+    public JoystickSubsystem() {
         rightJoystick = new CommandJoystick(Constants.Joystick.RIGHT_JOYSTICK_PORT);
         leftJoystick = new CommandJoystick(Constants.Joystick.LEFT_JOYSTICK_PORT);
         operatorController = new CommandJoystick(Constants.Joystick.OPERATOR_PORT);
     }
 
-    public static JoystickSubsytem getInstance() {
-        if(instance == null) instance = new JoystickSubsytem();
+    public static JoystickSubsystem getInstance() {
+        if(instance == null) instance = new JoystickSubsystem();
         return instance;
     }
 

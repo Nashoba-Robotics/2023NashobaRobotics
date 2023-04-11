@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.test.CameraCenterCommand;
+import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.GrabberTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.DriveSpeedCommand;
@@ -25,7 +26,7 @@ import frc.robot.commands.score.ScoreCubeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.subsystems.JoystickSubsytem;
+import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 
@@ -58,25 +59,27 @@ public class RobotContainer {
 
   Trigger puke = operatorController.button(10); //+
 
-  Trigger resetGyro = JoystickSubsytem.getInstance().getLeftJoystick().button(1);
-  Trigger resetModules = JoystickSubsytem.getInstance().getRightJoystick().button(9);
+  Trigger resetGyro = JoystickSubsystem.getInstance().getLeftJoystick().button(1);
+  Trigger resetModules = JoystickSubsystem.getInstance().getRightJoystick().button(9);
 
-  Trigger climb90 = JoystickSubsytem.getInstance().getRightJoystick().button(11);
-  Trigger climbOpp = JoystickSubsytem.getInstance().getRightJoystick().button(12);
-  Trigger setArm0 = JoystickSubsytem.getInstance().getRightJoystick().button(13);
+  Trigger climb90 = JoystickSubsystem.getInstance().getRightJoystick().button(11);
+  Trigger climbOpp = JoystickSubsystem.getInstance().getRightJoystick().button(12);
+  Trigger setArm0 = JoystickSubsystem.getInstance().getRightJoystick().button(13);
 
-  // Trigger align = JoystickSubsytem.getInstance().getRightJoystick().button(2);
+  Trigger align = JoystickSubsystem.getInstance().getRightJoystick().button(2);
 
-  Trigger eStop = JoystickSubsytem.getInstance().getRightJoystick().button(8);
+  Trigger eStop = JoystickSubsystem.getInstance().getRightJoystick().button(8);
 
-  Trigger squareUpAndSetArm = JoystickSubsytem.getInstance().getRightJoystick().button(1);
+  Trigger squareUpAndSetArm = JoystickSubsystem.getInstance().getRightJoystick().button(1);
 
-  Trigger resetPivotNU = JoystickSubsytem.getInstance().getRightJoystick().button(10);
+  Trigger resetPivotNU = JoystickSubsystem.getInstance().getRightJoystick().button(10);
 
   // Trigger testCone = JoystickSubsytem.getInstance().getRightJoystick().button(14);
   // Trigger testCube = JoystickSubsytem.getInstance().getRightJoystick().button(15);
 
   public void configureButtonBindings(){
+
+    // align.onTrue(new DriveToTestCommand());
 
     squareUpAndSetArm.onTrue(new InstantCommand(() -> {
       int multiplier = SwerveDriveSubsystem.getInstance().getGyroAngle() < Constants.TAU/4 &&
@@ -181,7 +184,7 @@ public class RobotContainer {
   public void configureTabs() {
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
     Tabs.Intake.zeroes.add("Extend", new InstantCommand(
-      () -> ArmSubsystem.getInstance().resetPivotNU(),
+      () -> ArmSubsystem.getInstance().zeroExtend(),
       ArmSubsystem.getInstance()
     ));
     Tabs.Intake.zeroes.add("Pivot",new InstantCommand(
@@ -192,7 +195,7 @@ public class RobotContainer {
       () -> GrabberSubsystem.getInstance().zeroWrist(),
       GrabberSubsystem.getInstance()
     ));
-    Tabs.DriveTest.tab.add(new DriveSpeedCommand());
+    // Tabs.DriveTest.tab.add(new DriveSpeedCommand());
 
     Tabs.GrabberTest.tab.add(new GrabberTestCommand());
 

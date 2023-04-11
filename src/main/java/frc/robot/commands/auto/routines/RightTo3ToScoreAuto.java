@@ -20,6 +20,7 @@ import frc.robot.Constants;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCubeCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
+import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -28,19 +29,22 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class RightTo3ToScoreAuto extends SequentialCommandGroup{
     public RightTo3ToScoreAuto(){
         Map<String, Command> map = new HashMap<>();
-        // map.put("Start Intake", new IntakeCubeCommand());
-        // map.put("Stop Intake", new InstantCommand(
-        //     () -> {
-        //         ArmSubsystem.getInstance().pivot(0);
-        //         GrabberSubsystem.getInstance().set(0.1, -0.1);
-        //     },
-        //     ArmSubsystem.getInstance(),
-        //     GrabberSubsystem.getInstance()
-        // ));
+        map.put("Start Intake", new IntakeCubeCommand());
+        map.put("Stop Intake", new InstantCommand(
+            () -> {
+                ArmSubsystem.getInstance().pivot(0);
+                GrabberSubsystem.getInstance().set(-0.1);    //Don't remember if this is supposed to be positive or negative
+            },
+            ArmSubsystem.getInstance(),
+            GrabberSubsystem.getInstance()
+        ));
+        map.put("Prep Score Angle", new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance()));
+        
         List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA",
-            new PathConstraints(3.5, 1.5),
-            new PathConstraints(3.5, 2.5),
-            new PathConstraints(3.5, 2.5));
+            new PathConstraints(2.5, 1.5),
+            // new PathConstraints(3.5, 2.5),
+            // new PathConstraints(3.5, 1.5),
+            new PathConstraints(2.5, 1.5));
         
         FollowPathWithEvents path1 = new FollowPathWithEvents(
             new FollowPathCommand(path.get(0)),
@@ -52,10 +56,15 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             path.get(1).getMarkers(),
             map);
 
-        FollowPathWithEvents path3 = new FollowPathWithEvents(
-        new FollowPathCommand(path.get(1)),
-        path.get(1).getMarkers(),
-        map);
+        // FollowPathWithEvents path3 = new FollowPathWithEvents(
+        // new FollowPathCommand(path.get(2)),
+        // path.get(2).getMarkers(),
+        // map);
+
+        // FollowPathWithEvents path4 = new FollowPathWithEvents(
+        //     new FollowPathCommand(path.get(3)),
+        //     path.get(3).getMarkers(),
+        //     map);
 
 
         addCommands(
@@ -82,16 +91,10 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             new WaitCommand(0.05),
             new AutoScoreCommand(),
             path1,
+            new WaitCommand(0.6),
             path2,
-            new WaitCommand(0.3),
-            new ParallelCommandGroup(
-                path3,
-                new SequentialCommandGroup(
-                    new WaitCommand(1),
-                    new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance())
-                )
-            ),
             new AutoScoreCubeCommand()
+
         );
     }
 }

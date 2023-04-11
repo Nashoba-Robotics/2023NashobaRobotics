@@ -9,7 +9,7 @@ import frc.robot.RobotContainer;
 import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
-import frc.robot.subsystems.JoystickSubsytem;
+import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.Constants.Field.TargetLevel;
 
@@ -149,7 +149,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         else{
             if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
             if(gotToStart){
-                double y = JoystickSubsytem.getInstance().getManualExtend();   //Deadzone math
+                double y = JoystickSubsystem.getInstance().getManualExtend();   //Deadzone math
                 if(y < 0) y *= Constants.Joystick.MANUAL_EXTEND_OUT_SENSITIVITY; //Negative is extend out
                 else if(y > 0) y *= Constants.Joystick.MANUAL_EXTEND_IN_SENSITIVITY;    //Positive is retract in
                 
@@ -173,7 +173,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 } 
         
                 if(atPivot) {
-                    double pivotX = JoystickSubsytem.getInstance().getManualPivot();
+                    double pivotX = JoystickSubsystem.getInstance().getManualPivot();
                     if(pivotX == 0){ // If there isn't any input, maintain the position
                         if(!pivotMan0){
                             pivotMan0 = true;

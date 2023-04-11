@@ -178,8 +178,8 @@ public final class Constants {
     public static final double CUBE_NU = -21;
 
     public static final double CONE_RELEASE_SPEED = 0.07; //Speed of rollers to release cone. Shouldn't be enough to shoot it out. It should just be a bit of a boost to HELP it out
-    public static final double LOW_CONE_RELEASE_SPEED = 0.7;
-    public static final double CUBE_RELEASE_SPEED = 0.4;
+    public static final double LOW_CONE_RELEASE_SPEED = 1;
+    public static final double CUBE_RELEASE_SPEED = 1;
 
     //Intkae
     public static final double CONE_INTAKE_SPEED = -0.7;  //Wheels spin in, so the value is negative
@@ -195,8 +195,6 @@ public final class Constants {
 
     public static final double l0 = 0.690;  //Initial length of arm in meters
 
-    public static final double ABSOLUTE_ENCODER_OFFSET = -17.490234375;
-
     public static final int PIVOT_PORT_1 = 13;
     public static final int PIVOT_PORT_2 = 15;
 
@@ -205,7 +203,7 @@ public final class Constants {
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
 
-    public static final double ENCODER_OFFSET = 73.564;
+    public static final double ENCODER_OFFSET = 71.51;
 
     public static final double ARM_KF = 0.047;
     public static final double ARM_KP = 0.2;
@@ -244,7 +242,7 @@ public final class Constants {
     public static final double RETRACT_NU = 10_000; //NU to retract back in after scoring to avoid hitting middle node
 
     //Intkae
-    public static final double INTAKE_ANGLE = 114.25 * Constants.TAU/360; //112.5
+    public static final double INTAKE_ANGLE = 114.75 * Constants.TAU/360; //112.5
     public static final double INTAKE_DEADZONE = 1 * TAU/360;
 
     public static final double DOUBLE_STATION_ANGLE = 43 * TAU/360;
@@ -294,8 +292,8 @@ public final class Constants {
   }
 
   public static final class Limelight {
-    public static final int REFLECTIVE_TAPE_PIPELINE = 0;
-    public static final int APRIL_TAG_PIPELINE = 1;
+    public static final int REFLECTIVE_TAPE_PIPELINE = 1;
+    public static final int APRIL_TAG_PIPELINE = 0;
     public static final int CLASSIFICATION_PIPELINE = 2;
     public static final int DETECTION_PIPELINE = 3;
     public static final int CONE_CAM = 7;
@@ -305,5 +303,38 @@ public final class Constants {
     public static final boolean ARM = true;
     public static final boolean GRABBER = true;
     public static final boolean SWERVE = true;
+  }
+
+  //Stores the channels all of these are located on in the PDH
+  public static final class PDH{
+    //Swerve Drive modules and sensors
+    public static final int FRONT_RIGHT_TURN_PORT = 0;
+    public static final int FRONT_LEFT_TURN_PORT = 0;
+    public static final int BACK_LEFT_TURN_PORT = 0;
+    public static final int BACK_RIGHT_TURN_PORT = 0;
+
+    public static final int FRONT_RIGHT_MOVE_PORT = 0;
+    public static final int FRONT_LEFT_MOVE_PORT = 0;
+    public static final int BACK_LEFT_MOVE_PORT = 0;
+    public static final int BACK_RIGHT_MOVE_PORT = 0;
+
+    public static final int FRONT_RIGHT_SENSOR_PORT = 0;
+    public static final int FRONT_LEFT_SENSOR_PORT = 0;
+    public static final int BACK_LEFT_SENSOR_PORT = 0;
+    public static final int BACK_RIGHT_SENSOR_PORT = 0;
+
+
+    //Arm
+    public static final int PIVOT_PORT_1 = 0;
+    public static final int PIVOT_PORT_2 = 0;
+
+    public static final int ARM_PORT = 0;
+  
+    public static final int ARM_SENSOR_PORT = 0;
+
+    
+    //Grabber/Intake
+    public static final int GRABBER_PORT = 0;
+    public static final int WRIST_PORT = 0;
   }
 }

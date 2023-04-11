@@ -35,11 +35,11 @@
         "x": 4.855147034364459,
         "y": 0.41181247190833964
       },
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": true,
+      "isStopPoint": false,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -74,16 +74,41 @@
     },
     {
       "anchorPoint": {
-        "x": 2.8118941707968883,
-        "y": 0.8906951147235624
+        "x": 4.638961072793941,
+        "y": 0.6280542475614861
       },
       "prevControl": {
-        "x": 3.11316109469818,
-        "y": 0.3924459713483477
+        "x": 5.0728894620182405,
+        "y": 0.6508925838364495
       },
       "nextControl": {
-        "x": 2.5149957992223677,
-        "y": 1.3817193446352711
+        "x": 4.065948073358799,
+        "y": 0.5978956686438467
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.4921574629474046,
+        "y": 0.7765034333487463
+      },
+      "prevControl": {
+        "x": 2.7759826455194934,
+        "y": 0.29754843775834383
+      },
+      "nextControl": {
+        "x": 2.3094507727477,
+        "y": 1.0848209730607492
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -100,11 +125,11 @@
     {
       "anchorPoint": {
         "x": 1.5900431800863601,
-        "y": 1.13
+        "y": 0.95
       },
       "prevControl": {
         "x": 2.206678259510365,
-        "y": 1.0729041593125925
+        "y": 0.8929041593125926
       },
       "nextControl": null,
       "holonomicAngle": 0.0,
@@ -125,7 +150,7 @@
   "isReversed": null,
   "markers": [
     {
-      "position": 0.2909090909090868,
+      "position": 0.5818181818182069,
       "names": [
         "Start Intake"
       ]
@@ -134,6 +159,12 @@
       "position": 2.1236363636363187,
       "names": [
         "Stop Intake"
+      ]
+    },
+    {
+      "position": 2.4436363636362253,
+      "names": [
+        "Prep Score Angle"
       ]
     }
   ]

@@ -83,6 +83,16 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
+
+    //PDH logging
+    LogManager.appendToLog(RobotContainer.PDH.getVoltage(), "PDH:/Voltage");
+    LogManager.appendToLog(RobotContainer.PDH.getTemperature(), "PDH:/Temperature");
+    LogManager.appendToLog(RobotContainer.PDH.getPower(), "PDH:/Power");
+    LogManager.appendToLog(RobotContainer.PDH.getEnergy(), "PDH:/Energy");
+    for(int i = 0; i < 24; i++) {
+      LogManager.appendToLog(RobotContainer.PDH.getCurrent(i), "PDH:/Current/"+i);
+    }
+    
   }
 
   @Override

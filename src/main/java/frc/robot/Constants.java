@@ -308,14 +308,14 @@ public final class Constants {
   //Stores the channels all of these are located on in the PDH
   public static final class PDH{
     //Swerve Drive modules and sensors
-    public static final int FRONT_RIGHT_TURN_PORT = 0;
-    public static final int FRONT_LEFT_TURN_PORT = 0;
-    public static final int BACK_LEFT_TURN_PORT = 0;
-    public static final int BACK_RIGHT_TURN_PORT = 0;
+    public static final int FRONT_RIGHT_TURN_PORT = 7;
+    public static final int FRONT_LEFT_TURN_PORT = 11;
+    public static final int BACK_LEFT_TURN_PORT = 19;
+    public static final int BACK_RIGHT_TURN_PORT = 1;
 
-    public static final int FRONT_RIGHT_MOVE_PORT = 0;
-    public static final int FRONT_LEFT_MOVE_PORT = 0;
-    public static final int BACK_LEFT_MOVE_PORT = 0;
+    public static final int FRONT_RIGHT_MOVE_PORT = 6;
+    public static final int FRONT_LEFT_MOVE_PORT = 10;
+    public static final int BACK_LEFT_MOVE_PORT = 18;
     public static final int BACK_RIGHT_MOVE_PORT = 0;
 
     public static final int FRONT_RIGHT_SENSOR_PORT = 0;
@@ -325,10 +325,10 @@ public final class Constants {
 
 
     //Arm
-    public static final int PIVOT_PORT_1 = 0;
+    public static final int PIVOT_PORT_1 = 13;
     public static final int PIVOT_PORT_2 = 0;
 
-    public static final int ARM_PORT = 0;
+    public static final int ARM_PORT = 12;
   
     public static final int ARM_SENSOR_PORT = 0;
 

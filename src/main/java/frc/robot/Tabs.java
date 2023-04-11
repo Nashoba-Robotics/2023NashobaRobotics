@@ -494,4 +494,43 @@ public final class Tabs {
             backCurrent.setDouble(curr);
         }
     }
+
+    public static class PivotTest {
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("PivotTest");
+
+        private static GenericEntry setAngle = tab.add("Set Angle", 0).getEntry();
+        private static GenericEntry actualAngle = tab.add("Sensor Angle", 0).getEntry();
+        private static GenericEntry armSpeed = tab.add("NU Speed", 0).getEntry();
+        
+        private static ShuffleboardLayout PID = tab.getLayout("PID", BuiltInLayouts.kGrid)
+            .withSize(1, 3);
+        
+        private static GenericEntry P = PID.add("P", 0).withPosition(0, 0).getEntry();
+        private static GenericEntry I = PID.add("I", 0).withPosition(0, 1).getEntry();
+        private static GenericEntry D = PID.add("D", 0).withPosition(0, 2).getEntry();
+
+        public static double getP() {
+            return P.getDouble(0);
+        }
+
+        public static double getI() {
+            return I.getDouble(0);
+        }
+
+        public static double getD() {
+            return D.getDouble(0);
+        }
+
+        public static double getSetAngle() {
+            return setAngle.getDouble(0);
+        }
+
+        public static void displayActualAngle(double angle) {
+            actualAngle.setDouble(angle);
+        }
+
+        public static void displayArmSpeed(double speed) {
+            armSpeed.setDouble(speed);
+        }
+    }
 }

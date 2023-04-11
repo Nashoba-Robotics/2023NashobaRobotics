@@ -11,6 +11,7 @@ import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -99,6 +100,26 @@ public class ArmSubsystem extends SubsystemBase {
 
         //Positive is extending out
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
+    }
+
+    private PIDController pidController = new PIDController(0, 0, 0);
+
+    public void setAnglePID(double angle) {
+        double speed = pidController.calculate(getEncoderAngle(), angle*360/Constants.TAU);
+        pivot1.set(ControlMode.Velocity, speed);
+        pivot2.set(ControlMode.Velocity, speed);
+    }
+
+    public void setP(double P) {
+        pidController.setP(P);
+    }
+
+    public void setI(double I) {
+        pidController.setP(I);
+    }
+
+    public void setD(double D) {
+        pidController.setP(D);
     }
 
     public void addToAbsoluteOffset(double offset) {

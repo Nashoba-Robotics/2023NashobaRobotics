@@ -46,6 +46,20 @@ public final class Tabs {
     public static class Intake{
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Intake");
 
+        public static GenericEntry pivotP = tab.add("Pivot P", 0).getEntry();
+        public static GenericEntry pivotI = tab.add("Pivot I", 0).getEntry();
+        public static GenericEntry pivotD = tab.add("Pivot D", 0).getEntry();
+
+        public static GenericEntry pivotCruiseVelocity = tab.add("Pivot Velocity", 0).getEntry();
+        public static GenericEntry pivotAcceleration = tab.add("Pivot Acceleration", 0).getEntry();
+
+        public static GenericEntry extendP = tab.add("Extender P", 0).getEntry();
+        public static GenericEntry extendI = tab.add("Extender I", 0).getEntry();
+        public static GenericEntry extendD = tab.add("Extender D", 0).getEntry();
+
+        public static GenericEntry extendCruiseVelocity = tab.add("Extend Velocity", 0).getEntry();
+        public static GenericEntry extendAcceleration = tab.add("Extend Acceleration", 0).getEntry();
+
         public static void add(Sendable sendable){
             tab.add(sendable);
         }
@@ -531,6 +545,22 @@ public final class Tabs {
 
         public static void displayArmSpeed(double speed) {
             armSpeed.setDouble(speed);
+        }
+
+        public static void add(Sendable sendable){
+            tab.add(sendable);
+        }
+        public static ComplexWidget add(String name, Sendable sendable){
+            return tab.add(name, sendable);
+        }
+        public static ComplexWidget add(String name, Sendable sendable, int x, int y){
+            return add(name, sendable).withPosition(x, y);
+        }
+        public static ComplexWidget add(String name, Sendable sendable, int x, int y, int w, int h){
+            return add(name, sendable, x, y).withSize(w, h);
+        }
+        public static void add(String name, Object o){
+            tab.add(name, o);
         }
     }
 }

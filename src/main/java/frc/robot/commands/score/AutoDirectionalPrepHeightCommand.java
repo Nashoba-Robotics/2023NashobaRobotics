@@ -91,7 +91,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_BACK_NU);
             } 
              if(DriverStation.isAutonomous()){
-                targetPos = Constants.Arm.HIGH_EXTEND_NU-1300;
+                targetPos = Constants.Arm.HIGH_EXTEND_NU-1300;  //61000+1500
                 // ArmSubsystem.getInstance().extendNU();
              }
              else targetPos = Constants.Arm.HIGH_EXTEND_NU;

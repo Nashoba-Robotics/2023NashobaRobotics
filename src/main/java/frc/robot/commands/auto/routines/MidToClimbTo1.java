@@ -55,7 +55,7 @@ public class MidToClimbTo1 extends SequentialCommandGroup{
             new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
             new ParallelCommandGroup(
                 translateTo.withTimeout(2),
-                new IntakeCubeCommand(true).withTimeout(1.5)
+                new IntakeCubeCommand(true).withTimeout(1.11)
             ),
             translateBack.until(SwerveDriveSubsystem.getInstance()::notLevel),
             new AutoBalanceCommand()

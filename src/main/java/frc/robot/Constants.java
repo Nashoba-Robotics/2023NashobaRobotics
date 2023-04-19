@@ -33,8 +33,8 @@ public final class Constants {
 
     public static final double MANUAL_EXTEND_OUT_SENSITIVITY = 0.18;
     public static final double MANUAL_EXTEND_IN_SENSITIVITY = 0.09;
-    public static final double MANUAL_PIVOT_UP_SENSITIVITY = 0.15;
-    public static final double MANUAL_PIVOT_DOWN_SENSITIVITY = 0.1;
+    public static final double MANUAL_PIVOT_UP_SENSITIVITY = 0.12;
+    public static final double MANUAL_PIVOT_DOWN_SENSITIVITY = 0.07;
     public static final double MANUAL_WRIST_SENSITIVITY = 0.5;
   }
   
@@ -189,7 +189,7 @@ public final class Constants {
   }
 
   public static final class Arm {
-    public static final double PIVOT_GEARRATIO = 4*4*4*72/22; //4^3*72 rotations of the motor = 22 rotation of the sprocket
+    public static final double PIVOT_GEARRATIO = 4*4*4*72/22.; //4^3*72 rotations of the motor = 22 rotation of the sprocket
     public static final double NU_PER_MM = 58.4;
     public static final double MM_PER_NU = 0.0171;
 
@@ -203,7 +203,7 @@ public final class Constants {
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
 
-    public static final double ENCODER_OFFSET = 71.51;
+    public static final double ENCODER_OFFSET = -72.158;
 
     public static final double ARM_KF = 0.047;
     public static final double ARM_KP = 0.2;
@@ -227,22 +227,22 @@ public final class Constants {
     public static final double PIVOT_KD_2 = 0;
 
     //Scorign (Radians)
-    public static final double HIGH_FRONT_ANGLE = 64.25 * TAU/360;
-    public static final double HIGH_BACK_ANGLE = -62.3 * TAU/360;
+    public static final double HIGH_FRONT_ANGLE = 63.75 * TAU/360;
+    public static final double HIGH_BACK_ANGLE = -61.5 * TAU/360;
     public static final double MID_ANGLE = 70 * TAU/360;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 47_000; //47_000-2_600
-    public static final double MID_EXTEND_NU = 17_500;
+    public static final double HIGH_EXTEND_NU = 86_500; //47_000-2_600
+    public static final double MID_EXTEND_NU = 31_500;
     public static final double LOW_EXTEND_NU = 0;
 
     public static final double AUTO_DUNK_ANGLE = 3 * TAU/360;
-    public static final double TELEOP_DUNK_ANGLE = 0 * TAU/360;
+    public static final double TELEOP_DUNK_ANGLE = 1 * TAU/360;
 
-    public static final double RETRACT_NU = 10_000; //NU to retract back in after scoring to avoid hitting middle node
+    public static final double RETRACT_NU = 18_000; //NU to retract back in after scoring to avoid hitting middle node
 
     //Intkae
-    public static final double INTAKE_ANGLE = 114.75 * Constants.TAU/360; //112.5
+    public static final double INTAKE_ANGLE = 116 * Constants.TAU/360; //112.5
     public static final double INTAKE_DEADZONE = 1 * TAU/360;
 
     public static final double DOUBLE_STATION_ANGLE = 43 * TAU/360;
@@ -250,7 +250,7 @@ public final class Constants {
 
     public static final double ERROR_ANGLE = 0;
 
-    public static final int EXTEND_FORWARD_SOFT_LIMIT = 55_000;
+    public static final int EXTEND_FORWARD_SOFT_LIMIT = 100_000;
     public static final int EXTEND_REVERSE_SOFT_LIMIT = 3_000;
 
     public static final int PIVOT_FORWARD_SOFT_LIMIT = 140_000;
@@ -267,7 +267,7 @@ public final class Constants {
       public static final double INTAKE_ANGLE = -108 * Constants.TAU/360;
 
       public static final double HIGH_EXTEND_NU = 48_000;
-      public static final double MID_EXTEND_NU = 20_000;
+      public static final double MID_EXTEND_NU = 48_000;
       public static final double LOW_EXTEND_NU = 0;
     }
   }

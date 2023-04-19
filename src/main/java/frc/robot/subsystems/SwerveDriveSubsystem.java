@@ -300,7 +300,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public boolean isLevel(){
-        return Math.abs(getRoll()) < 1;
+        return Math.abs(getRoll()) < 1.5;
     }
 
     public boolean notLevel() {

@@ -110,16 +110,46 @@ public class ArmSubsystem extends SubsystemBase {
         pivot2.set(ControlMode.Velocity, speed);
     }
 
-    public void setP(double P) {
+    public void setTestP(double P) {
         pidController.setP(P);
     }
 
-    public void setI(double I) {
+    public void setTestI(double I) {
         pidController.setP(I);
     }
 
-    public void setD(double D) {
+    public void setTestD(double D) {
         pidController.setP(D);
+    }
+
+    public void setPivotP(double P) {
+        pivot1.config_kP(0, P);
+        pivot2.config_kP(0, P);
+    }
+
+    public void setPivotI(double I) {
+        pivot1.config_kI(0, I);
+        pivot2.config_kI(0, I);
+    }
+
+    public void setPivotD(double D) {
+        pivot1.config_kD(0, D);
+        pivot2.config_kD(0, D);
+    }
+
+    public void setExtendP(double P) {
+        pivot1.config_kP(0, P);
+        pivot2.config_kP(0, P);
+    }
+
+    public void setExtendI(double I) {
+        pivot1.config_kI(0, I);
+        pivot2.config_kI(0, I);
+    }
+
+    public void setExtendD(double D) {
+        pivot1.config_kD(0, D);
+        pivot2.config_kD(0, D);
     }
 
     public void addToAbsoluteOffset(double offset) {
@@ -340,14 +370,14 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setDefaultCruiseVelocity() {
-        tromboneSlide.configMotionCruiseVelocity(40_000);
+        tromboneSlide.configMotionCruiseVelocity(72_000);
 
         pivot1.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
         pivot2.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
     }
 
     public void setDefaultAcceleration() {
-        tromboneSlide.configMotionAcceleration(25_000);
+        tromboneSlide.configMotionAcceleration(45_000);
 
         pivot1.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
         pivot2.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);

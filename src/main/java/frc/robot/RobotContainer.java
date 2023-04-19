@@ -12,6 +12,7 @@ import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.GrabberTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
+import frc.robot.commands.test.RunArmCommand;
 import frc.robot.commands.test.TestPivotCommand;
 import frc.robot.commands.SetPivotOffsetCommand;
 import frc.robot.commands.intake.DoubleStationIntakeCommand;
@@ -39,6 +40,7 @@ public class RobotContainer {
     SmartDashboard.putData(new InstantCommand(
       () -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2)
     ));
+    SmartDashboard.putData(new RunArmCommand());
   }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);
@@ -206,6 +208,7 @@ public class RobotContainer {
 
   public static class PDH {
 
+    //Battery Voltage
     public static double getVoltage() {
       return pdh.getVoltage();
     }

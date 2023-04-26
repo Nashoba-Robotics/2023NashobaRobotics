@@ -63,11 +63,6 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
 
-        // ArmSubsystem.getInstance().setPivotCruiseVelocity(55_000);
-        // ArmSubsystem.getInstance().setPivotAcceleration(45_000);
-        // ArmSubsystem.getInstance().setExtendCruiseVelocity(55_000);
-        // ArmSubsystem.getInstance().setExtendAcceleration(22_000);
-
         //Assuming that we are oriented correctly to score the cone, the way the arm goes down will change
         //Really just making all of the normal values negative of what they are in order to reflect them vertically
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
@@ -76,52 +71,42 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
         switch(targetLevel) {
             case HIGH:  //<-- Only used in autoscore
-            if(!autoDir) multiplier = 1;
-            if(multiplier == 1){
-                targetPivot = Constants.Arm.HIGH_FRONT_ANGLE;
-                targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU;
-                // ArmSubsystem.getInstance().pivot(Constants.Arm.HIGH_FRONT_ANGLE);
-                // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU);
-            } 
-            if(multiplier == -1){
-                targetPivot = Constants.Arm.HIGH_BACK_ANGLE;
-                targetWrist = Constants.Grabber.PREP_CONE_BACK_NU;
-                // ArmSubsystem.getInstance().pivot((Constants.Arm.HIGH_BACK_ANGLE));
+                if(!autoDir) multiplier = 1;
+                if(multiplier == 1){
+                    targetPivot = Constants.Arm.HIGH_FRONT_ANGLE;
+                    targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU;
+                } 
+                if(multiplier == -1){
+                    targetPivot = Constants.Arm.HIGH_BACK_ANGLE;
+                    targetWrist = Constants.Grabber.PREP_CONE_BACK_NU;
+                } 
+                if(DriverStation.isAutonomous()){
+                    targetPos = Constants.Arm.HIGH_EXTEND_NU-1300;
+                }
+                else targetPos = Constants.Arm.HIGH_EXTEND_NU;
 
-                // GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_BACK_NU);
-            } 
-             if(DriverStation.isAutonomous()){
-                targetPos = Constants.Arm.HIGH_EXTEND_NU-1300;
-                // ArmSubsystem.getInstance().extendNU();
-             }
-             else targetPos = Constants.Arm.HIGH_EXTEND_NU;
-
-             ArmSubsystem.getInstance().extendNU(targetPos);
-             ArmSubsystem.getInstance().pivot(targetPivot);
-             GrabberSubsystem.getInstance().orientPos(targetWrist);
-             
-             
-            //  targetPivot = Constants.Arm.HIGH_FRONT_ANGLE * multiplier;
-            //  targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
-             break;
+                ArmSubsystem.getInstance().extendNU(targetPos);
+                ArmSubsystem.getInstance().pivot(targetPivot);
+                GrabberSubsystem.getInstance().orientPos(targetWrist);
+                break;
             case MID: 
-             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);
-             ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE * multiplier);
-             ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
-             targetPos = Constants.Arm.MID_EXTEND_NU;
-             targetPivot = Constants.Arm.MID_ANGLE * multiplier;
-             targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
-             break;
+                GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);
+                ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE * multiplier);
+                ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
+                targetPos = Constants.Arm.MID_EXTEND_NU;
+                targetPivot = Constants.Arm.MID_ANGLE * multiplier;
+                targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
+                break;
            case LOW: 
-             ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
-             ArmSubsystem.getInstance().setPivotAcceleration(60_000);
-            GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);
-            ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
-            ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
-            targetPos = Constants.Arm.LOW_EXTEND_NU;
-            targetPivot = Constants.Arm.LOW_ANGLE * multiplier;
-            targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
-            break;
+                ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
+                ArmSubsystem.getInstance().setPivotAcceleration(60_000);
+                GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);
+                ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
+                ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
+                targetPos = Constants.Arm.LOW_EXTEND_NU;
+                targetPivot = Constants.Arm.LOW_ANGLE * multiplier;
+                targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
+                break;
         }
         gotToStart = false;
 

@@ -19,9 +19,11 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCubeCommand;
+import frc.robot.commands.auto.intakescore.AutoScoreCubePuke;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
+import frc.robot.commands.score.PukeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -93,8 +95,7 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
             path1,
             new WaitCommand(0.6),
             path2,
-            new AutoScoreCubeCommand()
-
+            new AutoScoreCubePuke()
         );
     }
 }

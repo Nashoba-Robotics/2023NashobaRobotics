@@ -134,6 +134,10 @@ public class GrabberSubsystem extends SubsystemBase{
         return orientEncoder.getPosition();
     }
 
+    public void setOrientBrakeMode(IdleMode i){
+        orienter.setIdleMode(i);
+    }
+
     //Reads the angle in radians of the orienter
     public double getOrientation(){
         return NRUnits.Grabber.NUtoRad(orientEncoder.getPosition());

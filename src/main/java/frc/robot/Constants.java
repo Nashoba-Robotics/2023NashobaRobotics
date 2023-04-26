@@ -203,7 +203,7 @@ public final class Constants {
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
 
-    public static final double ENCODER_OFFSET = -72.158;
+    public static final double ENCODER_OFFSET = -72.158+1.8;
 
     public static final double ARM_KF = 0.047;
     public static final double ARM_KP = 0.2;
@@ -232,8 +232,8 @@ public final class Constants {
     public static final double MID_ANGLE = 70 * TAU/360;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 86_500; //47_000-2_600
-    public static final double MID_EXTEND_NU = 31_500;
+    public static final double HIGH_EXTEND_NU = 80_000; //47_000-2_600
+    public static final double MID_EXTEND_NU = 29_500;
     public static final double LOW_EXTEND_NU = 0;
 
     public static final double AUTO_DUNK_ANGLE = 3 * TAU/360;
@@ -266,8 +266,8 @@ public final class Constants {
 
       public static final double INTAKE_ANGLE = -108 * Constants.TAU/360;
 
-      public static final double HIGH_EXTEND_NU = 48_000;
-      public static final double MID_EXTEND_NU = 48_000;
+      public static final double HIGH_EXTEND_NU = 82_000;
+      public static final double MID_EXTEND_NU = 35_000;
       public static final double LOW_EXTEND_NU = 0;
     }
   }

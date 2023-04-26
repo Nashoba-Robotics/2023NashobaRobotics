@@ -1,5 +1,7 @@
 package frc.robot.commands.intake;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -32,6 +34,14 @@ public class DoubleStationIntakeCommand extends CommandBase{
     }
 
     @Override
+    public void execute() {
+        // if(Math.abs(GrabberSubsystem.getInstance().getOrientPos() - (-6)) < 0.5){
+        //     GrabberSubsystem.getInstance().setOrientBrakeMode(IdleMode.kCoast);
+        //     GrabberSubsystem.getInstance().setOrientSpeed(0);
+        // }
+    }
+
+    @Override
     public void end(boolean interrupted) {
         ArmSubsystem.getInstance().pivot(0);
         ArmSubsystem.getInstance().extendNU(3_000);
@@ -40,6 +50,8 @@ public class DoubleStationIntakeCommand extends CommandBase{
 
         // GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);
         // GrabberSubsystem.getInstance().orientPos(0);
+
+        // GrabberSubsystem.getInstance().setOrientBrakeMode(IdleMode.kBrake);
     }
 
     @Override

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.auto.intakescore.AutoScoreCubePuke;
 import frc.robot.commands.auto.intakescore.AutoScoreTest;
 import frc.robot.commands.auto.routines.DumbAuto;
 import frc.robot.commands.auto.routines.DumbAutoNoScore;
@@ -58,6 +59,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Test", new TestAutoCommand());
     autoChooser.addOption("Dumb Auto", new DumbAuto());
     autoChooser.addOption("Score", new AutoScoreTest());
+    autoChooser.addOption("Cube Puke+", new AutoScoreCubePuke());
     autoChooser.addOption("Gracious Professionalism", new DumbAutoNoScore());
 
     Tabs.Comp.tab.add(autoChooser);
@@ -83,6 +85,16 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
     SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
+
+    //PDH logging
+    LogManager.appendToLog(RobotContainer.PDH.getVoltage(), "PDH:/Voltage");
+    LogManager.appendToLog(RobotContainer.PDH.getTemperature(), "PDH:/Temperature");
+    LogManager.appendToLog(RobotContainer.PDH.getPower(), "PDH:/Power");
+    LogManager.appendToLog(RobotContainer.PDH.getEnergy(), "PDH:/Energy");
+    for(int i = 0; i < 24; i++) {
+      LogManager.appendToLog(RobotContainer.PDH.getCurrent(i), "PDH:/Current/"+i);
+    }
+    
   }
 
   @Override

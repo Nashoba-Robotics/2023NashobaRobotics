@@ -31,7 +31,6 @@ public class IntakeCommand extends CommandBase {
     boolean timerStarted = false;
     Timer timer;
 
-
     public IntakeCommand(boolean intakeFront){
         multiplier = intakeFront ? 1 : -1;
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());

@@ -1,5 +1,6 @@
 package frc.robot.commands.score;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -30,17 +31,18 @@ public class ScoreCubeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().setCurrentLimit(true);
-
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(30_000);
-        ArmSubsystem.getInstance().setExtendCruiseVelocity(50_000);
-        ArmSubsystem.getInstance().setExtendAcceleration(50_000);
-        GrabberSubsystem.getInstance().set(0);
-        GrabberSubsystem.getInstance().orient(0);
-        
-        ArmSubsystem.getInstance().stop();
-        ArmSubsystem.getInstance().pivot(0);
-        ArmSubsystem.getInstance().extendNU(3_000);
+        if(!DriverStation.isAutonomous()){
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(30_000);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(50_000);
+            ArmSubsystem.getInstance().setExtendAcceleration(50_000);
+            GrabberSubsystem.getInstance().set(0);
+            GrabberSubsystem.getInstance().orient(0);
+            
+            ArmSubsystem.getInstance().stop();
+            ArmSubsystem.getInstance().pivot(0);
+            ArmSubsystem.getInstance().extendNU(3_000);
+        }
     }
 
     @Override

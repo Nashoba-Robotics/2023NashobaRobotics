@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -9,8 +10,10 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderFaults;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -101,6 +104,56 @@ public class ArmSubsystem extends SubsystemBase {
         tromboneSlide.setInverted(InvertType.InvertMotorOutput);
     }
 
+    private PIDController pidController = new PIDController(0, 0, 0);
+
+    public void setAnglePID(double angle) {
+        double speed = pidController.calculate(getEncoderAngle(), angle*360/Constants.TAU);
+        pivot1.set(ControlMode.Velocity, speed);
+        pivot2.set(ControlMode.Velocity, speed);
+    }
+
+    public void setTestP(double P) {
+        pidController.setP(P);
+    }
+
+    public void setTestI(double I) {
+        pidController.setP(I);
+    }
+
+    public void setTestD(double D) {
+        pidController.setP(D);
+    }
+
+    public void setPivotP(double P) {
+        pivot1.config_kP(0, P);
+        pivot2.config_kP(0, P);
+    }
+
+    public void setPivotI(double I) {
+        pivot1.config_kI(0, I);
+        pivot2.config_kI(0, I);
+    }
+
+    public void setPivotD(double D) {
+        pivot1.config_kD(0, D);
+        pivot2.config_kD(0, D);
+    }
+
+    public void setExtendP(double P) {
+        pivot1.config_kP(0, P);
+        pivot2.config_kP(0, P);
+    }
+
+    public void setExtendI(double I) {
+        pivot1.config_kI(0, I);
+        pivot2.config_kI(0, I);
+    }
+
+    public void setExtendD(double D) {
+        pivot1.config_kD(0, D);
+        pivot2.config_kD(0, D);
+    }
+
     public void addToAbsoluteOffset(double offset) {
         encoder.configMagnetOffset(encoder.configGetMagnetOffset() + offset);
     }
@@ -170,6 +223,16 @@ public class ArmSubsystem extends SubsystemBase {
 
     public double getEncoderAngle(){
         return encoder.getAbsolutePosition();
+    }
+
+    public CANCoderFaults getEncoderFault(){
+        CANCoderFaults faults = new CANCoderFaults();
+        encoder.getFaults(faults);
+        return faults;
+    }
+
+    public ErrorCode getLastEncoderError(){
+        return encoder.getLastError();
     }
 
     public void resetPivotNU(){
@@ -319,17 +382,21 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setDefaultCruiseVelocity() {
-        tromboneSlide.configMotionCruiseVelocity(40_000);
+        tromboneSlide.configMotionCruiseVelocity(72_000);
 
         pivot1.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
         pivot2.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
     }
 
     public void setDefaultAcceleration() {
-        tromboneSlide.configMotionAcceleration(25_000);
+        tromboneSlide.configMotionAcceleration(45_000);
 
         pivot1.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
         pivot2.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+    }
+
+    public boolean armAtZero(){
+        return Math.abs(getEncoderAngle()) < 1; //degree
     }
 
     @Override

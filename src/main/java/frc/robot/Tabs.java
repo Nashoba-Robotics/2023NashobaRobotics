@@ -69,6 +69,20 @@ public final class Tabs {
     public static class Intake{
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Intake");
 
+        public static GenericEntry pivotP = tab.add("Pivot P", 0).getEntry();
+        public static GenericEntry pivotI = tab.add("Pivot I", 0).getEntry();
+        public static GenericEntry pivotD = tab.add("Pivot D", 0).getEntry();
+
+        public static GenericEntry pivotCruiseVelocity = tab.add("Pivot Velocity", 0).getEntry();
+        public static GenericEntry pivotAcceleration = tab.add("Pivot Acceleration", 0).getEntry();
+
+        public static GenericEntry extendP = tab.add("Extender P", 0).getEntry();
+        public static GenericEntry extendI = tab.add("Extender I", 0).getEntry();
+        public static GenericEntry extendD = tab.add("Extender D", 0).getEntry();
+
+        public static GenericEntry extendCruiseVelocity = tab.add("Extend Velocity", 0).getEntry();
+        public static GenericEntry extendAcceleration = tab.add("Extend Acceleration", 0).getEntry();
+
         public static void add(Sendable sendable){
             tab.add(sendable);
         }
@@ -515,6 +529,61 @@ public final class Tabs {
         }
         public static void displayBackCurrent(double curr){
             backCurrent.setDouble(curr);
+        }
+    }
+
+    public static class PivotTest {
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("PivotTest");
+
+        private static GenericEntry setAngle = tab.add("Set Angle", 0).getEntry();
+        private static GenericEntry actualAngle = tab.add("Sensor Angle", 0).getEntry();
+        private static GenericEntry armSpeed = tab.add("NU Speed", 0).getEntry();
+        
+        private static ShuffleboardLayout PID = tab.getLayout("PID", BuiltInLayouts.kGrid)
+            .withSize(1, 3);
+        
+        private static GenericEntry P = PID.add("P", 0).withPosition(0, 0).getEntry();
+        private static GenericEntry I = PID.add("I", 0).withPosition(0, 1).getEntry();
+        private static GenericEntry D = PID.add("D", 0).withPosition(0, 2).getEntry();
+
+        public static double getP() {
+            return P.getDouble(0);
+        }
+
+        public static double getI() {
+            return I.getDouble(0);
+        }
+
+        public static double getD() {
+            return D.getDouble(0);
+        }
+
+        public static double getSetAngle() {
+            return setAngle.getDouble(0);
+        }
+
+        public static void displayActualAngle(double angle) {
+            actualAngle.setDouble(angle);
+        }
+
+        public static void displayArmSpeed(double speed) {
+            armSpeed.setDouble(speed);
+        }
+
+        public static void add(Sendable sendable){
+            tab.add(sendable);
+        }
+        public static ComplexWidget add(String name, Sendable sendable){
+            return tab.add(name, sendable);
+        }
+        public static ComplexWidget add(String name, Sendable sendable, int x, int y){
+            return add(name, sendable).withPosition(x, y);
+        }
+        public static ComplexWidget add(String name, Sendable sendable, int x, int y, int w, int h){
+            return add(name, sendable, x, y).withSize(w, h);
+        }
+        public static void add(String name, Object o){
+            tab.add(name, o);
         }
     }
 }

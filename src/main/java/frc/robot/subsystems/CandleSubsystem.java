@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.CANifier.LEDChannel;
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.LarsonAnimation;
@@ -44,10 +45,15 @@ public class CandleSubsystem extends SubsystemBase {
         DOUBLE_STATION,
         BAD,
         FUN,
+        SYSTEM_CHECK,
+        SYSTEM_GOOD,
+        SYSTEM_BAD,
+        PARTIAL_CHECK_1,
         FORDIANI
     }
 
     public void set(CandleState state) {
+        candle.clearAnimation(0);
         switch(state) {
             case NONE:
                 candle.clearAnimation(0);
@@ -95,6 +101,22 @@ public class CandleSubsystem extends SubsystemBase {
                 Animation a = new RgbFadeAnimation(0.7, 0.7, LED_COUNT);
                 candle.clearAnimation(0);
                 candle.animate(a);
+                break;
+            case SYSTEM_CHECK:
+                candle.clearAnimation(0);
+                candle.animate(new StrobeAnimation(255, 255, 255, 0, 0.01, LED_COUNT));
+                break;
+            case SYSTEM_GOOD:
+                candle.clearAnimation(0);
+                candle.animate(new StrobeAnimation(0, 255, 0, 0, 0.01, LED_COUNT));
+                break;
+            case SYSTEM_BAD:
+                candle.clearAnimation(0);
+                candle.animate(new StrobeAnimation(255, 0, 0, 0, 0.01, LED_COUNT));
+                break;
+            case PARTIAL_CHECK_1:
+                candle.clearAnimation(0);
+                candle.animate(new StrobeAnimation(yellow[0], yellow[1], yellow[2], 0, 0.01, LED_COUNT));
                 break;
             case FORDIANI:
                 candle.clearAnimation(0);

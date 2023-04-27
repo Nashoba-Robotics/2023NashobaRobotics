@@ -28,6 +28,10 @@ public class ScoreConeCommand extends CommandBase {
         // GrabberSubsystem.getInstance().setCurrentLimit(40);
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
+
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(85_000);
+        ArmSubsystem.getInstance().setPivotAcceleration(60_000);
+
         startTime = System.currentTimeMillis();
 
         low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;

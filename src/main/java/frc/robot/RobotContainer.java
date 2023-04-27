@@ -2,24 +2,24 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.test.CameraCenterCommand;
-import frc.robot.commands.test.DriveToTestCommand;
 import frc.robot.commands.test.GrabberTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
-import frc.robot.commands.DriveSpeedCommand;
+import frc.robot.commands.test.RunArmCommand;
+import frc.robot.commands.test.TestPivotCommand;
 import frc.robot.commands.SetPivotOffsetCommand;
 import frc.robot.commands.intake.DoubleStationIntakeCommand;
 import frc.robot.commands.intake.IntakeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
-import frc.robot.commands.score.PrepHighConeCommand;
-import frc.robot.commands.score.PrepHighCubeCommand;
 import frc.robot.commands.score.PukeCommand;
 import frc.robot.commands.score.ScoreConeCommand;
 import frc.robot.commands.score.ScoreCubeCommand;
@@ -40,7 +40,8 @@ public class RobotContainer {
     SmartDashboard.putData(new InstantCommand(
       () -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2)
     ));
-  }  
+    SmartDashboard.putData(new RunArmCommand());
+  }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);
   Trigger intakeButton = operatorController.button(2);  //B
@@ -183,6 +184,7 @@ public class RobotContainer {
 
   public void configureTabs() {
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
+    Tabs.PivotTest.add("Pivot Test", new TestPivotCommand());
     Tabs.Intake.zeroes.add("Extend", new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroExtend(),
       ArmSubsystem.getInstance()
@@ -200,5 +202,35 @@ public class RobotContainer {
     Tabs.GrabberTest.tab.add(new GrabberTestCommand());
 
     Tabs.Comp.add(new SetPivotOffsetCommand());
+  }
+
+  static PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);
+
+  public static class PDH {
+
+    //Battery Voltage
+    public static double getVoltage() {
+      return pdh.getVoltage();
+    }
+
+    public static double getTemperature() {
+      return pdh.getTemperature();
+    }
+
+    //Amps
+    //0-23 range for channels
+    public static double getCurrent(int channel) {
+      return pdh.getCurrent(channel);
+    }
+
+    //Watts
+    public static double getPower() {
+      return pdh.getTotalPower();
+    }
+
+    //Joules
+    public static double getEnergy() {
+      return pdh.getTotalEnergy();
+    }
   }
 }

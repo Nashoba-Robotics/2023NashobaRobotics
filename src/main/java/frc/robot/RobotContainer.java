@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.test.CameraCenterCommand;
+import frc.robot.commands.test.EncoderTestCommand;
 import frc.robot.commands.test.GrabberTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.RunArmCommand;
@@ -41,6 +42,7 @@ public class RobotContainer {
       () -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2)
     ));
     SmartDashboard.putData(new RunArmCommand());
+    SmartDashboard.putData(new EncoderTestCommand());
   }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);

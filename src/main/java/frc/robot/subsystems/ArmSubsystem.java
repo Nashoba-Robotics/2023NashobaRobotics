@@ -318,6 +318,11 @@ public class ArmSubsystem extends SubsystemBase {
         return pivot1.getSupplyCurrent();
     }
 
+    public void setBrakeMode(NeutralMode n){
+        pivot1.setNeutralMode(n);
+        pivot2.setNeutralMode(n);
+    }
+
     //This is TEMPORARY
     public double getPivotPos(int n){
         if(n == 1){

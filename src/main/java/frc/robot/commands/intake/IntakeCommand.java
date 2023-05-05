@@ -66,8 +66,7 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        GrabberSubsystem.getInstance().
-        intake();
+        GrabberSubsystem.getInstance().intake();
         // SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
         if(Math.abs(ArmSubsystem.getInstance().getAngle() - pivotTarget) < 0.5 * Constants.TAU/360){
@@ -112,6 +111,7 @@ public class IntakeCommand extends CommandBase {
             timerStarted = false;
         }
 
+        //TODO: Add check to see if the encoder is ok. If not, flash the LEDs and do not reset encoder
         //Check if the arm pivot speed is 0
         SmartDashboard.putNumber("Pivot NU Speed", ArmSubsystem.getInstance().getPivotSpeed());
         if(!resetEncoder && 

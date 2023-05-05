@@ -24,6 +24,7 @@ import frc.robot.commands.auto.routines.LeftTo0ToScore;
 import frc.robot.commands.auto.routines.MidToClimb;
 import frc.robot.commands.auto.routines.MidToClimbTo1;
 import frc.robot.commands.auto.routines.RightTo3ToScoreAuto;
+import frc.robot.commands.auto.systemcheck.SystemCheck;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.TestAutoCommand;
 import frc.robot.subsystems.ArmSubsystem;
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Dumb Auto", new DumbAuto());
     autoChooser.addOption("Score", new AutoScoreTest());
     autoChooser.addOption("Cube Puke+", new AutoScoreCubePuke());
+    autoChooser.addOption("System Check", new SystemCheck());
     autoChooser.addOption("Gracious Professionalism", new DumbAutoNoScore());
 
     Tabs.Comp.tab.add(autoChooser);

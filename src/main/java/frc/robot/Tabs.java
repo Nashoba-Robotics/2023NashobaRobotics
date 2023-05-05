@@ -3,6 +3,9 @@ package frc.robot;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 
+import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.sensors.CANCoderFaults;
+
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -584,6 +587,64 @@ public final class Tabs {
         }
         public static void add(String name, Object o){
             tab.add(name, o);
+        }
+    }
+
+    public static class EncoderTest{
+        public static final ShuffleboardTab tab = Shuffleboard.getTab("Encoder Test");
+
+        private static GenericEntry pivotEncoder = tab.add("Pivot Encoder", 0).getEntry();
+        private static GenericEntry pivotEncoderError = tab.add("Encoder Error", "__").getEntry();
+        private static GenericEntry pivotFaults = tab.add("Encoder Fault", "__").getEntry();
+
+        public static void displayEncoderValue(double val){
+            pivotEncoder.setDouble(val);
+        }
+        public static void displayError(ErrorCode e){
+            String s;
+            switch(e){
+                case OK:
+                    s = "OK";
+                    break;
+                case CAN_INVALID_PARAM:
+                    s = "THE CANBUS BAD";
+                    break;
+                case FirmwareTooOld:
+                    s = "Update the stupid thing";
+                    break;
+                case CAN_MSG_NOT_FOUND:
+                    s = "Check Wiring";
+                default:
+                    s = "....";
+                    break;
+            }
+
+            pivotEncoderError.setString(e.name());
+        }
+
+        public static void displayFault(CANCoderFaults faults){
+            String s = "";
+
+            if(faults.APIError){
+                s = "API fucked";
+            }
+            else if(faults.HardwareFault){
+                s = "ENCODER IS BROKEN. AAAAAAHHHHHHHHHHHH!!!!!!!!";
+            }
+            else if(faults.MagnetTooWeak){
+                s = "Check Magnet distance";
+            }
+            else if(faults.ResetDuringEn){
+                s = "Encoder reset during enable";
+            }
+            else if(faults.UnderVoltage){
+                s = "NEEDS MORE POWA!!!";
+            }
+            else{
+                s = "OK";
+            }
+
+            pivotFaults.setString(s);
         }
     }
 }

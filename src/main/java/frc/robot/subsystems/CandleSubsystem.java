@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.CANifier.LEDChannel;
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix.led.LarsonAnimation;
@@ -9,6 +8,7 @@ import com.ctre.phoenix.led.RgbFadeAnimation;
 import com.ctre.phoenix.led.StrobeAnimation;
 import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -50,6 +50,18 @@ public class CandleSubsystem extends SubsystemBase {
         SYSTEM_BAD,
         PARTIAL_CHECK_1,
         FORDIANI
+    }
+
+    @Override
+    public void periodic() {
+        if(DriverStation.isDisabled()){
+            /*
+             * Can add pre-match diagnostic stuff in here
+             * 1. Check the arm encoder
+             * 2. Check the drive encoders
+             * 3. Check the arm angle
+             */
+        }
     }
 
     public void set(CandleState state) {
@@ -108,11 +120,11 @@ public class CandleSubsystem extends SubsystemBase {
                 break;
             case SYSTEM_GOOD:
                 candle.clearAnimation(0);
-                candle.animate(new StrobeAnimation(0, 255, 0, 0, 0.01, LED_COUNT));
+                candle.setLEDs(0, 255, 0);
                 break;
             case SYSTEM_BAD:
                 candle.clearAnimation(0);
-                candle.animate(new StrobeAnimation(255, 0, 0, 0, 0.01, LED_COUNT));
+                candle.animate(new StrobeAnimation(255, 0, 0, 0, 0.03, LED_COUNT));
                 break;
             case PARTIAL_CHECK_1:
                 candle.clearAnimation(0);

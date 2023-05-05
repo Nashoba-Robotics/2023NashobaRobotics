@@ -5,7 +5,6 @@ import com.ctre.phoenix.ErrorCode;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Arm;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
@@ -18,10 +17,12 @@ public class EncoderCheck extends CommandBase{
     private boolean check2;
 
     private double targetAngleDeg = 30;
-    private double targetAngleRad = targetAngleDeg*Constants.TAU/360;
+    private double targetAngleRad = targetAngleDeg * Constants.TAU/360;
 
     private double posErrorDeg = 1;
     private double posErrorRad = posErrorDeg * Constants.TAU/360;
+
+    private double speedError = 3;
 
     private double absoluteErrorDeg = 5;
     
@@ -50,7 +51,7 @@ public class EncoderCheck extends CommandBase{
         else if(!check1){
             ArmSubsystem.getInstance().pivot(targetAngleRad);
             if(Math.abs(ArmSubsystem.getInstance().getAngle()-targetAngleRad) < posErrorRad 
-               && ArmSubsystem.getInstance().getPivotSpeed() < 3){
+               && ArmSubsystem.getInstance().getPivotSpeed() < speedError){
                 check1 = Math.abs(ArmSubsystem.getInstance().getEncoderAngle()-targetAngleDeg) < absoluteErrorDeg;
                 if(check1) CandleSubsystem.getInstance().set(CandleState.PARTIAL_CHECK_1);
                 else CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);
@@ -59,7 +60,7 @@ public class EncoderCheck extends CommandBase{
         else if(!check2){
             ArmSubsystem.getInstance().pivot(-targetAngleRad);
             if(Math.abs(ArmSubsystem.getInstance().getAngle()- (-targetAngleRad)) < posErrorRad
-               && ArmSubsystem.getInstance().getPivotSpeed() < 3){
+               && ArmSubsystem.getInstance().getPivotSpeed() < speedError){
                 check2 = Math.abs(ArmSubsystem.getInstance().getEncoderAngle()- (-targetAngleDeg)) < absoluteErrorDeg;
                 if(check2) CandleSubsystem.getInstance().set(CandleState.SYSTEM_GOOD);
                 else CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);

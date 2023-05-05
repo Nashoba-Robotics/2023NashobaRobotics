@@ -67,14 +67,16 @@ public class IntakeConeCheck extends CommandBase{
 
         if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
             if(haveCone && !timerStarted){
+                timerStarted = true;
                 timer.start();
-            }
-            else if(haveCone && timer.get() > 0.5){
-                finish = true;
             }
             else if(!haveCone && !timerStarted){
                 timerStarted = true;
                 timer.start();
+            }
+            //                                 v Time after taking in the cone for the arm to go back up
+            else if(haveCone && timer.get() >= 0.5){
+                finish = true;
             }
             else if(!haveCone && timer.get() >= 0.5){
                 CandleSubsystem.getInstance().set(CandleState.PARTIAL_CHECK_1);

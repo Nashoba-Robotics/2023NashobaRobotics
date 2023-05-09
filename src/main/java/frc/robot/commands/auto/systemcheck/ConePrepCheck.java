@@ -58,10 +58,16 @@ public class ConePrepCheck extends CommandBase{
             ArmSubsystem.getInstance().setPivotAcceleration(20_000);
 
             ArmSubsystem.getInstance().pivot(22 * Constants.TAU/360);
+
+            if(Math.abs(ArmSubsystem.getInstance().getEncoderAngle()) - 22 < 2){
+                at20 = true;
+            }
         }
         else{
-            ArmSubsystem.getInstance().setDefaultCruiseVelocity();
-            ArmSubsystem.getInstance().setDefaultAcceleration();
+            ArmSubsystem.getInstance().setExtendAcceleration(10_000);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(10_000);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(10_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(10_000);
             ArmSubsystem.getInstance().extendNU(targetExtend);
             ArmSubsystem.getInstance().pivot(targetPivot);
             GrabberSubsystem.getInstance().orientPos(targetWrist);

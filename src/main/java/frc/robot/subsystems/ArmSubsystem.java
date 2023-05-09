@@ -235,6 +235,19 @@ public class ArmSubsystem extends SubsystemBase {
         return encoder.getLastError();
     }
 
+    public boolean encoderOK(){
+        CANCoderFaults faults = getEncoderFault();
+        if(faults.APIError) return false;
+        if(faults.HardwareFault) return false;
+        if(faults.MagnetTooWeak) return false;
+        if(faults.ResetDuringEn) return false;  //What is this?
+        if(faults.UnderVoltage) return false;
+
+        if(getLastEncoderError() != ErrorCode.OK) return false;
+
+        return true;
+    }
+
     public void resetPivotNU(){
         pivot1.setSelectedSensorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
         pivot2.setSelectedSensorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
@@ -412,6 +425,7 @@ public class ArmSubsystem extends SubsystemBase {
             LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
             LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
             
+            
             //Pivot1
             LogManager.appendToLog(NRUnits.Pivot.NUToRad(ArmSubsystem.getInstance().getAngle()), "Arm:/RelativeAngle");
             LogManager.appendToLog(NRUnits.Pivot.NUToRad(getEncoderAngle()), "Arm:/Pivot1/AbsolutePosition");
@@ -422,6 +436,7 @@ public class ArmSubsystem extends SubsystemBase {
             LogManager.appendToLog(pivot2.getSelectedSensorPosition(), "Arm:/Pivot2/Position");
             LogManager.appendToLog(pivot2.getStatorCurrent(), "Arm:/Pivot2/Stator");
             LogManager.appendToLog(pivot2.getSupplyCurrent(), "Arm:/Pivot2/Supply");
+            
         }
 
         SmartDashboard.putNumber("PivotCurrent", pivot1.getStatorCurrent());

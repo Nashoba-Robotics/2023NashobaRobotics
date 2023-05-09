@@ -29,14 +29,14 @@ public class SystemCheck extends SequentialCommandGroup{
                 CandleSubsystem.getInstance()
             ),
             new IntakeConeCheck(),
-            new WaitCommand(0.5),
+            new WaitCommand(1),
             new InstantCommand(
                 () -> CandleSubsystem.getInstance().set(CandleState.SYSTEM_CHECK),
                 CandleSubsystem.getInstance()
-            )
-            // new ConePrepCheck(TargetLevel.HIGH),
-            // new ScoreConeCommand(),
-            // new WaitCommand(0.75),
+            ),
+            new ConePrepCheck(TargetLevel.HIGH),
+            new ScoreConeCommand(),
+            new WaitCommand(0.75)
             // new InstantCommand(
             //     () -> CandleSubsystem.getInstance().set(CandleState.SYSTEM_CHECK),
             //     CandleSubsystem.getInstance()

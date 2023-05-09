@@ -102,13 +102,13 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     // LimelightSubsystem.getInstance().off();
-    CandleSubsystem.getInstance().set(CandleState.DISABLED);
+    // CandleSubsystem.getInstance().set(CandleState.DISABLED);
     // SwerveDriveSubsystem.getInstance().brake();
   }
 
   @Override
   public void disabledPeriodic() {
-
+    
   }
 
   @Override

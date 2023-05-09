@@ -11,6 +11,7 @@ import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.NewTabs;
 
 public class CandleSubsystem extends SubsystemBase {
     
@@ -52,9 +53,23 @@ public class CandleSubsystem extends SubsystemBase {
         FORDIANI
     }
 
+    private Animation disabledAnimation;
     @Override
     public void periodic() {
         if(DriverStation.isDisabled()){
+            if(!ArmSubsystem.getInstance().encoderOK()){
+                disabledAnimation = new StrobeAnimation(255, 0, 0, 0, 0.3, LED_COUNT);
+                NewTabs.putDouble("Errors", "EncoderState", -1);
+            }
+            else if(!SwerveDriveSubsystem.getInstance().encodersOK()){
+                disabledAnimation = new StrobeAnimation(255, 80, 0, 0, 0.3, LED_COUNT);
+                NewTabs.putDouble("Errors", "EncoderState", -2);
+            }
+            else{
+                disabledAnimation = new LarsonAnimation(defaultColor[0], defaultColor[1], defaultColor[2], 0, 0.3, LED_COUNT, BounceMode.Back, 7);
+                NewTabs.putDouble("Errors", "EncoderState", 1);
+            }
+            candle.animate(disabledAnimation);
             /*
              * Can add pre-match diagnostic stuff in here
              * 1. Check the arm encoder

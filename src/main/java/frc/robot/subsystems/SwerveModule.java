@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+
+import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.InvertType;
@@ -11,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderFaults;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -330,5 +333,20 @@ public class SwerveModule {
 
     public double getMoveSensorNU() {
         return moveMotor.getSelectedSensorPosition();
+    }
+
+    public boolean encoderOK(){
+        CANCoderFaults faults = new CANCoderFaults();
+        turnSensor.getFaults(faults);
+
+        if(faults.APIError) return false;
+        if(faults.HardwareFault) return false;
+        if(faults.MagnetTooWeak) return false;
+        if(faults.ResetDuringEn) return false;
+        if(faults.UnderVoltage) return false;
+
+        if(turnSensor.getLastError() != ErrorCode.OK) return false;
+
+        return true;
     }
 }

@@ -319,6 +319,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return getRoll() > 1;
     }
 
+    public boolean encodersOK(){
+        for(SwerveModule mod : modules){
+            if(mod.encoderOK() == false) return false;
+        }
+        return true;
+    }
+
     //TODO: Add algorithm to check whether to use Pitch or Roll (Maybe averaging the values?)
     public double getChange(){
         return balanceController.calculate(getRoll());

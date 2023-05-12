@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import java.nio.file.attribute.AclEntry;
+
+import javax.swing.DefaultRowSorter;
+
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -97,7 +101,7 @@ public class ArmSubsystem extends SubsystemBase {
         defaultTune.MotionMagic.MotionMagicAcceleration = Constants.Arm.ARM_ACCELERATION;
         defaultTune.MotionMagic.MotionMagicJerk = 0;
 
-        tuningSlide.apply(tuningConfig);
+        tuningSlide.apply(defaultTune);
 
         posSetter.EnableFOC = true; //Should probably test this.
 
@@ -126,13 +130,7 @@ public class ArmSubsystem extends SubsystemBase {
         defaultFoot.MotionMagic.MotionMagicJerk = 0;
 
 
-        defaultFoot.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;    //The two motors are inverted from each other
-        foot1.apply(defaultFoot);
-        defaultFoot.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        foot2.apply(defaultFoot);
-
-
-
+        applyToPivot(defaultFoot);
 
 
         // pivot1.configFactoryDefault();
@@ -169,6 +167,13 @@ public class ArmSubsystem extends SubsystemBase {
 
         // pivot2.configReverseSoftLimitEnable(true);
         // pivot2.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
+    }
+
+    public void applyToPivot(TalonFXConfiguration config){
+        defaultFoot.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;    //The two motors are inverted from each other
+        foot1.apply(config);
+        defaultFoot.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        foot2.apply(config);
     }
 
     // private PIDController pidController = new PIDController(0, 0, 0);
@@ -454,35 +459,43 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void setPivotCruiseVelocity(double cruiseVelocity) {
-        pivot1.configMotionCruiseVelocity(cruiseVelocity);
-        pivot2.configMotionCruiseVelocity(cruiseVelocity);
+        defaultFoot.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
+        applyToPivot(defaultFoot);
+        // pivot1.configMotionCruiseVelocity(cruiseVelocity);
+        // pivot2.configMotionCruiseVelocity(cruiseVelocity);
     }
 
     public void setPivotAcceleration(double acceleration) {
-        pivot1.configMotionAcceleration(acceleration);
-        pivot2.configMotionAcceleration(acceleration);
+        defaultFoot.MotionMagic.MotionMagicAcceleration = acceleration;
+        applyToPivot(defaultFoot);
     }
 
     public void setExtendCruiseVelocity(double cruiseVelocity) {
-        tromboneSlide.configMotionCruiseVelocity(cruiseVelocity);
+        defaultTune.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
+        tuningSlide.apply(defaultTune);
     }
 
     public void setExtendAcceleration(double acceleration) {
-        tromboneSlide.configMotionAcceleration(acceleration);
+        defaultTune.MotionMagic.MotionMagicAcceleration = acceleration;
+        tuningSlide.apply(defaultTune);
     }
 
     public void setDefaultCruiseVelocity() {
-        tromboneSlide.configMotionCruiseVelocity(72_000);
+        // tromboneSlide.configMotionCruiseVelocity(72_000);
+        setExtendCruiseVelocity(72_000);
 
-        pivot1.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
-        pivot2.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        // pivot1.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        // pivot2.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        setPivotCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
     }
 
     public void setDefaultAcceleration() {
-        tromboneSlide.configMotionAcceleration(45_000);
+        // tromboneSlide.configMotionAcceleration(45_000);
+        setExtendAcceleration(45_000);
 
-        pivot1.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
-        pivot2.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        // pivot1.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        // pivot2.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        setPivotAcceleration(Constants.Arm.PIVOT_ACCELERATION);
     }
 
     public boolean armAtZero(){
@@ -493,7 +506,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void periodic() {
         if(Constants.Logging.ARM) {
             //Extender
-            LogManager.appendToLog(NRUnits.Pivot.NUToRad(tromboneSlide.getSelectedSensorPosition()), "Arm:/Extender/Position");
+            LogManager.appendToLog(getExtendNU(), "Arm:/Extender/Position");
             LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
             LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
             
@@ -501,17 +514,17 @@ public class ArmSubsystem extends SubsystemBase {
             //Pivot1
             LogManager.appendToLog(NRUnits.Pivot.NUToRad(ArmSubsystem.getInstance().getAngle()), "Arm:/RelativeAngle");
             LogManager.appendToLog(NRUnits.Pivot.NUToRad(getEncoderAngle()), "Arm:/Pivot1/AbsolutePosition");
-            LogManager.appendToLog(pivot1.getStatorCurrent(), "Arm:/Pivot1/Stator");
-            LogManager.appendToLog(pivot1.getSupplyCurrent(), "Arm:/Pivot1/Supply");
+            LogManager.appendToLog(getStatorCurrent1(), "Arm:/Pivot1/Stator");
+            LogManager.appendToLog(getSupplyCurrent1(), "Arm:/Pivot1/Supply");
 
             //Pivot2
-            LogManager.appendToLog(pivot2.getSelectedSensorPosition(), "Arm:/Pivot2/Position");
-            LogManager.appendToLog(pivot2.getStatorCurrent(), "Arm:/Pivot2/Stator");
-            LogManager.appendToLog(pivot2.getSupplyCurrent(), "Arm:/Pivot2/Supply");
+            LogManager.appendToLog(getPivotPos(2), "Arm:/Pivot2/Position");
+            LogManager.appendToLog(getStatorCurrent2(), "Arm:/Pivot2/Stator");
+            LogManager.appendToLog(getSupplyCurrent2(), "Arm:/Pivot2/Supply");
             
         }
 
-        SmartDashboard.putNumber("PivotCurrent", pivot1.getStatorCurrent());
+        // SmartDashboard.putNumber("PivotCurrent", pivot1.getStatorCurrent());
 
         Tabs.Comp.displayPivotAngle(getAngle());
         Tabs.Comp.displayEncoderAngle(getEncoderAngle());

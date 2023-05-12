@@ -7,7 +7,15 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenixpro.configs.MotionMagicConfigs;
+import com.ctre.phoenixpro.configs.MotorOutputConfigs;
+import com.ctre.phoenixpro.configs.Slot0Configs;
+import com.ctre.phoenixpro.configs.TalonFXConfiguration;
+import com.ctre.phoenixpro.configs.TalonFXConfigurator;
+import com.ctre.phoenixpro.controls.MotionMagicDutyCycle;
+import com.ctre.phoenixpro.hardware.TalonFX;
+import com.ctre.phoenixpro.signals.InvertedValue;
+import com.ctre.phoenixpro.signals.NeutralModeValue;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderFaults;
@@ -23,14 +31,30 @@ import frc.robot.lib.math.NRUnits;
 
 public class ArmSubsystem extends SubsystemBase {
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
-    private TalonFX pivot1, pivot2; //Control the pivoting of the entire arm
+    private TalonFXConfigurator tuningSlide;
+    private TalonFXConfiguration defaultTune;
+    private TalonFXConfiguration tuningConfig;
     private CANCoder encoder;
+    private MotionMagicDutyCycle posSetter;
+
+    
+
+    private TalonFX kick1, kick2; //Control the pivoting of the entire arm
+    private TalonFXConfigurator foot1, foot2;
+    private TalonFXConfiguration defaultFoot;
 
     public ArmSubsystem(){
         tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT, "drivet");
+        tuningSlide = tromboneSlide.getConfigurator();
+        posSetter = new MotionMagicDutyCycle(0);    //<-- Do I need to call setControl() every time I change this?
+                                                             //     If I change the value of posSetter, will it change without a new call to setControl()?
+        // tuningConfig = new TalonFXConfiguration();
 
-        pivot1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
-        pivot2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
+        kick1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
+        kick2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
+
+        foot1 = kick1.getConfigurator();
+        foot2 = kick2.getConfigurator();
 
         encoder = new CANCoder(4, "drivet");
         encoder.configFactoryDefault();
@@ -48,131 +72,175 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void config(){
-        tromboneSlide.configFactoryDefault();
-        tromboneSlide.setNeutralMode(NeutralMode.Brake);
-        tromboneSlide.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        tromboneSlide.config_kF(0, Constants.Arm.ARM_KF);
-        tromboneSlide.config_kP(0, Constants.Arm.ARM_KP);
-        tromboneSlide.config_kI(0, Constants.Arm.ARM_KI);
-        tromboneSlide.config_kD(0, Constants.Arm.ARM_KD);
+        //Configure the extension motor
+        defaultTune = new TalonFXConfiguration();
+        defaultTune.Slot0.kS = Constants.Arm.ARM_KF;
+        defaultTune.Slot0.kV = 0;
+        defaultTune.Slot0.kP = Constants.Arm.ARM_KP;
+        defaultTune.Slot0.kI = Constants.Arm.ARM_KI;
+        defaultTune.Slot0.kD = Constants.Arm.ARM_KD;
 
-        tromboneSlide.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
-        tromboneSlide.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        defaultTune.CurrentLimits.StatorCurrentLimitEnable = true;
+        defaultTune.CurrentLimits.StatorCurrentLimit = 0;
+        defaultTune.CurrentLimits.SupplyCurrentLimitEnable = true;
+        defaultTune.CurrentLimits.SupplyCurrentLimit = 0;
 
-        tromboneSlide.configForwardSoftLimitEnable(true);
-        tromboneSlide.configForwardSoftLimitThreshold(Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT);
+        defaultTune.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        defaultTune.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-        tromboneSlide.configReverseSoftLimitEnable(true);
-        tromboneSlide.configReverseSoftLimitThreshold(Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT);
+        defaultTune.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        defaultTune.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT;
+        defaultTune.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        defaultTune.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT;
 
-        pivot1.configFactoryDefault();
-        pivot1.setNeutralMode(NeutralMode.Brake);
-        pivot1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        pivot1.config_kF(0, Constants.Arm.PIVOT_KF_1);
-        pivot1.config_kP(0, Constants.Arm.PIVOT_KP_1);
-        pivot1.config_kI(0, Constants.Arm.PIVOT_KI_1);
-        pivot1.config_kD(0, Constants.Arm.PIVOT_KD_1);
-        pivot1.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
-        pivot1.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
+        defaultTune.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.ARM_CRUISE_VELOCITY;
+        defaultTune.MotionMagic.MotionMagicAcceleration = Constants.Arm.ARM_ACCELERATION;
+        defaultTune.MotionMagic.MotionMagicJerk = 0;
 
-        pivot2.configFactoryDefault();
-        pivot2.setNeutralMode(NeutralMode.Brake);
-        pivot2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        pivot2.config_kF(0, Constants.Arm.PIVOT_KF_2);
-        pivot2.config_kP(0, Constants.Arm.PIVOT_KP_2);
-        pivot2.config_kI(0, Constants.Arm.PIVOT_KI_2);
-        pivot2.config_kD(0, Constants.Arm.PIVOT_KD_2);
-        pivot2.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
-        pivot2.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
+        tuningSlide.apply(tuningConfig);
 
-        pivot1.setInverted(InvertType.None);
-        pivot2.setInverted(InvertType.InvertMotorOutput);
+        posSetter.EnableFOC = true; //Should probably test this.
 
-        pivot1.configForwardSoftLimitEnable(true);
-        pivot1.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
+        //Configure the pivot motors
+        defaultFoot = new TalonFXConfiguration();
+        defaultFoot.Slot0.kS = Constants.Arm.PIVOT_KF_1;
+        defaultFoot.Slot0.kV = 0;
+        defaultFoot.Slot0.kP = Constants.Arm.PIVOT_KP_1;
+        defaultFoot.Slot0.kI = Constants.Arm.PIVOT_KI_1;
+        defaultFoot.Slot0.kD = Constants.Arm.PIVOT_KD_1;
 
-        pivot1.configReverseSoftLimitEnable(true);
-        pivot1.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
+        defaultFoot.CurrentLimits.StatorCurrentLimitEnable = false;
+        defaultFoot.CurrentLimits.StatorCurrentLimit = 0;
+        defaultFoot.CurrentLimits.SupplyCurrentLimitEnable = false;
+        defaultFoot.CurrentLimits.SupplyCurrentLimit = 0;
 
-        pivot2.configForwardSoftLimitEnable(true);
-        pivot2.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
+        defaultFoot.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        
+        defaultFoot.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        defaultFoot.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT;
+        defaultFoot.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        defaultFoot.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT;
 
-        pivot2.configReverseSoftLimitEnable(true);
-        pivot2.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
+        defaultFoot.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.PIVOT_CRUISE_VELOCITY;
+        defaultFoot.MotionMagic.MotionMagicAcceleration = Constants.Arm.PIVOT_ACCELERATION;
+        defaultFoot.MotionMagic.MotionMagicJerk = 0;
 
-        //Positive is extending out
-        tromboneSlide.setInverted(InvertType.InvertMotorOutput);
+
+        defaultFoot.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;    //The two motors are inverted from each other
+        foot1.apply(defaultFoot);
+        defaultFoot.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        foot2.apply(defaultFoot);
+
+
+
+
+
+        // pivot1.configFactoryDefault();
+        // pivot1.setNeutralMode(NeutralMode.Brake);
+        // pivot1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        // pivot1.config_kF(0, Constants.Arm.PIVOT_KF_1);
+        // pivot1.config_kP(0, Constants.Arm.PIVOT_KP_1);
+        // pivot1.config_kI(0, Constants.Arm.PIVOT_KI_1);
+        // pivot1.config_kD(0, Constants.Arm.PIVOT_KD_1);
+        // pivot1.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
+        // pivot1.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
+
+        // pivot2.configFactoryDefault();
+        // pivot2.setNeutralMode(NeutralMode.Brake);
+        // pivot2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+        // pivot2.config_kF(0, Constants.Arm.PIVOT_KF_2);
+        // pivot2.config_kP(0, Constants.Arm.PIVOT_KP_2);
+        // pivot2.config_kI(0, Constants.Arm.PIVOT_KI_2);
+        // pivot2.config_kD(0, Constants.Arm.PIVOT_KD_2);
+        // pivot2.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
+        // pivot2.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
+
+        // pivot1.setInverted(InvertType.None);
+        // pivot2.setInverted(InvertType.InvertMotorOutput);
+
+        // pivot1.configForwardSoftLimitEnable(true);
+        // pivot1.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
+
+        // pivot1.configReverseSoftLimitEnable(true);
+        // pivot1.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
+
+        // pivot2.configForwardSoftLimitEnable(true);
+        // pivot2.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
+
+        // pivot2.configReverseSoftLimitEnable(true);
+        // pivot2.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
     }
 
-    private PIDController pidController = new PIDController(0, 0, 0);
+    // private PIDController pidController = new PIDController(0, 0, 0);
 
-    public void setAnglePID(double angle) {
-        double speed = pidController.calculate(getEncoderAngle(), angle*360/Constants.TAU);
-        pivot1.set(ControlMode.Velocity, speed);
-        pivot2.set(ControlMode.Velocity, speed);
-    }
+    // public void setAnglePID(double angle) {
+    //     double speed = pidController.calculate(getEncoderAngle(), angle*360/Constants.TAU);
+    //     pivot1.set(ControlMode.Velocity, speed);
+    //     pivot2.set(ControlMode.Velocity, speed);
+    // }
 
-    public void setTestP(double P) {
-        pidController.setP(P);
-    }
+    // public void setTestP(double P) {
+    //     pidController.setP(P);
+    // }
 
-    public void setTestI(double I) {
-        pidController.setP(I);
-    }
+    // public void setTestI(double I) {
+    //     pidController.setP(I);
+    // }
 
-    public void setTestD(double D) {
-        pidController.setP(D);
-    }
+    // public void setTestD(double D) {
+    //     pidController.setP(D);
+    // }
 
-    public void setPivotP(double P) {
-        pivot1.config_kP(0, P);
-        pivot2.config_kP(0, P);
-    }
+    // public void setPivotP(double P) {
+    //     pivot1.config_kP(0, P);
+    //     pivot2.config_kP(0, P);
+    // }
 
-    public void setPivotI(double I) {
-        pivot1.config_kI(0, I);
-        pivot2.config_kI(0, I);
-    }
+    // public void setPivotI(double I) {
+    //     pivot1.config_kI(0, I);
+    //     pivot2.config_kI(0, I);
+    // }
 
-    public void setPivotD(double D) {
-        pivot1.config_kD(0, D);
-        pivot2.config_kD(0, D);
-    }
+    // public void setPivotD(double D) {
+    //     pivot1.config_kD(0, D);
+    //     pivot2.config_kD(0, D);
+    // }
 
-    public void setExtendP(double P) {
-        pivot1.config_kP(0, P);
-        pivot2.config_kP(0, P);
-    }
+    // public void setExtendP(double P) {
+    //     pivot1.config_kP(0, P);
+    //     pivot2.config_kP(0, P);
+    // }
 
-    public void setExtendI(double I) {
-        pivot1.config_kI(0, I);
-        pivot2.config_kI(0, I);
-    }
+    // public void setExtendI(double I) {
+    //     pivot1.config_kI(0, I);
+    //     pivot2.config_kI(0, I);
+    // }
 
-    public void setExtendD(double D) {
-        pivot1.config_kD(0, D);
-        pivot2.config_kD(0, D);
-    }
+    // public void setExtendD(double D) {
+    //     pivot1.config_kD(0, D);
+    //     pivot2.config_kD(0, D);
+    // }
 
     public void addToAbsoluteOffset(double offset) {
         encoder.configMagnetOffset(encoder.configGetMagnetOffset() + offset);
     }
 
-    public void zeroPivot1(){
-        pivot1.setSelectedSensorPosition(0);
-    }
+    // public void zeroPivot1(){
+    //     pivot1.setSelectedSensorPosition(0);
+        
+    // }
 
-    public void zeroPivot2(){
-        pivot2.setSelectedSensorPosition(0);
-    }
+    // public void zeroPivot2(){
+    //     pivot2.setSelectedSensorPosition(0);
+    // }
 
-    public void zeroPivotSensor(){
-        zeroPivot1();
-        zeroPivot2();
-    }
+    // public void zeroPivotSensor(){
+    //     zeroPivot1();
+    //     zeroPivot2();
+    // }
 
-    public void zeroExtend(){
-        tromboneSlide.setSelectedSensorPosition(0);
+    public void zeroExtend(){   //TODO: High change that this is wrong.
+        tromboneSlide.setRotorPosition(0);
     }
 
     //Returns arm to upright position
@@ -186,29 +254,30 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getPivotOutput(){
-        return pivot1.getMotorOutputVoltage();
+        return kick1.getSupplyVoltage().getValue();
     }
 
     public double getPivotSpeed(){
-        double pivotSpeed1 = pivot1.getSelectedSensorVelocity();
-        double pivotSpeed2 = pivot2.getSelectedSensorVelocity();
+        double pivotSpeed1 = kick1.getVelocity().getValue();
+        double pivotSpeed2 = kick2.getVelocity().getValue();
 
         return (pivotSpeed1+pivotSpeed2)/2;
     }
 
     //Extends arm to specified position in meters
     public void extendM(double pos){
-       tromboneSlide.set(ControlMode.MotionMagic, NRUnits.Extension.mToNU(pos));
+       extendNU(NRUnits.Extension.mToNU(pos));
     }
 
     public void extendNU(double nu){
         if(Constants.Logging.ARM) LogManager.appendToLog(nu, "Arm:/Extender/SetNU");
-        tromboneSlide.set(ControlMode.MotionMagic, nu);
+        posSetter.Position = nu;
+        tromboneSlide.setControl(new MotionMagicDutyCycle(nu));
     }
 
     //Basic Percent Output set
     public void set(double speed){
-       tromboneSlide.set(ControlMode.PercentOutput, speed);
+       tromboneSlide.set(speed);
     }
 
     public boolean extended(){
@@ -249,8 +318,8 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void resetPivotNU(){
-        pivot1.setSelectedSensorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
-        pivot2.setSelectedSensorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
+        kick1.setRotorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
+        kick2.setRotorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
     }
 
     //Pivots arm to specified angle (radians) (0 = upright)
@@ -261,7 +330,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         double ff = 0;
         if(NU >= 8552.632){
-            ff = 0.00000076 * tromboneSlide.getSelectedSensorPosition()-0.00653;
+            ff = 0.00000076 * tromboneSlide.getPosition().getValue()-0.00653;
         }
 
         ff *= -Math.sin(angle);
@@ -269,30 +338,37 @@ public class ArmSubsystem extends SubsystemBase {
         // pivot1.set(ControlMode.MotionMagic, NU);
         // pivot2.set(ControlMode.MotionMagic, NU);
         
-        pivot1.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
-        pivot2.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
+        posSetter.Position = NU;
+        posSetter.FeedForward = ff;
+        kick1.setControl(posSetter);
+        kick2.setControl(posSetter);
+        // pivot1.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
+        // pivot2.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
     }
 
     public void setPivot(double speed){
-        pivot1.set(ControlMode.PercentOutput, speed);
-        pivot2.set(ControlMode.PercentOutput, speed);
+        kick1.set(speed);
+        kick2.set(speed);
     }
 
     public void holdPivot(){
-        double pivotPos1 = getPivotPos(1);
-        pivot1.set(ControlMode.MotionMagic, pivotPos1);
+        double pivotPos = getPivotPos(1);
+        posSetter.Position = pivotPos;
+        kick1.setControl(posSetter);
+        kick2.setControl(posSetter);
+        // pivot1.set(ControlMode.MotionMagic, pivotPos1);
 
-        double pivotPos2 = getPivotPos(2);
-        pivot2.set(ControlMode.MotionMagic, pivotPos2);
+        // double pivotPos2 = getPivotPos(2);
+        // pivot2.set(ControlMode.MotionMagic, pivotPos2);
     }
 
     public double getExtendNUSpeed(){
-        return tromboneSlide.getSelectedSensorVelocity();
+        return tromboneSlide.getVelocity().getValue();
     }
 
     public void holdArm(){
-        double armPos = getPos();
-        tromboneSlide.set(ControlMode.MotionMagic, armPos);
+        posSetter.Position = getExtendNU();
+        tromboneSlide.setControl(posSetter);
     }
 
     //Returns the angle of the arm
@@ -301,48 +377,44 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getExtendNU(){
-        return tromboneSlide.getSelectedSensorPosition();
+        return tromboneSlide.getPosition().getValue();
     }
 
     //Returns the extension of the arm in meters
     public double getLength(){
-        double pos = getPos();
+        double pos = getExtendNU();
 
         return NRUnits.Extension.NUToM(pos);
     }
 
-    public double getPos(){
-        return tromboneSlide.getSelectedSensorPosition();
-    }
-
     public double getArmStatorCurrent() {
-        return tromboneSlide.getStatorCurrent();
+        return tromboneSlide.getStatorCurrent().getValue();
     }
     
     public double getArmSupplyCurrent() {
-        return tromboneSlide.getSupplyCurrent();
+        return tromboneSlide.getSupplyCurrent().getValue();
     }
 
     public double getPivotStatorCurrent() {
-        return pivot1.getStatorCurrent();
+        return kick1.getStatorCurrent().getValue();
     }
 
     public double getPivotSupplyCurrent() {
-        return pivot1.getSupplyCurrent();
+        return kick1.getSupplyCurrent().getValue();
     }
 
-    public void setBrakeMode(NeutralMode n){
-        pivot1.setNeutralMode(n);
-        pivot2.setNeutralMode(n);
-    }
+    // public void setBrakeMode(NeutralMode n){
+    //     pivot1.setNeutralMode(n);
+    //     pivot2.setNeutralMode(n);
+    // }
 
     //This is TEMPORARY
     public double getPivotPos(int n){
         if(n == 1){
-            return pivot1.getSelectedSensorPosition();
+            return kick1.getPosition().getValue();
         }
         else if (n==2){
-            return pivot2.getSelectedSensorPosition();
+            return kick2.getPosition().getValue();
         }
         else return 0;
     }
@@ -358,11 +430,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getStatorCurrent1(){
-        return pivot1.getStatorCurrent();
+        return kick1.getStatorCurrent().getValue();
     }
 
     public double getStatorCurrent2(){
-        return pivot2.getStatorCurrent();
+        return kick2.getStatorCurrent().getValue();
     }
 
     public double getPivotStator(){
@@ -370,11 +442,11 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getSupplyCurrent1(){
-        return pivot1.getSupplyCurrent();
+        return kick1.getSupplyCurrent().getValue();
     }
 
     public double getSupplyCurrent2(){
-        return pivot2.getSupplyCurrent();
+        return kick2.getSupplyCurrent().getValue();
     }
 
     public double getPivotSupply(){

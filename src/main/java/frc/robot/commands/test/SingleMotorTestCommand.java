@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class SingleMotorTestCommand extends CommandBase {
-    
     CANSparkMax motor;
 
     public SingleMotorTestCommand() {

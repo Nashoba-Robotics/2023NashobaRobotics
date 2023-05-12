@@ -142,7 +142,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             }
         }
         else{
-            if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
+            if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getExtendNU() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
             if(gotToStart){
                 double y = JoystickSubsystem.getInstance().getManualExtend();   //Deadzone math
                 if(y < 0) y *= Constants.Joystick.MANUAL_EXTEND_OUT_SENSITIVITY; //Negative is extend out
@@ -151,7 +151,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 if(y == 0){ // If there isn't any input, maintain the position
                     if(!extensionMan0){ //When the joystick is first zeroed
                         extensionMan0 = true;   //Flag variable to see if the joystick was zeroed
-                        lastPos = ArmSubsystem.getInstance().getPos();
+                        lastPos = ArmSubsystem.getInstance().getExtendNU();
                         // ^ Without this, the arm goes in bit by bit because gravity, lastPos reads that position and tells the extension to go there
                     }
                     ArmSubsystem.getInstance().extendNU(lastPos);

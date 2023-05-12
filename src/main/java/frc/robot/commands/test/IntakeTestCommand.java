@@ -1,7 +1,6 @@
 package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants;
 import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -36,7 +35,7 @@ public class IntakeTestCommand extends CommandBase{
         double grabberSpeed = Tabs.Intake.getGrabSpeed();
         GrabberSubsystem.getInstance().set(grabberSpeed);
 
-        Tabs.Intake.displayExtendNU(ArmSubsystem.getInstance().getPos());
+        Tabs.Intake.displayExtendNU(ArmSubsystem.getInstance().getExtendNU());
         Tabs.Intake.displayExtendCurrent(
             ArmSubsystem.getInstance().getArmStatorCurrent(), 
             ArmSubsystem.getInstance().getArmSupplyCurrent()

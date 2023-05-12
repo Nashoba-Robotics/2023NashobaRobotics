@@ -31,8 +31,7 @@ public class EncoderCheck extends CommandBase{
         check1 = false;
         check2 = false;
 
-        e = ArmSubsystem.getInstance().getLastEncoderError();
-        start = e == ErrorCode.OK;
+        start = true;
 
         ArmSubsystem.getInstance().setPivotCruiseVelocity(20_000);
         ArmSubsystem.getInstance().setPivotAcceleration(20_000);

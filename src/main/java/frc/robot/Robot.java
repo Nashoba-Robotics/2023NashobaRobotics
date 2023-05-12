@@ -70,17 +70,17 @@ public class Robot extends TimedRobot {
     Tabs.Intake.tab.add(ArmSubsystem.getInstance());
     Tabs.Intake.tab.add(GrabberSubsystem.getInstance());
     Tabs.Intake.tab.add(new IntakeTestCommand());
-    Tabs.Intake.tab.add("Zero Pivot", new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroPivotSensor(),
-      ArmSubsystem.getInstance()
-    ));
+    // Tabs.Intake.tab.add("Zero Pivot", new InstantCommand(
+    //   () -> ArmSubsystem.getInstance().zeroPivotSensor(),
+    //   ArmSubsystem.getInstance()
+    // ));
     Tabs.Intake.tab.add("Reset Encoder", new InstantCommand(
       () -> ArmSubsystem.getInstance().resetPivotNU(),
       ArmSubsystem.getInstance()
     ));
     
     ArmSubsystem.getInstance().resetPivotNU();
-    ArmSubsystem.getInstance().zeroPivotSensor();
+    // ArmSubsystem.getInstance().zeroPivotSensor();
   }
 
   @Override

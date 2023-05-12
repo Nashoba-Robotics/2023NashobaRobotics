@@ -191,10 +191,10 @@ public class RobotContainer {
       () -> ArmSubsystem.getInstance().zeroExtend(),
       ArmSubsystem.getInstance()
     ));
-    Tabs.Intake.zeroes.add("Pivot",new InstantCommand(
-      () -> ArmSubsystem.getInstance().zeroPivotSensor(),
-      ArmSubsystem.getInstance()
-    ));
+    // Tabs.Intake.zeroes.add("Pivot",new InstantCommand(
+    //   () -> ArmSubsystem.getInstance().zeroPivotSensor(),
+    //   ArmSubsystem.getInstance()
+    // ));
     Tabs.Intake.zeroes.add("Wrist", new InstantCommand(
       () -> GrabberSubsystem.getInstance().zeroWrist(),
       GrabberSubsystem.getInstance()

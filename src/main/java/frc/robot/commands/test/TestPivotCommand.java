@@ -19,19 +19,19 @@ public class TestPivotCommand extends CommandBase {
 
     @Override
     public void execute() {
-        ArmSubsystem.getInstance().setAnglePID(Tabs.PivotTest.getSetAngle());
-        if(P != Tabs.PivotTest.getP()) {
-            P = Tabs.PivotTest.getP();
-            ArmSubsystem.getInstance().setTestP(P);
-        }
-        if(I != Tabs.PivotTest.getI()) {
-            I = Tabs.PivotTest.getI();
-            ArmSubsystem.getInstance().setTestI(I);
-        }
-        if(D != Tabs.PivotTest.getD()) {
-            D = Tabs.PivotTest.getD();
-            ArmSubsystem.getInstance().setTestD(D);
-        }
+        // ArmSubsystem.getInstance().setAnglePID(Tabs.PivotTest.getSetAngle());
+        // if(P != Tabs.PivotTest.getP()) {
+        //     P = Tabs.PivotTest.getP();
+        //     ArmSubsystem.getInstance().setTestP(P);
+        // }
+        // if(I != Tabs.PivotTest.getI()) {
+        //     I = Tabs.PivotTest.getI();
+        //     ArmSubsystem.getInstance().setTestI(I);
+        // }
+        // if(D != Tabs.PivotTest.getD()) {
+        //     D = Tabs.PivotTest.getD();
+        //     ArmSubsystem.getInstance().setTestD(D);
+        // }
 
         Tabs.PivotTest.displayActualAngle(ArmSubsystem.getInstance().getEncoderAngle());
         Tabs.PivotTest.displayArmSpeed(ArmSubsystem.getInstance().getPivotSpeed());

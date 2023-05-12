@@ -33,7 +33,7 @@ public class ManualExtensionCommand extends CommandBase {
             ArmSubsystem.getInstance().holdArm();
             if(!joystick0){
                 joystick0 = true;
-                lastPos = ArmSubsystem.getInstance().getPos();
+                lastPos = ArmSubsystem.getInstance().getExtendNU();
             }
             ArmSubsystem.getInstance().extendNU(lastPos);
         }
@@ -44,7 +44,7 @@ public class ManualExtensionCommand extends CommandBase {
 
         SmartDashboard.putNumber("Stator Current", ArmSubsystem.getInstance().getArmStatorCurrent());
         SmartDashboard.putNumber("Supply Current", ArmSubsystem.getInstance().getArmSupplyCurrent());
-        SmartDashboard.putNumber("Extend NU", ArmSubsystem.getInstance().getPos());
+        SmartDashboard.putNumber("Extend NU", ArmSubsystem.getInstance().getExtendNU());
 
         SmartDashboard.putNumber("Pivot Stator", ArmSubsystem.getInstance().getPivotStator());
         SmartDashboard.putNumber("Pivot Supply", ArmSubsystem.getInstance().getPivotSupply());

@@ -407,10 +407,11 @@ public class ArmSubsystem extends SubsystemBase {
         return kick1.getSupplyCurrent().getValue();
     }
 
-    // public void setBrakeMode(NeutralMode n){
-    //     pivot1.setNeutralMode(n);
-    //     pivot2.setNeutralMode(n);
-    // }
+    public void setBrakeMode(NeutralModeValue n){
+        defaultFoot.MotorOutput.NeutralMode = n;
+
+        applyToPivot(defaultFoot);
+    }
 
     //This is TEMPORARY
     public double getPivotPos(int n){

@@ -62,8 +62,8 @@ public class PrepHeightCommand extends CommandBase {
     @Override
     public void execute() {
         SmartDashboard.putBoolean("manual", gotToStart);
-        SmartDashboard.putNumber("Arm nu", ArmSubsystem.getInstance().getPos());
-        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < 500) gotToStart = true;
+        SmartDashboard.putNumber("Arm nu", ArmSubsystem.getInstance().getExtendNU());
+        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getExtendNU() - targetPos) < 500) gotToStart = true;
         if(gotToStart) {
             double y = RobotContainer.operatorController.getThrottle();
             y = Math.abs(y) < 0.1 ? 0 : (y-0.1)/0.9;    //Put deadzone in Constants
@@ -71,7 +71,7 @@ public class PrepHeightCommand extends CommandBase {
             if(y == 0){ // If there isn't any input, maintain the position
                 if(!joystick0){
                     joystick0 = true;
-                    lastPos = ArmSubsystem.getInstance().getPos();
+                    lastPos = ArmSubsystem.getInstance().getExtendNU();
                 }
                 ArmSubsystem.getInstance().extendNU(lastPos);
             }

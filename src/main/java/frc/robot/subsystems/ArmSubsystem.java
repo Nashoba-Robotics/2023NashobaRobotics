@@ -1,9 +1,5 @@
 package frc.robot.subsystems;
 
-import java.nio.file.attribute.AclEntry;
-
-import javax.swing.DefaultRowSorter;
-
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -11,15 +7,22 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.InvertType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
+import com.ctre.phoenixpro.BaseStatusSignalValue;
+import com.ctre.phoenixpro.StatusCode;
+import com.ctre.phoenixpro.configs.CANcoderConfiguration;
+import com.ctre.phoenixpro.configs.CANcoderConfigurator;
 import com.ctre.phoenixpro.configs.MotionMagicConfigs;
 import com.ctre.phoenixpro.configs.MotorOutputConfigs;
 import com.ctre.phoenixpro.configs.Slot0Configs;
 import com.ctre.phoenixpro.configs.TalonFXConfiguration;
 import com.ctre.phoenixpro.configs.TalonFXConfigurator;
 import com.ctre.phoenixpro.controls.MotionMagicDutyCycle;
+import com.ctre.phoenixpro.hardware.CANcoder;
 import com.ctre.phoenixpro.hardware.TalonFX;
+import com.ctre.phoenixpro.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
+import com.ctre.phoenixpro.signals.SensorDirectionValue;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderFaults;
@@ -37,8 +40,9 @@ public class ArmSubsystem extends SubsystemBase {
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFXConfigurator tuningSlide;
     private TalonFXConfiguration defaultTune;
-    private TalonFXConfiguration tuningConfig;
-    private CANCoder encoder;
+    private CANcoder encoder;
+    private CANcoderConfigurator encoderConfigurator;
+    private CANcoderConfiguration encoderConfig;
     private MotionMagicDutyCycle posSetter;
 
     
@@ -60,11 +64,12 @@ public class ArmSubsystem extends SubsystemBase {
         foot1 = kick1.getConfigurator();
         foot2 = kick2.getConfigurator();
 
-        encoder = new CANCoder(4, "drivet");
-        encoder.configFactoryDefault();
-        encoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
-        encoder.configMagnetOffset(Constants.Arm.ENCODER_OFFSET);
+        encoder = new CANcoder(4, "drivet");
+        encoderConfigurator = encoder.getConfigurator();
+        // encoder.configFactoryDefault();
+        // encoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        // encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+        // encoder.configMagnetOffset(Constants.Arm.ENCODER_OFFSET);
 
         config();
     }
@@ -129,8 +134,19 @@ public class ArmSubsystem extends SubsystemBase {
         defaultFoot.MotionMagic.MotionMagicAcceleration = Constants.Arm.PIVOT_ACCELERATION;
         defaultFoot.MotionMagic.MotionMagicJerk = 0;
 
-
         applyToPivot(defaultFoot);
+
+
+        encoderConfig = new CANcoderConfiguration();
+        
+        encoderConfig.FutureProofConfigs = true;
+
+        encoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        encoderConfig.MagnetSensor.MagnetOffset = 0;
+
+        encoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;   //TODO: Make sure this is going in the correct direction
+
+        encoderConfigurator.apply(encoderConfig);
 
 
         // pivot1.configFactoryDefault();
@@ -227,22 +243,9 @@ public class ArmSubsystem extends SubsystemBase {
     // }
 
     public void addToAbsoluteOffset(double offset) {
-        encoder.configMagnetOffset(encoder.configGetMagnetOffset() + offset);
+        encoderConfig.MagnetSensor.MagnetOffset += offset;
+        encoderConfigurator.apply(encoderConfig);
     }
-
-    // public void zeroPivot1(){
-    //     pivot1.setSelectedSensorPosition(0);
-        
-    // }
-
-    // public void zeroPivot2(){
-    //     pivot2.setSelectedSensorPosition(0);
-    // }
-
-    // public void zeroPivotSensor(){
-    //     zeroPivot1();
-    //     zeroPivot2();
-    // }
 
     public void zeroExtend(){   //TODO: High change that this is wrong.
         tromboneSlide.setRotorPosition(0);
@@ -285,39 +288,35 @@ public class ArmSubsystem extends SubsystemBase {
        tromboneSlide.set(speed);
     }
 
-    public boolean extended(){
-        //return extendSwitch.get();
-        return false;
-    }
-
-    public boolean retracted(){
-        //return retractSwitch.get();
-        return false;
-    }
-
     public double getEncoderAngle(){
-        return encoder.getAbsolutePosition();
+        return encoder.getAbsolutePosition().getValue();
     }
 
-    public CANCoderFaults getEncoderFault(){
-        CANCoderFaults faults = new CANCoderFaults();
-        encoder.getFaults(faults);
-        return faults;
-    }
+    // public CANCoderFaults getEncoderFault(){
+    //     CANCoderFaults faults = new CANCoderFaults();
+    //     encoder.getFaults(faults);
+    //     return faults;
+    // }
 
-    public ErrorCode getLastEncoderError(){
-        return encoder.getLastError();
-    }
+    // public ErrorCode getLastEncoderError(){
+    //     return encoder.getLastError();
+    // }
 
     public boolean encoderOK(){
-        CANCoderFaults faults = getEncoderFault();
-        if(faults.APIError) return false;
-        if(faults.HardwareFault) return false;
-        if(faults.MagnetTooWeak) return false;
-        if(faults.ResetDuringEn) return false;  //What is this?
-        if(faults.UnderVoltage) return false;
+        // CANCoderFaults faults = getEncoderFault();
+        // if(faults.APIError) return false;
+        // if(faults.HardwareFault) return false;
+        // if(faults.MagnetTooWeak) return false;
+        // if(faults.ResetDuringEn) return false;  //What is this?
+        // if(faults.UnderVoltage) return false;
 
-        if(getLastEncoderError() != ErrorCode.OK) return false;
+        if(encoder.getFault_BadMagnet().getValue()) return false;
+        if(encoder.getFault_BootDuringEnable().getValue()) return false;
+        if(encoder.getFault_Hardware().getValue()) return false;
+        if(encoder.getFault_Undervoltage().getValue()) return false;
+
+        if(encoder.getFaultField().getError() != StatusCode.OK) return false;
+
 
         return true;
     }

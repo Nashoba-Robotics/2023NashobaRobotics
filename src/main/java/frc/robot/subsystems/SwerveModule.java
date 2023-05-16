@@ -1,19 +1,21 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
 import com.ctre.phoenix.sensors.CANCoderFaults;
+import com.ctre.phoenixpro.configs.CANcoderConfiguration;
+import com.ctre.phoenixpro.configs.CANcoderConfigurator;
+import com.ctre.phoenixpro.configs.TalonFXConfiguration;
+import com.ctre.phoenixpro.configs.TalonFXConfigurator;
+import com.ctre.phoenixpro.controls.MotionMagicDutyCycle;
+import com.ctre.phoenixpro.controls.VelocityDutyCycle;
+import com.ctre.phoenixpro.hardware.CANcoder;
+import com.ctre.phoenixpro.hardware.TalonFX;
+import com.ctre.phoenixpro.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenixpro.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenixpro.signals.InvertedValue;
+import com.ctre.phoenixpro.signals.NeutralModeValue;
+import com.ctre.phoenixpro.signals.SensorDirectionValue;
+
+import edu.wpi.first.math.geometry.Rotation2d;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -26,9 +28,20 @@ public class SwerveModule {
     public int modNumber;
 
     private TalonFX moveMotor;
-    private TalonFX turnMotor;
+    private TalonFXConfigurator moveConfigurator;
+    private TalonFXConfiguration moveConfig;
 
-    private CANCoder turnSensor;
+    private VelocityDutyCycle moveControl;
+
+    private TalonFX turnMotor;
+    private TalonFXConfigurator turnConfigurator;
+    private TalonFXConfiguration turnConfig;
+
+    private MotionMagicDutyCycle turnControl;
+
+    private CANcoder turnSensor;
+    private CANcoderConfigurator turnSensorConfigurator;
+    private CANcoderConfiguration sensorConfig;
 
     private double movePosition;
     private double lastMovePosition;
@@ -40,9 +53,21 @@ public class SwerveModule {
         this.modNumber = modNumber;
 
         moveMotor = new TalonFX(movePort, "drivet");    //Why is it called drivet?
-        turnMotor = new TalonFX(turnPort, "drivet");    //It has the DRIVE and PIVET!!
+        moveConfigurator = moveMotor.getConfigurator();
+        moveConfig = new TalonFXConfiguration();
 
-        turnSensor = new CANCoder(sensorPort, "drivet");
+        moveControl = new VelocityDutyCycle(0);
+
+        turnMotor = new TalonFX(turnPort, "drivet");    //It has the DRIVE and PIVET!!
+        turnConfigurator = turnMotor.getConfigurator();
+        turnConfig = new TalonFXConfiguration();
+
+        turnControl = new MotionMagicDutyCycle(offset);
+
+        turnSensor = new CANcoder(sensorPort, "drivet");
+        turnSensorConfigurator = turnSensor.getConfigurator();
+        sensorConfig = new CANcoderConfiguration();
+
 
         config();
         configOffset(offset); //degrees
@@ -53,58 +78,59 @@ public class SwerveModule {
 
     public void config(){
         //Move motor configuration
-        moveMotor.configFactoryDefault();
-        moveMotor.setNeutralMode(NeutralMode.Brake);
-        moveMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        moveMotor.setSelectedSensorPosition(0);
-        moveMotor.setInverted(InvertType.None);
-        moveMotor.config_kF(0, Constants.Swerve.MOVE_KF);
-        moveMotor.config_kP(0, Constants.Swerve.MOVE_KP);
-        moveMotor.config_kI(0, Constants.Swerve.MOVE_KI);
-        moveMotor.config_kD(0, Constants.Swerve.MOVE_KD);
+        moveConfig.Audio.BeepOnBoot = false;
+        moveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        moveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        moveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        moveConfig.Slot0.kV = Constants.Swerve.MOVE_KF;
+        moveConfig.Slot0.kS = AFF;
+        moveConfig.Slot0.kP = Constants.Swerve.MOVE_KP;
+        moveConfig.Slot0.kI = Constants.Swerve.MOVE_KI;
+        moveConfig.Slot0.kD = Constants.Swerve.MOVE_KD;
+        moveConfig.Voltage.PeakForwardVoltage = 12;
+        moveConfig.Voltage.PeakReverseVoltage = -12;
+        moveConfig.CurrentLimits.StatorCurrentLimit = 40;
+        moveConfig.CurrentLimits.SupplyCurrentLimit = 60;
+        moveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        moveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+        moveConfigurator.apply(moveConfig);
+        moveMotor.setRotorPosition(0);
 
-        moveMotor.configVoltageCompSaturation(12);
 
         //Turn motor configuratoin
-        turnMotor.configFactoryDefault();
-        turnMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        turnMotor.configNeutralDeadband(0.001);
-        turnMotor.config_kF(0, Constants.Swerve.TURN_KF);
-        turnMotor.config_kP(0, Constants.Swerve.TURN_KP);
-        turnMotor.config_kI(0, Constants.Swerve.TURN_KI);
-        turnMotor.config_kD(0, Constants.Swerve.TURN_KD);
-        turnMotor.setInverted(InvertType.InvertMotorOutput);
+        turnConfig.Audio.BeepOnBoot = false;
+        turnConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        turnConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        turnConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        turnConfig.Slot0.kV = Constants.Swerve.TURN_KF;
+        turnConfig.Slot0.kP = Constants.Swerve.TURN_KP;
+        turnConfig.Slot0.kI = Constants.Swerve.TURN_KI;
+        turnConfig.Slot0.kD = Constants.Swerve.TURN_KD;
+        turnConfig.Voltage.PeakForwardVoltage = 12;
+        turnConfig.Voltage.PeakReverseVoltage = -12;
+        turnConfig.MotionMagic.MotionMagicCruiseVelocity = 22_000;
+        turnConfig.MotionMagic.MotionMagicAcceleration = 44_000;
+        turnConfig.MotionMagic.MotionMagicJerk = 44_000;
+        turnConfig.CurrentLimits.StatorCurrentLimit = 40;
+        turnConfig.CurrentLimits.SupplyCurrentLimit = 60;
+        turnConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        turnConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+        turnConfigurator.apply(moveConfig);
+        turnMotor.setRotorPosition(0);
 
-        turnMotor.configVoltageCompSaturation(12);
-
-        int cruiseVelocity = 22_000;
-        turnMotor.configMotionCruiseVelocity(cruiseVelocity);
-        turnMotor.configMotionAcceleration(2*cruiseVelocity);
-        
-        //turnMotor.configFeedbackNotContinuous(true, 0);
-        turnMotor.setNeutralMode(NeutralMode.Brake);
-
-        turnSensor.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-
-        //General Config
-        configCurrentLimit();
-    }
-
-    public void configCurrentLimit(){
-        moveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.2));
-        moveMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.2));
-
-        turnMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, 40, 45, 0.2));
-        turnMotor.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(true, 60, 65, 0.2));
+        sensorConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        sensorConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        turnSensorConfigurator.apply(sensorConfig);
     }
 
     public void configOffset(double offset){
-        turnSensor.configMagnetOffset(offset);
-        turnMotor.setSelectedSensorPosition(NRUnits.Drive.degToNU(turnSensor.getAbsolutePosition()));
+        sensorConfig.MagnetSensor.MagnetOffset = offset;
+        turnSensorConfigurator.apply(sensorConfig);
+        turnMotor.setRotorPosition(turnSensor.getAbsolutePosition().getValue());
     }
 
     public void resetTurnToAbsolute() {
-        turnMotor.setSelectedSensorPosition(NRUnits.Drive.degToNU(turnSensor.getAbsolutePosition()));
+        turnMotor.setRotorPosition(turnSensor.getAbsolutePosition().getValue());
     }
 
     public void zero(){
@@ -133,30 +159,33 @@ public class SwerveModule {
     //Move input in percent, Turn input in degrees
     public void setDeg(double move, double turn) {
         if(move == 0){
-            moveMotor.set(ControlMode.PercentOutput, 0);
+            moveMotor.set(0);
             return;
         }
-        double currentPos =  turnMotor.getSelectedSensorPosition();
-        double lastTurn = NRUnits.constrainDeg(NRUnits.Drive.NUToDeg(currentPos));
+        double currentPos =  turnMotor.getRotorPosition().getValue();
+        double lastTurn = NRUnits.constrainDeg(currentPos * 360);
 
         double angle = findLowestAngle(turn, lastTurn);
         double angleChange = findAngleChange(angle, lastTurn);
         
-        double nextPos = currentPos + NRUnits.Drive.degToNU(angleChange);
+        double nextPos = currentPos + angleChange/360;
 
         SmartDashboard.putNumber("ActualAngle"+modNumber, getAngle() * Constants.TAU / 360);
 
-        turnMotor.set(ControlMode.MotionMagic, nextPos);
-        moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
+        turnControl.Position = nextPos;
+        turnMotor.setControl(turnControl);
+        moveControl.Velocity = move * Constants.Swerve.MAX_NATIVE_VELOCITY;
+        moveControl.FeedForward = AFF;
+        moveMotor.setControl(moveControl);
     }
 
     public void setDeg(double move, double turn, boolean optimizeTurn) {
         if(move == 0 && optimizeTurn){
-            moveMotor.set(ControlMode.PercentOutput, 0);
+            moveMotor.set(0);
             return;
         }
-        double currentPos =  turnMotor.getSelectedSensorPosition();
-        double lastTurn = NRUnits.constrainDeg(NRUnits.Drive.NUToDeg(currentPos));
+        double currentPos =  turnMotor.getRotorPosition().getValue();
+        double lastTurn = NRUnits.constrainDeg(currentPos * 360);
 
         double angle = findLowestAngle(turn, lastTurn);
         double angleChange = findAngleChange(angle, lastTurn);
@@ -165,22 +194,26 @@ public class SwerveModule {
 
         SmartDashboard.putNumber("ActualAngle"+modNumber, getAngle() * Constants.TAU / 360);
 
-        turnMotor.set(ControlMode.MotionMagic, nextPos);
-        moveMotor.set(ControlMode.Velocity, move * Constants.Swerve.MAX_NATIVE_VELOCITY, DemandType.ArbitraryFeedForward, AFF);
+        turnControl.Position = nextPos;
+        turnMotor.setControl(turnControl);
+        moveControl.Velocity = move * Constants.Swerve.MAX_NATIVE_VELOCITY;
+        moveControl.FeedForward = AFF;
+        moveMotor.setControl(moveControl);
     }
 
     //radian input
     public void turn(double turn){
         turn *= 360/Constants.TAU;
-        double currentPos =  turnMotor.getSelectedSensorPosition();
-        double lastTurn = NRUnits.constrainDeg(NRUnits.Drive.NUToDeg(currentPos));
+        double currentPos =  turnMotor.getRotorPosition().getValue();
+        double lastTurn = NRUnits.constrainDeg(currentPos * 360);
 
         double angle = findLowestAngle(turn, lastTurn);
         double angleChange = findAngleChange(angle, lastTurn);
         
         double nextPos = currentPos + NRUnits.Drive.degToNU(angleChange);
 
-        turnMotor.set(ControlMode.MotionMagic, nextPos);
+        turnControl.Position = nextPos;
+        turnMotor.setControl(turnControl);
     }
 
     //NU: How many ADDITIONAL NU you want to move   turn: radians
@@ -206,11 +239,13 @@ public class SwerveModule {
 
         // If the original distance is less, we want to go there
         if(originalDistance <= oppositeDistance){
-            moveMotor.setInverted(InvertType.None);
+            moveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+            moveConfigurator.apply(moveConfig);
             return potAngles[0];
         }
         else{ //If we want to go to the opposite of the desired angle, we have to tell the motor to move "backwards"
-            moveMotor.setInverted(InvertType.InvertMotorOutput);
+            moveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+            moveConfigurator.apply(moveConfig);
             return potAngles[1];
         } 
     }
@@ -260,20 +295,20 @@ public class SwerveModule {
 
     //returns angle in radians
     public double getAngle(){
-        return NRUnits.Drive.NUToRad(turnMotor.getSelectedSensorPosition());
+        return NRUnits.Drive.NUToRad(turnMotor.getRotorPosition().getValue() * 360);
     }
 
     //returns CANCoder angle in radians
     public double getAbsAngle(){
-        return turnSensor.getAbsolutePosition() * Math.PI/180;
+        return turnSensor.getPosition().getValue() * Constants.TAU;
     }
 
     public double getTurnPosition() {
-        return turnMotor.getSelectedSensorPosition();
+        return turnMotor.getPosition().getValue();
     }
 
     public double getTurnAngle(){
-        return NRUnits.constrainRad(NRUnits.Drive.NUToRad(getTurnPosition()));
+        return NRUnits.constrainRad(getTurnPosition() * Constants.TAU);
     }
 
     // RADIANS
@@ -283,11 +318,12 @@ public class SwerveModule {
     }
 
     public void setTurnMotor(double position) {
-        turnMotor.set(ControlMode.MotionMagic, position);
+        turnControl.Position = position;
+        turnMotor.setControl(turnControl);
     }
 
     public void resetTurnPosition() {
-        turnMotor.setSelectedSensorPosition(0);
+        turnMotor.setRotorPosition(0);
     }
 
     public double getMovePosition() {
@@ -295,57 +331,62 @@ public class SwerveModule {
     }
 
     public double getMoveVelocity() {
-        return moveMotor.getSelectedSensorVelocity();
+        return moveMotor.getVelocity().getValue();
     }
 
     public void setMoveVelocity(double move) {
-        moveMotor.set(ControlMode.Velocity, move);
+        moveControl.Velocity = move * Constants.Swerve.MAX_NATIVE_VELOCITY;
+        moveControl.FeedForward = AFF;
+        moveMotor.setControl(moveControl);
     }
 
     public void updateMovePosition() {
-        double temp = Math.abs(moveMotor.getSelectedSensorPosition());
+        double temp = Math.abs(moveMotor.getPosition().getValue());
         movePosition += Math.abs(temp - lastMovePosition);
         lastMovePosition = temp;
     }
 
     public void setMovePos(double NU){
-        moveMotor.configMotionCruiseVelocity(20_000);
-        moveMotor.configMotionAcceleration(8_000);
+        moveConfig.MotionMagic.MotionMagicCruiseVelocity = 20_000;
+        moveConfig.MotionMagic.MotionMagicAcceleration = 8_000;
+        moveConfigurator.apply(moveConfig);
         
-        double currPos = moveMotor.getSelectedSensorPosition();
-        moveMotor.set(ControlMode.MotionMagic, currPos+NU);
+        double currPos = moveMotor.getPosition().getValue();
+        turnControl.Position = currPos + NU;
+        turnMotor.setControl(turnControl);
     }
 
     public void setMoveSpeed(double s){
-        moveMotor.set(ControlMode.PercentOutput, -0.1);
+        moveMotor.set(s);
     }
+
     public double getNU(){
-        return moveMotor.getSelectedSensorPosition();
+        return moveMotor.getPosition().getValue();
     }
     
     public SwerveModuleState getSwerveState() {
         return new SwerveModuleState(
-                NRUnits.Drive.NUToMPS(moveMotor.getSelectedSensorVelocity()),
+                NRUnits.Drive.NUToMPS(moveMotor.getVelocity().getValue()),
                 // Rotation2d.fromRadians(NRUnits.Drive.NUToRad(turnMotor.getSelectedSensorPosition()))
                 Rotation2d.fromRadians(getAbsAngle())
             );
     }
 
     public double getMoveSensorNU() {
-        return moveMotor.getSelectedSensorPosition();
+        return moveMotor.getPosition().getValue();
     }
 
     public boolean encoderOK(){
-        CANCoderFaults faults = new CANCoderFaults();
-        turnSensor.getFaults(faults);
+        // CANCoderFaults faults = new CANCoderFaults();
+        // turnSensor.getFaults(faults);
 
-        if(faults.APIError) return false;
-        if(faults.HardwareFault) return false;
-        if(faults.MagnetTooWeak) return false;
-        if(faults.ResetDuringEn) return false;
-        if(faults.UnderVoltage) return false;
+        // if(faults.APIError) return false;
+        // if(faults.HardwareFault) return false;
+        // if(faults.MagnetTooWeak) return false;
+        // if(faults.ResetDuringEn) return false;
+        // if(faults.UnderVoltage) return false;
 
-        if(turnSensor.getLastError() != ErrorCode.OK) return false;
+        // if(turnSensor.getLastError() != ErrorCode.OK) return false;
 
         return true;
     }

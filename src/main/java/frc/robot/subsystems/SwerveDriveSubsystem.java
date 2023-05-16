@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.Pigeon2;
+import com.ctre.phoenixpro.configs.MountPoseConfigs;
+import com.ctre.phoenixpro.configs.Pigeon2Configuration;
+import com.ctre.phoenixpro.configs.Pigeon2Configurator;
+import com.ctre.phoenixpro.hardware.Pigeon2;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,18 +26,24 @@ import frc.robot.lib.util.SwerveState;
 public class SwerveDriveSubsystem extends SubsystemBase {
     private CarpetOdometry odometry;
     private SwerveModule[] modules;
+
     private Pigeon2 gyro;
+    private Pigeon2Configurator gyroConfigurator;
 
     private boolean fieldCentric;
 
     private PIDController balanceController;
-    private PIDController driftController;
     private PIDController cardinalController;
 
     private SwerveDriveSubsystem() {
         gyro = new Pigeon2(Constants.Misc.GYRO_PORT, "drivet");
-        gyro.configFactoryDefault();
-        gyro.configMountPose(0, 0.308, -0.483);
+        gyro.clearStickyFaults();
+        gyroConfigurator = gyro.getConfigurator();
+        Pigeon2Configuration config = new Pigeon2Configuration();
+        config.MountPose.MountPoseYaw = -0.263672;
+        config.MountPose.MountPosePitch = 0.307617;
+        config.MountPose.MountPoseRoll = -0.483398;
+        gyroConfigurator.apply(config);
         fieldCentric = true;
 
         /*
@@ -53,7 +62,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         odometry = new CarpetOdometry(Constants.Swerve.KINEMATICS, Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions(), Constants.Field.ANGLE_OF_RESISTANCE);
     
         balanceController = new PIDController(Constants.Swerve.Balance.SLOW_K_P, Constants.Swerve.Balance.SLOW_K_I, Constants.Swerve.Balance.SLOW_K_D);
-        driftController = new PIDController(Constants.Swerve.DriftCorrection.P, Constants.Swerve.DriftCorrection.I, Constants.Swerve.DriftCorrection.D);
         cardinalController = new PIDController(0.01, 0, 0.0);
         cardinalController.setTolerance(2);
 
@@ -111,7 +119,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public double getYaw(){
-        return gyro.getYaw();
+        return gyro.getYaw().getValue();
     }
     public boolean atCardinalAngle(){
         return cardinalController.atSetpoint();
@@ -125,7 +133,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public double getGyroAngle() {
-        return NRUnits.constrainDeg(gyro.getYaw()) * Constants.TAU / 360;
+        return NRUnits.constrainDeg(getYaw()) * Constants.TAU / 360;
     }
 
     //Don't know if this will work
@@ -140,11 +148,11 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
     //Convert to radians?
     public double getPitch(){
-        return gyro.getPitch();
+        return gyro.getPitch().getValue();
     }
 
     public double getRoll(){
-        return gyro.getRoll();
+        return gyro.getRoll().getValue();
     }
 
     public void set(JoystickValues joystickValues, double omega) {

@@ -120,7 +120,7 @@ public class PrepHighConeCommand extends CommandBase{
 
 
         //MANUAL!!!!!!!!!!!!!!!!!
-        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getPos() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
+        if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getExtendNU() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
         if(gotToStart) {
             double y = JoystickSubsystem.getInstance().getManualExtend();
             if(y < 0) y *= Constants.Joystick.MANUAL_EXTEND_OUT_SENSITIVITY;
@@ -128,7 +128,7 @@ public class PrepHighConeCommand extends CommandBase{
             if(y == 0){ // If there isn't any input, maintain the position
                 if(!extensionMan0){
                     extensionMan0 = true;
-                    lastPos = ArmSubsystem.getInstance().getPos();
+                    lastPos = ArmSubsystem.getInstance().getExtendNU();
                 }
                 ArmSubsystem.getInstance().extendNU(lastPos);
             }

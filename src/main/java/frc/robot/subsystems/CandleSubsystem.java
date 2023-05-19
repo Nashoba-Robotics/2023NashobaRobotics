@@ -69,6 +69,7 @@ public class CandleSubsystem extends SubsystemBase {
                 disabledAnimation = new LarsonAnimation(defaultColor[0], defaultColor[1], defaultColor[2], 0, 0.3, LED_COUNT, BounceMode.Back, 7);
                 NewTabs.putDouble("Errors", "EncoderState", 1);
             }
+            disabledAnimation = new LarsonAnimation(defaultColor[0], defaultColor[1], defaultColor[2], 0, 0.3, LED_COUNT, BounceMode.Back, 7);
             candle.animate(disabledAnimation);
             /*
              * Can add pre-match diagnostic stuff in here

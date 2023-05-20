@@ -15,7 +15,7 @@ public class EncoderTestCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        ArmSubsystem.getInstance().setBrakeMode(NeutralModeValue.Coast);
+        ArmSubsystem.getInstance().setPivotBrakeMode(NeutralModeValue.Coast);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class EncoderTestCommand extends CommandBase{
 
     @Override
     public void end(boolean interrupted) {
-        ArmSubsystem.getInstance().setBrakeMode(NeutralModeValue.Brake);
+        ArmSubsystem.getInstance().setPivotBrakeMode(NeutralModeValue.Brake);
     }
 
     @Override

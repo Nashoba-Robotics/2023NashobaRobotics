@@ -1,19 +1,8 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
-import com.ctre.phoenixpro.BaseStatusSignalValue;
 import com.ctre.phoenixpro.StatusCode;
 import com.ctre.phoenixpro.configs.CANcoderConfiguration;
 import com.ctre.phoenixpro.configs.CANcoderConfigurator;
-import com.ctre.phoenixpro.configs.MotionMagicConfigs;
-import com.ctre.phoenixpro.configs.MotorOutputConfigs;
-import com.ctre.phoenixpro.configs.Slot0Configs;
 import com.ctre.phoenixpro.configs.TalonFXConfiguration;
 import com.ctre.phoenixpro.configs.TalonFXConfigurator;
 import com.ctre.phoenixpro.controls.Follower;
@@ -22,42 +11,41 @@ import com.ctre.phoenixpro.hardware.CANcoder;
 import com.ctre.phoenixpro.hardware.TalonFX;
 import com.ctre.phoenixpro.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenixpro.signals.InvertedValue;
+import com.ctre.phoenixpro.signals.MagnetHealthValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 import com.ctre.phoenixpro.signals.SensorDirectionValue;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderFaults;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
 import frc.robot.Tabs;
 import frc.robot.lib.math.NRUnits;
 
+
+//TODO: Change all of the diagnostic functions to read only the first pivot motor
 public class ArmSubsystem extends SubsystemBase {
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFXConfigurator tuningSlide;
-    private TalonFXConfiguration defaultTune;
+    private TalonFXConfiguration tuneConfig;
+
     private CANcoder encoder;
     private CANcoderConfigurator encoderConfigurator;
     private CANcoderConfiguration encoderConfig;
-    private MotionMagicDutyCycle posSetter;
+
+    private MotionMagicDutyCycle extendSetter;
+    private MotionMagicDutyCycle pivotSetter;
 
     
 
     private TalonFX kick1, kick2; //Control the pivoting of the entire arm
     private TalonFXConfigurator foot;
-    private TalonFXConfiguration defaultFoot;
+    private TalonFXConfiguration footConfig;
 
     public ArmSubsystem(){
         tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT, "drivet");
         tuningSlide = tromboneSlide.getConfigurator();
-        posSetter = new MotionMagicDutyCycle(0);    //<-- Do I need to call setControl() every time I change this?
-                                                             //     If I change the value of posSetter, will it change without a new call to setControl()?
-        // tuningConfig = new TalonFXConfiguration();
+        extendSetter = new MotionMagicDutyCycle(0, true, 0, 0, false); 
+        pivotSetter = new MotionMagicDutyCycle(0, true, 0, 0, false);
+
 
         kick1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
         kick2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
@@ -83,60 +71,62 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public void config(){
+        kick2.setControl(new Follower(Constants.Arm.PIVOT_PORT_1, true));
+
         //Configure the extension motor
-        defaultTune = new TalonFXConfiguration();
-        defaultTune.Slot0.kS = 0;
-        defaultTune.Slot0.kV = Constants.Arm.ARM_KF;
-        defaultTune.Slot0.kP = Constants.Arm.ARM_KP;
-        defaultTune.Slot0.kI = Constants.Arm.ARM_KI;
-        defaultTune.Slot0.kD = Constants.Arm.ARM_KD;
+        tuneConfig = new TalonFXConfiguration();
+        tuneConfig.Slot0.kS = 0;
+        tuneConfig.Slot0.kV = Constants.Arm.ARM_KF;
+        tuneConfig.Slot0.kP = Constants.Arm.ARM_KP;
+        tuneConfig.Slot0.kI = Constants.Arm.ARM_KI;
+        tuneConfig.Slot0.kD = Constants.Arm.ARM_KD;
 
-        defaultTune.CurrentLimits.StatorCurrentLimitEnable = false;
-        defaultTune.CurrentLimits.StatorCurrentLimit = 0;
-        defaultTune.CurrentLimits.SupplyCurrentLimitEnable = false;
-        defaultTune.CurrentLimits.SupplyCurrentLimit = 0;
+        tuneConfig.CurrentLimits.StatorCurrentLimitEnable = false;
+        tuneConfig.CurrentLimits.StatorCurrentLimit = 0;
+        tuneConfig.CurrentLimits.SupplyCurrentLimitEnable = false;
+        tuneConfig.CurrentLimits.SupplyCurrentLimit = 0;
 
-        defaultTune.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        defaultTune.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        tuneConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        tuneConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-        defaultTune.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
-        defaultTune.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT;
-        defaultTune.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
-        defaultTune.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT;
+        tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT;
+        tuneConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        tuneConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT;
 
-        defaultTune.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.ARM_CRUISE_VELOCITY;
-        defaultTune.MotionMagic.MotionMagicAcceleration = Constants.Arm.ARM_ACCELERATION;
-        defaultTune.MotionMagic.MotionMagicJerk = 0;
+        tuneConfig.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.ARM_CRUISE_VELOCITY;
+        tuneConfig.MotionMagic.MotionMagicAcceleration = Constants.Arm.ARM_ACCELERATION;
+        tuneConfig.MotionMagic.MotionMagicJerk = 0;
 
-        tuningSlide.apply(defaultTune);
+        tuningSlide.apply(tuneConfig);
 
         // posSetter.EnableFOC = true; //Should probably test this.
 
         //Configure the pivot motors
-        defaultFoot = new TalonFXConfiguration();
-        defaultFoot.Slot0.kS = 0;
-        defaultFoot.Slot0.kV = Constants.Arm.PIVOT_KF_1;
-        defaultFoot.Slot0.kP = Constants.Arm.PIVOT_KP_1;
-        defaultFoot.Slot0.kI = Constants.Arm.PIVOT_KI_1;
-        defaultFoot.Slot0.kD = Constants.Arm.PIVOT_KD_1;
+        footConfig = new TalonFXConfiguration();
+        footConfig.Slot0.kS = 0;
+        footConfig.Slot0.kV = Constants.Arm.PIVOT_KF_1;
+        footConfig.Slot0.kP = Constants.Arm.PIVOT_KP_1;
+        footConfig.Slot0.kI = Constants.Arm.PIVOT_KI_1;
+        footConfig.Slot0.kD = Constants.Arm.PIVOT_KD_1;
 
-        defaultFoot.CurrentLimits.StatorCurrentLimitEnable = false;
-        defaultFoot.CurrentLimits.StatorCurrentLimit = 0;
-        defaultFoot.CurrentLimits.SupplyCurrentLimitEnable = false;
-        defaultFoot.CurrentLimits.SupplyCurrentLimit = 0;
+        footConfig.CurrentLimits.StatorCurrentLimitEnable = false;
+        footConfig.CurrentLimits.StatorCurrentLimit = 0;
+        footConfig.CurrentLimits.SupplyCurrentLimitEnable = false;
+        footConfig.CurrentLimits.SupplyCurrentLimit = 0;
 
-        defaultFoot.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        footConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
-        defaultFoot.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
-        defaultFoot.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT;
-        defaultFoot.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
-        defaultFoot.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT;
+        footConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+        footConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT;
+        footConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+        footConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT;
 
-        defaultFoot.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.PIVOT_CRUISE_VELOCITY;
-        defaultFoot.MotionMagic.MotionMagicAcceleration = Constants.Arm.PIVOT_ACCELERATION;
-        defaultFoot.MotionMagic.MotionMagicJerk = 0;
+        footConfig.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.PIVOT_CRUISE_VELOCITY;
+        footConfig.MotionMagic.MotionMagicAcceleration = Constants.Arm.PIVOT_ACCELERATION;
+        footConfig.MotionMagic.MotionMagicJerk = 0;
 
-        foot.apply(defaultFoot);
+        foot.apply(footConfig);
 
 
         encoderConfig = new CANcoderConfiguration();
@@ -149,105 +139,14 @@ public class ArmSubsystem extends SubsystemBase {
         encoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;   //TODO: Make sure this is going in the correct direction
 
         encoderConfigurator.apply(encoderConfig);
-
-
-        // pivot1.configFactoryDefault();
-        // pivot1.setNeutralMode(NeutralMode.Brake);
-        // pivot1.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        // pivot1.config_kF(0, Constants.Arm.PIVOT_KF_1);
-        // pivot1.config_kP(0, Constants.Arm.PIVOT_KP_1);
-        // pivot1.config_kI(0, Constants.Arm.PIVOT_KI_1);
-        // pivot1.config_kD(0, Constants.Arm.PIVOT_KD_1);
-        // pivot1.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
-        // pivot1.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
-
-        // pivot2.configFactoryDefault();
-        // pivot2.setNeutralMode(NeutralMode.Brake);
-        // pivot2.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-        // pivot2.config_kF(0, Constants.Arm.PIVOT_KF_2);
-        // pivot2.config_kP(0, Constants.Arm.PIVOT_KP_2);
-        // pivot2.config_kI(0, Constants.Arm.PIVOT_KI_2);
-        // pivot2.config_kD(0, Constants.Arm.PIVOT_KD_2);
-        // pivot2.configMotionCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
-        // pivot2.configMotionAcceleration(Constants.Arm.PIVOT_ACCELERATION);
-
-        // pivot1.setInverted(InvertType.None);
-        // pivot2.setInverted(InvertType.InvertMotorOutput);
-
-        // pivot1.configForwardSoftLimitEnable(true);
-        // pivot1.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
-
-        // pivot1.configReverseSoftLimitEnable(true);
-        // pivot1.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
-
-        // pivot2.configForwardSoftLimitEnable(true);
-        // pivot2.configForwardSoftLimitThreshold(Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT);
-
-        // pivot2.configReverseSoftLimitEnable(true);
-        // pivot2.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
     }
-
-    // public void applyToPivot(TalonFXConfiguration config){
-    //     defaultFoot.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;    //The two motors are inverted from each other
-    //     foot.apply(config);
-    // }
-
-    // private PIDController pidController = new PIDController(0, 0, 0);
-
-    // public void setAnglePID(double angle) {
-    //     double speed = pidController.calculate(getEncoderAngle(), angle*360/Constants.TAU);
-    //     pivot1.set(ControlMode.Velocity, speed);
-    //     pivot2.set(ControlMode.Velocity, speed);
-    // }
-
-    // public void setTestP(double P) {
-    //     pidController.setP(P);
-    // }
-
-    // public void setTestI(double I) {
-    //     pidController.setP(I);
-    // }
-
-    // public void setTestD(double D) {
-    //     pidController.setP(D);
-    // }
-
-    // public void setPivotP(double P) {
-    //     pivot1.config_kP(0, P);
-    //     pivot2.config_kP(0, P);
-    // }
-
-    // public void setPivotI(double I) {
-    //     pivot1.config_kI(0, I);
-    //     pivot2.config_kI(0, I);
-    // }
-
-    // public void setPivotD(double D) {
-    //     pivot1.config_kD(0, D);
-    //     pivot2.config_kD(0, D);
-    // }
-
-    // public void setExtendP(double P) {
-    //     pivot1.config_kP(0, P);
-    //     pivot2.config_kP(0, P);
-    // }
-
-    // public void setExtendI(double I) {
-    //     pivot1.config_kI(0, I);
-    //     pivot2.config_kI(0, I);
-    // }
-
-    // public void setExtendD(double D) {
-    //     pivot1.config_kD(0, D);
-    //     pivot2.config_kD(0, D);
-    // }
 
     public void addToAbsoluteOffset(double offset) {
         encoderConfig.MagnetSensor.MagnetOffset += offset;
         encoderConfigurator.apply(encoderConfig);
     }
 
-    public void zeroExtend(){   //TODO: High change that this is wrong.
+    public void zeroExtend(){
         tromboneSlide.setRotorPosition(0);
     }
 
@@ -279,7 +178,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void extendNU(double nu){
         if(Constants.Logging.ARM) LogManager.appendToLog(nu, "Arm:/Extender/SetNU");
-        posSetter.Position = nu;
+        extendSetter.Position = nu;
         tromboneSlide.setControl(new MotionMagicDutyCycle(nu));
     }
 
@@ -288,28 +187,11 @@ public class ArmSubsystem extends SubsystemBase {
        tromboneSlide.set(speed);
     }
 
-    public double getEncoderAngle(){
-        return encoder.getAbsolutePosition().getValue();
+    public double getEncoderDeg(){
+        return encoder.getAbsolutePosition().getValue() * 360;
     }
 
-    // public CANCoderFaults getEncoderFault(){
-    //     CANCoderFaults faults = new CANCoderFaults();
-    //     encoder.getFaults(faults);
-    //     return faults;
-    // }
-
-    // public ErrorCode getLastEncoderError(){
-    //     return encoder.getLastError();
-    // }
-
     public boolean encoderOK(){
-        // CANCoderFaults faults = getEncoderFault();
-        // if(faults.APIError) return false;
-        // if(faults.HardwareFault) return false;
-        // if(faults.MagnetTooWeak) return false;
-        // if(faults.ResetDuringEn) return false;  //What is this?
-        // if(faults.UnderVoltage) return false;
-
         if(encoder.getFault_BadMagnet().getValue()) return false;
         if(encoder.getFault_BootDuringEnable().getValue()) return false;
         if(encoder.getFault_Hardware().getValue()) return false;
@@ -317,67 +199,56 @@ public class ArmSubsystem extends SubsystemBase {
 
         if(encoder.getFaultField().getError() != StatusCode.OK) return false;
 
+        if(encoder.getMagnetHealth().getValue() != MagnetHealthValue.Magnet_Green) return false;
 
         return true;
     }
 
     public void resetPivotNU(){
-        kick1.setRotorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
-        kick2.setRotorPosition(NRUnits.Pivot.degToNU(getEncoderAngle()));
+        kick1.setRotorPosition(NRUnits.Pivot.degToRot(getEncoderDeg()));
     }
 
     //Pivots arm to specified angle (radians) (0 = upright)
     public void pivot(double angle){
-        //How does motion magic work with 2 motors?
-        double NU = NRUnits.Pivot.radToNU(angle);
+        double NU = NRUnits.Pivot.radToRot(angle);
         if(Constants.Logging.ARM) LogManager.appendToLog(NU, "Arm:/Pivot2/SetPosition");
 
-        double ff = 0;
-        if(NU >= 8552.632){
-            ff = 0.00000076 * tromboneSlide.getPosition().getValue()-0.00653;
-        }
+        // double ff = 0;
+        // if(NU >= 8552.632){
+        //     ff = 0.00000076 * tromboneSlide.getPosition().getValue()-0.00653;
+        // }
 
-        ff *= -Math.sin(angle);
+        // ff *= -Math.sin(angle);
 
-        // pivot1.set(ControlMode.MotionMagic, NU);
-        // pivot2.set(ControlMode.MotionMagic, NU);
-        posSetter.Slot = 0;
-        posSetter.Position = NU;
-        posSetter.FeedForward = ff;
-        kick1.setControl(posSetter);
-        kick2.setControl(posSetter);
-        // pivot1.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
-        // pivot2.set(ControlMode.MotionMagic, NU, DemandType.ArbitraryFeedForward, ff);
+  
+        pivotSetter.Slot = 0;
+        pivotSetter.Position = NU;
+        // posSetter.FeedForward = ff;
+        kick1.setControl(pivotSetter);
     }
 
     public void setPivot(double speed){
         kick1.set(speed);
-        kick2.set(speed);
     }
 
     public void holdPivot(){
-        double pivotPos = getPivotPos(1);
-        posSetter.Position = pivotPos;
-        kick1.setControl(posSetter);
-        kick2.setControl(posSetter);
-        // pivot1.set(ControlMode.MotionMagic, pivotPos1);
-
-        // double pivotPos2 = getPivotPos(2);
-        // pivot2.set(ControlMode.MotionMagic, pivotPos2);
+        double pivotPos = getPivotPos();
+        pivotSetter.Position = pivotPos;
+        kick1.setControl(pivotSetter);
     }
 
-    public double getExtendNUSpeed(){
+    public double getExtendVelocity(){
         return tromboneSlide.getVelocity().getValue();
     }
 
     public void holdArm(){
-        posSetter.Position = getExtendNU();
-        tromboneSlide.setControl(posSetter);
+        extendSetter.Position = getExtendNU();
+        tromboneSlide.setControl(extendSetter);
     }
 
     //Returns the angle of the arm
     public double getAngle(){
-        return (getPivotAngle(1) + getPivotAngle(2))/2;
+        return getPivotDeg();
     }
 
     public double getExtendNU(){
@@ -407,31 +278,25 @@ public class ArmSubsystem extends SubsystemBase {
         return kick1.getSupplyCurrent().getValue();
     }
 
-    public void setBrakeMode(NeutralModeValue n){
-        defaultFoot.MotorOutput.NeutralMode = n;
+    public void setPivotBrakeMode(NeutralModeValue n){
+        footConfig.MotorOutput.NeutralMode = n;
 
-        foot.apply(defaultFoot);
+        foot.apply(footConfig);
+    }
+
+    public void setExtenBrakeMode(NeutralModeValue n){
+        tuneConfig.MotorOutput.NeutralMode = n;
+
+        tuningSlide.apply(tuneConfig);
     }
 
     //This is TEMPORARY
-    public double getPivotPos(int n){
-        if(n == 1){
-            return kick1.getPosition().getValue();
-        }
-        else if (n==2){
-            return kick2.getPosition().getValue();
-        }
-        else return 0;
+    public double getPivotPos(){
+        return kick1.getPosition().getValue();
     }
 
-    //This is also TEMPORARY
-    public double getPivotAngle(int n){
-        return NRUnits.Pivot.NUToRad(getPivotPos(n));
-    }
-
-    //This is TEMPORARY as well
-    public double getPivotAngleDeg(int n){
-        return getPivotAngle(n) * 360/Constants.TAU;
+    public double getPivotDeg(){
+        return kick1.getPosition().getValue() * 360;
     }
 
     public double getStatorCurrent1(){
@@ -443,7 +308,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getPivotStator(){
-        return (getStatorCurrent1()+getStatorCurrent2())/2;
+        return getStatorCurrent1();
     }
 
     public double getSupplyCurrent1(){
@@ -455,51 +320,57 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getPivotSupply(){
-        return (getStatorCurrent1()+getSupplyCurrent2())/2;
+        return getSupplyCurrent1();
     }
 
     public void setPivotCruiseVelocity(double cruiseVelocity) {
-        defaultFoot.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
-        foot.apply(defaultFoot);
-        // pivot1.configMotionCruiseVelocity(cruiseVelocity);
-        // pivot2.configMotionCruiseVelocity(cruiseVelocity);
+        footConfig.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
+        foot.apply(footConfig);
     }
 
     public void setPivotAcceleration(double acceleration) {
-        defaultFoot.MotionMagic.MotionMagicAcceleration = acceleration;
-        foot.apply(defaultFoot);
+        footConfig.MotionMagic.MotionMagicAcceleration = acceleration;
+        foot.apply(footConfig);
     }   
 
-    public void setExtendCruiseVelocity(double cruiseVelocity) {
-        defaultTune.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
-        tuningSlide.apply(defaultTune);
+    public void setPivotJerk(double jerk){
+        footConfig.MotionMagic.MotionMagicJerk = jerk;
+        foot.apply(footConfig);
     }
 
+    public void setExtendCruiseVelocity(double cruiseVelocity) {
+        tuneConfig.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
+        tuningSlide.apply(tuneConfig);
+    }
     public void setExtendAcceleration(double acceleration) {
-        defaultTune.MotionMagic.MotionMagicAcceleration = acceleration;
-        tuningSlide.apply(defaultTune);
+        tuneConfig.MotionMagic.MotionMagicAcceleration = acceleration;
+        tuningSlide.apply(tuneConfig);
+    }
+    public void setExtendJerk(double jerk){
+        tuneConfig.MotionMagic.MotionMagicJerk = jerk;
+        tuningSlide.apply(tuneConfig);
+    }
+
+    public void setMotionMagicConfigs(double extendCVel, double extendAcc, double pivotCVel, double pivotAcc){
+        setExtendCruiseVelocity(extendCVel);
+        setExtendAcceleration(extendAcc);
+
+        setPivotCruiseVelocity(pivotCVel);
+        setPivotAcceleration(pivotAcc);
     }
 
     public void setDefaultCruiseVelocity() {
-        // tromboneSlide.configMotionCruiseVelocity(72_000);
-        setExtendCruiseVelocity(72_000);
-
-        // pivot1.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
-        // pivot2.configMotionCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
+        setExtendCruiseVelocity(Constants.Arm.ARM_CRUISE_VELOCITY);
         setPivotCruiseVelocity(Constants.Arm.PIVOT_CRUISE_VELOCITY);
     }
 
     public void setDefaultAcceleration() {
-        // tromboneSlide.configMotionAcceleration(45_000);
-        setExtendAcceleration(45_000);
-
-        // pivot1.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
-        // pivot2.configMotionAcceleration(Constants.Arm.ARM_ACCELERATION);
+        setExtendAcceleration(Constants.Arm.ARM_ACCELERATION);
         setPivotAcceleration(Constants.Arm.PIVOT_ACCELERATION);
     }
 
     public boolean armAtZero(){
-        return Math.abs(getEncoderAngle()) < 1; //degree
+        return Math.abs(getEncoderDeg()) < 1; //degree
     }
 
     @Override
@@ -512,13 +383,13 @@ public class ArmSubsystem extends SubsystemBase {
             
             
             //Pivot1
-            LogManager.appendToLog(NRUnits.Pivot.NUToRad(ArmSubsystem.getInstance().getAngle()), "Arm:/RelativeAngle");
-            LogManager.appendToLog(NRUnits.Pivot.NUToRad(getEncoderAngle()), "Arm:/Pivot1/AbsolutePosition");
+            LogManager.appendToLog(NRUnits.Pivot.rotToRad(ArmSubsystem.getInstance().getAngle()), "Arm:/RelativeAngle");
+            LogManager.appendToLog(NRUnits.Pivot.rotToRad(getEncoderDeg()), "Arm:/Pivot1/AbsolutePosition");
             LogManager.appendToLog(getStatorCurrent1(), "Arm:/Pivot1/Stator");
             LogManager.appendToLog(getSupplyCurrent1(), "Arm:/Pivot1/Supply");
 
             //Pivot2
-            LogManager.appendToLog(getPivotPos(2), "Arm:/Pivot2/Position");
+            LogManager.appendToLog(getPivotPos(), "Arm:/Pivot2/Position");
             LogManager.appendToLog(getStatorCurrent2(), "Arm:/Pivot2/Stator");
             LogManager.appendToLog(getSupplyCurrent2(), "Arm:/Pivot2/Supply");
             
@@ -527,7 +398,7 @@ public class ArmSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("PivotCurrent", pivot1.getStatorCurrent());
 
         Tabs.Comp.displayPivotAngle(getAngle());
-        Tabs.Comp.displayEncoderAngle(getEncoderAngle());
+        Tabs.Comp.displayEncoderAngle(getEncoderDeg());
         Tabs.Comp.displayExtendNU(getExtendNU());
     }
 }

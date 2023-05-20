@@ -170,7 +170,7 @@ public final class Tabs {
         }
         //Input in Radians
         public static void displayPivotAngle(double angle){
-            pivotAngle.setDouble(angle * 360 / Constants.TAU);
+            pivotAngle.setDouble(angle);
         }
         public static void displayPivotCurrent(double stator, double supply){
             pivotStator.setDouble(stator);

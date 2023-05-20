@@ -33,7 +33,7 @@ public class TestPivotCommand extends CommandBase {
         //     ArmSubsystem.getInstance().setTestD(D);
         // }
 
-        Tabs.PivotTest.displayActualAngle(ArmSubsystem.getInstance().getEncoderAngle());
+        Tabs.PivotTest.displayActualAngle(ArmSubsystem.getInstance().getEncoderDeg());
         Tabs.PivotTest.displayArmSpeed(ArmSubsystem.getInstance().getPivotSpeed());
     }
 

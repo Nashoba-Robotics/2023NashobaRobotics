@@ -1,15 +1,11 @@
 package frc.robot.lib;
 
-import javax.management.ConstructorParameters;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenixpro.configs.TalonFXConfiguration;
 import com.ctre.phoenixpro.configs.TalonFXConfigurator;
-import com.ctre.phoenixpro.controls.DutyCycleOut;
 import com.ctre.phoenixpro.controls.MotionMagicDutyCycle;
 import com.ctre.phoenixpro.controls.VelocityDutyCycle;
 import com.ctre.phoenixpro.hardware.TalonFX;
-import com.ctre.phoenixpro.signals.ControlModeValue;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 
@@ -21,7 +17,6 @@ public class NRTalonFX {
     private boolean foc = true;
     private boolean overrideBrake = false;
 
-    private DutyCycleOut percentOut = new DutyCycleOut(0, foc, overrideBrake);
     private VelocityDutyCycle velocity = new VelocityDutyCycle(0, foc, 0, 0, overrideBrake);
     private MotionMagicDutyCycle motionMagic = new MotionMagicDutyCycle(0, foc, 0, 0, overrideBrake);
 
@@ -44,19 +39,24 @@ public class NRTalonFX {
     // I don't think we're ever going to change slots for PID. If we ever do, I'll update this
     public void setKS(double kS){
         config.Slot0.kS = kS;
+        configurator.apply(config);
         //Do I need to apply this to the configurator or not?
     }
-    public void setKV(double kV){
+    public void setKF(double kV){
         config.Slot0.kV = kV;
+        configurator.apply(config);
     }
     public void setKP(double kP){
         config.Slot0.kP = kP;
+        configurator.apply(config);
     }
     public void setKI(double kI){
         config.Slot0.kI = kI;
+        configurator.apply(config);
     }
     public void setKD(double kD){
         config.Slot0.kD = kD;
+        configurator.apply(config);
     }
 
     public void configPID(double kP, double kI, double kD){
@@ -64,57 +64,70 @@ public class NRTalonFX {
         setKI(kI);
         setKD(kD);
     }
-    public void configPID(double kS, double kV, double kP, double kI, double kD){
+    public void configPID(double kS, double kF, double kP, double kI, double kD){
         setKS(kS);
-        setKV(kV);
+        setKF(kF);
         configPID(kP, kI, kD);
     }
 
     public void setNeutralMode(NeutralModeValue neutralMode){
         config.MotorOutput.NeutralMode = neutralMode;
+        configurator.apply(config);
     }
     public void setInverted(InvertedValue invert){
         config.MotorOutput.Inverted = invert;
+        configurator.apply(config);
     }
 
     public void setCruiseVelocity(double cruiseVelocity){
         config.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
+        configurator.apply(config);
     }
     public void setAcceleration(double acceleration){
         config.MotionMagic.MotionMagicAcceleration = acceleration;
+        configurator.apply(config);
     }
     public void setJerk(double jerk){
         config.MotionMagic.MotionMagicJerk = jerk;
+        configurator.apply(config);
     }
 
     public void enableStatorCurrentLimit(boolean enable){
         config.CurrentLimits.StatorCurrentLimitEnable = enable;
+        configurator.apply(config);
     }
     public void setStatorCurrentLimit(double limit){
         enableStatorCurrentLimit(true);
         config.CurrentLimits.StatorCurrentLimit = limit;
+        configurator.apply(config);
     }
     public void enableSupplyCurrentLimit(boolean enable){
         config.CurrentLimits.SupplyCurrentLimitEnable = enable;
+        configurator.apply(config);
     }
     public void setSupplyCurrentLimit(double limit){
         enableSupplyCurrentLimit(true);
         config.CurrentLimits.StatorCurrentLimit = limit;
+        configurator.apply(config);
     }
 
     public void enableForwardSoftLimit(boolean enable){
         config.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        configurator.apply(config);
     }
     public void setForwardSoftLimit(double limit){
         enableForwardSoftLimit(true);
         config.SoftwareLimitSwitch.ForwardSoftLimitThreshold = limit;
+        configurator.apply(config);
     }
     public void enableReverseSoftLimit(boolean enable){
         config.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        configurator.apply(config);
     }
     public void setReverseSoftLimit(double limit){
         enableReverseSoftLimit(true);
         config.SoftwareLimitSwitch.ReverseSoftLimitThreshold = limit;
+        configurator.apply(config);
     }
 
     public void setSoftLimits(double forwardLimit, double reverseLimit){
@@ -136,10 +149,7 @@ public class NRTalonFX {
     public void set(ControlMode controlMode, double value){
         switch(controlMode){
             case PercentOutput:
-                percentOut.Output = value;
-                percentOut.EnableFOC = foc;
-                percentOut.OverrideBrakeDurNeutral = overrideBrake;
-                motor.setControl(percentOut);
+                set(value);
                 break;
             case Velocity:
                 velocity.Velocity = value;
@@ -162,10 +172,7 @@ public class NRTalonFX {
     public void set(ControlMode controlMode, double value, double aff){
         switch(controlMode){
             case PercentOutput:
-                percentOut.Output = value;
-                percentOut.EnableFOC = foc;
-                percentOut.OverrideBrakeDurNeutral = overrideBrake;
-                motor.setControl(percentOut);
+                set(value);
                 break;
             case Velocity:
                 velocity.Velocity = value;

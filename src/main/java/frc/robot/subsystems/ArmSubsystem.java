@@ -165,10 +165,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getPivotSpeed(){
-        double pivotSpeed1 = kick1.getVelocity().getValue();
-        double pivotSpeed2 = kick2.getVelocity().getValue();
-
-        return (pivotSpeed1+pivotSpeed2)/2;
+        return kick1.getVelocity().getValue();
     }
 
     //Extends arm to specified position in meters

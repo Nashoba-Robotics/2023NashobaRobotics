@@ -15,10 +15,10 @@ public class IntakeTestCommand extends CommandBase{
         GrabberSubsystem.getInstance().setCurrentLimit(false);
         Tabs.Intake.resetAll();
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(20_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(20_000);
+        // ArmSubsystem.getInstance().setPivotCruiseVelocity(20_000);
+        // ArmSubsystem.getInstance().setPivotAcceleration(20_000);
 
-        ArmSubsystem.getInstance().resetPivotNU();
+        // ArmSubsystem.getInstance().resetPivotNU();
     }
 
     @Override

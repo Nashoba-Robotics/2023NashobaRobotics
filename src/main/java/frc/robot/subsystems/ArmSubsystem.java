@@ -15,6 +15,7 @@ import com.ctre.phoenixpro.configs.MotorOutputConfigs;
 import com.ctre.phoenixpro.configs.Slot0Configs;
 import com.ctre.phoenixpro.configs.TalonFXConfiguration;
 import com.ctre.phoenixpro.configs.TalonFXConfigurator;
+import com.ctre.phoenixpro.controls.Follower;
 import com.ctre.phoenixpro.controls.MotionMagicDutyCycle;
 import com.ctre.phoenixpro.hardware.CANcoder;
 import com.ctre.phoenixpro.hardware.TalonFX;
@@ -47,7 +48,7 @@ public class ArmSubsystem extends SubsystemBase {
     
 
     private TalonFX kick1, kick2; //Control the pivoting of the entire arm
-    private TalonFXConfigurator foot1, foot2;
+    private TalonFXConfigurator foot;
     private TalonFXConfiguration defaultFoot;
 
     public ArmSubsystem(){
@@ -59,9 +60,10 @@ public class ArmSubsystem extends SubsystemBase {
 
         kick1 = new TalonFX(Constants.Arm.PIVOT_PORT_1, "drivet");
         kick2 = new TalonFX(Constants.Arm.PIVOT_PORT_2, "drivet");
+        Follower kickFollow = new Follower(Constants.Arm.PIVOT_PORT_1, true);
+        kick2.setControl(kickFollow);
 
-        foot1 = kick1.getConfigurator();
-        foot2 = kick2.getConfigurator();
+        foot = kick1.getConfigurator();
 
         encoder = new CANcoder(4, "drivet");
         encoderConfigurator = encoder.getConfigurator();
@@ -82,19 +84,19 @@ public class ArmSubsystem extends SubsystemBase {
     public void config(){
         //Configure the extension motor
         defaultTune = new TalonFXConfiguration();
-        defaultTune.Slot0.kS = Constants.Arm.ARM_KF;
-        defaultTune.Slot0.kV = 0;
+        defaultTune.Slot0.kS = 0;
+        defaultTune.Slot0.kV = Constants.Arm.ARM_KF;
         defaultTune.Slot0.kP = Constants.Arm.ARM_KP;
         defaultTune.Slot0.kI = Constants.Arm.ARM_KI;
         defaultTune.Slot0.kD = Constants.Arm.ARM_KD;
 
-        defaultTune.CurrentLimits.StatorCurrentLimitEnable = true;
+        defaultTune.CurrentLimits.StatorCurrentLimitEnable = false;
         defaultTune.CurrentLimits.StatorCurrentLimit = 0;
-        defaultTune.CurrentLimits.SupplyCurrentLimitEnable = true;
+        defaultTune.CurrentLimits.SupplyCurrentLimitEnable = false;
         defaultTune.CurrentLimits.SupplyCurrentLimit = 0;
 
         defaultTune.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        defaultTune.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+        defaultTune.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
         defaultTune.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         defaultTune.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT;
@@ -107,12 +109,12 @@ public class ArmSubsystem extends SubsystemBase {
 
         tuningSlide.apply(defaultTune);
 
-        posSetter.EnableFOC = true; //Should probably test this.
+        // posSetter.EnableFOC = true; //Should probably test this.
 
         //Configure the pivot motors
         defaultFoot = new TalonFXConfiguration();
-        defaultFoot.Slot0.kS = Constants.Arm.PIVOT_KF_1;
-        defaultFoot.Slot0.kV = 0;
+        defaultFoot.Slot0.kS = 0;
+        defaultFoot.Slot0.kV = Constants.Arm.PIVOT_KF_1;
         defaultFoot.Slot0.kP = Constants.Arm.PIVOT_KP_1;
         defaultFoot.Slot0.kI = Constants.Arm.PIVOT_KI_1;
         defaultFoot.Slot0.kD = Constants.Arm.PIVOT_KD_1;
@@ -124,16 +126,16 @@ public class ArmSubsystem extends SubsystemBase {
 
         defaultFoot.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
-        defaultFoot.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        defaultFoot.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
         defaultFoot.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT;
-        defaultFoot.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        defaultFoot.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
         defaultFoot.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT;
 
         defaultFoot.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.PIVOT_CRUISE_VELOCITY;
         defaultFoot.MotionMagic.MotionMagicAcceleration = Constants.Arm.PIVOT_ACCELERATION;
         defaultFoot.MotionMagic.MotionMagicJerk = 0;
 
-        applyToPivot(defaultFoot);
+        foot.apply(defaultFoot);
 
 
         encoderConfig = new CANcoderConfiguration();
@@ -184,12 +186,10 @@ public class ArmSubsystem extends SubsystemBase {
         // pivot2.configReverseSoftLimitThreshold(Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT);
     }
 
-    public void applyToPivot(TalonFXConfiguration config){
-        defaultFoot.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;    //The two motors are inverted from each other
-        foot1.apply(config);
-        defaultFoot.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-        foot2.apply(config);
-    }
+    // public void applyToPivot(TalonFXConfiguration config){
+    //     defaultFoot.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;    //The two motors are inverted from each other
+    //     foot.apply(config);
+    // }
 
     // private PIDController pidController = new PIDController(0, 0, 0);
 
@@ -340,7 +340,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         // pivot1.set(ControlMode.MotionMagic, NU);
         // pivot2.set(ControlMode.MotionMagic, NU);
-        
+        posSetter.Slot = 0;
         posSetter.Position = NU;
         posSetter.FeedForward = ff;
         kick1.setControl(posSetter);
@@ -409,7 +409,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void setBrakeMode(NeutralModeValue n){
         defaultFoot.MotorOutput.NeutralMode = n;
 
-        applyToPivot(defaultFoot);
+        foot.apply(defaultFoot);
     }
 
     //This is TEMPORARY
@@ -459,15 +459,15 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setPivotCruiseVelocity(double cruiseVelocity) {
         defaultFoot.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
-        applyToPivot(defaultFoot);
+        foot.apply(defaultFoot);
         // pivot1.configMotionCruiseVelocity(cruiseVelocity);
         // pivot2.configMotionCruiseVelocity(cruiseVelocity);
     }
 
     public void setPivotAcceleration(double acceleration) {
         defaultFoot.MotionMagic.MotionMagicAcceleration = acceleration;
-        applyToPivot(defaultFoot);
-    }
+        foot.apply(defaultFoot);
+    }   
 
     public void setExtendCruiseVelocity(double cruiseVelocity) {
         defaultTune.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;

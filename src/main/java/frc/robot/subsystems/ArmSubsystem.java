@@ -293,7 +293,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public double getPivotDeg(){
-        return kick1.getPosition().getValue() * 360;
+        return NRUnits.Pivot.rotToRad(getPivotPos()) * 360/Constants.TAU;
     }
 
     public double getStatorCurrent1(){

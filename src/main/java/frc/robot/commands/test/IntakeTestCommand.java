@@ -51,7 +51,7 @@ public class IntakeTestCommand extends CommandBase{
         Tabs.Intake.displayTopStator(GrabberSubsystem.getInstance().getGrabberCurrent());
         Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderDeg());
 
-        Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
+        // Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
         Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getPivotOutput());
     }
 

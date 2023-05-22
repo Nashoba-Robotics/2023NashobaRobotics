@@ -245,7 +245,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //Returns the angle of the arm
     public double getAngle(){
-        return getPivotDeg();
+        return getPivotDeg() * Constants.TAU/360;
     }
 
     public double getExtendNU(){

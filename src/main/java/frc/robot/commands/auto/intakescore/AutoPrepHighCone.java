@@ -17,6 +17,6 @@ public class AutoPrepHighCone extends CommandBase{
     @Override
     public boolean isFinished() {
         return Math.abs(ArmSubsystem.getInstance().getExtendNU()-Constants.Arm.HIGH_EXTEND_NU) < 1000
-        &&     Math.abs(ArmSubsystem.getInstance().getPivotAngle(1)-Constants.Arm.HIGH_FRONT_ANGLE) < 2;
+        &&     Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.HIGH_FRONT_ANGLE) < 2;
     }
 }

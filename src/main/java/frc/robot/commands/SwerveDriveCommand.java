@@ -62,7 +62,7 @@ public class SwerveDriveCommand extends CommandBase {
                 JoystickSubsystem.getInstance().getLeftJoystickValues().shape(
                     Constants.Joystick.MOVE_DEAD_ZONE,
                     Constants.Joystick.MOVE_SENSITIVITY
-                ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
+                ).swap().applyAngleDeadzone(Constants.Joystick.ANGLE_DEAD_ZONE),
                 -controller.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle())
                 );
         } else if(squareUpSingleStation) {
@@ -70,7 +70,7 @@ public class SwerveDriveCommand extends CommandBase {
                 JoystickSubsystem.getInstance().getLeftJoystickValues().shape(
                     Constants.Joystick.MOVE_DEAD_ZONE,
                     Constants.Joystick.MOVE_SENSITIVITY
-                ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
+                ).swap().applyAngleDeadzone(Constants.Joystick.ANGLE_DEAD_ZONE),
                 -controller.calculate(SwerveDriveSubsystem.getInstance().getGyroAngle())
                 );
         } else {
@@ -78,7 +78,7 @@ public class SwerveDriveCommand extends CommandBase {
                 JoystickSubsystem.getInstance().getLeftJoystickValues().shape(
                     Constants.Joystick.MOVE_DEAD_ZONE,
                     Constants.Joystick.MOVE_SENSITIVITY
-                ).swap().applyAngleDeadzone(10 * Constants.TAU/360),
+                ).swap().applyAngleDeadzone(Constants.Joystick.ANGLE_DEAD_ZONE),
                 JoystickSubsystem.getInstance().getRightJoystickValues().shape(
                     Constants.Joystick.TURN_DEAD_ZONE,
                     Constants.Joystick.TURN_SENSITIVITY

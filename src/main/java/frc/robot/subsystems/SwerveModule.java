@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.sensors.CANCoderFaults;
 import com.ctre.phoenixpro.configs.CANcoderConfiguration;
 import com.ctre.phoenixpro.configs.CANcoderConfigurator;
 import com.ctre.phoenixpro.configs.TalonFXConfiguration;
@@ -115,7 +114,7 @@ public class SwerveModule {
         turnConfig.CurrentLimits.SupplyCurrentLimit = 60;
         turnConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         turnConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-        turnConfigurator.apply(moveConfig);
+        turnConfigurator.apply(turnConfig);
         turnMotor.setRotorPosition(0);
 
         sensorConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;

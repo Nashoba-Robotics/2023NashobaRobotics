@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenixpro.configs.MountPoseConfigs;
 import com.ctre.phoenixpro.configs.Pigeon2Configuration;
 import com.ctre.phoenixpro.configs.Pigeon2Configurator;
 import com.ctre.phoenixpro.hardware.Pigeon2;
@@ -44,13 +43,8 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         config.MountPose.MountPosePitch = 0.307617;
         config.MountPose.MountPoseRoll = -0.483398;
         gyroConfigurator.apply(config);
-        fieldCentric = true;
 
-        /*
-         * :-0.263672 '
-    Pitch :0.307617 '
-    Roll  :-0.483398 
-         */
+        fieldCentric = false;
 
         modules = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_DEGREES, Constants.Swerve.MOD0_AFF),

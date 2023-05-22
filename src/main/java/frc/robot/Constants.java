@@ -23,7 +23,7 @@ public final class Constants {
     public static final double MOVE_DEAD_ZONE = 0.18;
     public static final double TURN_DEAD_ZONE = 0.1;
 
-    public static final double ANGLE_DEAD_ZONE = Constants.TAU / 12;
+    public static final double ANGLE_DEAD_ZONE = Constants.TAU / 36;
 
     public static final double MOVE_SENSITIVITY = 1.5;
     public static final double TURN_SENSITIVITY = 1;

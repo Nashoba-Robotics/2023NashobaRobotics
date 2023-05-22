@@ -134,7 +134,7 @@ public class ArmSubsystem extends SubsystemBase {
         encoderConfig.FutureProofConfigs = true;
 
         encoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        encoderConfig.MagnetSensor.MagnetOffset = 0;
+        encoderConfig.MagnetSensor.MagnetOffset = Constants.Arm.ENCODER_OFFSET;
 
         encoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;   //TODO: Make sure this is going in the correct direction
 

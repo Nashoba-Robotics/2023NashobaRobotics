@@ -41,7 +41,7 @@ public class IntakeTestCommand extends CommandBase{
             ArmSubsystem.getInstance().getArmSupplyCurrent()
         );
 
-        Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getAngle());
+        Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getPivotRad());
         Tabs.Intake.displayPivotCurrent(
             ArmSubsystem.getInstance().getPivotStatorCurrent(), 
             ArmSubsystem.getInstance().getPivotSupplyCurrent()

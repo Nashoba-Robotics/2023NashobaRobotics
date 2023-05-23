@@ -15,7 +15,6 @@ import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.DataLogManager;
 
 public final class LogManager {
-
     private static HashMap<String, LogEntry> filepathToLogEntry = new HashMap<>(); 
 
     // Use instead of System.out.println();

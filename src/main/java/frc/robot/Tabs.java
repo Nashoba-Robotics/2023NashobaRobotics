@@ -308,6 +308,7 @@ public final class Tabs {
          * Extend NU            Target Extend       Extend Error
          * Wrist NU             Target Wrist        Wrist Error
          */
+        //TODO: Probably doesn't work on current computer because screen size too small
         private static ShuffleboardLayout error = tab.getLayout("Errors", BuiltInLayouts.kGrid)
             .withSize(3, 4);
         
@@ -351,9 +352,7 @@ public final class Tabs {
             .getEntry();
 
         private static GenericEntry setPivotOffset = tab.add("Set Pivot Offset", Constants.Arm.ENCODER_OFFSET).getEntry();
-
         private static GenericEntry grabberRunning = tab.add("Grabber On", false).getEntry();
-        
         private static GenericEntry grabberCurrent = tab.add("Grabber Current", 0).getEntry();
 
         public static void displayGrabberRunning(boolean running) {

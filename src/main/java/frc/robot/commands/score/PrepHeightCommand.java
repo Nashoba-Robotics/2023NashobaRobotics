@@ -81,7 +81,7 @@ public class PrepHeightCommand extends CommandBase {
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - setPos2) < 2 * Constants.TAU / 360){
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - setPos2) < 2 * Constants.TAU / 360){
                 atSetPoint2 = true;
             } 
     
@@ -91,7 +91,7 @@ public class PrepHeightCommand extends CommandBase {
                 if(pivotX == 0){ // If there isn't any input, maintain the position
                     if(!joystick02){
                         joystick02 = true;
-                        lastPos2 = ArmSubsystem.getInstance().getAngle();
+                        lastPos2 = ArmSubsystem.getInstance().getPivotRad();
                     }
                     ArmSubsystem.getInstance().pivot(lastPos2);
                 }

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.NewTabs;
+import frc.robot.Robot;
 
 public class CandleSubsystem extends SubsystemBase {
     
@@ -82,44 +83,43 @@ public class CandleSubsystem extends SubsystemBase {
 
     public void set(CandleState state) {
         candle.clearAnimation(0);
+
         switch(state) {
             case NONE:
-                candle.clearAnimation(0);
                 break;
             case ENABLED:
-                candle.clearAnimation(0);
-                //candle.animate(new StrobeAnimation(0, 255, 0, 0, 1, LED_COUNT));
-                // candle.setLEDs(0, 255, 0);
-                candle.setLEDs(255, 255, 255);
-
+                switch(Robot.state){
+                    case OK:
+                        candle.setLEDs(255, 255, 255);
+                        break;
+                    case PivotEncoderBad:
+                        candle.setLEDs(255, 50, 50);
+                        break;
+                    case OhSht:
+                        candle.setLEDs(255, 0, 0);
+                        break;
+                }
                 break;
             case DISABLED:
-                candle.clearAnimation(0);
-                // candle.animate(new RgbFadeAnimation(0.5, 0.2, LED_COUNT, 0));
                 candle.animate(new LarsonAnimation(defaultColor[0], defaultColor[1], defaultColor[2], 0, 0.3, LED_COUNT, BounceMode.Back, 7));
-                // candle.setLEDs(defaultColor[0], defaultColor[1], defaultColor[2]);
                 break;
             case AUTO:
                 candle.animate(new RainbowAnimation(1, 0.8, LED_COUNT));
                 break;
             case WANT_CONE:
-                candle.clearAnimation(0);
                 candle.setLEDs(yellow[0], yellow[1], yellow[2]);
                 break;
             case WANT_CUBE:
-                candle.clearAnimation(0);
                 candle.setLEDs(purple[0], purple[1], purple[2]);
                 break;
             case HAVE_CONE:
                 //candle.animate(new StrobeAnimation(yellow[0], yellow[1], yellow[2], 0, 0.01, LED_COUNT));
-                candle.clearAnimation(0);
                 candle.setLEDs(0, 230, 0);
                 break;
             case HAVE_CUBE:
                 candle.animate(new StrobeAnimation(purple[0], purple[1], purple[2], 0, 0.01, LED_COUNT));
                 break;
             case DOUBLE_STATION:
-                candle.clearAnimation(0);
                 candle.setLEDs(0, 0, 255);
                 break;
             case BAD:
@@ -127,31 +127,24 @@ public class CandleSubsystem extends SubsystemBase {
                 break;
             case FUN:
                 Animation a = new RgbFadeAnimation(0.7, 0.7, LED_COUNT);
-                candle.clearAnimation(0);
                 candle.animate(a);
                 break;
             case SYSTEM_CHECK:
-                candle.clearAnimation(0);
                 candle.animate(new StrobeAnimation(255, 255, 255, 0, 0.01, LED_COUNT));
                 break;
             case SYSTEM_GOOD:
-                candle.clearAnimation(0);
                 candle.setLEDs(0, 255, 0);
                 break;
             case SYSTEM_BAD:
-                candle.clearAnimation(0);
                 candle.animate(new StrobeAnimation(255, 0, 0, 0, 0.03, LED_COUNT));
                 break;
             case PARTIAL_CHECK_1:
-                candle.clearAnimation(0);
                 candle.animate(new StrobeAnimation(yellow[0], yellow[1], yellow[2], 0, 0.01, LED_COUNT));
                 break;
             case FORDIANI:
-                candle.clearAnimation(0);
                 candle.setLEDs(255, 0, 0);
                 break;
         }
-
     }
 
     public void set(int[] colors) {

@@ -51,7 +51,7 @@ public class IntakeConeCheck extends CommandBase{
         atPivot = false;
         pivotMan0 = false;
         GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE);
-        lastPivot = ArmSubsystem.getInstance().getAngle();
+        lastPivot = ArmSubsystem.getInstance().getPivotRad();
 
         resetEncoder = false;
 
@@ -92,8 +92,8 @@ public class IntakeConeCheck extends CommandBase{
         //Check if the arm pivot speed is 0
         if(!resetEncoder && 
         Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 3.0 && 
-        Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-            if(Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4) {
+        Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             } else {

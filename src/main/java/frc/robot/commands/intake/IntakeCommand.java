@@ -52,7 +52,7 @@ public class IntakeCommand extends CommandBase {
         atPivot = false;
         pivotMan0 = false;
         GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE * multiplier);
-        lastPivot = ArmSubsystem.getInstance().getAngle();
+        lastPivot = ArmSubsystem.getInstance().getPivotRad();
 
         resetEncoder = false;
 
@@ -69,7 +69,7 @@ public class IntakeCommand extends CommandBase {
         GrabberSubsystem.getInstance().intake();
         // SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
-        if(Math.abs(ArmSubsystem.getInstance().getAngle() - pivotTarget) < 0.5 * Constants.TAU/360){
+        if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - pivotTarget) < 0.5 * Constants.TAU/360){
             atPivot = true;
         } 
 
@@ -78,7 +78,7 @@ public class IntakeCommand extends CommandBase {
             if(pivotX == 0){ // If there isn't any input, maintain the position
                 if(!pivotMan0){
                     pivotMan0 = true;
-                    lastPivot = ArmSubsystem.getInstance().getAngle();
+                    lastPivot = ArmSubsystem.getInstance().getPivotRad();
                 }
                 ArmSubsystem.getInstance().pivot(lastPivot);
             }
@@ -116,8 +116,8 @@ public class IntakeCommand extends CommandBase {
         SmartDashboard.putNumber("Pivot NU Speed", ArmSubsystem.getInstance().getPivotSpeed());
         if(!resetEncoder && 
         Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 3.0 && 
-        Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-            if(Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4) {
+        Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             } else {

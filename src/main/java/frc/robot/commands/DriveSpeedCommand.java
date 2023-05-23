@@ -39,7 +39,7 @@ public class DriveSpeedCommand extends CommandBase{
             Tabs.DriveTest.getPivotAngle()*Constants.TAU/360
         );
 
-        Tabs.DriveTest.displayActualAngle(ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
+        Tabs.DriveTest.displayActualAngle(ArmSubsystem.getInstance().getPivotRad()*360/Constants.TAU);
 
         GrabberSubsystem.getInstance().orientPos(
             Tabs.DriveTest.grabberAngle()

@@ -72,7 +72,7 @@ public class PrepHighCubeCommand extends CommandBase{
 
     @Override
     public void execute() {
-        double pivotAngle = ArmSubsystem.getInstance().getAngle();
+        double pivotAngle = ArmSubsystem.getInstance().getPivotRad();
         double pivotSpeed = ArmSubsystem.getInstance().getPivotSpeed();
         pivotSpeed = NRUnits.Pivot.NUToRPS(pivotSpeed);
 
@@ -101,7 +101,7 @@ public class PrepHighCubeCommand extends CommandBase{
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
                 atPivot = true;
             } 
             if(atPivot) {
@@ -109,7 +109,7 @@ public class PrepHighCubeCommand extends CommandBase{
                 if(pivotX == 0){ // If there isn't any input, maintain the position
                     if(!pivotMan0){
                         pivotMan0 = true;
-                        lastPivot = ArmSubsystem.getInstance().getAngle();
+                        lastPivot = ArmSubsystem.getInstance().getPivotRad();
                     }
                     ArmSubsystem.getInstance().pivot(lastPivot);
                 }
@@ -124,7 +124,7 @@ public class PrepHighCubeCommand extends CommandBase{
 
             GrabberSubsystem.getInstance().orientPos(wristPos);
 
-            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= Constants.Arm.INTAKE_DEADZONE){
+            if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getPivotRad()-targetPivot) <= Constants.Arm.INTAKE_DEADZONE){
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             }

@@ -37,7 +37,14 @@ import frc.robot.subsystems.CandleSubsystem.CandleState;
 public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   SendableChooser<Command> autoChooser;
-  HttpCamera camera = new HttpCamera("Front Cam", "http://10.17.68.11:5800/");
+  // HttpCamera camera = new HttpCamera("Front Cam", "http://10.17.68.11:5800/");
+  public static enum RobotState{
+    OK,
+    PivotEncoderBad,
+    OhSht
+  }
+
+  public static RobotState state = RobotState.OK;
 
   @Override
   public void robotInit() {
@@ -65,7 +72,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Gracious Professionalism", new DumbAutoNoScore());
 
     Tabs.Comp.tab.add(autoChooser);
-    Tabs.Comp.tab.add("Front Camera", camera);
+    // Tabs.Comp.tab.add("Front Camera", camera);
 
     Tabs.Intake.tab.add(ArmSubsystem.getInstance());
     Tabs.Intake.tab.add(GrabberSubsystem.getInstance());
@@ -86,7 +93,19 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
+    // SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
+
+    if(!ArmSubsystem.getInstance().encoderOK() || RobotContainer.pdh.getFaults().Channel0BreakerFault){
+      if(true){
+        state = RobotState.PivotEncoderBad;
+      }
+      else{
+        state = RobotState.OhSht;
+      }
+    }
+    else{
+      state = RobotState.OK;
+    }
 
     //PDH logging
     LogManager.appendToLog(RobotContainer.PDH.getVoltage(), "PDH:/Voltage");
@@ -96,7 +115,6 @@ public class Robot extends TimedRobot {
     for(int i = 0; i < 24; i++) {
       LogManager.appendToLog(RobotContainer.PDH.getCurrent(i), "PDH:/Current/"+i);
     }
-    
   }
 
   @Override

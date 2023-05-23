@@ -120,7 +120,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         }
         gotToStart = false;
 
-        atStartDeg = Math.abs(ArmSubsystem.getInstance().getAngle() - 22*Constants.TAU/360) < 1*Constants.TAU/360;
+        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - 22*Constants.TAU/360) < 1*Constants.TAU/360;
 
         //On-the-field Diagnostic information
         Tabs.Comp.setPivotTarget(targetPivot);
@@ -135,7 +135,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         if(!DriverStation.isAutonomous() && !atStartDeg && Math.abs(targetPivot) < Constants.TAU/4){
             ArmSubsystem.getInstance().pivot(22*Constants.TAU/360 * multiplier);
             ArmSubsystem.getInstance().extendNU(3_000);
-            if(Math.abs(Math.abs(ArmSubsystem.getInstance().getAngle()) - 22*Constants.TAU/360) < 1*Constants.TAU/360){
+            if(Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - 22*Constants.TAU/360) < 1*Constants.TAU/360){
                 ArmSubsystem.getInstance().pivot(targetPivot);
                 ArmSubsystem.getInstance().extendNU(targetPos);
                 atStartDeg = true;
@@ -163,7 +163,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
                 //Manual Pivot:
                 //All of the logic is the same as the extension
-                if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+                if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
                     atPivot = true;
                 } 
         
@@ -172,7 +172,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                     if(pivotX == 0){ // If there isn't any input, maintain the position
                         if(!pivotMan0){
                             pivotMan0 = true;
-                            lastPivot = ArmSubsystem.getInstance().getAngle();
+                            lastPivot = ArmSubsystem.getInstance().getPivotRad();
                         }
                         ArmSubsystem.getInstance().pivot(lastPivot);
                     }
@@ -188,7 +188,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 GrabberSubsystem.getInstance().orientPos(targetWrist);
 
                 if(!resetEncoder && 
-                    Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= 5 * Constants.TAU/360 && 
+                    Math.abs(ArmSubsystem.getInstance().getPivotRad()-targetPivot) <= 5 * Constants.TAU/360 && 
                     Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10){
                     ArmSubsystem.getInstance().resetPivotNU();
                     resetEncoder = true;

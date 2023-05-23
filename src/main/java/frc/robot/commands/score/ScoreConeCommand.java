@@ -34,17 +34,17 @@ public class ScoreConeCommand extends CommandBase {
 
         startTime = System.currentTimeMillis();
 
-        low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;
+        low = Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4;
         if(low){
             // GrabberSubsystem.getInstance().setCurrentLimit(50);
             GrabberSubsystem.getInstance().setCurrentLimit(false);
             GrabberSubsystem.getInstance().outtake(Constants.Grabber.LOW_CONE_RELEASE_SPEED);
-            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
+            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getPivotRad());
         } 
         else{
             GrabberSubsystem.getInstance().setCurrentLimit(true);
             double angleChange = DriverStation.isAutonomous() ? Constants.Arm.AUTO_DUNK_ANGLE : Constants.Arm.TELEOP_DUNK_ANGLE;
-            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
+            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getPivotRad() + angleChange * multiplier);
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_CONE_NU * multiplier);
             double currentExtend = ArmSubsystem.getInstance().getExtendNU();
             ArmSubsystem.getInstance().extendNU(currentExtend-Constants.Arm.RETRACT_NU);

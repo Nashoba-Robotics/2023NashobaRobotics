@@ -10,6 +10,7 @@ import com.ctre.phoenixpro.controls.MotionMagicDutyCycle;
 import com.ctre.phoenixpro.hardware.CANcoder;
 import com.ctre.phoenixpro.hardware.TalonFX;
 import com.ctre.phoenixpro.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenixpro.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.MagnetHealthValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
@@ -17,11 +18,12 @@ import com.ctre.phoenixpro.signals.SensorDirectionValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
+import frc.robot.Robot;
 import frc.robot.Tabs;
+import frc.robot.Robot.RobotState;
 import frc.robot.lib.math.NRUnits;
 
 
-//TODO: Change all of the diagnostic functions to read only the first pivot motor
 public class ArmSubsystem extends SubsystemBase {
     private TalonFX tromboneSlide;  //Controls the extension/retraction of the arm
     private TalonFXConfigurator tuningSlide;
@@ -54,7 +56,7 @@ public class ArmSubsystem extends SubsystemBase {
 
         foot = kick1.getConfigurator();
 
-        encoder = new CANcoder(4, "drivet");
+        encoder = new CANcoder(Constants.Arm.ENCODER_PORT, "drivet");
         encoderConfigurator = encoder.getConfigurator();
         // encoder.configFactoryDefault();
         // encoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
@@ -243,11 +245,6 @@ public class ArmSubsystem extends SubsystemBase {
         tromboneSlide.setControl(extendSetter);
     }
 
-    //Returns the angle of the arm
-    public double getAngle(){
-        return getPivotDeg() * Constants.TAU/360;
-    }
-
     public double getExtendNU(){
         return tromboneSlide.getPosition().getValue();
     }
@@ -281,19 +278,22 @@ public class ArmSubsystem extends SubsystemBase {
         foot.apply(footConfig);
     }
 
-    public void setExtenBrakeMode(NeutralModeValue n){
+    public void setExtendBrakeMode(NeutralModeValue n){
         tuneConfig.MotorOutput.NeutralMode = n;
 
         tuningSlide.apply(tuneConfig);
     }
 
-    //This is TEMPORARY
     public double getPivotPos(){
         return kick1.getPosition().getValue();
     }
 
     public double getPivotDeg(){
         return NRUnits.Pivot.rotToRad(getPivotPos()) * 360/Constants.TAU;
+    }
+    //Returns the angle of the arm
+    public double getPivotRad(){
+        return getPivotDeg() * Constants.TAU/360;
     }
 
     public double getStatorCurrent1(){
@@ -369,7 +369,8 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean armAtZero(){
         return Math.abs(getEncoderDeg()) < 1; //degree
     }
-
+    private boolean switchState = true;
+    private RobotState lastState = Robot.state;
     @Override
     public void periodic() {
         if(Constants.Logging.ARM) {
@@ -378,9 +379,8 @@ public class ArmSubsystem extends SubsystemBase {
             LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
             LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
             
-            
             //Pivot1
-            LogManager.appendToLog(NRUnits.Pivot.rotToRad(ArmSubsystem.getInstance().getAngle()), "Arm:/RelativeAngle");
+            LogManager.appendToLog(NRUnits.Pivot.rotToRad(ArmSubsystem.getInstance().getPivotRad()), "Arm:/RelativeAngle");
             LogManager.appendToLog(NRUnits.Pivot.rotToRad(getEncoderDeg()), "Arm:/Pivot1/AbsolutePosition");
             LogManager.appendToLog(getStatorCurrent1(), "Arm:/Pivot1/Stator");
             LogManager.appendToLog(getSupplyCurrent1(), "Arm:/Pivot1/Supply");
@@ -392,10 +392,30 @@ public class ArmSubsystem extends SubsystemBase {
             
         }
 
-        // SmartDashboard.putNumber("PivotCurrent", pivot1.getStatorCurrent());
-
-        Tabs.Comp.displayPivotAngle(getAngle());
+        Tabs.Comp.displayPivotAngle(getPivotDeg());
         Tabs.Comp.displayEncoderAngle(getEncoderDeg());
         Tabs.Comp.displayExtendNU(getExtendNU());
+
+        if(switchState){
+            switch(Robot.state){
+                case OK:
+                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+                    footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
+                    footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
+                    footConfig.Feedback.SensorToMechanismRatio = 1;
+                    break;
+                case PivotEncoderBad:
+                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+                    break;
+                case OhSht:
+                    break;
+            }
+            foot.apply(footConfig);
+            switchState = false;
+        }
+        if(lastState != Robot.state){
+            switchState = true;
+            lastState = Robot.state;
+        } 
     }
 }

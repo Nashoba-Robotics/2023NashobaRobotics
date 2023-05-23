@@ -72,7 +72,7 @@ public class ConePrepCheck extends CommandBase{
             ArmSubsystem.getInstance().pivot(targetPivot);
             GrabberSubsystem.getInstance().orientPos(targetWrist);
 
-            if(!resetPivot && Math.abs(targetPivot - ArmSubsystem.getInstance().getAngle()) < 1 * Constants.TAU/360
+            if(!resetPivot && Math.abs(targetPivot - ArmSubsystem.getInstance().getPivotRad()) < 1 * Constants.TAU/360
             && ArmSubsystem.getInstance().getPivotSpeed() < 3){
                 resetPivot = true;
                 ArmSubsystem.getInstance().resetPivotNU();

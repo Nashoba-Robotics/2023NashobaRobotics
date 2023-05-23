@@ -203,6 +203,7 @@ public final class Constants {
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
 
+    public static final int ENCODER_PORT = 4;
     public static final double ENCODER_OFFSET = 0.200195 ;
 
     public static final double ARM_KF = 0.016;

@@ -95,7 +95,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     // SmartDashboard.putString("Alliance Color", DriverStation.getAlliance().toString());
 
-    if(!ArmSubsystem.getInstance().encoderOK() || RobotContainer.pdh.getFaults().Channel0BreakerFault){
+    if(!ArmSubsystem.getInstance().encoderOK() || RobotContainer.pdh.getFaults().Channel15BreakerFault){
       if(true){
         state = RobotState.PivotEncoderBad;
       }

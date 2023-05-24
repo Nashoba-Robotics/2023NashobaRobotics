@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.hal.PowerDistributionFaults;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -209,6 +210,10 @@ public class RobotContainer {
   static PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);
 
   public static class PDH {
+    
+    public static PowerDistributionFaults getFaults(){
+      return pdh.getFaults();
+    }
 
     //Battery Voltage
     public static double getVoltage() {

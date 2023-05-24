@@ -3,7 +3,6 @@ package frc.robot.commands.score;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Grabber;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -28,9 +27,6 @@ public class ScoreConeCommand extends CommandBase {
         // GrabberSubsystem.getInstance().setCurrentLimit(40);
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
-
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(85_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(60_000);
 
         startTime = System.currentTimeMillis();
 
@@ -64,18 +60,18 @@ public class ScoreConeCommand extends CommandBase {
         GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().orient(0);
         if(DriverStation.isAutonomous()){   //If it pivots faster when retracting, it will tip -> Don't want that in auto
-            ArmSubsystem.getInstance().setPivotAcceleration(25_000);
-            ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(Constants.Arm.AUTO_PIVOT_ACCELERATION);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(Constants.Arm.AUTO_PIVOT_CRUISE_VELOCITY);
 
-            ArmSubsystem.getInstance().setExtendCruiseVelocity(40_000);
-            ArmSubsystem.getInstance().setExtendAcceleration(20_000);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(Constants.Arm.AUTO_ARM_CRUISE_VELOCITY);
+            ArmSubsystem.getInstance().setExtendAcceleration(Constants.Arm.AUTO_ARM_ACCELERATION);
         }
         else{   //Go fast in teleop VROOM
-            ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
-            ArmSubsystem.getInstance().setPivotAcceleration(50_000);
+            ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+            ArmSubsystem.getInstance().setDefaultAcceleration();
         }
         ArmSubsystem.getInstance().pivot(0);
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
     }
 
     @Override

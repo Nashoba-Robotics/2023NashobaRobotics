@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.led.Animation;
 import com.ctre.phoenix.led.CANdle;
+import com.ctre.phoenix.led.CANdleConfiguration;
 import com.ctre.phoenix.led.LarsonAnimation;
 import com.ctre.phoenix.led.RainbowAnimation;
 import com.ctre.phoenix.led.RgbFadeAnimation;
@@ -24,6 +25,7 @@ public class CandleSubsystem extends SubsystemBase {
     // private final static int[] defaultColor = {0xFF, 0x60, 0x03};
 
     CANdle candle;
+    CANdleConfiguration config = new CANdleConfiguration();
 
     public CandleSubsystem() {
         candle = new CANdle(Constants.Misc.CANDLE_PORT, "drivet");

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Tabs;
 import frc.robot.subsystems.ArmSubsystem;
@@ -12,6 +13,7 @@ import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.Constants.Field.TargetLevel;
+import frc.robot.Robot.RobotState;
 
 
 public class AutoDirectionalPrepHeightCommand extends CommandBase {
@@ -126,6 +128,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         Tabs.Comp.setPivotTarget(targetPivot);
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setWristTarget(targetWrist);
+
+        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
     }
 
     @Override
@@ -134,7 +138,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         //Make sure that the arm has reached its desired extend position before we allow manual movement to happen
         if(!DriverStation.isAutonomous() && !atStartDeg && Math.abs(targetPivot) < Constants.TAU/4){
             ArmSubsystem.getInstance().pivot(22*Constants.TAU/360 * multiplier);
-            ArmSubsystem.getInstance().extendNU(3_000);
+            ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
             if(Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - 22*Constants.TAU/360) < 1*Constants.TAU/360){
                 ArmSubsystem.getInstance().pivot(targetPivot);
                 ArmSubsystem.getInstance().extendNU(targetPos);
@@ -187,12 +191,12 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
                 GrabberSubsystem.getInstance().orientPos(targetWrist);
 
-                if(!resetEncoder && 
-                    Math.abs(ArmSubsystem.getInstance().getPivotRad()-targetPivot) <= 5 * Constants.TAU/360 && 
-                    Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10){
-                    ArmSubsystem.getInstance().resetPivotNU();
-                    resetEncoder = true;
-                }
+                // if(!resetEncoder && 
+                //     Math.abs(ArmSubsystem.getInstance().getPivotRad()-targetPivot) <= 5 * Constants.TAU/360 && 
+                //     Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10){
+                //     ArmSubsystem.getInstance().resetPivotNU();
+                //     resetEncoder = true;
+                // }
             }
         }
     }

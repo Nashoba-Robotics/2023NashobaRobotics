@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.Tabs;
 import frc.robot.Robot.RobotState;
 import frc.robot.lib.math.NRUnits;
@@ -58,10 +59,6 @@ public class ArmSubsystem extends SubsystemBase {
 
         encoder = new CANcoder(Constants.Arm.ENCODER_PORT, "drivet");
         encoderConfigurator = encoder.getConfigurator();
-        // encoder.configFactoryDefault();
-        // encoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
-        // encoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
-        // encoder.configMagnetOffset(Constants.Arm.ENCODER_OFFSET);
 
         config();
     }
@@ -102,8 +99,6 @@ public class ArmSubsystem extends SubsystemBase {
 
         tuningSlide.apply(tuneConfig);
 
-        // posSetter.EnableFOC = true; //Should probably test this.
-
         //Configure the pivot motors
         footConfig = new TalonFXConfiguration();
         footConfig.Slot0.kS = 0;
@@ -119,14 +114,21 @@ public class ArmSubsystem extends SubsystemBase {
 
         footConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
-        footConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+        footConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         footConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT;
-        footConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
+        footConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         footConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT;
 
         footConfig.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.PIVOT_CRUISE_VELOCITY;
         footConfig.MotionMagic.MotionMagicAcceleration = Constants.Arm.PIVOT_ACCELERATION;
         footConfig.MotionMagic.MotionMagicJerk = 0;
+
+        //Remote CANcoder
+        footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        // footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
+        // footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
+        // footConfig.Feedback.RotorToSensorRatio = 1; //We are doing the gear ratio processing in code already.
+        // footConfig.Feedback.SensorToMechanismRatio = 1;
 
         foot.apply(footConfig);
 
@@ -138,7 +140,7 @@ public class ArmSubsystem extends SubsystemBase {
         encoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         encoderConfig.MagnetSensor.MagnetOffset = Constants.Arm.ENCODER_OFFSET;
 
-        encoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;   //TODO: Make sure this is going in the correct direction
+        encoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
 
         encoderConfigurator.apply(encoderConfig);
     }
@@ -166,8 +168,16 @@ public class ArmSubsystem extends SubsystemBase {
         return kick1.getSupplyVoltage().getValue();
     }
 
+    public double getTest1(){
+        return kick1.getClosedLoopOutput().getValue();
+    }
+
     public double getPivotSpeed(){
         return kick1.getVelocity().getValue();
+    }
+
+    public boolean pivotStopped(){
+        return Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10;
     }
 
     //Extends arm to specified position in meters
@@ -191,6 +201,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean encoderOK(){
+        if(RobotContainer.PDH.getFaults().Channel15BreakerFault) return false;
         if(encoder.getFault_BadMagnet().getValue()) return false;
         if(encoder.getFault_BootDuringEnable().getValue()) return false;
         if(encoder.getFault_Hardware().getValue()) return false;
@@ -392,11 +403,11 @@ public class ArmSubsystem extends SubsystemBase {
             
         }
 
-        Tabs.Comp.displayPivotAngle(getPivotDeg());
+        Tabs.Comp.displayPivotAngle(getPivotRad());
         Tabs.Comp.displayEncoderAngle(getEncoderDeg());
         Tabs.Comp.displayExtendNU(getExtendNU());
 
-        if(switchState){
+        if(false && switchState){
             switch(Robot.state){
                 case OK:
                     footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;

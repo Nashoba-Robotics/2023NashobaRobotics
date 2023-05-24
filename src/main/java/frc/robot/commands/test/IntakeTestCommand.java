@@ -41,7 +41,7 @@ public class IntakeTestCommand extends CommandBase{
             ArmSubsystem.getInstance().getArmSupplyCurrent()
         );
 
-        Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getPivotRad());
+        Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getPivotDeg());
         Tabs.Intake.displayPivotCurrent(
             ArmSubsystem.getInstance().getPivotStatorCurrent(), 
             ArmSubsystem.getInstance().getPivotSupplyCurrent()
@@ -52,7 +52,7 @@ public class IntakeTestCommand extends CommandBase{
         Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderDeg());
 
         // Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
-        Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getPivotOutput());
+        Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getTest1());
     }
 
     @Override

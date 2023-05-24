@@ -310,7 +310,7 @@ public final class Tabs {
          */
         //TODO: Probably doesn't work on current computer because screen size too small
         private static ShuffleboardLayout error = tab.getLayout("Errors", BuiltInLayouts.kGrid)
-            .withSize(3, 4);
+            .withSize(3, 3).withPosition(0, 0);
         
         //Actual
         private static GenericEntry pivotAngle = error.add("Actual Pivot", 0)

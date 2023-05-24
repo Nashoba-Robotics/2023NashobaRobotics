@@ -15,9 +15,7 @@ public class ScoreCubeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        // GrabberSubsystem.getInstance().setCurrentLimit(40);
-        // GrabberSubsystem.getInstance().setCurrentLimit(false);
-        GrabberSubsystem.getInstance().setCurrentLimit(45, 45, 0.1);
+        GrabberSubsystem.getInstance().setCurrentLimit(45, 45, 0.1);    //Test and make sure that this still works
         GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_RELEASE_SPEED);
         startTime = System.currentTimeMillis();
     }
@@ -32,16 +30,16 @@ public class ScoreCubeCommand extends CommandBase {
     public void end(boolean interrupted) {
         GrabberSubsystem.getInstance().setCurrentLimit(true);
         if(!DriverStation.isAutonomous()){
-            ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
-            ArmSubsystem.getInstance().setPivotAcceleration(30_000);
-            ArmSubsystem.getInstance().setExtendCruiseVelocity(50_000);
-            ArmSubsystem.getInstance().setExtendAcceleration(50_000);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(100);
+            ArmSubsystem.getInstance().setPivotAcceleration(146);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(100);
+            ArmSubsystem.getInstance().setExtendAcceleration(415);  //There is no way in living hell that this is correct
             GrabberSubsystem.getInstance().set(0);
             GrabberSubsystem.getInstance().orient(0);
             
             ArmSubsystem.getInstance().stop();
             ArmSubsystem.getInstance().pivot(0);
-            ArmSubsystem.getInstance().extendNU(3_000);
+            ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
         }
     }
 

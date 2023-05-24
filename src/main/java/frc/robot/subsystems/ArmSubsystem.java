@@ -1,11 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.motorcontrol.InvertType;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenixpro.BaseStatusSignalValue;
 import com.ctre.phoenixpro.StatusCode;
 import com.ctre.phoenixpro.configs.CANcoderConfiguration;
@@ -23,10 +17,6 @@ import com.ctre.phoenixpro.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 import com.ctre.phoenixpro.signals.SensorDirectionValue;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.CANCoderFaults;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -44,8 +34,6 @@ public class ArmSubsystem extends SubsystemBase {
     private CANcoderConfigurator encoderConfigurator;
     private CANcoderConfiguration encoderConfig;
     private MotionMagicDutyCycle posSetter;
-
-    
 
     private TalonFX kick1, kick2; //Control the pivoting of the entire arm
     private TalonFXConfigurator foot;

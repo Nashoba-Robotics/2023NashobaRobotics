@@ -30,9 +30,6 @@ public class NRUnits {
             //Account for gear ratio
             angle /= Constants.Swerve.TURN_GEAR_RATIO;
 
-            //Convert from native units into rotations;
-            angle /= 2048;
-
             //Convert to degrees
             angle *= 360;
 
@@ -43,9 +40,6 @@ public class NRUnits {
         public static double degToNU(double angle){
             //Convert from degrees into rotation
             angle /= 360;
-
-            //Convert from rotations into Native Units
-            angle *= 2048;
 
             //Account for gear ratio
             angle *= Constants.Swerve.TURN_GEAR_RATIO;
@@ -58,23 +52,14 @@ public class NRUnits {
             //Account for gear ratio
             angle /= Constants.Swerve.TURN_GEAR_RATIO;
 
-            //Convert from native units into rotations;
-            angle /= 2048;
-
             //Convert from rotations into radians
-            angle *= 2*Math.PI;
+            angle *= Constants.TAU;
 
             return angle;
         }
 
-        //Convert from NU/100ms to Meters per Second
+        //Convert from NU/s to Meters per Second
         public static double NUToMPS(double speed){
-            //Convert from NU/100ms to NU/s
-            speed *= 10;
-
-            //Convert from NU/s to Rotations/s
-            speed /= 2048;
-
             speed /= Constants.Swerve.MOVE_GEAR_RATIO;
 
             //Convert from Rotations/s to Meters/s
@@ -83,8 +68,6 @@ public class NRUnits {
         }
 
         public static double NUToM(double NU) {
-            NU /= 2048;
-    
             NU /= Constants.Swerve.MOVE_GEAR_RATIO;
     
             NU *= Constants.TAU*Constants.Swerve.WHEELRADIUS;
@@ -94,20 +77,16 @@ public class NRUnits {
         public static double MToNU(double m){
             m /= Constants.TAU*Constants.Swerve.WHEELRADIUS;
             m *= Constants.Swerve.MOVE_GEAR_RATIO;
-            m *= 2048;
 
             return m;
         }
 
-        //Converts to NU/100ms then to 
+        //Converts to NU/s then to 
         public static double toPercentOutput(double mps){
             //Convert to rotations per second
             double speed = mps/(Constants.Swerve.WHEELRADIUS*Constants.TAU);
             //Convert to NU per second
-            speed *= 2048;
             speed *= Constants.Swerve.MOVE_GEAR_RATIO;
-            //Convert to NU/100ms
-            speed /= 10;
 
             return speed/Constants.Swerve.MAX_NATIVE_VELOCITY;
         }

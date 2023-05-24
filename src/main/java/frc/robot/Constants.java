@@ -42,8 +42,6 @@ public final class Constants {
     public static final double TURN_GEAR_RATIO = 150. / 7.;
     public static final double MOVE_GEAR_RATIO = 8.14;
 
-    //2.625
-    //meters
     public static final double WIDTH = Units.inchesToMeters(26 - 2.625*2);
     public static final double LENGTH = Units.inchesToMeters(26 - 2.625*2);
     public static final double DIAGONAL = Math.sqrt(WIDTH*WIDTH + LENGTH*LENGTH)/2;
@@ -55,14 +53,9 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2)
     );
 
-    //School applicable wheel radius
-    // public static final double WHEELRADIUS = Units.inchesToMeters(1.888);
-
-    //WPI applicable wheel radius
     public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
     
-    //Maximum velocity in NU/100ms
-    public static final double MAX_NATIVE_VELOCITY = 22_000;
+    public static final double MAX_NATIVE_VELOCITY = 103;
 
     public static final int FRONT_RIGHT_TURN_PORT = 0;
     public static final int FRONT_LEFT_TURN_PORT = 1;
@@ -79,30 +72,25 @@ public final class Constants {
     public static final int BACK_LEFT_SENSOR_PORT = 2;
     public static final int BACK_RIGHT_SENSOR_PORT = 3;
     
-    public static final double FRONT_RIGHT_OFFSET_DEGREES = -251.191 - 90;
-    public static final double FRONT_LEFT_OFFSET_DEGREES = 161.191 - 90;
-    public static final double BACK_LEFT_OFFSET_DEGREES = 15.82 - 90;
-    public static final double BACK_RIGHT_OFFSET_DEGREES = -309.199 - 90;
+    public static final double FRONT_RIGHT_OFFSET_NU = 0.043701 - 0.5;
+    public static final double FRONT_LEFT_OFFSET_NU = 0.194336 - 0.5;
+    public static final double BACK_LEFT_OFFSET_NU = 0.286133;
+    public static final double BACK_RIGHT_OFFSET_NU = -0.109863 + 0.5;
 
-    public static final double FRONT_RIGHT_OFFSET_RADIANS = FRONT_RIGHT_OFFSET_DEGREES * Math.PI/180;
-    public static final double FRONT_LEFT_OFFSET_RADIANS = FRONT_LEFT_OFFSET_DEGREES * Math.PI/180;
-    public static final double BACK_LEFT_OFFSET_RADIANS = BACK_LEFT_OFFSET_DEGREES * Math.PI/180;
-    public static final double BACK_RIGHT_OFFSET_RADIANS = BACK_RIGHT_OFFSET_DEGREES * Math.PI/180;
-
-    public static final double TURN_KF = 0.0475;
-    public static final double TURN_KP = 0.35;
+    public static final double TURN_KF = 0.01;
+    public static final double TURN_KP = 0.5;
     public static final double TURN_KI = 0;
-    public static final double TURN_KD = 0.1;
+    public static final double TURN_KD = 0.0;
 
-    public static final double MOVE_KF = 0.04; //0.0475;
-    public static final double MOVE_KP = 0.05;
+    public static final double MOVE_KF = 0.01;
+    public static final double MOVE_KP = 0.01;
     public static final double MOVE_KI = 0.0;
-    public static final double MOVE_KD = 0.02;
+    public static final double MOVE_KD = 0.0;
 
-    public static final double MOD0_AFF = 0.07;
-    public static final double MOD1_AFF = 0.07;
-    public static final double MOD2_AFF = 0.07;
-    public static final double MOD3_AFF = 0.07;
+    public static final double MOD0_AFF = 0.0;
+    public static final double MOD1_AFF = 0.0;
+    public static final double MOD2_AFF = 0.0;
+    public static final double MOD3_AFF = 0.0;
   
     public static final class Balance{
       public static final double FAST_K_P = 0.01;
@@ -300,9 +288,9 @@ public final class Constants {
   }
 
   public static final class Logging {
-    public static final boolean ARM = true;
-    public static final boolean GRABBER = true;
-    public static final boolean SWERVE = true;
+    public static final boolean ARM = false;
+    public static final boolean GRABBER = false;
+    public static final boolean SWERVE = false;
   }
 
   //Stores the channels all of these are located on in the PDH

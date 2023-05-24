@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.JoystickSubsystem;
@@ -27,6 +26,11 @@ public class SwerveDriveCommand extends CommandBase {
         controller.enableContinuousInput(-Constants.TAU/2, Constants.TAU/2);
 
         squareUp = false;
+    }
+
+    @Override
+    public void initialize() {
+        SwerveDriveSubsystem.getInstance().resetModulesAbsolute();
     }
 
     @Override
@@ -91,6 +95,7 @@ public class SwerveDriveCommand extends CommandBase {
             squareUpSingleStation = false;
         } 
     }
+
     @Override
     public void end(boolean interrupted) {
         // SwerveDriveSubsystem.getInstance().set(0, 0, 0);

@@ -78,9 +78,6 @@ public class RobotContainer {
 
   Trigger resetPivotNU = JoystickSubsystem.getInstance().getRightJoystick().button(10);
 
-  // Trigger testCone = JoystickSubsytem.getInstance().getRightJoystick().button(14);
-  // Trigger testCube = JoystickSubsytem.getInstance().getRightJoystick().button(15);
-
   public void configureButtonBindings(){
 
     // align.onTrue(new DriveToTestCommand());
@@ -89,7 +86,7 @@ public class RobotContainer {
       int multiplier = SwerveDriveSubsystem.getInstance().getGyroAngle() < Constants.TAU/4 &&
         SwerveDriveSubsystem.getInstance().getGyroAngle() > -Constants.TAU/4 ? -1 : 1;
         ArmSubsystem.getInstance().pivot(multiplier*22*Constants.TAU/360);
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
     },
       ArmSubsystem.getInstance()));
 

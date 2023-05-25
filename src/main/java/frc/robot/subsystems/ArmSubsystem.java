@@ -18,10 +18,8 @@ import com.ctre.phoenixpro.signals.SensorDirectionValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.Tabs;
-import frc.robot.Robot.RobotState;
 import frc.robot.lib.math.NRUnits;
 
 
@@ -380,8 +378,8 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean armAtZero(){
         return Math.abs(getEncoderDeg()) < 1; //degree
     }
-    private boolean switchState = true;
-    private RobotState lastState = Robot.state;
+    // private boolean switchState = true;
+    // private RobotState lastState = Robot.state;
     @Override
     public void periodic() {
         if(Constants.Logging.ARM) {
@@ -407,26 +405,27 @@ public class ArmSubsystem extends SubsystemBase {
         Tabs.Comp.displayEncoderAngle(getEncoderDeg());
         Tabs.Comp.displayExtendNU(getExtendNU());
 
-        if(false && switchState){
-            switch(Robot.state){
-                case OK:
-                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-                    footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
-                    footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
-                    footConfig.Feedback.SensorToMechanismRatio = 1;
-                    break;
-                case PivotEncoderBad:
-                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-                    break;
-                case OhSht:
-                    break;
-            }
-            foot.apply(footConfig);
-            switchState = false;
-        }
-        if(lastState != Robot.state){
-            switchState = true;
-            lastState = Robot.state;
-        } 
+        //* Only for when the pivot is tuned with the encoder */
+        // if(switchState){
+        //     switch(Robot.state){
+        //         case OK:
+        //             footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        //             footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
+        //             footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
+        //             footConfig.Feedback.SensorToMechanismRatio = 1;
+        //             break;
+        //         case PivotEncoderBad:
+        //             footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        //             break;
+        //         case OhSht:
+        //             break;
+        //     }
+        //     foot.apply(footConfig);
+        //     switchState = false;
+        // }
+        // if(lastState != Robot.state){
+        //     switchState = true;
+        //     lastState = Robot.state;
+        // } 
     }
 }

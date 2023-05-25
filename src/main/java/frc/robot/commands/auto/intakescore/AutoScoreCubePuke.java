@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
-import frc.robot.commands.score.PukeCommand;
 import frc.robot.commands.score.ScoreCubeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;

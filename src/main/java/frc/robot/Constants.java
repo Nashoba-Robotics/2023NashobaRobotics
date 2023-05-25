@@ -259,7 +259,7 @@ public final class Constants {
     public static final double ERROR_ANGLE = 0;
 
     public static final int EXTEND_FORWARD_SOFT_LIMIT = 48;
-    public static final int EXTEND_REVERSE_SOFT_LIMIT = 1;
+    public static final double EXTEND_REVERSE_SOFT_LIMIT = EXTEND_REST_NU;
 
     public static final double PIVOT_FORWARD_SOFT_LIMIT = 140_000/2048.;
     public static final double PIVOT_REVERSE_SOFT_LIMIT = -140_000/2048.;

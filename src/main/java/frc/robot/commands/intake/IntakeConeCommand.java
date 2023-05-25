@@ -1,10 +1,11 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Tabs;
+import frc.robot.Robot.RobotState;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -12,9 +13,7 @@ import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 
-public class IntakeCommand extends CommandBase {
-    double extendNU = 3_000;
-    
+public class IntakeConeCommand extends CommandBase {
     boolean pivotMan0;
     double lastPivot;
 
@@ -31,7 +30,7 @@ public class IntakeCommand extends CommandBase {
     boolean timerStarted = false;
     Timer timer;
 
-    public IntakeCommand(boolean intakeFront){
+    public IntakeConeCommand(boolean intakeFront){
         multiplier = intakeFront ? 1 : -1;
         addRequirements(ArmSubsystem.getInstance(), GrabberSubsystem.getInstance());
 
@@ -43,10 +42,10 @@ public class IntakeCommand extends CommandBase {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
         GrabberSubsystem.getInstance().setCurrentLimit(true);
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(400_000); //<-- Make sure we are limited by Acceleration
-        ArmSubsystem.getInstance().setPivotAcceleration(60_000);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(100); //<-- Make sure we are limited by Acceleration
+        ArmSubsystem.getInstance().setPivotAcceleration(293);
 
-        ArmSubsystem.getInstance().extendNU(extendNU);
+        ArmSubsystem.getInstance().extendNU(Constants.Arm.INTAKE_EXTEND_NU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);
         pivotTarget = Constants.Arm.INTAKE_ANGLE * multiplier;
         atPivot = false;
@@ -56,18 +55,17 @@ public class IntakeCommand extends CommandBase {
 
         resetEncoder = false;
 
-        ArmSubsystem.getInstance().resetPivotNU();
+        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
         LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM); //Can get rid of this after adding USB cam
 
         Tabs.Comp.setPivotTarget(pivotTarget);
-        Tabs.Comp.setExtendTarget(extendNU);
+        Tabs.Comp.setExtendTarget(Constants.Arm.INTAKE_EXTEND_NU);
         Tabs.Comp.setWristTarget(Constants.Grabber.INTAKE_ANGLE);
     }
 
     @Override
     public void execute() {
         GrabberSubsystem.getInstance().intake();
-        // SmartDashboard.putNumber("Arm Angle Deg", ArmSubsystem.getInstance().getAngle()*360/Constants.TAU);
 
         if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - pivotTarget) < 0.5 * Constants.TAU/360){
             atPivot = true;
@@ -88,8 +86,11 @@ public class IntakeCommand extends CommandBase {
             }
         }
 
-        // SmartDashboard.putNumber("Top Stator", GrabberSubsystem.getInstance().getTopGrabCurrent());
-        if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
+        //LED stuff
+        if(Robot.state != RobotState.OK){
+            CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);
+        }
+        else if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
             if(!timerStarted){
                 timerStarted = true;
                 timer.start();
@@ -111,11 +112,8 @@ public class IntakeCommand extends CommandBase {
             timerStarted = false;
         }
 
-        //TODO: Add check to see if the encoder is ok. If not, flash the LEDs and do not reset encoder
-        //Check if the arm pivot speed is 0
-        SmartDashboard.putNumber("Pivot NU Speed", ArmSubsystem.getInstance().getPivotSpeed());
-        if(!resetEncoder && 
-        Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 3.0 && 
+        if(Robot.state != RobotState.OK && !resetEncoder && 
+        ArmSubsystem.getInstance().pivotStopped() && 
         Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {
                 ArmSubsystem.getInstance().resetPivotNU();
@@ -128,14 +126,11 @@ public class IntakeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        ArmSubsystem.getInstance().resetPivotNU();
+        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
         GrabberSubsystem.getInstance().setCurrentLimit(25, 25, 0.1);
-        // GrabberSubsystem.getInstance().setCurrentLimit(10);
         ArmSubsystem.getInstance().pivot(0);
         // GrabberSubsystem.getInstance().orient(0);
-        // GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);   //Make the grabber hold it
-        
-        // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
+        // GrabberSubsystem.getInstance().set(Constants.Grabber.CONE_HOLD_SPEED);   //Make the grabber hold it   
     }
 
     @Override

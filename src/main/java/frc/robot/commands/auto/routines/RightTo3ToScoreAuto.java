@@ -21,7 +21,7 @@ import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCubeCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCubePuke;
 import frc.robot.commands.auto.lib.FollowPathCommand;
-import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeConeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.commands.score.PukeCommand;
 import frc.robot.subsystems.ArmSubsystem;

@@ -17,8 +17,8 @@ import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.RunArmCommand;
 import frc.robot.commands.test.TestPivotCommand;
 import frc.robot.commands.SetPivotOffsetCommand;
-import frc.robot.commands.intake.DoubleStationIntakeCommand;
-import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.SingleStationIntakeCommand;
+import frc.robot.commands.intake.IntakeConeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
@@ -122,9 +122,9 @@ public class RobotContainer {
       CandleSubsystem.getInstance()
       ));
 
-    intakeButton.and(doubleStation).toggleOnTrue(new DoubleStationIntakeCommand());
+    intakeButton.and(doubleStation).toggleOnTrue(new SingleStationIntakeCommand());
     
-    intakeButton.and(cone).toggleOnTrue(new IntakeCommand(true));
+    intakeButton.and(cone).toggleOnTrue(new IntakeConeCommand(true));
 
     lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));

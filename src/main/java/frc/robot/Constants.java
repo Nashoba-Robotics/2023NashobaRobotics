@@ -160,8 +160,7 @@ public final class Constants {
     public static final double MAX_TURN_SPEED = 0.6;
 
     public static final double INTAKE_ANGLE = 5;
-    // public static final double INTAKE_ANGLE = 7.5;
-    public static final double DOUBLE_STATION_POS = 14;
+    public static final double SINGLE_STATION_POS = -6;
 
     public static final double HIGH_ANGLE = 0;
     public static final double MID_ANGLE = 0;
@@ -251,10 +250,11 @@ public final class Constants {
 
     //Intkae
     public static final double INTAKE_ANGLE = 116 * Constants.TAU/360; //112.5
+    public static final double INTAKE_EXTEND_NU = 3_000/2048.;
     public static final double INTAKE_DEADZONE = 1 * TAU/360;
 
-    public static final double DOUBLE_STATION_ANGLE = 43 * TAU/360;
-    public static final double DOUBLE_STATION_EXTEND_NU = 14_000/2048.;
+    public static final double SINGLE_STATION_ANGLE = 76 * TAU/360;
+    public static final double SINGLE_STATION_EXTEND_NU = 0;
 
     public static final double ERROR_ANGLE = 0;
 
@@ -273,6 +273,7 @@ public final class Constants {
       public static final double LOW_ANGLE = -105 * TAU/360;
 
       public static final double INTAKE_ANGLE = -108 * Constants.TAU/360;
+      public static final double INTAKE_EXTEND_NU = 3_000/2048.;
 
       public static final double HIGH_EXTEND_NU = 82_000/2048.;
       public static final double MID_EXTEND_NU = 35_000/2048.;

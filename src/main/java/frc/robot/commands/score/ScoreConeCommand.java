@@ -32,7 +32,6 @@ public class ScoreConeCommand extends CommandBase {
 
         low = Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4;
         if(low){
-            // GrabberSubsystem.getInstance().setCurrentLimit(50);
             GrabberSubsystem.getInstance().setCurrentLimit(false);
             GrabberSubsystem.getInstance().outtake(Constants.Grabber.LOW_CONE_RELEASE_SPEED);
             ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getPivotRad());

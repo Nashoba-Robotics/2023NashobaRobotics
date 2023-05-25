@@ -83,7 +83,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         gotToStart = false;
         resetEncoder = false;
 
-        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - 22*Constants.TAU/360) < 1*Constants.TAU/360;
+        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360;
 
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setPivotTarget(targetPivot);
@@ -95,9 +95,9 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     @Override
     public void execute() {
         if(!DriverStation.isAutonomous() && !atStartDeg && Math.abs(targetPivot) < Constants.TAU/4){
-            ArmSubsystem.getInstance().pivot(-22*Constants.TAU/360 * multiplier);
+            ArmSubsystem.getInstance().pivot(-Constants.Arm.PREP_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
-            if(Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - 22*Constants.TAU/360) < 1*Constants.TAU/360){
+            if(Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360){
                 ArmSubsystem.getInstance().pivot(targetPivot);
                 ArmSubsystem.getInstance().extendNU(targetPos);
                 atStartDeg = true;

@@ -246,6 +246,7 @@ public final class Constants {
 
     public static final double RETRACT_NU = 18_000/2048.; //NU to retract back in after scoring to avoid hitting middle node
 
+    public static final double PREP_ANGLE = 22*TAU/360;
     public static final double EXTEND_REST_NU = 3_000/2048.;
 
     //Intkae

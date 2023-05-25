@@ -170,7 +170,7 @@ public final class Tabs {
         }
         //Input in Radians
         public static void displayPivotAngle(double angle){
-            pivotAngle.setDouble(angle * 360 / Constants.TAU);
+            pivotAngle.setDouble(angle);
         }
         public static void displayPivotCurrent(double stator, double supply){
             pivotStator.setDouble(stator);
@@ -308,8 +308,9 @@ public final class Tabs {
          * Extend NU            Target Extend       Extend Error
          * Wrist NU             Target Wrist        Wrist Error
          */
+        //TODO: Probably doesn't work on current computer because screen size too small
         private static ShuffleboardLayout error = tab.getLayout("Errors", BuiltInLayouts.kGrid)
-            .withSize(3, 4);
+            .withSize(3, 3).withPosition(0, 0);
         
         //Actual
         private static GenericEntry pivotAngle = error.add("Actual Pivot", 0)
@@ -351,9 +352,7 @@ public final class Tabs {
             .getEntry();
 
         private static GenericEntry setPivotOffset = tab.add("Set Pivot Offset", Constants.Arm.ENCODER_OFFSET).getEntry();
-
         private static GenericEntry grabberRunning = tab.add("Grabber On", false).getEntry();
-        
         private static GenericEntry grabberCurrent = tab.add("Grabber Current", 0).getEntry();
 
         public static void displayGrabberRunning(boolean running) {

@@ -3,7 +3,6 @@ package frc.robot.commands.score;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Constants.Grabber;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
@@ -29,22 +28,18 @@ public class ScoreConeCommand extends CommandBase {
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(85_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(60_000);
-
         startTime = System.currentTimeMillis();
 
-        low = Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4;
+        low = Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4;
         if(low){
-            // GrabberSubsystem.getInstance().setCurrentLimit(50);
             GrabberSubsystem.getInstance().setCurrentLimit(false);
             GrabberSubsystem.getInstance().outtake(Constants.Grabber.LOW_CONE_RELEASE_SPEED);
-            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
+            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getPivotRad());
         } 
         else{
             GrabberSubsystem.getInstance().setCurrentLimit(true);
             double angleChange = DriverStation.isAutonomous() ? Constants.Arm.AUTO_DUNK_ANGLE : Constants.Arm.TELEOP_DUNK_ANGLE;
-            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle() + angleChange * multiplier);
+            ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getPivotRad() + angleChange * multiplier);
             GrabberSubsystem.getInstance().orientPos(Constants.Grabber.SCORE_CONE_NU * multiplier);
             double currentExtend = ArmSubsystem.getInstance().getExtendNU();
             ArmSubsystem.getInstance().extendNU(currentExtend-Constants.Arm.RETRACT_NU);
@@ -64,18 +59,18 @@ public class ScoreConeCommand extends CommandBase {
         GrabberSubsystem.getInstance().set(0);
         GrabberSubsystem.getInstance().orient(0);
         if(DriverStation.isAutonomous()){   //If it pivots faster when retracting, it will tip -> Don't want that in auto
-            ArmSubsystem.getInstance().setPivotAcceleration(25_000);
-            ArmSubsystem.getInstance().setPivotCruiseVelocity(30_000);
+            ArmSubsystem.getInstance().setPivotAcceleration(Constants.Arm.AUTO_PIVOT_ACCELERATION);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(Constants.Arm.AUTO_PIVOT_CRUISE_VELOCITY);
 
-            ArmSubsystem.getInstance().setExtendCruiseVelocity(40_000);
-            ArmSubsystem.getInstance().setExtendAcceleration(20_000);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(Constants.Arm.AUTO_ARM_CRUISE_VELOCITY);
+            ArmSubsystem.getInstance().setExtendAcceleration(Constants.Arm.AUTO_ARM_ACCELERATION);
         }
         else{   //Go fast in teleop VROOM
-            ArmSubsystem.getInstance().setPivotCruiseVelocity(50_000);
-            ArmSubsystem.getInstance().setPivotAcceleration(50_000);
+            ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+            ArmSubsystem.getInstance().setDefaultAcceleration();
         }
         ArmSubsystem.getInstance().pivot(0);
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
     }
 
     @Override

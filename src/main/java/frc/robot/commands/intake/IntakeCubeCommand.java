@@ -2,7 +2,9 @@ package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Robot;
 import frc.robot.Tabs;
+import frc.robot.Robot.RobotState;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -10,8 +12,6 @@ import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 
 public class IntakeCubeCommand extends CommandBase {
-    double extendNU = 3_000;
-
     boolean pivotMan0;
     double lastPivot;
 
@@ -34,22 +34,22 @@ public class IntakeCubeCommand extends CommandBase {
     public void initialize() {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(40_000);
-        ArmSubsystem.getInstance().setPivotAcceleration(40_000);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(100);
+        ArmSubsystem.getInstance().setPivotAcceleration(195);
 
         // Extend is TEMP to test at the same distance
-        ArmSubsystem.getInstance().extendNU(extendNU);
+        ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.INTAKE_EXTEND_NU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.INTAKE_ANGLE);
         targetPivot = Constants.Arm.Cube.INTAKE_ANGLE;
         atPivot = false;
         pivotMan0 = false;
         GrabberSubsystem.getInstance().orientPos(Constants.Grabber.CUBE_NU);
-        lastPivot = ArmSubsystem.getInstance().getAngle();
+        lastPivot = ArmSubsystem.getInstance().getPivotRad();
 
         resetEncoder = false;
 
         Tabs.Comp.setPivotTarget(targetPivot);
-        Tabs.Comp.setExtendTarget(extendNU);
+        Tabs.Comp.setExtendTarget(Constants.Arm.Cube.INTAKE_EXTEND_NU);
         Tabs.Comp.setWristTarget(Constants.Grabber.CUBE_NU);
     }
 
@@ -58,9 +58,9 @@ public class IntakeCubeCommand extends CommandBase {
         GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_INTAKE_SPEED);
         // SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
 
-        if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+        if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
             atPivot = true;
-            lastPivot = ArmSubsystem.getInstance().getAngle();
+            lastPivot = ArmSubsystem.getInstance().getPivotRad();
         } 
 
         if(atPivot) {
@@ -69,7 +69,7 @@ public class IntakeCubeCommand extends CommandBase {
                 // ArmSubsystem.getInstance().pivot(ArmSubsystem.getInstance().getAngle());
                 if(!pivotMan0){
                     pivotMan0 = true;
-                    lastPivot = ArmSubsystem.getInstance().getAngle();
+                    lastPivot = ArmSubsystem.getInstance().getPivotRad();
                 }
                 ArmSubsystem.getInstance().pivot(lastPivot);
             }
@@ -79,15 +79,10 @@ public class IntakeCubeCommand extends CommandBase {
             }
         }
 
-        // if(!resetEncoder && Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-        //     ArmSubsystem.getInstance().resetPivotNU();
-        //     resetEncoder = true;
-        // }
-
-        if(!resetEncoder && 
-        Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10 && 
-        Math.abs(ArmSubsystem.getInstance().getAngle()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-            if(Math.abs(ArmSubsystem.getInstance().getAngle()) > Constants.TAU/4) {
+        if(Robot.state != RobotState.OK && !resetEncoder && 
+        ArmSubsystem.getInstance().pivotStopped() && 
+        Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             } else {
@@ -99,6 +94,7 @@ public class IntakeCubeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         // GrabberSubsystem.getInstance().setCurrentLimit(10);
+        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
         if(!to90)ArmSubsystem.getInstance().pivot(0);
         else ArmSubsystem.getInstance().pivot(-Constants.TAU/8);
         GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_HOLD_SPEED);   //Make the grabber hold it

@@ -45,7 +45,7 @@ public class ConePrepCheck extends CommandBase{
         }
         targetPivot *= -1;  //Want to score backside to keep everything consistent
 
-        at20 = Math.abs(ArmSubsystem.getInstance().getEncoderAngle()-22) < 2;
+        at20 = Math.abs(ArmSubsystem.getInstance().getEncoderDeg()-22) < 2;
         resetPivot = false;
 
         ArmSubsystem.getInstance().resetPivotNU();
@@ -59,7 +59,7 @@ public class ConePrepCheck extends CommandBase{
 
             ArmSubsystem.getInstance().pivot(22 * Constants.TAU/360);
 
-            if(Math.abs(ArmSubsystem.getInstance().getEncoderAngle()) - 22 < 2){
+            if(Math.abs(ArmSubsystem.getInstance().getEncoderDeg()) - 22 < 2){
                 at20 = true;
             }
         }
@@ -72,17 +72,17 @@ public class ConePrepCheck extends CommandBase{
             ArmSubsystem.getInstance().pivot(targetPivot);
             GrabberSubsystem.getInstance().orientPos(targetWrist);
 
-            if(!resetPivot && Math.abs(targetPivot - ArmSubsystem.getInstance().getAngle()) < 1 * Constants.TAU/360
+            if(!resetPivot && Math.abs(targetPivot - ArmSubsystem.getInstance().getPivotRad()) < 1 * Constants.TAU/360
             && ArmSubsystem.getInstance().getPivotSpeed() < 3){
                 resetPivot = true;
                 ArmSubsystem.getInstance().resetPivotNU();
             }
 
             if(resetPivot && ArmSubsystem.getInstance().getPivotSpeed() < 3){
-                if(Math.abs(ArmSubsystem.getInstance().getEncoderAngle() - targetPivot * 360/Constants.TAU) < 1){
+                if(Math.abs(ArmSubsystem.getInstance().getEncoderDeg() - targetPivot * 360/Constants.TAU) < 1){
                     CandleSubsystem.getInstance().set(CandleState.SYSTEM_GOOD);
                 }
-                else if(Math.abs(ArmSubsystem.getInstance().getEncoderAngle() - targetPivot * 360/Constants.TAU) < 5){
+                else if(Math.abs(ArmSubsystem.getInstance().getEncoderDeg() - targetPivot * 360/Constants.TAU) < 5){
                     CandleSubsystem.getInstance().set(CandleState.PARTIAL_CHECK_1);
                 }
             }
@@ -93,6 +93,6 @@ public class ConePrepCheck extends CommandBase{
     @Override
     public boolean isFinished() {
         //Later on, can change this to a button push
-        return resetPivot && Math.abs(ArmSubsystem.getInstance().getEncoderAngle() - targetPivot * 360/Constants.TAU) < 5;
+        return resetPivot && Math.abs(ArmSubsystem.getInstance().getEncoderDeg() - targetPivot * 360/Constants.TAU) < 5;
     }
 }

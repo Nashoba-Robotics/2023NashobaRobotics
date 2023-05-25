@@ -21,7 +21,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.Grabber;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.auto.move.TranslateToCommand;
-import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeConeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;

@@ -49,18 +49,18 @@ public class EncoderCheck extends CommandBase{
         }
         else if(!check1){
             ArmSubsystem.getInstance().pivot(targetAngleRad);
-            if(Math.abs(ArmSubsystem.getInstance().getAngle()-targetAngleRad) < posErrorRad 
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad()-targetAngleRad) < posErrorRad 
                && ArmSubsystem.getInstance().getPivotSpeed() < speedError){
-                check1 = Math.abs(ArmSubsystem.getInstance().getEncoderAngle()-targetAngleDeg) < absoluteErrorDeg;
+                check1 = Math.abs(ArmSubsystem.getInstance().getEncoderDeg()-targetAngleDeg) < absoluteErrorDeg;
                 if(check1) CandleSubsystem.getInstance().set(CandleState.PARTIAL_CHECK_1);
                 else CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);
             }
         }
         else if(!check2){
             ArmSubsystem.getInstance().pivot(-targetAngleRad);
-            if(Math.abs(ArmSubsystem.getInstance().getAngle()- (-targetAngleRad)) < posErrorRad
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad()- (-targetAngleRad)) < posErrorRad
                && ArmSubsystem.getInstance().getPivotSpeed() < speedError){
-                check2 = Math.abs(ArmSubsystem.getInstance().getEncoderAngle()- (-targetAngleDeg)) < absoluteErrorDeg;
+                check2 = Math.abs(ArmSubsystem.getInstance().getEncoderDeg()- (-targetAngleDeg)) < absoluteErrorDeg;
                 if(check2) CandleSubsystem.getInstance().set(CandleState.SYSTEM_GOOD);
                 else CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);
             }

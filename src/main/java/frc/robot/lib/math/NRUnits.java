@@ -124,31 +124,25 @@ public class NRUnits {
     }
     
     public static class Pivot {
-        public static double radToNU(double angle){
+        public static double radToRot(double angle){
             //Convert angle into rotations
             angle /= Constants.TAU;
     
             //Convert from arm rotations into motor rotations
             angle *= Constants.Arm.PIVOT_GEARRATIO;
     
-            //Convert rotations into NU
-            angle *= 2048;
-    
             return angle;
         }
 
-        public static double degToNU(double angle){
+        public static double degToRot(double angle){
             //Covnert deg to rad
             angle *= Constants.TAU/360;
 
             //Yes... I'm lazy
-            return radToNU(angle);
+            return radToRot(angle);
         }
 
-        public static double NUToRad(double pos){
-            //Convert to rotations
-            pos /= 2048;
-    
+        public static double rotToRad(double pos){
             //Convert to rotation of the arm
             pos /= Constants.Arm.PIVOT_GEARRATIO;
     
@@ -160,7 +154,7 @@ public class NRUnits {
 
         public static double NUToRPS(double NU){
             NU *= 10;
-            NU = NUToRad(NU);
+            NU = rotToRad(NU);
             return NU;
         }
 

@@ -15,15 +15,15 @@ public class IntakeTestCommand extends CommandBase{
         GrabberSubsystem.getInstance().setCurrentLimit(false);
         Tabs.Intake.resetAll();
 
-        // ArmSubsystem.getInstance().setPivotCruiseVelocity(20_000);
-        // ArmSubsystem.getInstance().setPivotAcceleration(20_000);
+        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        ArmSubsystem.getInstance().setDefaultAcceleration();
 
-        // ArmSubsystem.getInstance().resetPivotNU();
+        ArmSubsystem.getInstance().resetPivotNU();
     }
 
     @Override
     public void execute() {
-        double armAngle = Tabs.Intake.getPivotAngle();  //Input in degrees. Calculates in radians
+        double armAngle = Tabs.Intake.getPivotAngle();  //Input in degrees
         ArmSubsystem.getInstance().pivot(armAngle);
 
         double extendNU = Tabs.Intake.getExtendNU();
@@ -41,7 +41,7 @@ public class IntakeTestCommand extends CommandBase{
             ArmSubsystem.getInstance().getArmSupplyCurrent()
         );
 
-        Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getAngle());
+        Tabs.Intake.displayPivotAngle(ArmSubsystem.getInstance().getPivotDeg());
         Tabs.Intake.displayPivotCurrent(
             ArmSubsystem.getInstance().getPivotStatorCurrent(), 
             ArmSubsystem.getInstance().getPivotSupplyCurrent()
@@ -49,32 +49,16 @@ public class IntakeTestCommand extends CommandBase{
 
         Tabs.Intake.displayOrienterNU(GrabberSubsystem.getInstance().getOrientPos());
         Tabs.Intake.displayTopStator(GrabberSubsystem.getInstance().getGrabberCurrent());
-        Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderAngle());
+        Tabs.Intake.displayEncoder(ArmSubsystem.getInstance().getEncoderDeg());
 
-        Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
-        Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getPivotOutput());
-
-        // ArmSubsystem.getInstance().setPivotP(Tabs.Intake.pivotP.getDouble(Constants.Arm.PIVOT_KP_1));
-        // ArmSubsystem.getInstance().setPivotI(Tabs.Intake.pivotI.getDouble(Constants.Arm.PIVOT_KI_1));
-        // ArmSubsystem.getInstance().setPivotD(Tabs.Intake.pivotD.getDouble(Constants.Arm.PIVOT_KD_1));
-
-        // ArmSubsystem.getInstance().setExtendP(Tabs.Intake.extendP.getDouble(Constants.Arm.ARM_KP));
-        // ArmSubsystem.getInstance().setExtendI(Tabs.Intake.extendI.getDouble(Constants.Arm.ARM_KI));
-        // ArmSubsystem.getInstance().setExtendD(Tabs.Intake.extendD.getDouble(Constants.Arm.ARM_KD));
-
-        // ArmSubsystem.getInstance().setPivotAcceleration(Tabs.Intake.pivotAcceleration.getDouble(20_000));
-        // ArmSubsystem.getInstance().setPivotCruiseVelocity(Tabs.Intake.pivotCruiseVelocity.getDouble(20_000));
-
-        // ArmSubsystem.getInstance().setExtendAcceleration(Tabs.Intake.extendAcceleration.getDouble(20_000));
-        // ArmSubsystem.getInstance().setExtendCruiseVelocity(Tabs.Intake.extendCruiseVelocity.getDouble(20_000));
+        // Tabs.Intake.displayMM(ArmSubsystem.getInstance().getExtendNU());
+        Tabs.Intake.displayPivotOutput(ArmSubsystem.getInstance().getTest1());
     }
 
     @Override
     public void end(boolean interrupted) {
-        // ArmSubsystem.getInstance().stop();
-        // GrabberSubsystem.getInstance().stop();
-        // ArmSubsystem.getInstance().setPivot(0);
-        // ArmSubsystem.getInstance().reset();
+        ArmSubsystem.getInstance().stop();
+        GrabberSubsystem.getInstance().stop();
     }
 
     @Override

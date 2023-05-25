@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.hal.PowerDistributionFaults;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -16,8 +17,8 @@ import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.RunArmCommand;
 import frc.robot.commands.test.TestPivotCommand;
 import frc.robot.commands.SetPivotOffsetCommand;
-import frc.robot.commands.intake.DoubleStationIntakeCommand;
-import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.SingleStationIntakeCommand;
+import frc.robot.commands.intake.IntakeConeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.commands.score.AutoDirectionalPrepHeightCommand;
 import frc.robot.commands.score.CubeAutoDirectionalPrepHeightCommand;
@@ -77,9 +78,6 @@ public class RobotContainer {
 
   Trigger resetPivotNU = JoystickSubsystem.getInstance().getRightJoystick().button(10);
 
-  // Trigger testCone = JoystickSubsytem.getInstance().getRightJoystick().button(14);
-  // Trigger testCube = JoystickSubsytem.getInstance().getRightJoystick().button(15);
-
   public void configureButtonBindings(){
 
     // align.onTrue(new DriveToTestCommand());
@@ -88,7 +86,7 @@ public class RobotContainer {
       int multiplier = SwerveDriveSubsystem.getInstance().getGyroAngle() < Constants.TAU/4 &&
         SwerveDriveSubsystem.getInstance().getGyroAngle() > -Constants.TAU/4 ? -1 : 1;
         ArmSubsystem.getInstance().pivot(multiplier*22*Constants.TAU/360);
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
     },
       ArmSubsystem.getInstance()));
 
@@ -121,9 +119,9 @@ public class RobotContainer {
       CandleSubsystem.getInstance()
       ));
 
-    intakeButton.and(doubleStation).toggleOnTrue(new DoubleStationIntakeCommand());
+    intakeButton.and(doubleStation).toggleOnTrue(new SingleStationIntakeCommand());
     
-    intakeButton.and(cone).toggleOnTrue(new IntakeCommand(true));
+    intakeButton.and(cone).toggleOnTrue(new IntakeConeCommand(true));
 
     lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
@@ -209,6 +207,10 @@ public class RobotContainer {
   static PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);
 
   public static class PDH {
+    
+    public static PowerDistributionFaults getFaults(){
+      return pdh.getFaults();
+    }
 
     //Battery Voltage
     public static double getVoltage() {

@@ -148,8 +148,7 @@ public final class Constants {
     public static final double MAX_TURN_SPEED = 0.6;
 
     public static final double INTAKE_ANGLE = 5;
-    // public static final double INTAKE_ANGLE = 7.5;
-    public static final double DOUBLE_STATION_POS = 14;
+    public static final double SINGLE_STATION_POS = -6;
 
     public static final double HIGH_ANGLE = 0;
     public static final double MID_ANGLE = 0;
@@ -191,18 +190,23 @@ public final class Constants {
     public static final int EXTEND_SWITCH_PORT = 0;
     public static final int RETRACT_SWITCH_PORT = 0;
 
-    public static final double ENCODER_OFFSET = -72.158+1.8;
+    public static final int ENCODER_PORT = 4;
+    public static final double ENCODER_OFFSET = -0.192383;
 
     public static final double ARM_KF = 0.016;
     public static final double ARM_KP = 2.2;
     public static final double ARM_KI = 0;
     public static final double ARM_KD = 0;
 
-    public static final double ARM_CRUISE_VELOCITY = 90;  //40_000
+    public static final double ARM_CRUISE_VELOCITY = 100;  //40_000
+    public static final double AUTO_ARM_CRUISE_VELOCITY = 100;
     public static final double ARM_ACCELERATION = 150;
+    public static final double AUTO_ARM_ACCELERATION = 100;
 
-    public static final double PIVOT_CRUISE_VELOCITY = 120;
+    public static final double PIVOT_CRUISE_VELOCITY = 100;
+    public static final double AUTO_PIVOT_CRUISE_VELOCITY = 100;
     public static final double PIVOT_ACCELERATION = 180;
+    public static final double AUTO_PIVOT_ACCELERATION = 120;
 
     public static final double PIVOT_KF_1 = 0.0095;
     public static final double PIVOT_KP_1 = 0.5;
@@ -220,29 +224,33 @@ public final class Constants {
     public static final double MID_ANGLE = 70 * TAU/360;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 80_000; //47_000-2_600
-    public static final double MID_EXTEND_NU = 29_500;
-    public static final double LOW_EXTEND_NU = 0;
+    public static final double HIGH_EXTEND_NU = 80_000/2048.; //47_000-2_600
+    public static final double MID_EXTEND_NU = 29_500/2048.;
+    public static final double LOW_EXTEND_NU = 0/2048.;
 
     public static final double AUTO_DUNK_ANGLE = 3 * TAU/360;
     public static final double TELEOP_DUNK_ANGLE = 1 * TAU/360;
 
-    public static final double RETRACT_NU = 18_000; //NU to retract back in after scoring to avoid hitting middle node
+    public static final double RETRACT_NU = 18_000/2048.; //NU to retract back in after scoring to avoid hitting middle node
+
+    public static final double PREP_ANGLE = 22*TAU/360;
+    public static final double EXTEND_REST_NU = 3_000/2048.;
 
     //Intkae
     public static final double INTAKE_ANGLE = 116 * Constants.TAU/360; //112.5
+    public static final double INTAKE_EXTEND_NU = 3_000/2048.;
     public static final double INTAKE_DEADZONE = 1 * TAU/360;
 
-    public static final double DOUBLE_STATION_ANGLE = 43 * TAU/360;
-    public static final double DOUBLE_STATION_EXTEND_NU = 14_000;
+    public static final double SINGLE_STATION_ANGLE = 76 * TAU/360;
+    public static final double SINGLE_STATION_EXTEND_NU = 0;
 
     public static final double ERROR_ANGLE = 0;
 
     public static final int EXTEND_FORWARD_SOFT_LIMIT = 48;
-    public static final int EXTEND_REVERSE_SOFT_LIMIT = 1;
+    public static final double EXTEND_REVERSE_SOFT_LIMIT = EXTEND_REST_NU;
 
-    public static final int PIVOT_FORWARD_SOFT_LIMIT = 140_000;
-    public static final int PIVOT_REVERSE_SOFT_LIMIT = -140_000;
+    public static final double PIVOT_FORWARD_SOFT_LIMIT = 140_000/2048.;
+    public static final double PIVOT_REVERSE_SOFT_LIMIT = -140_000/2048.;
 
     public static final double EXTEND_TARGET_DEADZONE = 500;
     public static final double PIVOT_TARGET_DEADZONE = 0.5 * TAU / 360;
@@ -253,10 +261,11 @@ public final class Constants {
       public static final double LOW_ANGLE = -105 * TAU/360;
 
       public static final double INTAKE_ANGLE = -108 * Constants.TAU/360;
+      public static final double INTAKE_EXTEND_NU = 3_000/2048.;
 
-      public static final double HIGH_EXTEND_NU = 82_000;
-      public static final double MID_EXTEND_NU = 35_000;
-      public static final double LOW_EXTEND_NU = 0;
+      public static final double HIGH_EXTEND_NU = 82_000/2048.;
+      public static final double MID_EXTEND_NU = 35_000/2048.;
+      public static final double LOW_EXTEND_NU = 0/2048.;
     }
   }
 

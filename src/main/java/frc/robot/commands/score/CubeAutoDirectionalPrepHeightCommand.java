@@ -10,6 +10,8 @@ import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.Constants.Field.TargetLevel;
+import frc.robot.Robot;
+import frc.robot.Robot.RobotState;
 
 
 public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
@@ -71,8 +73,6 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
              targetWrist = Constants.Grabber.CUBE_NU;
              break;
            case LOW: 
-            ArmSubsystem.getInstance().setPivotCruiseVelocity(60_000);
-            ArmSubsystem.getInstance().setPivotAcceleration(60_000);
             ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.LOW_EXTEND_NU);
             targetPos = Constants.Arm.Cube.LOW_EXTEND_NU;
@@ -83,19 +83,21 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         gotToStart = false;
         resetEncoder = false;
 
-        atStartDeg = Math.abs(ArmSubsystem.getInstance().getAngle() - 22*Constants.TAU/360) < 1*Constants.TAU/360;
+        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360;
 
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setPivotTarget(targetPivot);
         Tabs.Comp.setWristTarget(Constants.Grabber.CUBE_NU);
+
+        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
     }
 
     @Override
     public void execute() {
         if(!DriverStation.isAutonomous() && !atStartDeg && Math.abs(targetPivot) < Constants.TAU/4){
-            ArmSubsystem.getInstance().pivot(-22*Constants.TAU/360 * multiplier);
-            ArmSubsystem.getInstance().extendNU(3_000);
-            if(Math.abs(Math.abs(ArmSubsystem.getInstance().getAngle()) - 22*Constants.TAU/360) < 1*Constants.TAU/360){
+            ArmSubsystem.getInstance().pivot(-Constants.Arm.PREP_ANGLE * multiplier);
+            ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
+            if(Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360){
                 ArmSubsystem.getInstance().pivot(targetPivot);
                 ArmSubsystem.getInstance().extendNU(targetPos);
                 atStartDeg = true;
@@ -120,7 +122,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
             }
 
             //Added pivoting manual
-            if(Math.abs(ArmSubsystem.getInstance().getAngle() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+            if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
                 atPivot = true;
             } 
             if(atPivot) {
@@ -128,7 +130,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
                 if(pivotX == 0){ // If there isn't any input, maintain the position
                     if(!pivotMan0){
                         pivotMan0 = true;
-                        lastPivot = ArmSubsystem.getInstance().getAngle();
+                        lastPivot = ArmSubsystem.getInstance().getPivotRad();
                     }
                     ArmSubsystem.getInstance().pivot(lastPivot);
                 }
@@ -143,12 +145,12 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
 
             GrabberSubsystem.getInstance().orientPos(targetWrist);
 
-            if(!resetEncoder && 
-            Math.abs(ArmSubsystem.getInstance().getAngle()-targetPivot) <= 1 * Constants.TAU/360 && 
-            Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10){
-                ArmSubsystem.getInstance().resetPivotNU();
-                resetEncoder = true;
-        }
+            // if(!resetEncoder && 
+            // Math.abs(ArmSubsystem.getInstance().getPivotRad()-targetPivot) <= 1 * Constants.TAU/360 && 
+            // Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10){
+            //     ArmSubsystem.getInstance().resetPivotNU();
+            //     resetEncoder = true;
+            // }
         }
     }
 

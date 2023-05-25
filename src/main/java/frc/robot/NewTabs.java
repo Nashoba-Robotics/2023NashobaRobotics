@@ -74,6 +74,17 @@ public class NewTabs {
 
         entries.get(uniqueTitle).setDouble(value);
     }
+
+    public static void putBoolean(String tabTitle, String entry, boolean value){
+        String uniqueTitle = getUniqueTitle(tabTitle, entry);
+        if(!entries.containsKey(uniqueTitle)){
+            GenericEntry e = getTab(tabTitle).add(entry, 0).getEntry();
+            entries.put(uniqueTitle, e);
+        }
+
+        entries.get(uniqueTitle).setBoolean(value);
+    }
+
     public static void putCommand(String tabTitle, Sendable sendable){
         getTab(tabTitle).add(sendable);
     }

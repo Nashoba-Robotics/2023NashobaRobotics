@@ -18,7 +18,7 @@ import frc.robot.Constants;
 import frc.robot.commands.auto.intakescore.AutoScoreCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCubeCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
-import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakeConeCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -37,7 +37,7 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
             ArmSubsystem.getInstance(),
             GrabberSubsystem.getInstance()
         ));
-        map.put("Start Intake Cone", new IntakeCommand(true));
+        map.put("Start Intake Cone", new IntakeConeCommand(true));
         map.put("Prep Score Angle", new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance()));
         
         List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-leftA-0-leftC",

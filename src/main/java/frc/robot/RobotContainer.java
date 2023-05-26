@@ -12,10 +12,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.EncoderTestCommand;
-import frc.robot.commands.test.GrabberTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.RunArmCommand;
-import frc.robot.commands.test.TestPivotCommand;
 import frc.robot.commands.SetPivotOffsetCommand;
 import frc.robot.commands.intake.SingleStationIntakeCommand;
 import frc.robot.commands.intake.IntakeConeCommand;
@@ -184,7 +182,7 @@ public class RobotContainer {
 
   public void configureTabs() {
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
-    Tabs.PivotTest.add("Pivot Test", new TestPivotCommand());
+    // Tabs.PivotTest.add("Pivot Test", new TestPivotCommand());
     Tabs.Intake.zeroes.add("Extend", new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroExtend(),
       ArmSubsystem.getInstance()
@@ -199,7 +197,7 @@ public class RobotContainer {
     ));
     // Tabs.DriveTest.tab.add(new DriveSpeedCommand());
 
-    Tabs.GrabberTest.tab.add(new GrabberTestCommand());
+    // Tabs.GrabberTest.tab.add(new GrabberTestCommand());
 
     Tabs.Comp.add(new SetPivotOffsetCommand());
   }

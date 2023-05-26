@@ -57,12 +57,15 @@ public class SwerveModule {
 
         moveControl = new VelocityDutyCycle(0);
         moveControl.FeedForward = AFF;
+        moveControl.EnableFOC = true;
+        moveControl.UpdateFreqHz = 50;
 
         turnMotor = new TalonFX(turnPort, "drivet");    //It has the DRIVE and PIVET!!
         turnConfigurator = turnMotor.getConfigurator();
         turnConfig = new TalonFXConfiguration();
 
         turnControl = new MotionMagicDutyCycle(offset);
+        turnControl.UpdateFreqHz = 50;
 
         turnSensor = new CANcoder(sensorPort, "drivet");
         turnSensorConfigurator = turnSensor.getConfigurator();
@@ -79,6 +82,7 @@ public class SwerveModule {
     public void config(){
         //Move motor configuration
         moveConfig.Audio.BeepOnBoot = true;
+        moveConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0;
         moveConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         moveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         moveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
@@ -98,6 +102,7 @@ public class SwerveModule {
 
         //Turn motor configuratoin
         turnConfig.Audio.BeepOnBoot = true;
+        turnConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = 0;
         turnConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
         turnConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
         turnConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;

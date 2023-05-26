@@ -424,170 +424,170 @@ public final class Tabs {
         }
     }
 
-    public static class Misc{
-        public static final ShuffleboardTab tab = Shuffleboard.getTab("Miscelaneous");
+    // public static class Misc{
+    //     public static final ShuffleboardTab tab = Shuffleboard.getTab("Miscelaneous");
 
-        public static void add(Sendable sendable){
-            tab.add(sendable);
-        }
-        public static ComplexWidget add(String name, Sendable sendable){
-            return tab.add(name, sendable);
-        }
-        public static ComplexWidget add(String name, Sendable sendable, int x, int y){
-            return add(name, sendable).withPosition(x, y);
-        }
-        public static ComplexWidget add(String name, Sendable sendable, int x, int y, int w, int h){
-            return add(name, sendable, x, y).withSize(w, h);
-        }
-        public static void add(String name, Object o){
-            tab.add(name, o);
-        }
+    //     public static void add(Sendable sendable){
+    //         tab.add(sendable);
+    //     }
+    //     public static ComplexWidget add(String name, Sendable sendable){
+    //         return tab.add(name, sendable);
+    //     }
+    //     public static ComplexWidget add(String name, Sendable sendable, int x, int y){
+    //         return add(name, sendable).withPosition(x, y);
+    //     }
+    //     public static ComplexWidget add(String name, Sendable sendable, int x, int y, int w, int h){
+    //         return add(name, sendable, x, y).withSize(w, h);
+    //     }
+    //     public static void add(String name, Object o){
+    //         tab.add(name, o);
+    //     }
 
-        //Temporary button stuff
-        private static GenericEntry buttonPushed = tab.add("Pushed", false).getEntry();
+    //     //Temporary button stuff
+    //     private static GenericEntry buttonPushed = tab.add("Pushed", false).getEntry();
 
-        public static void displayPush(boolean pushed){
-            buttonPushed.setBoolean(pushed);
-        }
+    //     public static void displayPush(boolean pushed){
+    //         buttonPushed.setBoolean(pushed);
+    //     }
 
-    }
+    // }
 
-    public static class DriveTest{
-        public static final ShuffleboardTab tab = Shuffleboard.getTab("Drive Test");
+    // public static class DriveTest{
+    //     public static final ShuffleboardTab tab = Shuffleboard.getTab("Drive Test");
 
-        private static GenericEntry move = tab.add("Move", 0).getEntry();
+    //     private static GenericEntry move = tab.add("Move", 0).getEntry();
 
-        private static GenericEntry driveSpeed = tab.add("Drive Speed", 0).getEntry();
-        private static GenericEntry actualSpeed = tab.add("Actual Speed", 0).getEntry();
+    //     private static GenericEntry driveSpeed = tab.add("Drive Speed", 0).getEntry();
+    //     private static GenericEntry actualSpeed = tab.add("Actual Speed", 0).getEntry();
 
-        private static GenericEntry pivotAngle = tab.add("Pivot Angle Deg", 0).getEntry();
-        private static GenericEntry actualPivotAngle = tab.add("Actual Pivot Angle", 0).getEntry();
+    //     private static GenericEntry pivotAngle = tab.add("Pivot Angle Deg", 0).getEntry();
+    //     private static GenericEntry actualPivotAngle = tab.add("Actual Pivot Angle", 0).getEntry();
 
-        private static GenericEntry grabberAngle = tab.add("Grabber NU", 0).getEntry();
+    //     private static GenericEntry grabberAngle = tab.add("Grabber NU", 0).getEntry();
 
-        private static GenericEntry grabberCurrent = tab.add("Grabber Current", 0).getEntry();
-        private static GenericEntry grabberSpeed = tab.add("Grabber Speed", 0.7).getEntry();
+    //     private static GenericEntry grabberCurrent = tab.add("Grabber Current", 0).getEntry();
+    //     private static GenericEntry grabberSpeed = tab.add("Grabber Speed", 0.7).getEntry();
 
-        public static void displayActualSpeed(double speed){
-            actualSpeed.setDouble(speed);
-        }
-        public static void displayActualAngle(double angle) {
-            actualPivotAngle.setDouble(angle);
-        }
-        public static void displayMove(){
-            move.setDouble(0);
-        }
+    //     public static void displayActualSpeed(double speed){
+    //         actualSpeed.setDouble(speed);
+    //     }
+    //     public static void displayActualAngle(double angle) {
+    //         actualPivotAngle.setDouble(angle);
+    //     }
+    //     public static void displayMove(){
+    //         move.setDouble(0);
+    //     }
 
-        public static void displayGrabberCurrent(double current) {
-            grabberCurrent.setDouble(current);
-        }
+    //     public static void displayGrabberCurrent(double current) {
+    //         grabberCurrent.setDouble(current);
+    //     }
 
-        public static double getGrabberSpeed() {
-            return grabberSpeed.getDouble(0.7);
-        }
+    //     public static double getGrabberSpeed() {
+    //         return grabberSpeed.getDouble(0.7);
+    //     }
 
-        public static double getDriveSpeed(){
-            return driveSpeed.getDouble(0);
-        }
-        public static double getPivotAngle(){
-            return pivotAngle.getDouble(0);
-        }
-        public static double grabberAngle(){
-            return grabberAngle.getDouble(0);
-        }
-        public static boolean move(){
-            return move.getDouble(0) == 1;
-        }
-    }
+    //     public static double getDriveSpeed(){
+    //         return driveSpeed.getDouble(0);
+    //     }
+    //     public static double getPivotAngle(){
+    //         return pivotAngle.getDouble(0);
+    //     }
+    //     public static double grabberAngle(){
+    //         return grabberAngle.getDouble(0);
+    //     }
+    //     public static boolean move(){
+    //         return move.getDouble(0) == 1;
+    //     }
+    // }
 
-    public static class GrabberTest{
-        public static final ShuffleboardTab tab = Shuffleboard.getTab("Grabber Test");
+    // public static class GrabberTest{
+    //     public static final ShuffleboardTab tab = Shuffleboard.getTab("Grabber Test");
 
-        private static GenericEntry frontRollerSpeed = tab.add("Front Speed", 0).getEntry();
-        private static GenericEntry backRollerSpeed = tab.add("Back Speed", 0).getEntry();
+    //     private static GenericEntry frontRollerSpeed = tab.add("Front Speed", 0).getEntry();
+    //     private static GenericEntry backRollerSpeed = tab.add("Back Speed", 0).getEntry();
 
-        private static GenericEntry runFront = tab.add("Run Front", 0).getEntry();
-        private static GenericEntry runBack = tab.add("Run Back", 0).getEntry();
+    //     private static GenericEntry runFront = tab.add("Run Front", 0).getEntry();
+    //     private static GenericEntry runBack = tab.add("Run Back", 0).getEntry();
 
-        private static GenericEntry frontCurrent = tab.add("Front Curr", 0).getEntry();
-        private static GenericEntry backCurrent = tab.add("Back Curr", 0).getEntry();
+    //     private static GenericEntry frontCurrent = tab.add("Front Curr", 0).getEntry();
+    //     private static GenericEntry backCurrent = tab.add("Back Curr", 0).getEntry();
 
-        public static double getFrontSpeed(){
-            return frontRollerSpeed.getDouble(0);
-        }
-        public static double getBackSpeed(){
-            return backRollerSpeed.getDouble(0);
-        }
+    //     public static double getFrontSpeed(){
+    //         return frontRollerSpeed.getDouble(0);
+    //     }
+    //     public static double getBackSpeed(){
+    //         return backRollerSpeed.getDouble(0);
+    //     }
 
-        public static double moveFront(){
-            return runFront.getDouble(0);
-        }
-        public static double moveBack(){
-            return runBack.getDouble(0);
-        }
+    //     public static double moveFront(){
+    //         return runFront.getDouble(0);
+    //     }
+    //     public static double moveBack(){
+    //         return runBack.getDouble(0);
+    //     }
 
-        public static void displayFrontCurrent(double curr){
-            frontCurrent.setDouble(curr);
-        }
-        public static void displayBackCurrent(double curr){
-            backCurrent.setDouble(curr);
-        }
-    }
+    //     public static void displayFrontCurrent(double curr){
+    //         frontCurrent.setDouble(curr);
+    //     }
+    //     public static void displayBackCurrent(double curr){
+    //         backCurrent.setDouble(curr);
+    //     }
+    // }
 
-    public static class PivotTest {
-        public static final ShuffleboardTab tab = Shuffleboard.getTab("PivotTest");
+    // public static class PivotTest {
+    //     public static final ShuffleboardTab tab = Shuffleboard.getTab("PivotTest");
 
-        private static GenericEntry setAngle = tab.add("Set Angle", 0).getEntry();
-        private static GenericEntry actualAngle = tab.add("Sensor Angle", 0).getEntry();
-        private static GenericEntry armSpeed = tab.add("NU Speed", 0).getEntry();
+    //     private static GenericEntry setAngle = tab.add("Set Angle", 0).getEntry();
+    //     private static GenericEntry actualAngle = tab.add("Sensor Angle", 0).getEntry();
+    //     private static GenericEntry armSpeed = tab.add("NU Speed", 0).getEntry();
         
-        private static ShuffleboardLayout PID = tab.getLayout("PID", BuiltInLayouts.kGrid)
-            .withSize(1, 3);
+    //     private static ShuffleboardLayout PID = tab.getLayout("PID", BuiltInLayouts.kGrid)
+    //         .withSize(1, 3);
         
-        private static GenericEntry P = PID.add("P", 0).withPosition(0, 0).getEntry();
-        private static GenericEntry I = PID.add("I", 0).withPosition(0, 1).getEntry();
-        private static GenericEntry D = PID.add("D", 0).withPosition(0, 2).getEntry();
+    //     private static GenericEntry P = PID.add("P", 0).withPosition(0, 0).getEntry();
+    //     private static GenericEntry I = PID.add("I", 0).withPosition(0, 1).getEntry();
+    //     private static GenericEntry D = PID.add("D", 0).withPosition(0, 2).getEntry();
 
-        public static double getP() {
-            return P.getDouble(0);
-        }
+    //     public static double getP() {
+    //         return P.getDouble(0);
+    //     }
 
-        public static double getI() {
-            return I.getDouble(0);
-        }
+    //     public static double getI() {
+    //         return I.getDouble(0);
+    //     }
 
-        public static double getD() {
-            return D.getDouble(0);
-        }
+    //     public static double getD() {
+    //         return D.getDouble(0);
+    //     }
 
-        public static double getSetAngle() {
-            return setAngle.getDouble(0);
-        }
+    //     public static double getSetAngle() {
+    //         return setAngle.getDouble(0);
+    //     }
 
-        public static void displayActualAngle(double angle) {
-            actualAngle.setDouble(angle);
-        }
+    //     public static void displayActualAngle(double angle) {
+    //         actualAngle.setDouble(angle);
+    //     }
 
-        public static void displayArmSpeed(double speed) {
-            armSpeed.setDouble(speed);
-        }
+    //     public static void displayArmSpeed(double speed) {
+    //         armSpeed.setDouble(speed);
+    //     }
 
-        public static void add(Sendable sendable){
-            tab.add(sendable);
-        }
-        public static ComplexWidget add(String name, Sendable sendable){
-            return tab.add(name, sendable);
-        }
-        public static ComplexWidget add(String name, Sendable sendable, int x, int y){
-            return add(name, sendable).withPosition(x, y);
-        }
-        public static ComplexWidget add(String name, Sendable sendable, int x, int y, int w, int h){
-            return add(name, sendable, x, y).withSize(w, h);
-        }
-        public static void add(String name, Object o){
-            tab.add(name, o);
-        }
-    }
+    //     public static void add(Sendable sendable){
+    //         tab.add(sendable);
+    //     }
+    //     public static ComplexWidget add(String name, Sendable sendable){
+    //         return tab.add(name, sendable);
+    //     }
+    //     public static ComplexWidget add(String name, Sendable sendable, int x, int y){
+    //         return add(name, sendable).withPosition(x, y);
+    //     }
+    //     public static ComplexWidget add(String name, Sendable sendable, int x, int y, int w, int h){
+    //         return add(name, sendable, x, y).withSize(w, h);
+    //     }
+    //     public static void add(String name, Object o){
+    //         tab.add(name, o);
+    //     }
+    // }
 
     public static class EncoderTest{
         public static final ShuffleboardTab tab = Shuffleboard.getTab("Encoder Test");

@@ -15,7 +15,7 @@ public class DriveSpeedCommand extends CommandBase{
 
     @Override
     public void initialize() {
-        Tabs.DriveTest.displayMove();
+        // Tabs.DriveTest.displayMove();
         SwerveDriveSubsystem.getInstance().zeroYaw();
 
         ArmSubsystem.getInstance().resetPivotNU();
@@ -24,28 +24,28 @@ public class DriveSpeedCommand extends CommandBase{
 
     @Override
     public void execute() {
-        double speed = Tabs.DriveTest.getDriveSpeed();
-        if(Tabs.DriveTest.move()){
-            SwerveDriveSubsystem.getInstance().set(speed, 0, 0);
-            GrabberSubsystem.getInstance().set(-Tabs.DriveTest.getGrabberSpeed());
-        }
-        else{
-            SwerveDriveSubsystem.getInstance().set(0, 0, 0);
-            GrabberSubsystem.getInstance().set(0);
-        }
-        // Tabs.DriveTest.displayActualSpeed(SwerveDriveSubsystem.getInstance().getXVelocity());
+        // double speed = Tabs.DriveTest.getDriveSpeed();
+        // if(Tabs.DriveTest.move()){
+        //     SwerveDriveSubsystem.getInstance().set(speed, 0, 0);
+        //     GrabberSubsystem.getInstance().set(-Tabs.DriveTest.getGrabberSpeed());
+        // }
+        // else{
+        //     SwerveDriveSubsystem.getInstance().set(0, 0, 0);
+        //     GrabberSubsystem.getInstance().set(0);
+        // }
+        // // Tabs.DriveTest.displayActualSpeed(SwerveDriveSubsystem.getInstance().getXVelocity());
 
-        ArmSubsystem.getInstance().pivot(
-            Tabs.DriveTest.getPivotAngle()*Constants.TAU/360
-        );
+        // ArmSubsystem.getInstance().pivot(
+        //     Tabs.DriveTest.getPivotAngle()*Constants.TAU/360
+        // );
 
-        Tabs.DriveTest.displayActualAngle(ArmSubsystem.getInstance().getPivotRad()*360/Constants.TAU);
+        // Tabs.DriveTest.displayActualAngle(ArmSubsystem.getInstance().getPivotRad()*360/Constants.TAU);
 
-        GrabberSubsystem.getInstance().orientPos(
-            Tabs.DriveTest.grabberAngle()
-        );
+        // GrabberSubsystem.getInstance().orientPos(
+        //     Tabs.DriveTest.grabberAngle()
+        // );
 
-        Tabs.DriveTest.displayGrabberCurrent(GrabberSubsystem.getInstance().getGrabberCurrent());
+        // Tabs.DriveTest.displayGrabberCurrent(GrabberSubsystem.getInstance().getGrabberCurrent());
     }
 
     @Override

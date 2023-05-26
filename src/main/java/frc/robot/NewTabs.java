@@ -91,7 +91,10 @@ public class NewTabs {
 
     public static double getDouble(String tabTitle, String entry, double defaultValue){
         String uniqueTitle = getUniqueTitle(tabTitle, entry);
-        if(!entries.containsKey(uniqueTitle)) return defaultValue;
+        if(!entries.containsKey(uniqueTitle)){
+            putDouble(tabTitle, entry, defaultValue);
+            return defaultValue;
+        } 
 
         return entries.get(uniqueTitle).getDouble(defaultValue);
     }

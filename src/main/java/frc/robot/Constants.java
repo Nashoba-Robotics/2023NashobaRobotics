@@ -205,18 +205,13 @@ public final class Constants {
 
     public static final double PIVOT_CRUISE_VELOCITY = 100;
     public static final double AUTO_PIVOT_CRUISE_VELOCITY = 100;
-    public static final double PIVOT_ACCELERATION = 180;
+    public static final double PIVOT_ACCELERATION = 300;
     public static final double AUTO_PIVOT_ACCELERATION = 120;
 
-    public static final double PIVOT_KF_1 = 0.0095;
-    public static final double PIVOT_KP_1 = 0.5;
-    public static final double PIVOT_KI_1 = 0;
-    public static final double PIVOT_KD_1 = 0.012;
-
-    public static final double PIVOT_KF_2 = 0.0095;
-    public static final double PIVOT_KP_2 = 0.5;
-    public static final double PIVOT_KI_2 = 0;
-    public static final double PIVOT_KD_2 = 0.012;
+    public static final double PIVOT_KF = 0.0095;
+    public static final double PIVOT_KP = 0.5;
+    public static final double PIVOT_KI = 0;
+    public static final double PIVOT_KD = 0.015;
 
     //Scorign (Radians)
     public static final double HIGH_FRONT_ANGLE = 63.75 * TAU/360;

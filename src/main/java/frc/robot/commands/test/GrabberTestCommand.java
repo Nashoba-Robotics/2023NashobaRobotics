@@ -10,9 +10,9 @@ public class GrabberTestCommand extends CommandBase{
     }
     @Override
     public void execute() {
-        double speed = Tabs.GrabberTest.getFrontSpeed();
-        GrabberSubsystem.getInstance().set(speed);
+        // double speed = Tabs.GrabberTest.getFrontSpeed();
+        // GrabberSubsystem.getInstance().set(speed);
 
-        Tabs.GrabberTest.displayFrontCurrent(GrabberSubsystem.getInstance().getGrabberCurrent());
+        // Tabs.GrabberTest.displayFrontCurrent(GrabberSubsystem.getInstance().getGrabberCurrent());
     }
 }

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
+import frc.robot.commands.test.ArmSpeedTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.EncoderTestCommand;
 import frc.robot.commands.test.GrabberTestCommand;
@@ -44,6 +45,8 @@ public class RobotContainer {
     ));
     SmartDashboard.putData(new RunArmCommand());
     SmartDashboard.putData(new EncoderTestCommand());
+
+    NewTabs.putCommand("Arm Speed Test", new ArmSpeedTestCommand());
   }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);
@@ -184,7 +187,7 @@ public class RobotContainer {
 
   public void configureTabs() {
     Tabs.Intake.add("Intake Test", new IntakeTestCommand(), 0, 0, 2, 1);
-    Tabs.PivotTest.add("Pivot Test", new TestPivotCommand());
+    // Tabs.PivotTest.add("Pivot Test", new TestPivotCommand());
     Tabs.Intake.zeroes.add("Extend", new InstantCommand(
       () -> ArmSubsystem.getInstance().zeroExtend(),
       ArmSubsystem.getInstance()
@@ -199,7 +202,7 @@ public class RobotContainer {
     ));
     // Tabs.DriveTest.tab.add(new DriveSpeedCommand());
 
-    Tabs.GrabberTest.tab.add(new GrabberTestCommand());
+    // Tabs.GrabberTest.tab.add(new GrabberTestCommand());
 
     Tabs.Comp.add(new SetPivotOffsetCommand());
   }

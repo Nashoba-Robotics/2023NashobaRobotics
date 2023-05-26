@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
@@ -94,7 +93,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
             boolean atAngle = module.atTargetAngle(setAngle)
             || module.atTargetAngle(setAngle + Constants.TAU/2)
             || module.atTargetAngle(setAngle - Constants.TAU/2);
-            SmartDashboard.putBoolean("mod"+module.modNumber, atAngle);
             atPos = atPos && atAngle;
         }
         return atPos;
@@ -155,9 +153,6 @@ public class SwerveDriveSubsystem extends SubsystemBase {
     }
 
     public void set(double x, double y, double omega) {
-
-        SmartDashboard.putNumber("Set x", x);
-        SmartDashboard.putNumber("Set y", y);
 
         if(fieldCentric) {
             double angleDiff = Math.atan2(y, x) - getGyroAngle(); //difference between input angle and gyro angle gives desired field relative angle
@@ -377,46 +372,32 @@ public class SwerveDriveSubsystem extends SubsystemBase {
 
         if(!resetting) odometry.update(Rotation2d.fromRadians(getGyroAngle()), getSwerveModulePositions());
 
-        // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
-        SmartDashboard.putNumber("Pipeline", LimelightSubsystem.getInstance().getPipeline());
+        // SmartDashboard.putNumber("mod0Ang", modules[0].getTurnAngle());
+        // SmartDashboard.putNumber("mod1Ang", modules[1].getTurnAngle());
+        // SmartDashboard.putNumber("mod2Ang", modules[2].getTurnAngle());
+        // SmartDashboard.putNumber("mod3Ang", modules[3].getTurnAngle());
+        // SmartDashboard.putNumber("angleSetPoint", setAngle);
 
-        if(LimelightSubsystem.getInstance().getPipeline() != Constants.Limelight.APRIL_TAG_PIPELINE) LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.APRIL_TAG_PIPELINE);
-        // if(LimelightSubsystem.getInstance().isTarget()) {
-        //     double limelightWeight = 0.1;
-        //     double odometryWeight = 1 - limelightWeight;
+        // SmartDashboard.putNumber("RobotVelocity", getVelocity());
+        // SmartDashboard.putNumber("XVelocity", getXVelocity());
+        // SmartDashboard.putNumber("YVelocity", getYVelocity());
 
-        //     Translation2d limelightPose = LimelightSubsystem.getInstance().getRobotPose().getTranslation();
-        //         Translation2d odometryPose = SwerveDriveSubsystem.getInstance().getPose().getTranslation();
-        //         Pose2d currPose = new Pose2d(limelightPose.getX() * limelightWeight + odometryPose.getX() * odometryWeight, limelightPose.getY() * limelightWeight + odometryPose.getY() * odometryWeight, Rotation2d.fromRadians(SwerveDriveSubsystem.getInstance().getGyroAngle()));
-        //         SwerveDriveSubsystem.getInstance().resetOdometry(currPose);
-        // }
+        // Pose2d pose = odometry.getPoseMeters();
 
-        SmartDashboard.putNumber("mod0Ang", modules[0].getTurnAngle());
-        SmartDashboard.putNumber("mod1Ang", modules[1].getTurnAngle());
-        SmartDashboard.putNumber("mod2Ang", modules[2].getTurnAngle());
-        SmartDashboard.putNumber("mod3Ang", modules[3].getTurnAngle());
-        SmartDashboard.putNumber("angleSetPoint", setAngle);
+        // SmartDashboard.putNumber("x", pose.getX());
+        // SmartDashboard.putNumber("y", pose.getY());
+        // SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
+        // SmartDashboard.putNumber("gyro angle", getGyroAngle());
+        // Tabs.Comp.displayGyro(getGyroAngle());
 
-        SmartDashboard.putNumber("RobotVelocity", getVelocity());
-        SmartDashboard.putNumber("XVelocity", getXVelocity());
-        SmartDashboard.putNumber("YVelocity", getYVelocity());
-
-        Pose2d pose = odometry.getPoseMeters();
-
-        SmartDashboard.putNumber("x", pose.getX());
-        SmartDashboard.putNumber("y", pose.getY());
-        SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
-        SmartDashboard.putNumber("gyro angle", getGyroAngle());
-        Tabs.Comp.displayGyro(getGyroAngle());
-
-        SmartDashboard.putNumber("Pitch", getPitch());
-        SmartDashboard.putNumber("Roll", getRoll());
-        SmartDashboard.putNumber("Change", getChange());
-        SmartDashboard.putBoolean("At Setpoint",balanced());
+        // SmartDashboard.putNumber("Pitch", getPitch());
+        // SmartDashboard.putNumber("Roll", getRoll());
+        // SmartDashboard.putNumber("Change", getChange());
+        // SmartDashboard.putBoolean("At Setpoint",balanced());
 
         if(Constants.Logging.SWERVE) {
             for(SwerveModule module : modules) {
-                SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
+                // SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
                 LogManager.appendToLog(module.getMoveVelocity(), "Swerve/:Mod"+module.modNumber+"/Velocity");
                 LogManager.appendToLog(module.getAngle(), "Swerve/:Mod"+module.modNumber+"/Angle");
             }

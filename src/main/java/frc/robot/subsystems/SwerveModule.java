@@ -228,7 +228,10 @@ public class SwerveModule {
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             NRUnits.Drive.NUToM(movePosition),
-            Rotation2d.fromRadians(moveMotor.getInverted() ?  NRUnits.constrainRad(getAbsAngle()+Constants.TAU/2) : getAbsAngle())
+            Rotation2d.fromRadians(
+                moveConfig.MotorOutput.Inverted == InvertedValue.Clockwise_Positive ?
+                NRUnits.constrainRad(getAbsAngle()+Constants.TAU/2):
+                getAbsAngle())
         );
     }
 
@@ -242,6 +245,7 @@ public class SwerveModule {
         // If the original distance is less, we want to go there
         if(originalDistance <= oppositeDistance){
             moveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
             moveConfigurator.apply(moveConfig);
             return potAngles[0];
         }

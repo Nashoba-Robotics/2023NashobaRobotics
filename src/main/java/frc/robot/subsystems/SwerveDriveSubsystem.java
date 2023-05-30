@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
@@ -43,7 +44,7 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         config.MountPose.MountPoseRoll = -0.483398;
         gyroConfigurator.apply(config);
 
-        fieldCentric = false;
+        fieldCentric = true;
 
         modules = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.FRONT_RIGHT_MOVE_PORT, Constants.Swerve.FRONT_RIGHT_TURN_PORT, Constants.Swerve.FRONT_RIGHT_SENSOR_PORT, Constants.Swerve.FRONT_RIGHT_OFFSET_NU, Constants.Swerve.MOD0_AFF),
@@ -382,12 +383,12 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("XVelocity", getXVelocity());
         // SmartDashboard.putNumber("YVelocity", getYVelocity());
 
-        // Pose2d pose = odometry.getPoseMeters();
+        Pose2d pose = odometry.getPoseMeters();
 
-        // SmartDashboard.putNumber("x", pose.getX());
-        // SmartDashboard.putNumber("y", pose.getY());
-        // SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
-        // SmartDashboard.putNumber("gyro angle", getGyroAngle());
+        SmartDashboard.putNumber("x", pose.getX());
+        SmartDashboard.putNumber("y", pose.getY());
+        SmartDashboard.putNumber("angle", pose.getRotation().getDegrees());
+        SmartDashboard.putNumber("gyro angle", getGyroAngle());
         // Tabs.Comp.displayGyro(getGyroAngle());
 
         // SmartDashboard.putNumber("Pitch", getPitch());

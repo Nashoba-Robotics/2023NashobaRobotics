@@ -48,6 +48,8 @@ public class SwerveModule {
     private double AFF;
 
     public SwerveModule(int modNumber, int movePort, int turnPort, int sensorPort, double offset, double AFF){
+        multiplier = 1;
+
         this.AFF = AFF;
         this.modNumber = modNumber;
 
@@ -93,8 +95,8 @@ public class SwerveModule {
         moveConfig.Slot0.kD = Constants.Swerve.MOVE_KD;
         moveConfig.Voltage.PeakForwardVoltage = 12;
         moveConfig.Voltage.PeakReverseVoltage = -12;
-        moveConfig.CurrentLimits.StatorCurrentLimit = 40;
-        moveConfig.CurrentLimits.SupplyCurrentLimit = 60;
+        moveConfig.CurrentLimits.StatorCurrentLimit = 60;
+        moveConfig.CurrentLimits.SupplyCurrentLimit = 80;
         moveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         moveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         moveConfigurator.apply(moveConfig);
@@ -115,8 +117,8 @@ public class SwerveModule {
         turnConfig.MotionMagic.MotionMagicCruiseVelocity = 103;
         turnConfig.MotionMagic.MotionMagicAcceleration = 180;
         turnConfig.MotionMagic.MotionMagicJerk = 0;
-        turnConfig.CurrentLimits.StatorCurrentLimit = 40;
-        turnConfig.CurrentLimits.SupplyCurrentLimit = 60;
+        turnConfig.CurrentLimits.StatorCurrentLimit = 60;
+        turnConfig.CurrentLimits.SupplyCurrentLimit = 80;
         turnConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         turnConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         turnConfigurator.apply(turnConfig);
@@ -133,6 +135,8 @@ public class SwerveModule {
     }
 
     public void resetTurnToAbsolute() {
+        turnControl.Position = NRUnits.Drive.degToNU(NRUnits.constrainDeg(NRUnits.Drive.NUToDeg(turnMotor.getPosition().getValue())));
+        turnMotor.setControl(turnControl);
         turnMotor.setRotorPosition(NRUnits.Drive.degToNU(turnSensor.getAbsolutePosition().getValue()*360));
     }
 
@@ -177,7 +181,7 @@ public class SwerveModule {
 
         turnControl.Position = nextPos;
         turnMotor.setControl(turnControl);
-        moveControl.Velocity = move * Constants.Swerve.MAX_NATIVE_VELOCITY;
+        moveControl.Velocity = move * Constants.Swerve.MAX_NATIVE_VELOCITY * multiplier;
         moveMotor.setControl(moveControl);
     }
 
@@ -229,11 +233,13 @@ public class SwerveModule {
         return new SwerveModulePosition(
             NRUnits.Drive.NUToM(movePosition),
             Rotation2d.fromRadians(
-                moveConfig.MotorOutput.Inverted == InvertedValue.Clockwise_Positive ?
+                multiplier == 1 ?
                 NRUnits.constrainRad(getAbsAngle()+Constants.TAU/2):
                 getAbsAngle())
         );
     }
+
+    private int multiplier;
 
     public double findLowestAngle(double turn, double lastTurn){
         double[] potAngles = potentialAngles(turn); //Gets the two potential angles we could go to
@@ -244,14 +250,15 @@ public class SwerveModule {
 
         // If the original distance is less, we want to go there
         if(originalDistance <= oppositeDistance){
-            moveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
-
-            moveConfigurator.apply(moveConfig);
+            // moveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+            // moveConfigurator.apply(moveConfig);
+            multiplier = -1;
             return potAngles[0];
         }
         else{ //If we want to go to the opposite of the desired angle, we have to tell the motor to move "backwards"
-            moveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-            moveConfigurator.apply(moveConfig);
+            // moveConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+            // moveConfigurator.apply(moveConfig);
+            multiplier = 1;
             return potAngles[1];
         } 
     }

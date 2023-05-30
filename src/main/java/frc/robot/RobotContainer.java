@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
+import frc.robot.commands.test.ArmSpeedTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.EncoderTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
@@ -42,6 +43,8 @@ public class RobotContainer {
     ));
     SmartDashboard.putData(new RunArmCommand());
     SmartDashboard.putData(new EncoderTestCommand());
+
+    NewTabs.putCommand("Arm Speed Test", new ArmSpeedTestCommand());
   }
 
   public static CommandJoystick operatorController = new CommandJoystick(2);

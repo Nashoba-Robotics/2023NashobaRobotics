@@ -42,8 +42,8 @@ public class IntakeConeCommand extends CommandBase {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
         GrabberSubsystem.getInstance().setCurrentLimit(true);
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(100); //<-- Make sure we are limited by Acceleration
-        ArmSubsystem.getInstance().setPivotAcceleration(293);
+        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        ArmSubsystem.getInstance().setDefaultAcceleration();
 
         ArmSubsystem.getInstance().extendNU(Constants.Arm.INTAKE_EXTEND_NU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);
@@ -56,7 +56,7 @@ public class IntakeConeCommand extends CommandBase {
         resetEncoder = false;
 
         if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
-        LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM); //Can get rid of this after adding USB cam
+        // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM); //Can get rid of this after adding USB cam
 
         Tabs.Comp.setPivotTarget(pivotTarget);
         Tabs.Comp.setExtendTarget(Constants.Arm.INTAKE_EXTEND_NU);

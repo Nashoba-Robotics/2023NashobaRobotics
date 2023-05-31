@@ -31,9 +31,9 @@ public class ScoreCubeCommand extends CommandBase {
         GrabberSubsystem.getInstance().setCurrentLimit(true);
         if(!DriverStation.isAutonomous()){
             ArmSubsystem.getInstance().setPivotCruiseVelocity(100);
-            ArmSubsystem.getInstance().setPivotAcceleration(146);
+            ArmSubsystem.getInstance().setPivotAcceleration(150);
             ArmSubsystem.getInstance().setExtendCruiseVelocity(100);
-            ArmSubsystem.getInstance().setExtendAcceleration(415);  //There is no way in living hell that this is correct
+            ArmSubsystem.getInstance().setExtendAcceleration(300);  //There is no way in living hell that this is correct
             GrabberSubsystem.getInstance().set(0);
             GrabberSubsystem.getInstance().orient(0);
             

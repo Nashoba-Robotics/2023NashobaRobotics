@@ -229,7 +229,7 @@ public final class Constants {
     public static final double RETRACT_NU = 18_000/2048.; //NU to retract back in after scoring to avoid hitting middle node
 
     public static final double PREP_ANGLE = 22*TAU/360;
-    public static final double EXTEND_REST_NU = 3_000/2048.;
+    public static final double EXTEND_REST_NU = 5;
 
     //Intkae
     public static final double INTAKE_ANGLE = 116 * Constants.TAU/360; //112.5
@@ -247,7 +247,7 @@ public final class Constants {
     public static final double PIVOT_FORWARD_SOFT_LIMIT = 140_000/2048.;
     public static final double PIVOT_REVERSE_SOFT_LIMIT = -140_000/2048.;
 
-    public static final double EXTEND_TARGET_DEADZONE = 500;
+    public static final double EXTEND_TARGET_DEADZONE = 1;
     public static final double PIVOT_TARGET_DEADZONE = 0.5 * TAU / 360;
     
     public static final class Cube{

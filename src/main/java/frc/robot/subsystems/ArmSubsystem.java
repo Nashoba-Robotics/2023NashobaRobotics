@@ -15,6 +15,8 @@ import com.ctre.phoenixpro.signals.InvertedValue;
 import com.ctre.phoenixpro.signals.MagnetHealthValue;
 import com.ctre.phoenixpro.signals.NeutralModeValue;
 import com.ctre.phoenixpro.signals.SensorDirectionValue;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LogManager;
@@ -173,7 +175,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean pivotStopped(){
-        return Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 10;
+        return Math.abs(ArmSubsystem.getInstance().getPivotSpeed()) < 0.01;
     }
 
     //Extends arm to specified position in meters
@@ -184,7 +186,7 @@ public class ArmSubsystem extends SubsystemBase {
     public void extendNU(double nu){
         if(Constants.Logging.ARM) LogManager.appendToLog(nu, "Arm:/Extender/SetNU");
         extendSetter.Position = nu;
-        tromboneSlide.setControl(new MotionMagicDutyCycle(nu));
+        tromboneSlide.setControl(extendSetter);
     }
 
     //Basic Percent Output set
@@ -403,6 +405,8 @@ public class ArmSubsystem extends SubsystemBase {
         Tabs.Comp.displayPivotAngle(getPivotRad());
         Tabs.Comp.displayEncoderAngle(getEncoderDeg());
         Tabs.Comp.displayExtendNU(getExtendNU());
+
+        // SmartDashboard.putNumber("Pivot Speed", getPivotSpeed());
 
         //* Only for when the pivot is tuned with the encoder */
         // if(switchState){

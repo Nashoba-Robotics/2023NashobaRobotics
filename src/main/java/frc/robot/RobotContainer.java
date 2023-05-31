@@ -168,7 +168,7 @@ public class RobotContainer {
     setArm0.onTrue(new InstantCommand(
       () -> {
         ArmSubsystem.getInstance().pivot(0);
-        ArmSubsystem.getInstance().extendNU(3_000);
+        ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
       },
       ArmSubsystem.getInstance()
     ));

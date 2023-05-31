@@ -85,7 +85,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
              }
              else targetPos = Constants.Arm.HIGH_EXTEND_NU;
 
-             ArmSubsystem.getInstance().extendNU(targetPos);
+             ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
              ArmSubsystem.getInstance().pivot(targetPivot);
              GrabberSubsystem.getInstance().orientPos(targetWrist);
              break;

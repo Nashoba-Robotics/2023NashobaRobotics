@@ -112,7 +112,7 @@ public class IntakeConeCommand extends CommandBase {
             timerStarted = false;
         }
 
-        if(Robot.state != RobotState.OK && !resetEncoder && 
+        if(Robot.state == RobotState.OK && !resetEncoder && 
         ArmSubsystem.getInstance().pivotStopped() && 
         Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {

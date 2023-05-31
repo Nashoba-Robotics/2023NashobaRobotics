@@ -58,7 +58,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         multiplier = scoreFront ? -1 : 1;
 
         switch(targetLevel) {
-            case HIGH:  //<-- Not used
+            case HIGH:
              ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.HIGH_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.Cube.HIGH_EXTEND_NU;

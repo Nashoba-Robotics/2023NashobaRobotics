@@ -12,13 +12,8 @@ public class AutoScoreCubeCommand extends SequentialCommandGroup {
     
     public AutoScoreCubeCommand() {
         addCommands(
-            new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH).withTimeout(2),
-            new ScoreCubeCommand().withTimeout(1),
-            new InstantCommand(() -> {
-                GrabberSubsystem.getInstance().stop();
-                ArmSubsystem.getInstance().pivot(0);
-                ArmSubsystem.getInstance().extendNU(0);
-            }, ArmSubsystem.getInstance(), GrabberSubsystem.getInstance())
+            new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH, false).withTimeout(1.4),
+            new ScoreCubeCommand().withTimeout(0.4)
         );
     }
 

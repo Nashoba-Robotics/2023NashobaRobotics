@@ -34,8 +34,17 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
     boolean atStartDeg;
     double targetWrist;
 
+    boolean doAutoDir = true;
+
     public CubeAutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
         this.targetLevel = targetLevel;
+        addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
+    }
+
+    public CubeAutoDirectionalPrepHeightCommand(TargetLevel targetLevel, boolean autoDir){
+        doAutoDir = autoDir;
+        this.targetLevel = targetLevel;
+
         addRequirements(GrabberSubsystem.getInstance(), ArmSubsystem.getInstance());
     }
 
@@ -55,7 +64,8 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
         scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
 
-        multiplier = scoreFront ? -1 : 1;
+        if(doAutoDir) multiplier = scoreFront ? -1 : 1;
+        else multiplier = 1;
 
         switch(targetLevel) {
             case HIGH:

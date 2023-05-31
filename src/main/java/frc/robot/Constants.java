@@ -200,7 +200,7 @@ public final class Constants {
 
     public static final double ARM_CRUISE_VELOCITY = 100;  //40_000
     public static final double AUTO_ARM_CRUISE_VELOCITY = 100;
-    public static final double ARM_ACCELERATION = 150;
+    public static final double ARM_ACCELERATION = 160;
     public static final double AUTO_ARM_ACCELERATION = 100;
 
     public static final double PIVOT_CRUISE_VELOCITY = 100;
@@ -229,7 +229,7 @@ public final class Constants {
     public static final double RETRACT_NU = 18_000/2048.; //NU to retract back in after scoring to avoid hitting middle node
 
     public static final double PREP_ANGLE = 22*TAU/360;
-    public static final double EXTEND_REST_NU = 5;
+    public static final double EXTEND_REST_NU = 3;
 
     //Intkae
     public static final double INTAKE_ANGLE = 116 * Constants.TAU/360; //112.5

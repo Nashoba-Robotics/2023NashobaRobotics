@@ -41,6 +41,18 @@ public class ScoreCubeCommand extends CommandBase {
             ArmSubsystem.getInstance().pivot(0);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
         }
+        else{
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(100);
+            ArmSubsystem.getInstance().setPivotAcceleration(100);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(100);
+            ArmSubsystem.getInstance().setExtendAcceleration(220);  //There is no way in living hell that this is correct
+            GrabberSubsystem.getInstance().set(0);
+            GrabberSubsystem.getInstance().orient(0);
+            
+            ArmSubsystem.getInstance().stop();
+            ArmSubsystem.getInstance().pivot(0);
+            ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
+        }
     }
 
     @Override

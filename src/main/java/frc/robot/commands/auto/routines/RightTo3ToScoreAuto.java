@@ -31,16 +31,16 @@ import frc.robot.subsystems.SwerveDriveSubsystem;
 public class RightTo3ToScoreAuto extends SequentialCommandGroup{
     public RightTo3ToScoreAuto(){
         Map<String, Command> map = new HashMap<>();
-        // map.put("Start Intake", new IntakeCubeCommand());
-        // map.put("Stop Intake", new InstantCommand(
-        //     () -> {
-        //         ArmSubsystem.getInstance().pivot(0);
-        //         GrabberSubsystem.getInstance().set(-0.1);    //Don't remember if this is supposed to be positive or negative
-        //     },
-        //     ArmSubsystem.getInstance(),
-        //     GrabberSubsystem.getInstance()
-        // ));
-        // map.put("Prep Score Angle", new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance()));
+        map.put("Start Intake", new IntakeCubeCommand());
+        map.put("Stop Intake", new InstantCommand(
+            () -> {
+                ArmSubsystem.getInstance().pivot(0);
+                GrabberSubsystem.getInstance().set(-0.1);    //Don't remember if this is supposed to be positive or negative
+            },
+            ArmSubsystem.getInstance(),
+            GrabberSubsystem.getInstance()
+        ));
+        map.put("Prep Score Angle", new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance()));
         
         List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-rightC-3-rightA",
             new PathConstraints(2.5, 1.5),
@@ -91,11 +91,11 @@ public class RightTo3ToScoreAuto extends SequentialCommandGroup{
                     );
             }, SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.05),
-            // new AutoScoreCommand(),
+            new AutoScoreCommand(),
             path1,
             new WaitCommand(0.6),
-            path2
-            // new AutoScoreCubePuke()
+            path2,
+            new AutoScoreCubeCommand()
         );
     }
 }

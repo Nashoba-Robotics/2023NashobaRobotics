@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
+import frc.robot.commands.auto.balance.BetterBalanceCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCubeCommand;
 import frc.robot.commands.auto.lib.FollowPathCommand;
 import frc.robot.commands.intake.IntakeCubeCommand;
@@ -31,7 +32,7 @@ public class BattlecryLeftTo0To1ToBalance extends SequentialCommandGroup{
             () -> {
                 ArmSubsystem.getInstance().setDefaultAcceleration();
                 ArmSubsystem.getInstance().pivot(0);
-                GrabberSubsystem.getInstance().set(-0.1);
+                GrabberSubsystem.getInstance().set(0);
             },
             ArmSubsystem.getInstance(),
             GrabberSubsystem.getInstance()
@@ -72,7 +73,7 @@ public class BattlecryLeftTo0To1ToBalance extends SequentialCommandGroup{
             path1,
             new AutoScoreCubeCommand(),
             path2,
-            null
+            new BetterBalanceCommand()
         );
     }
 }

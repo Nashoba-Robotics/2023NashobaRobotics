@@ -41,6 +41,13 @@ public class ArmSubsystem extends SubsystemBase {
     private TalonFXConfigurator foot;
     private TalonFXConfiguration footConfig;
 
+    public static enum ArmState{
+        OK,
+        ENCODER_BAD,
+        EXTEND_BAD,
+        PIVOT_BAD
+    }
+
     public ArmSubsystem(){
         tromboneSlide = new TalonFX(Constants.Arm.ARM_PORT, "drivet");
         tuningSlide = tromboneSlide.getConfigurator();

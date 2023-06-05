@@ -164,7 +164,7 @@ public final class Constants {
     public static final double SCORE_CONE_NU = 4;
     public static final double CUBE_NU = -21;
 
-    public static final double CONE_RELEASE_SPEED = 0.07; //Speed of rollers to release cone. Shouldn't be enough to shoot it out. It should just be a bit of a boost to HELP it out
+    public static final double CONE_RELEASE_SPEED = 0.05; //Speed of rollers to release cone. Shouldn't be enough to shoot it out. It should just be a bit of a boost to HELP it out
     public static final double LOW_CONE_RELEASE_SPEED = 1;
     public static final double CUBE_RELEASE_SPEED = 1;
 
@@ -200,13 +200,13 @@ public final class Constants {
 
     public static final double ARM_CRUISE_VELOCITY = 100;  //40_000
     public static final double AUTO_ARM_CRUISE_VELOCITY = 100;
-    public static final double ARM_ACCELERATION = 160;
+    public static final double ARM_ACCELERATION = 150;
     public static final double AUTO_ARM_ACCELERATION = 100;
 
     public static final double PIVOT_CRUISE_VELOCITY = 100;
     public static final double AUTO_PIVOT_CRUISE_VELOCITY = 100;
-    public static final double PIVOT_ACCELERATION = 300;
-    public static final double AUTO_PIVOT_ACCELERATION = 120;
+    public static final double PIVOT_ACCELERATION = 120;
+    public static final double AUTO_PIVOT_ACCELERATION = 80;
 
     public static final double PIVOT_KF = 0.0095;
     public static final double PIVOT_KP = 0.5;
@@ -214,13 +214,13 @@ public final class Constants {
     public static final double PIVOT_KD = 0.015;
 
     //Scorign (Radians)
-    public static final double HIGH_FRONT_ANGLE = 63.75 * TAU/360;
-    public static final double HIGH_BACK_ANGLE = -61.5 * TAU/360;
-    public static final double MID_ANGLE = 70 * TAU/360;
+    public static final double HIGH_FRONT_ANGLE = 62.75 * TAU/360;
+    public static final double HIGH_BACK_ANGLE = -60.5 * TAU/360;
+    public static final double MID_ANGLE = 69 * TAU/360;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 80_000/2048.; //47_000-2_600
-    public static final double MID_EXTEND_NU = 29_500/2048.;
+    public static final double HIGH_EXTEND_NU = 42.2; //47_000-2_600
+    public static final double MID_EXTEND_NU = 15.5;
     public static final double LOW_EXTEND_NU = 0/2048.;
 
     public static final double AUTO_DUNK_ANGLE = 3 * TAU/360;
@@ -251,11 +251,11 @@ public final class Constants {
     public static final double PIVOT_TARGET_DEADZONE = 0.5 * TAU / 360;
     
     public static final class Cube{
-      public static final double HIGH_ANGLE = -59 * TAU/360;
+      public static final double HIGH_ANGLE = -56 * TAU/360;
       public static final double MID_ANGLE = -62 * TAU/360;
       public static final double LOW_ANGLE = -105 * TAU/360;
 
-      public static final double INTAKE_ANGLE = -108 * Constants.TAU/360;
+      public static final double INTAKE_ANGLE = -109 * Constants.TAU/360;
       public static final double INTAKE_EXTEND_NU = 3_000/2048.;
 
       public static final double HIGH_EXTEND_NU = 82_000/2048.;

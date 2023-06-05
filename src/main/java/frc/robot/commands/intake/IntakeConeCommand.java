@@ -44,6 +44,7 @@ public class IntakeConeCommand extends CommandBase {
 
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
+        ArmSubsystem.getInstance().setPivotAcceleration(250);
 
         ArmSubsystem.getInstance().extendNU(Constants.Arm.INTAKE_EXTEND_NU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);

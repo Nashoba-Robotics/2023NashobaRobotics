@@ -60,8 +60,13 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         targetPivot = 0;
         targetWrist = 0;
 
-        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
-        ArmSubsystem.getInstance().setDefaultAcceleration();
+        if(DriverStation.isAutonomous()){
+            ArmSubsystem.getInstance().setAutoSpeeds();
+        }
+        else {
+            ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+            ArmSubsystem.getInstance().setDefaultAcceleration();
+        }
 
         //Assuming that we are oriented correctly to score the cone, the way the arm goes down will change
         //Really just making all of the normal pivot values negative of what they are in order to reflect them vertically

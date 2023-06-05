@@ -59,8 +59,12 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         targetWrist = 0;
         resetEncoder = false;
 
-        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
-        ArmSubsystem.getInstance().setDefaultAcceleration();
+        if(DriverStation.isAutonomous()) ArmSubsystem.getInstance().setAutoSpeeds();
+        else{
+            ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+            ArmSubsystem.getInstance().setDefaultAcceleration();
+        }
+
         double gyroAngle = SwerveDriveSubsystem.getInstance().getGyroAngle();
         scoreFront = gyroAngle > Constants.TAU/4 || gyroAngle < -Constants.TAU/4;
 

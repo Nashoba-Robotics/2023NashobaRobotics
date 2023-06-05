@@ -75,14 +75,64 @@
     {
       "anchorPoint": {
         "x": 1.5900431800863601,
-        "y": 0.95
+        "y": 1.05
       },
       "prevControl": {
         "x": 2.206678259510365,
-        "y": 0.8929041593125926
+        "y": 0.9929041593125927
+      },
+      "nextControl": {
+        "x": 2.206678259510365,
+        "y": 0.9929041593125927
+      },
+      "holonomicAngle": 0.0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 5.529656187517504,
+        "y": 0.7079884245238581
+      },
+      "prevControl": {
+        "x": 5.20420989559928,
+        "y": 0.6976737786808909
+      },
+      "nextControl": {
+        "x": 5.855102479435732,
+        "y": 0.7183030703668255
+      },
+      "holonomicAngle": 45.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.797183850777958,
+        "y": 1.8613244064094958
+      },
+      "prevControl": {
+        "x": 6.337562333244324,
+        "y": 1.4097150038317168
       },
       "nextControl": null,
-      "holonomicAngle": 0.0,
+      "holonomicAngle": 45.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -95,26 +145,29 @@
       }
     }
   ],
-  "maxVelocity": 4.0,
-  "maxAcceleration": 4.0,
-  "isReversed": null,
   "markers": [
     {
-      "position": 0.4,
+      "position": 0.2909090909090908,
       "names": [
         "Start Intake"
       ]
     },
     {
-      "position": 2.1236363636363187,
+      "position": 1.076363636363575,
       "names": [
         "Stop Intake"
       ]
     },
     {
-      "position": 2.4436363636362253,
+      "position": 1.6290909090908423,
       "names": [
         "Prep Score Angle"
+      ]
+    },
+    {
+      "position": 3.6363636363634817,
+      "names": [
+        "Cone Intake"
       ]
     }
   ]

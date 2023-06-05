@@ -38,7 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
     private MotionMagicDutyCycle pivotSetter;
 
     private TalonFX kick1, kick2; //Control the pivoting of the entire arm
-    private TalonFXConfigurator foot;
+    private TalonFXConfigurator foot1, foot2;
     private TalonFXConfiguration footConfig;
 
     public ArmSubsystem(){
@@ -53,7 +53,8 @@ public class ArmSubsystem extends SubsystemBase {
         Follower kickFollow = new Follower(Constants.Arm.PIVOT_PORT_1, true);
         kick2.setControl(kickFollow);
 
-        foot = kick1.getConfigurator();
+        foot1 = kick1.getConfigurator();
+        foot2 = kick2.getConfigurator();
 
         encoder = new CANcoder(Constants.Arm.ENCODER_PORT, "drivet");
         encoderConfigurator = encoder.getConfigurator();
@@ -86,7 +87,7 @@ public class ArmSubsystem extends SubsystemBase {
         tuneConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         tuneConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-        tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
         tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT;
         tuneConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         tuneConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT;
@@ -128,7 +129,8 @@ public class ArmSubsystem extends SubsystemBase {
         // footConfig.Feedback.RotorToSensorRatio = 1; //We are doing the gear ratio processing in code already.
         // footConfig.Feedback.SensorToMechanismRatio = 1;
 
-        foot.apply(footConfig);
+        foot1.apply(footConfig);
+        foot2.apply(footConfig);
 
 
         encoderConfig = new CANcoderConfiguration();
@@ -285,7 +287,8 @@ public class ArmSubsystem extends SubsystemBase {
     public void setPivotBrakeMode(NeutralModeValue n){
         footConfig.MotorOutput.NeutralMode = n;
 
-        foot.apply(footConfig);
+        foot1.apply(footConfig);
+        foot2.apply(footConfig);
     }
 
     public void setExtendBrakeMode(NeutralModeValue n){
@@ -332,17 +335,20 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void setPivotCruiseVelocity(double cruiseVelocity) {
         footConfig.MotionMagic.MotionMagicCruiseVelocity = cruiseVelocity;
-        foot.apply(footConfig);
+        foot1.apply(footConfig);
+        foot2.apply(footConfig);
     }
 
     public void setPivotAcceleration(double acceleration) {
         footConfig.MotionMagic.MotionMagicAcceleration = acceleration;
-        foot.apply(footConfig);
+        foot1.apply(footConfig);
+        foot2.apply(footConfig);
     }   
 
     public void setPivotJerk(double jerk){
         footConfig.MotionMagic.MotionMagicJerk = jerk;
-        foot.apply(footConfig);
+        foot1.apply(footConfig);
+        foot2.apply(footConfig);
     }
 
     public void setExtendCruiseVelocity(double cruiseVelocity) {
@@ -374,6 +380,14 @@ public class ArmSubsystem extends SubsystemBase {
     public void setDefaultAcceleration() {
         setExtendAcceleration(Constants.Arm.ARM_ACCELERATION);
         setPivotAcceleration(Constants.Arm.PIVOT_ACCELERATION);
+    }
+
+    public void setAutoSpeeds(){
+        setExtendCruiseVelocity(Constants.Arm.AUTO_ARM_CRUISE_VELOCITY);
+        setExtendAcceleration(Constants.Arm.AUTO_ARM_ACCELERATION);
+
+        setPivotCruiseVelocity(Constants.Arm.AUTO_PIVOT_CRUISE_VELOCITY);
+        setPivotAcceleration(Constants.Arm.AUTO_PIVOT_ACCELERATION);
     }
 
     public boolean armAtZero(){

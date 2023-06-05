@@ -2,6 +2,7 @@ package frc.robot.commands.auto.intakescore;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
@@ -15,6 +16,7 @@ public class AutoScoreTest extends SequentialCommandGroup{
                 ArmSubsystem.getInstance().resetPivotNU();
                 SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
             }, GrabberSubsystem.getInstance(), ArmSubsystem.getInstance()),
+            new WaitCommand(0.5),
             new AutoScoreCommand()
         );
     }

@@ -33,9 +33,10 @@ public class IntakeCubeCommand extends CommandBase {
     @Override
     public void initialize() {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
+        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
+        ArmSubsystem.getInstance().setDefaultAcceleration();
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(100);
-        ArmSubsystem.getInstance().setPivotAcceleration(195);
+        ArmSubsystem.getInstance().setPivotAcceleration(250);
 
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.INTAKE_EXTEND_NU);
@@ -58,7 +59,7 @@ public class IntakeCubeCommand extends CommandBase {
         GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_INTAKE_SPEED);
         // SmartDashboard.putNumber("Grabber Current", GrabberSubsystem.getInstance().getCurrent());
 
-        if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
+        if(!atPivot && Math.abs(ArmSubsystem.getInstance().getPivotRad() - targetPivot) < Constants.Arm.PIVOT_TARGET_DEADZONE){
             atPivot = true;
             lastPivot = ArmSubsystem.getInstance().getPivotRad();
         } 
@@ -79,7 +80,7 @@ public class IntakeCubeCommand extends CommandBase {
             }
         }
 
-        if(Robot.state != RobotState.OK && !resetEncoder && 
+        if(Robot.state == RobotState.OK && !resetEncoder && 
         ArmSubsystem.getInstance().pivotStopped() && 
         Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {

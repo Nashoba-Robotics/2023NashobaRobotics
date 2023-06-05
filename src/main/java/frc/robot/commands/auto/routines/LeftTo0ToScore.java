@@ -28,17 +28,17 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
     
     public LeftTo0ToScore() {
         Map<String, Command> map = new HashMap<>();
-        // map.put("Start Intake", new IntakeCubeCommand());
-        // map.put("Stop Intake", new InstantCommand(
-        //     () -> {
-        //         ArmSubsystem.getInstance().pivot(0);
-        //         GrabberSubsystem.getInstance().set(-0.1);    //Don't remember if this is supposed to be positive or negative
-        //     },
-        //     ArmSubsystem.getInstance(),
-        //     GrabberSubsystem.getInstance()
-        // ));
-        // map.put("Start Intake Cone", new IntakeConeCommand(true));
-        // map.put("Prep Score Angle", new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance()));
+        map.put("Start Intake", new IntakeCubeCommand());
+        map.put("Stop Intake", new InstantCommand(
+            () -> {
+                ArmSubsystem.getInstance().pivot(0);
+                GrabberSubsystem.getInstance().set(-0.1);    //Don't remember if this is supposed to be positive or negative
+            },
+            ArmSubsystem.getInstance(),
+            GrabberSubsystem.getInstance()
+        ));
+        map.put("Start Intake Cone", new IntakeConeCommand(true));
+        map.put("Prep Score Angle", new InstantCommand(() -> ArmSubsystem.getInstance().pivot(-22 * Constants.TAU/360), ArmSubsystem.getInstance()));
         
         List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("BLUE-leftA-0-leftC",
         new PathConstraints(4, 3),
@@ -76,13 +76,13 @@ public class LeftTo0ToScore extends SequentialCommandGroup{
                     DriverStation.getAlliance()).getInitialHolonomicPose());
             }, SwerveDriveSubsystem.getInstance()),
             new WaitCommand(0.1),
-            // new AutoScoreCommand(),
+            new AutoScoreCommand(),
             // new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
             path1,
             new WaitCommand(0.6),
             path2,
             // new InstantCommand(() -> ArmSubsystem.getInstance().resetPivotNU(), ArmSubsystem.getInstance()),
-            // new AutoScoreCubeCommand(),
+            new AutoScoreCubeCommand(),
             path3
         );
     }

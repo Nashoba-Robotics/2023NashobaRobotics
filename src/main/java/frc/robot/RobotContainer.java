@@ -14,6 +14,7 @@ import frc.robot.commands.test.ArmSpeedTestCommand;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.EncoderTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
+import frc.robot.commands.test.KCLEDTestCommand;
 import frc.robot.commands.test.RunArmCommand;
 import frc.robot.commands.SetPivotOffsetCommand;
 import frc.robot.commands.intake.SingleStationIntakeCommand;
@@ -37,12 +38,13 @@ public class RobotContainer {
     configureButtonBindings();
     configureTabs();
 
-    SmartDashboard.putData(new CameraCenterCommand());
+    // SmartDashboard.putData(new CameraCenterCommand());
     SmartDashboard.putData(new InstantCommand(
       () -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2)
     ));
-    SmartDashboard.putData(new RunArmCommand());
-    SmartDashboard.putData(new EncoderTestCommand());
+    SmartDashboard.putData(new KCLEDTestCommand());
+    // SmartDashboard.putData(new RunArmCommand());
+    // SmartDashboard.putData(new EncoderTestCommand());
 
     NewTabs.putCommand("Arm Speed Test", new ArmSpeedTestCommand());
   }
@@ -100,21 +102,21 @@ public class RobotContainer {
       CandleSubsystem.getInstance()
     ));
 
-    cube.onTrue(new InstantCommand(
-      () -> CandleSubsystem.getInstance().set(CandleState.WANT_CUBE),
-      CandleSubsystem.getInstance()
-    ));
-    cube.onFalse(new InstantCommand(
-      () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
-      CandleSubsystem.getInstance()
-    ));
+    // cube.onTrue(new InstantCommand(
+    //   () -> CandleSubsystem.getInstance().set(CandleState.WANT_CUBE),
+    //   CandleSubsystem.getInstance()
+    // ));
+    // cube.onFalse(new InstantCommand(
+    //   () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
+    //   CandleSubsystem.getInstance()
+    // ));
 
-    doubleStation.onTrue(
-      new InstantCommand(
-        ()-> CandleSubsystem.getInstance().set(CandleState.DOUBLE_STATION),
-        CandleSubsystem.getInstance()
-        )
-    );
+    // doubleStation.onTrue(
+    //   new InstantCommand(
+    //     ()-> CandleSubsystem.getInstance().set(CandleState.DOUBLE_STATION),
+    //     CandleSubsystem.getInstance()
+    //     )
+    // );
     doubleStation.onFalse(new InstantCommand(
       () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
       CandleSubsystem.getInstance()

@@ -41,11 +41,26 @@ public class ArmSubsystem extends SubsystemBase {
     private TalonFXConfigurator foot;
     private TalonFXConfiguration footConfig;
 
-    public static enum ArmState{
+    public static ArmStatus status = ArmStatus.OK;
+    public static ArmState currState;
+    public static ArmState lastState;
+
+    //Not an FMS (Flying Monster Spaghetti) :(
+    public static enum ArmStatus{
         OK,
         ENCODER_BAD,
         EXTEND_BAD,
         PIVOT_BAD
+    }
+    
+    //Flying Spaghetti Monster!!! (FSM)
+    public static enum ArmState{
+        STOW,
+        PREP,
+        HIGH,
+        MID,
+        LOW,
+        INTAKE
     }
 
     public ArmSubsystem(){
@@ -150,6 +165,162 @@ public class ArmSubsystem extends SubsystemBase {
         encoderConfigurator.apply(encoderConfig);
     }
 
+    // My attempt to make this a Flying Spaghetti Monster
+    private double targetPivot; //Implement this?
+    private double targetExtend;
+    //TODO: Add in logic for directions
+    //TODO: Add in manual in periodic when this is shifted there
+    public void changeState(ArmState newState, double multiplier){
+        lastState = currState;
+        currState = newState;
+
+        switch(lastState){
+            case STOW:
+                switch(currState){
+                    case PREP:
+                        currState = ArmState.LOW;
+                        pivot(Constants.Arm.PREP_ANGLE);
+                        extendNU(Constants.Arm.EXTEND_REST_NU);
+                        break;
+                    case HIGH:
+                        // Do nothinng, should go to prep height instead
+                        currState = ArmState.PREP;
+                        break;
+                    case MID:
+                        //Do nothing, should got to prep height instead
+                        currState = ArmState.PREP;
+                        break;
+                    case LOW:
+                        pivot(Constants.Arm.LOW_ANGLE);
+                        extendNU(Constants.Arm.LOW_EXTEND_NU);
+                        break;
+                    case INTAKE:
+                        pivot(Constants.Arm.LOW_ANGLE);
+                        extendNU(Constants.Arm.LOW_EXTEND_NU);
+                        break;
+                    case STOW:
+                        break;
+                }
+                break;
+            case PREP:  //Normal sets
+                switch(currState){
+                    case PREP:
+                        break;
+                    case HIGH:
+                        doThing(Constants.Arm.HIGH_FRONT_ANGLE, 
+                                Constants.Arm.HIGH_EXTEND_NU);
+                        break;
+                    case MID:
+                        doThing(Constants.Arm.MID_ANGLE,
+                                Constants.Arm.MID_EXTEND_NU);
+                        break;
+                    case LOW:
+                        doThing(Constants.Arm.LOW_ANGLE,
+                                Constants.Arm.LOW_EXTEND_NU);
+                        break;
+                    case INTAKE:
+                        doThing(Constants.Arm.INTAKE_ANGLE,
+                                Constants.Arm.INTAKE_EXTEND_NU);
+                        break;
+                    case STOW:
+                        doThing(0, Constants.Arm.EXTEND_REST_NU);
+                        break;
+                }
+                break;
+            case HIGH:
+                switch(currState){
+                    case PREP:
+                        doThing(Constants.Arm.PREP_ANGLE, 
+                                Constants.Arm.EXTEND_REST_NU,
+                                80,     //<-- ARBITRARY VALUES. TODO: Tune this
+                                250);
+                        break;
+                    case HIGH:
+                        break;
+                    case MID:
+                        //Extend in, then pivot down
+                        doThing(Constants.Arm.MID_ANGLE, 
+                                Constants.Arm.MID_EXTEND_NU,
+                                80,
+                                250);
+                        break;
+                    case LOW:
+                        //Fully extend in, then pivot down
+                        doThing(Constants.Arm.LOW_ANGLE,
+                                Constants.Arm.LOW_EXTEND_NU,
+                                40,
+                                250);
+                        break;
+                    case INTAKE:
+                        //NO
+                        break;
+                    case STOW:  //Scoring
+                        break;
+                }
+                break;
+            case MID:
+                switch(currState){
+                    case PREP:
+                    doThing(Constants.Arm.PREP_ANGLE, 
+                            Constants.Arm.EXTEND_REST_NU,
+                            80,     //<-- ARBITRARY VALUES. TODO: Tune this
+                            250);
+                        break;
+                    case HIGH:
+                        //Lift pivot up, then extend out
+                        doThing(Constants.Arm.HIGH_FRONT_ANGLE, 
+                                Constants.Arm.HIGH_EXTEND_NU,
+                        80, //<-- The pivot won't actually move that much, so it can be fairly low number
+                        250);
+                        break;
+                    case MID:
+                        break;
+                    case LOW:
+                        //Extend in while pivoting down
+                        break;
+                    case INTAKE:
+                        break;
+                    case STOW:
+                        break;
+                }
+                break;
+            case LOW:
+                switch(currState){
+                    case PREP:
+                        break;
+                    case HIGH:
+                        //No. Go to Prep height
+                        break;
+                    case MID:
+                        //No. Go to Prep height
+                        break;
+                    case LOW:
+                        break;
+                    case INTAKE:
+                        break;
+                    case STOW:
+                        break;
+                }
+                break;
+            case INTAKE:
+                switch(currState){
+                    case PREP:
+                        break;
+                    case HIGH:
+                        break;
+                    case MID:
+                        break;
+                    case LOW:
+                        break;
+                    case INTAKE:
+                        break;
+                    case STOW:
+                        break;
+                }
+                break;
+        }
+    }
+
     public void addToAbsoluteOffset(double offset) {
         encoderConfig.MagnetSensor.MagnetOffset += offset;
         encoderConfigurator.apply(encoderConfig);
@@ -157,6 +328,20 @@ public class ArmSubsystem extends SubsystemBase {
 
     public void zeroExtend(){
         tromboneSlide.setRotorPosition(0);
+    }
+
+    public void doThing(double pivotAngle, double extendNU, double pAccel, double eAccel){
+        setMotionMagicConfigs(100, eAccel, 100, pAccel);
+
+        pivot(pivotAngle);
+        extendNU(extendNU);
+    }
+    public void doThing(double pivotAngle, double extendNU){
+        setDefaultCruiseVelocity();
+        setDefaultAcceleration();
+
+        pivot(pivotAngle);
+        extendNU(extendNU);
     }
 
     //Returns arm to upright position
@@ -219,6 +404,36 @@ public class ArmSubsystem extends SubsystemBase {
         return true;
     }
 
+    public boolean motorOK(TalonFX motor){
+        //Find the PDH port
+        // if(false && RobotContainer.PDH.getFaults().Channel0BreakerFault) return false;
+
+        if(!motor.isAlive()) return false;
+
+        if(motor.getFault_DeviceTemp().getValue()) return false;
+        if(motor.getFault_BootDuringEnable().getValue()) return false;
+        if(motor.getFault_FusedSensorOutOfSync().getValue()) return false;
+        if(motor.getFault_MissingRemoteSensor().getValue()) return false;
+        if(motor.getFault_OverSupplyV().getValue()) return false;
+        if(motor.getFault_ProcTemp().getValue()) return false;
+        if(motor.getFault_Undervoltage().getValue()) return false;
+        if(motor.getFault_UnstableSupplyV().getValue()) return false;
+
+        if(motor.getFaultField().getError() != StatusCode.OK) return false;
+
+        return true;
+    }
+
+    public boolean extendOK(){
+        return (true || !RobotContainer.PDH.getFaults().Channel0BreakerFault) && motorOK(tromboneSlide);
+    }
+
+    public boolean pivotOK(){
+        if(false && (RobotContainer.PDH.getFaults().Channel0BreakerFault || RobotContainer.PDH.getFaults().Channel0BreakerFault)) return false;
+    
+        return motorOK(kick1) && motorOK(kick2);
+    }
+
     public void resetPivotNU(){
         kick1.setRotorPosition(NRUnits.Pivot.degToRot(getEncoderDeg()));
     }
@@ -254,7 +469,6 @@ public class ArmSubsystem extends SubsystemBase {
 
     public double getExtendVelocity(){
         return tromboneSlide.getVelocity().getValue();
-        // return 0;
     }
 
     public void holdArm(){
@@ -437,5 +651,9 @@ public class ArmSubsystem extends SubsystemBase {
         //     switchState = true;
         //     lastState = Robot.state;
         // } 
+        if(!encoderOK()) status = ArmStatus.ENCODER_BAD;
+        else if(!extendOK()) status = ArmStatus.EXTEND_BAD;
+        else if(!pivotOK()) status = ArmStatus.PIVOT_BAD;
+        else status = ArmStatus.OK;
     }
 }

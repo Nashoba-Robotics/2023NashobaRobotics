@@ -32,6 +32,7 @@ import frc.robot.commands.test.TestAutoCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
+import frc.robot.subsystems.KryptonCougarLEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
@@ -50,6 +51,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    KryptonCougarLEDSubsystem x = new KryptonCougarLEDSubsystem();
     m_robotContainer = new RobotContainer();
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
@@ -152,7 +154,7 @@ public class Robot extends TimedRobot {
     SwerveDriveSubsystem.getInstance().set(0, 0, 0);
     // LimelightSubsystem.getInstance().defaultLED();
     ArmSubsystem.getInstance().stop();
-    CandleSubsystem.getInstance().set(CandleState.ENABLED);
+    // CandleSubsystem.getInstance().set(CandleState.ENABLED);
     ArmSubsystem.getInstance().resetPivotNU();
     CommandScheduler.getInstance().schedule(new SwerveDriveCommand());
     LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.REFLECTIVE_TAPE_PIPELINE);

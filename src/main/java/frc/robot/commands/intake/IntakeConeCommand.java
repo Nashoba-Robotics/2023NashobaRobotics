@@ -88,7 +88,7 @@ public class IntakeConeCommand extends CommandBase {
 
         //LED stuff
         if(Robot.state != RobotState.OK){
-            CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);
+            // CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);
         }
         else if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
             if(!timerStarted){
@@ -96,7 +96,7 @@ public class IntakeConeCommand extends CommandBase {
                 timer.start();
             }
             if(timer.get() >= 0.5){
-                CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
+                // CandleSubsystem.getInstance().set(CandleState.HAVE_CONE);
                 timer.stop();   //Don't remember if resetting the timers stops it.
                 timer.reset();
                 
@@ -104,7 +104,7 @@ public class IntakeConeCommand extends CommandBase {
             }
         }
         else{//When the current is outside of the threshold, we want to stop the lights and reset the timer
-            CandleSubsystem.getInstance().set(CandleState.WANT_CONE);
+            // CandleSubsystem.getInstance().set(CandleState.WANT_CONE);
 
             timer.stop();   
             timer.reset();
@@ -119,7 +119,7 @@ public class IntakeConeCommand extends CommandBase {
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             } else {
-                CandleSubsystem.getInstance().set(CandleState.BAD);
+                // CandleSubsystem.getInstance().set(CandleState.BAD);
             }
         }
     }

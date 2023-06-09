@@ -86,7 +86,7 @@ public class IntakeCubeCommand extends CommandBase {
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             } else {
-                CandleSubsystem.getInstance().set(CandleState.BAD);
+                // CandleSubsystem.getInstance().set(CandleState.BAD);
             }
         }
     }

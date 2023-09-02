@@ -150,7 +150,7 @@ public final class Constants {
     public static final double INTAKE_ANGLE = 5;
     public static final double SINGLE_STATION_POS = -6;
 
-    public static final double HIGH_ANGLE = 0;
+    public static final double HIGH_ANGLE = -7;
     public static final double MID_ANGLE = 0;
     public static final double LOW_ANGLE = 0;
 
@@ -162,7 +162,7 @@ public final class Constants {
     public static final double PREP_CONE_FRONT_NU = -6.5;
     public static final double PREP_CONE_BACK_NU = 3.5;
     public static final double SCORE_CONE_NU = 4;
-    public static final double CUBE_NU = -21;
+    public static final double CUBE_NU = -7;
 
     public static final double CONE_RELEASE_SPEED = 0.07; //Speed of rollers to release cone. Shouldn't be enough to shoot it out. It should just be a bit of a boost to HELP it out
     public static final double LOW_CONE_RELEASE_SPEED = 1;
@@ -203,20 +203,25 @@ public final class Constants {
     public static final double ARM_ACCELERATION = 160;
     public static final double AUTO_ARM_ACCELERATION = 100;
 
-    public static final double PIVOT_CRUISE_VELOCITY = 100;
+    public static final double PIVOT_CRUISE_VELOCITY = 0.3;
+    public static final double PIVOT_ACCELERATION = 0.98;
+
     public static final double AUTO_PIVOT_CRUISE_VELOCITY = 100;
-    public static final double PIVOT_ACCELERATION = 300;
     public static final double AUTO_PIVOT_ACCELERATION = 120;
 
-    public static final double PIVOT_KF = 0.0095;
-    public static final double PIVOT_KP = 0.5;
-    public static final double PIVOT_KI = 0;
-    public static final double PIVOT_KD = 0.015;
+    //High Scoring
+    public static final double HIGH_CONE_PIVOT_VELOCITY = 0.1;
+    public static final double HIGH_CONE_PIVOT_ACCELERATION = 0.7;
+
+    public static final double PIVOT_KF = 2.081;
+    public static final double PIVOT_KP = 16;
+    public static final double PIVOT_KI = 0.0;
+    public static final double PIVOT_KD = 0.0;
 
     //Scorign (Radians)
-    public static final double HIGH_FRONT_ANGLE = 63.75 * TAU/360;
+    public static final double HIGH_FRONT_ANGLE = 0.177246*TAU;
     public static final double HIGH_BACK_ANGLE = -61.5 * TAU/360;
-    public static final double MID_ANGLE = 70 * TAU/360;
+    public static final double MID_ANGLE = 0.193604 * TAU;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
     public static final double HIGH_EXTEND_NU = 80_000/2048.; //47_000-2_600
@@ -238,6 +243,11 @@ public final class Constants {
 
     public static final double SINGLE_STATION_ANGLE = 76 * TAU/360;
     public static final double SINGLE_STATION_EXTEND_NU = 0;
+
+    public static final double INTAKE_PIVOT_VELOCITY = 0.49;
+    public static final double INTAKE_PIVOT_ACCELERATION = 0.98;
+    public static final double INTAKE_EXTEND_VELOCITY = 100;
+    public static final double INTAKE_EXTEND_ACCELERATION = 100;
 
     public static final double ERROR_ANGLE = 0;
 

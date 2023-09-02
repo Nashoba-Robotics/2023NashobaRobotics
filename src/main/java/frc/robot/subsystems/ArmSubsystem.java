@@ -144,11 +144,10 @@ public class ArmSubsystem extends SubsystemBase {
         footConfig.MotionMagic.MotionMagicJerk = 0;
 
         //Remote CANcoder
-        footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-        // footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
-        // footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
-        // footConfig.Feedback.RotorToSensorRatio = 1; //We are doing the gear ratio processing in code already.
-        // footConfig.Feedback.SensorToMechanismRatio = 1;
+        footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        footConfig.Feedback.FeedbackRemoteSensorID = 4;
+        footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
+        footConfig.Feedback.SensorToMechanismRatio = 1;
 
         foot.apply(footConfig);
 
@@ -372,7 +371,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     //Extends arm to specified position in meters
     public void extendM(double pos){
-       extendNU(NRUnits.Extension.mToNU(pos));
+       extendNU(NRUnits.Extension.mToRot(pos));
     }
 
     public void extendNU(double nu){
@@ -443,12 +442,11 @@ public class ArmSubsystem extends SubsystemBase {
         double NU = NRUnits.Pivot.radToRot(angle);
         if(Constants.Logging.ARM) LogManager.appendToLog(NU, "Arm:/Pivot2/SetPosition");
 
-        // double ff = 0;
-        // if(NU >= 8552.632){
-        //     ff = 0.00000076 * tromboneSlide.getPosition().getValue()-0.00653;
-        // }
-
-        // ff *= -Math.sin(angle);
+        double ff = -Math.sin(getPivotRad()) * 0.01128405;
+        double extendRot = getExtendNU();
+        if(extendRot > 15){
+            ff -= 0.00199741*extendRot;
+        }
 
   
         pivotSetter.Slot = 0;
@@ -484,7 +482,7 @@ public class ArmSubsystem extends SubsystemBase {
     public double getLength(){
         double pos = getExtendNU();
 
-        return NRUnits.Extension.NUToM(pos);
+        return NRUnits.Extension.rotToM(pos);
     }
 
     public double getArmStatorCurrent() {

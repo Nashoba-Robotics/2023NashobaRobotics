@@ -93,31 +93,23 @@ public class NRUnits {
     }
 
     public static class Extension {
-        public static double mToNU(double m){
-            m *= 1000;  //Convert to mm
-            m /= Constants.Arm.MM_PER_NU;   //Convert to NU
-    
-            return m;
+        public static double mToRot(double m){
+           return 52.0051*m - 38.581;
         }
     
-        public static double NUToM(double pos){
-            pos *= Constants.Arm.MM_PER_NU;    //Convert to mm
-            pos /= 1000;    //conert to m
-    
-            return pos;
+        public static double rotToM(double rot){
+            return 0.0191262*rot + 0.743667;    //Error of ~2%
         }
 
         public static double NUtoMPS(double NU){
-            //Converts NU/100ms to meters/s
-            NU = NUToM(NU);
-            NU *= 10;
+            //Convert rps to m/s
+            NU = rotToM(NU);
     
             return NU;
         }
 
         public static double mpsToNU(double mps){
-            mps = mToNU(mps);
-            mps /= 10;
+            mps = mToRot(mps);
     
             return mps;
         }
@@ -129,7 +121,7 @@ public class NRUnits {
             angle /= Constants.TAU;
     
             //Convert from arm rotations into motor rotations
-            angle *= Constants.Arm.PIVOT_GEARRATIO;
+            // angle *= Constants.Arm.PIVOT_GEARRATIO;
     
             return angle;
         }
@@ -144,18 +136,12 @@ public class NRUnits {
 
         public static double rotToRad(double pos){
             //Convert to rotation of the arm
-            pos /= Constants.Arm.PIVOT_GEARRATIO;
+            // pos /= Constants.Arm.PIVOT_GEARRATIO;
     
             //Convert to radians
             pos *= Constants.TAU;
     
             return pos;
-        }
-
-        public static double NUToRPS(double NU){
-            NU *= 10;
-            NU = rotToRad(NU);
-            return NU;
         }
 
     }    

@@ -191,7 +191,7 @@ public final class Constants {
     public static final int RETRACT_SWITCH_PORT = 0;
 
     public static final int ENCODER_PORT = 4;
-    public static final double ENCODER_OFFSET = -0.192383;
+    public static final double ENCODER_OFFSET = 0.407959;
 
     public static final double ARM_KF = 0.016;
     public static final double ARM_KP = 2.2;

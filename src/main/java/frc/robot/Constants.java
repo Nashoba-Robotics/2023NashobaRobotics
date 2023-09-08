@@ -203,8 +203,8 @@ public final class Constants {
     public static final double ARM_ACCELERATION = 160;
     public static final double AUTO_ARM_ACCELERATION = 100;
 
-    public static final double PIVOT_CRUISE_VELOCITY = 0.3;
-    public static final double PIVOT_ACCELERATION = 0.98;
+    public static final double PIVOT_CRUISE_VELOCITY = 0.3; //0.3
+    public static final double PIVOT_ACCELERATION = 0.7;
 
     public static final double AUTO_PIVOT_CRUISE_VELOCITY = 0.49;
     public static final double AUTO_PIVOT_ACCELERATION = 0.59;
@@ -254,8 +254,8 @@ public final class Constants {
     public static final int EXTEND_FORWARD_SOFT_LIMIT = 48;
     public static final double EXTEND_REVERSE_SOFT_LIMIT = EXTEND_REST_NU;
 
-    public static final double PIVOT_FORWARD_SOFT_LIMIT = 140_000/2048.;
-    public static final double PIVOT_REVERSE_SOFT_LIMIT = -140_000/2048.;
+    public static final double PIVOT_FORWARD_SOFT_LIMIT = 1/3;
+    public static final double PIVOT_REVERSE_SOFT_LIMIT = -1/3;
 
     public static final double EXTEND_TARGET_DEADZONE = 1;
     public static final double PIVOT_TARGET_DEADZONE = 0.5 * TAU / 360;

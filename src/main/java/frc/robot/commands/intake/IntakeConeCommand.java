@@ -42,8 +42,8 @@ public class IntakeConeCommand extends CommandBase {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
         GrabberSubsystem.getInstance().setCurrentLimit(true);
 
-        ArmSubsystem.getInstance().setDefaultCruiseVelocity();
-        ArmSubsystem.getInstance().setDefaultAcceleration();
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(Constants.Arm.INTAKE_PIVOT_VELOCITY);
+        ArmSubsystem.getInstance().setPivotAcceleration(Constants.Arm.INTAKE_PIVOT_ACCELERATION);
 
         ArmSubsystem.getInstance().extendNU(Constants.Arm.INTAKE_EXTEND_NU);
         ArmSubsystem.getInstance().pivot(Constants.Arm.INTAKE_ANGLE * multiplier);
@@ -126,7 +126,7 @@ public class IntakeConeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
+        // if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
         GrabberSubsystem.getInstance().setCurrentLimit(25, 25, 0.1);
         ArmSubsystem.getInstance().pivot(0);
         // GrabberSubsystem.getInstance().orient(0);

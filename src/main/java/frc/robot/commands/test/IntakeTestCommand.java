@@ -18,7 +18,7 @@ public class IntakeTestCommand extends CommandBase{
         ArmSubsystem.getInstance().setDefaultCruiseVelocity();
         ArmSubsystem.getInstance().setDefaultAcceleration();
 
-        ArmSubsystem.getInstance().resetPivotNU();
+        // ArmSubsystem.getInstance().resetPivotNU();
     }
 
     @Override

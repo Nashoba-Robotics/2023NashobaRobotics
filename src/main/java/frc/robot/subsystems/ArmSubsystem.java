@@ -134,9 +134,9 @@ public class ArmSubsystem extends SubsystemBase {
 
         footConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
-        footConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
+        footConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
         footConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.PIVOT_FORWARD_SOFT_LIMIT;
-        footConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
+        footConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = false;
         footConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.PIVOT_REVERSE_SOFT_LIMIT;
 
         footConfig.MotionMagic.MotionMagicCruiseVelocity = Constants.Arm.PIVOT_CRUISE_VELOCITY;

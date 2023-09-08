@@ -34,8 +34,10 @@ public class IntakeCubeCommand extends CommandBase {
     public void initialize() {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(0.49);
-        ArmSubsystem.getInstance().setPivotAcceleration(0.9);
+        // ArmSubsystem.getInstance().setPivotCruiseVelocity(Constants.Arm.INTAKE_PIVOT_VELOCITY);
+        // ArmSubsystem.getInstance().setPivotAcceleration(Constants.Arm.INTAKE_PIVOT_ACCELERATION);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(0.3);
+        ArmSubsystem.getInstance().setPivotAcceleration(0.7);
 
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.INTAKE_EXTEND_NU);
@@ -83,7 +85,7 @@ public class IntakeCubeCommand extends CommandBase {
         ArmSubsystem.getInstance().pivotStopped() && 
         Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.Cube.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
             if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {
-                ArmSubsystem.getInstance().resetPivotNU();
+                // ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             } else {
                 // CandleSubsystem.getInstance().set(CandleState.BAD);
@@ -94,7 +96,7 @@ public class IntakeCubeCommand extends CommandBase {
     @Override
     public void end(boolean interrupted) {
         // GrabberSubsystem.getInstance().setCurrentLimit(10);
-        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
+        // if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
         if(!to90)ArmSubsystem.getInstance().pivot(0);
         else ArmSubsystem.getInstance().pivot(-Constants.TAU/8);
         GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_HOLD_SPEED);   //Make the grabber hold it

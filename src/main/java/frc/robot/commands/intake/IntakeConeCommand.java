@@ -51,11 +51,11 @@ public class IntakeConeCommand extends CommandBase {
         atPivot = false;
         pivotMan0 = false;
         GrabberSubsystem.getInstance().orientPos(Constants.Grabber.INTAKE_ANGLE * multiplier);
-        lastPivot = ArmSubsystem.getInstance().getPivotRad();
+        lastPivot = ArmSubsystem.getInstance().getEncoderRad();
 
         resetEncoder = false;
 
-        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
+        // if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
         // LimelightSubsystem.getInstance().setPipeline(Constants.Limelight.CONE_CAM); //Can get rid of this after adding USB cam
 
         Tabs.Comp.setPivotTarget(pivotTarget);
@@ -67,7 +67,7 @@ public class IntakeConeCommand extends CommandBase {
     public void execute() {
         GrabberSubsystem.getInstance().intake();
 
-        if(Math.abs(ArmSubsystem.getInstance().getPivotRad() - pivotTarget) < 0.5 * Constants.TAU/360){
+        if(Math.abs(ArmSubsystem.getInstance().getEncoderRad() - pivotTarget) < 0.5 * Constants.TAU/360){
             atPivot = true;
         } 
 
@@ -76,7 +76,7 @@ public class IntakeConeCommand extends CommandBase {
             if(pivotX == 0){ // If there isn't any input, maintain the position
                 if(!pivotMan0){
                     pivotMan0 = true;
-                    lastPivot = ArmSubsystem.getInstance().getPivotRad();
+                    lastPivot = ArmSubsystem.getInstance().getEncoderRad();
                 }
                 ArmSubsystem.getInstance().pivot(lastPivot);
             }
@@ -119,7 +119,7 @@ public class IntakeConeCommand extends CommandBase {
                 ArmSubsystem.getInstance().resetPivotNU();
                 resetEncoder = true;
             } else {
-                // CandleSubsystem.getInstance().set(CandleState.BAD);
+                // TODO: Do something here
             }
         }
     }

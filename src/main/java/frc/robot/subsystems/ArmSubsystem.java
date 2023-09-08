@@ -389,6 +389,10 @@ public class ArmSubsystem extends SubsystemBase {
         return encoder.getAbsolutePosition().getValue() * 360;
     }
 
+    public double getEncoderRad(){
+        return getEncoderDeg() * Constants.TAU/360;
+    }
+
     public boolean encoderOK(){
         if(RobotContainer.PDH.getFaults().Channel15BreakerFault) return false;
         if(encoder.getFault_BadMagnet().getValue()) return false;

@@ -1,5 +1,7 @@
 package frc.robot.commands.score;
 
+import javax.management.remote.TargetedNotification;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
@@ -19,7 +21,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     int multiplier;
     boolean autoDir = true;
     boolean scoreFront;
-    boolean gotToStart;
+    boolean targetReached;
 
     double targetPos;
     double lastPos;
@@ -35,7 +37,9 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
     boolean atStartDeg;
     boolean wait;
 
-    boolean resetEncoder;    
+    boolean resetEncoder;   
+    
+    private final double targetTime = 0.25;
 
     public AutoDirectionalPrepHeightCommand(TargetLevel targetLevel) {
         this.targetLevel = targetLevel;
@@ -54,7 +58,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         lastPivot = 0;
         extensionMan0 = false;
         pivotMan0 = false;
-        gotToStart = false;
+        targetReached = false;
         atPivot = false;
         resetEncoder = false;
         targetPivot = 0;
@@ -71,24 +75,24 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
 
         switch(targetLevel) {
             case HIGH:
-            if(!autoDir) multiplier = 1;
-            if(multiplier == 1){
-                targetPivot = Constants.Arm.HIGH_FRONT_ANGLE;
-                targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU;
-            } 
-            if(multiplier == -1){
-                targetPivot = Constants.Arm.HIGH_BACK_ANGLE;
-                targetWrist = Constants.Grabber.PREP_CONE_BACK_NU;
-            } 
-             if(DriverStation.isAutonomous()){
-                targetPos = Constants.Arm.HIGH_EXTEND_NU-1300/2048.;  //61000+1500
-             }
-             else targetPos = Constants.Arm.HIGH_EXTEND_NU;
+                if(!autoDir) multiplier = 1;
+                if(multiplier == 1){
+                    targetPivot = Constants.Arm.HIGH_FRONT_ANGLE;
+                    targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU;
+                } 
+                if(multiplier == -1){
+                    targetPivot = Constants.Arm.HIGH_BACK_ANGLE;
+                    targetWrist = Constants.Grabber.PREP_CONE_BACK_NU;
+                } 
+                if(DriverStation.isAutonomous()){
+                    targetPos = Constants.Arm.HIGH_EXTEND_NU-1300/2048.;  //61000+1500
+                }
+                else targetPos = Constants.Arm.HIGH_EXTEND_NU;
 
-             ArmSubsystem.getInstance().extendNU(Constants.Arm.HIGH_EXTEND_NU);
-             ArmSubsystem.getInstance().pivot(targetPivot);
-             GrabberSubsystem.getInstance().orientPos(targetWrist);
-             break;
+                ArmSubsystem.getInstance().extendNU(targetPos);
+                ArmSubsystem.getInstance().pivot(targetPivot);
+                GrabberSubsystem.getInstance().orientPos(targetWrist);
+                break;
             case MID: 
                 GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);
                 ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE * multiplier);
@@ -98,8 +102,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
                 break;
            case LOW: 
-                ArmSubsystem.getInstance().setPivotCruiseVelocity(100);
-                ArmSubsystem.getInstance().setPivotAcceleration(293);   //No way in hell that this is right. Why did we make low different from everything else anyways?
+                ArmSubsystem.getInstance().setPivotCruiseVelocity(0.49);
+                ArmSubsystem.getInstance().setPivotAcceleration(1.4);   //No way in hell that this is right. Why did we make low different from everything else anyways?
                 GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);
                 ArmSubsystem.getInstance().pivot(Constants.Arm.LOW_ANGLE * multiplier);
                 ArmSubsystem.getInstance().extendNU(Constants.Arm.LOW_EXTEND_NU);
@@ -108,34 +112,47 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
                 break;
         }
-        gotToStart = false;
 
-        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360;
+        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360
+                        || DriverStation.isAutonomous();
 
         //On-the-field Diagnostic information
         Tabs.Comp.setPivotTarget(targetPivot);
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setWristTarget(targetWrist);
 
-        if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
+        // if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
     }
 
     @Override
     public void execute() {
         //Manual Extension:
         //Make sure that the arm has reached its desired extend position before we allow manual movement to happen
+        if(atStartDeg){
+            double pivotVelocity = Math.abs(targetPivot-ArmSubsystem.getInstance().getEncoderRad());
+            pivotVelocity /= Constants.TAU;
+            pivotVelocity /= targetTime;
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(pivotVelocity);
+
+            double extendVelocity = Math.abs(targetPos-ArmSubsystem.getInstance().getExtendNU());
+            extendVelocity /= targetTime;
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(extendVelocity);
+
+            // ArmSubsystem.getInstance().pivot(targetPivot);
+            // ArmSubsystem.getInstance().extendNU(targetPos);
+        }
+        
         if(!DriverStation.isAutonomous() && !atStartDeg && Math.abs(targetPivot) < Constants.TAU/4){
             ArmSubsystem.getInstance().pivot(Constants.Arm.PREP_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
+
             if(Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360){
-                ArmSubsystem.getInstance().pivot(targetPivot);
-                ArmSubsystem.getInstance().extendNU(targetPos);
                 atStartDeg = true;
             }
         }
         else{
-            if(!gotToStart && Math.abs(ArmSubsystem.getInstance().getExtendNU() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) gotToStart = true;
-            if(gotToStart){
+            if(!targetReached && Math.abs(ArmSubsystem.getInstance().getExtendNU() - targetPos) < Constants.Arm.EXTEND_TARGET_DEADZONE) targetReached = true;
+            if(targetReached){
                 double y = JoystickSubsystem.getInstance().getManualExtend();   //Deadzone math
                 if(y < 0) y *= Constants.Joystick.MANUAL_EXTEND_OUT_SENSITIVITY; //Negative is extend out
                 else if(y > 0) y *= Constants.Joystick.MANUAL_EXTEND_IN_SENSITIVITY;    //Positive is retract in

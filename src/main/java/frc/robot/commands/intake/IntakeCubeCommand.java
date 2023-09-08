@@ -34,8 +34,8 @@ public class IntakeCubeCommand extends CommandBase {
     public void initialize() {
         // GrabberSubsystem.getInstance().setCurrentLimit(30);
 
-        ArmSubsystem.getInstance().setPivotCruiseVelocity(100);
-        ArmSubsystem.getInstance().setPivotAcceleration(195);
+        ArmSubsystem.getInstance().setPivotCruiseVelocity(0.49);
+        ArmSubsystem.getInstance().setPivotAcceleration(0.9);
 
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.INTAKE_EXTEND_NU);

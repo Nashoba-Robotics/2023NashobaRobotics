@@ -206,8 +206,8 @@ public final class Constants {
     public static final double PIVOT_CRUISE_VELOCITY = 0.3;
     public static final double PIVOT_ACCELERATION = 0.98;
 
-    public static final double AUTO_PIVOT_CRUISE_VELOCITY = 100;
-    public static final double AUTO_PIVOT_ACCELERATION = 120;
+    public static final double AUTO_PIVOT_CRUISE_VELOCITY = 0.49;
+    public static final double AUTO_PIVOT_ACCELERATION = 0.59;
 
     //High Scoring
     public static final double HIGH_CONE_PIVOT_VELOCITY = 0.1;
@@ -224,7 +224,7 @@ public final class Constants {
     public static final double MID_ANGLE = 0.193604 * TAU;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
-    public static final double HIGH_EXTEND_NU = 80_000/2048.; //47_000-2_600
+    public static final double HIGH_EXTEND_NU = 39.223633+0.415039;
     public static final double MID_EXTEND_NU = 29_500/2048.;
     public static final double LOW_EXTEND_NU = 0/2048.;
 

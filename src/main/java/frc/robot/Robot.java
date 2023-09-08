@@ -20,6 +20,7 @@ import frc.robot.commands.auto.intakescore.AutoScoreCubeCommand;
 import frc.robot.commands.auto.intakescore.AutoScoreCubePuke;
 import frc.robot.commands.auto.intakescore.AutoScoreCubeTest;
 import frc.robot.commands.auto.intakescore.AutoScoreTest;
+import frc.robot.commands.auto.move.DriveDistanceCommand;
 import frc.robot.commands.auto.routines.DumbAuto;
 import frc.robot.commands.auto.routines.DumbAutoNoScore;
 import frc.robot.commands.auto.routines.LeftTo0ToScore;
@@ -73,6 +74,7 @@ public class Robot extends TimedRobot {
     autoChooser.addOption("Cube Puke+", new AutoScoreCubePuke());
     autoChooser.addOption("System Check", new SystemCheck());
     autoChooser.addOption("Gracious Professionalism", new DumbAutoNoScore());
+    autoChooser.addOption("Characterization", new DriveDistanceCommand(8));
 
     Tabs.Comp.tab.add(autoChooser);
     // Tabs.Comp.tab.add("Front Camera", camera);

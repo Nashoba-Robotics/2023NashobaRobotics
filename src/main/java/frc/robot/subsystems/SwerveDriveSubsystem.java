@@ -399,13 +399,13 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         if(Constants.Logging.SWERVE) {
             for(SwerveModule module : modules) {
                 // SmartDashboard.putNumber("Mod " + module.modNumber, module.getMoveVelocity());
-                LogManager.appendToLog(module.getMoveVelocity(), "Swerve/:Mod"+module.modNumber+"/Velocity");
+                LogManager.appendToLog(Math.abs(NRUnits.Drive.NUToMPS(module.getMoveVelocity())), "Swerve/:Mod"+module.modNumber+"/Velocity");
                 LogManager.appendToLog(module.getAngle(), "Swerve/:Mod"+module.modNumber+"/Angle");
             }
 
-            LogManager.appendToLog(gyro.getYaw(), "Gyro:/Yaw");
-            LogManager.appendToLog(gyro.getPitch(), "Gyro:/Pitch");
-            LogManager.appendToLog(gyro.getRoll(), "Gyro:/Roll");
+            // LogManager.appendToLog(gyro.getYaw(), "Gyro:/Yaw");
+            // LogManager.appendToLog(gyro.getPitch(), "Gyro:/Pitch");
+            // LogManager.appendToLog(gyro.getRoll(), "Gyro:/Roll");
 
             LogManager.appendToLog(odometry.getPoseMeters().getX(), "Swerve:/Odometry/X");
             LogManager.appendToLog(odometry.getPoseMeters().getY(), "Swerve:/Odometry/Y");

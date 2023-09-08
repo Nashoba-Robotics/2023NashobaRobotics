@@ -1,8 +1,10 @@
 package frc.robot.commands.score;
 
 import javax.management.remote.TargetedNotification;
+import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -88,15 +90,8 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                     targetPos = Constants.Arm.HIGH_EXTEND_NU-1300/2048.;  //61000+1500
                 }
                 else targetPos = Constants.Arm.HIGH_EXTEND_NU;
-
-                ArmSubsystem.getInstance().extendNU(targetPos);
-                ArmSubsystem.getInstance().pivot(targetPivot);
-                GrabberSubsystem.getInstance().orientPos(targetWrist);
                 break;
             case MID: 
-                GrabberSubsystem.getInstance().orientPos(Constants.Grabber.PREP_CONE_FRONT_NU * multiplier);
-                ArmSubsystem.getInstance().pivot(Constants.Arm.MID_ANGLE * multiplier);
-                ArmSubsystem.getInstance().extendNU(Constants.Arm.MID_EXTEND_NU);
                 targetPos = Constants.Arm.MID_EXTEND_NU;
                 targetPivot = Constants.Arm.MID_ANGLE * multiplier;
                 targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU * multiplier;
@@ -113,14 +108,14 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 break;
         }
 
-        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360
+        atStartDeg = Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - Constants.Arm.PREP_ANGLE) < 2*Constants.TAU/360
                         || DriverStation.isAutonomous();
 
         //On-the-field Diagnostic information
         Tabs.Comp.setPivotTarget(targetPivot);
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setWristTarget(targetWrist);
-
+        SmartDashboard.putBoolean("At Start", atStartDeg);
         // if(Robot.state == RobotState.OK && ArmSubsystem.getInstance().pivotStopped()) ArmSubsystem.getInstance().resetPivotNU();
     }
 
@@ -138,8 +133,9 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
             extendVelocity /= targetTime;
             ArmSubsystem.getInstance().setExtendCruiseVelocity(extendVelocity);
 
-            // ArmSubsystem.getInstance().pivot(targetPivot);
-            // ArmSubsystem.getInstance().extendNU(targetPos);
+            ArmSubsystem.getInstance().pivot(targetPivot);
+            ArmSubsystem.getInstance().extendNU(targetPos);
+            GrabberSubsystem.getInstance().orientPos(targetWrist);
         }
         
         if(!DriverStation.isAutonomous() && !atStartDeg && Math.abs(targetPivot) < Constants.TAU/4){

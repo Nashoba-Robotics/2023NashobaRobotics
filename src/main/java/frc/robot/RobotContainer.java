@@ -88,7 +88,7 @@ public class RobotContainer {
     squareUpAndSetArm.onTrue(new InstantCommand(() -> {
       int multiplier = SwerveDriveSubsystem.getInstance().getGyroAngle() < Constants.TAU/4 &&
         SwerveDriveSubsystem.getInstance().getGyroAngle() > -Constants.TAU/4 ? -1 : 1;
-        ArmSubsystem.getInstance().pivot(multiplier*22*Constants.TAU/360);
+        ArmSubsystem.getInstance().pivot(multiplier*Constants.Arm.PREP_ANGLE);
         ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);
     },
       ArmSubsystem.getInstance()));

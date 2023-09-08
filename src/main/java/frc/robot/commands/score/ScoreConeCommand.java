@@ -66,11 +66,10 @@ public class ScoreConeCommand extends CommandBase {
             ArmSubsystem.getInstance().setExtendAcceleration(Constants.Arm.AUTO_ARM_ACCELERATION);
         }
         else{   //Go fast in teleop VROOM
-            ArmSubsystem.getInstance().setDefaultCruiseVelocity();
-            ArmSubsystem.getInstance().setDefaultAcceleration();
-
-            ArmSubsystem.getInstance().setPivotAcceleration(150);
-            ArmSubsystem.getInstance().setExtendAcceleration(300);
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(Constants.Arm.SCORE_PIVOT_VELOCITY);
+            ArmSubsystem.getInstance().setPivotAcceleration(Constants.Arm.SCORE_PIVOT_ACCELERATION);
+            ArmSubsystem.getInstance().setExtendCruiseVelocity(Constants.Arm.SCORE_EXTEND_VELOCITY);
+            ArmSubsystem.getInstance().setExtendAcceleration(Constants.Arm.SCORE_EXTEND_ACCELRATION);
         }
         ArmSubsystem.getInstance().pivot(0);
         ArmSubsystem.getInstance().extendNU(Constants.Arm.EXTEND_REST_NU);

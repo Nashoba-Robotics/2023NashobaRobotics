@@ -236,6 +236,11 @@ public final class Constants {
     public static final double PREP_ANGLE = 22*TAU/360;
     public static final double EXTEND_REST_NU = 3;
 
+    public static final double SCORE_PIVOT_VELOCITY = 0.4;
+    public static final double SCORE_PIVOT_ACCELERATION = 0.7;
+    public static final double SCORE_EXTEND_VELOCITY = 100;
+    public static final double SCORE_EXTEND_ACCELRATION = 300;
+
     //Intkae
     public static final double INTAKE_ANGLE = 116 * Constants.TAU/360; //112.5
     public static final double INTAKE_EXTEND_NU = 3_000/2048.;

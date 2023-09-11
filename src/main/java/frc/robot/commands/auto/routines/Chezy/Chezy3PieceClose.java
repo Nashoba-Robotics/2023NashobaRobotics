@@ -23,9 +23,9 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
-public class Chezy3PieceFar extends SequentialCommandGroup {
+public class Chezy3PieceClose extends SequentialCommandGroup {
     
-    public Chezy3PieceFar() {
+    public Chezy3PieceClose() {
         HashMap<String, Command> map = new HashMap<>();
         map.put("Start Intake", new IntakeCubeCommand());
         map.put("Stop Intake", new InstantCommand(
@@ -47,7 +47,7 @@ public class Chezy3PieceFar extends SequentialCommandGroup {
             }, ArmSubsystem.getInstance()
         ));
 
-        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("Chezy-3-piece-far",
+        List<PathPlannerTrajectory> path = PathPlanner.loadPathGroup("Chezy-3-piece-close",
             new PathConstraints(5, 3),
             new PathConstraints(5, 3)
             );

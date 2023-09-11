@@ -8,11 +8,11 @@ import frc.robot.commands.score.ScoreCubeCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
-public class AutoScoreCubeCommand extends SequentialCommandGroup {
+public class AutoScoreCubeHeightCommand extends SequentialCommandGroup {
     
-    public AutoScoreCubeCommand() {
+    public AutoScoreCubeHeightCommand(TargetLevel height) {
         addCommands(
-            new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH, true).withTimeout(1.4),
+            new CubeAutoDirectionalPrepHeightCommand(height, false).withTimeout(1.4),
             new ScoreCubeCommand().withTimeout(0.4)
         );
     }

@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.test.ArmSpeedTestCommand;
+import frc.robot.commands.test.BackSideTest;
 import frc.robot.commands.test.CameraCenterCommand;
 import frc.robot.commands.test.DriveTestCommand;
 import frc.robot.commands.test.EncoderTestCommand;
@@ -207,6 +208,7 @@ public class RobotContainer {
     Tabs.Comp.add(new SetPivotOffsetCommand());
 
     SmartDashboard.putData(new DriveTestCommand());
+    SmartDashboard.putData(new BackSideTest());
   }
 
   static PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);

@@ -22,7 +22,9 @@ import frc.robot.Constants;
 import frc.robot.LogManager;
 import frc.robot.RobotContainer;
 import frc.robot.Tabs;
+import frc.robot.Robot.RobotState;
 import frc.robot.lib.math.NRUnits;
+import frc.robot.Robot;
 
 
 public class ArmSubsystem extends SubsystemBase {
@@ -43,7 +45,7 @@ public class ArmSubsystem extends SubsystemBase {
 
     public static ArmStatus status = ArmStatus.OK;
     public static ArmState currState;
-    public static ArmState lastState;
+    // public static ArmState lastState;
 
     //Not an FMS (Flying Monster Spaghetti) :(
     public static enum ArmStatus{
@@ -164,162 +166,6 @@ public class ArmSubsystem extends SubsystemBase {
         encoderConfigurator.apply(encoderConfig);
     }
 
-    // My attempt to make this a Flying Spaghetti Monster
-    private double targetPivot; //Implement this?
-    private double targetExtend;
-    //TODO: Add in logic for directions
-    //TODO: Add in manual in periodic when this is shifted there
-    public void changeState(ArmState newState, double multiplier){
-        lastState = currState;
-        currState = newState;
-
-        switch(lastState){
-            case STOW:
-                switch(currState){
-                    case PREP:
-                        currState = ArmState.LOW;
-                        pivot(Constants.Arm.PREP_ANGLE);
-                        extendNU(Constants.Arm.EXTEND_REST_NU);
-                        break;
-                    case HIGH:
-                        // Do nothinng, should go to prep height instead
-                        currState = ArmState.PREP;
-                        break;
-                    case MID:
-                        //Do nothing, should got to prep height instead
-                        currState = ArmState.PREP;
-                        break;
-                    case LOW:
-                        pivot(Constants.Arm.LOW_ANGLE);
-                        extendNU(Constants.Arm.LOW_EXTEND_NU);
-                        break;
-                    case INTAKE:
-                        pivot(Constants.Arm.LOW_ANGLE);
-                        extendNU(Constants.Arm.LOW_EXTEND_NU);
-                        break;
-                    case STOW:
-                        break;
-                }
-                break;
-            case PREP:  //Normal sets
-                switch(currState){
-                    case PREP:
-                        break;
-                    case HIGH:
-                        doThing(Constants.Arm.HIGH_FRONT_ANGLE, 
-                                Constants.Arm.HIGH_EXTEND_NU);
-                        break;
-                    case MID:
-                        doThing(Constants.Arm.MID_ANGLE,
-                                Constants.Arm.MID_EXTEND_NU);
-                        break;
-                    case LOW:
-                        doThing(Constants.Arm.LOW_ANGLE,
-                                Constants.Arm.LOW_EXTEND_NU);
-                        break;
-                    case INTAKE:
-                        doThing(Constants.Arm.INTAKE_ANGLE,
-                                Constants.Arm.INTAKE_EXTEND_NU);
-                        break;
-                    case STOW:
-                        doThing(0, Constants.Arm.EXTEND_REST_NU);
-                        break;
-                }
-                break;
-            case HIGH:
-                switch(currState){
-                    case PREP:
-                        doThing(Constants.Arm.PREP_ANGLE, 
-                                Constants.Arm.EXTEND_REST_NU,
-                                80,     //<-- ARBITRARY VALUES. TODO: Tune this
-                                250);
-                        break;
-                    case HIGH:
-                        break;
-                    case MID:
-                        //Extend in, then pivot down
-                        doThing(Constants.Arm.MID_ANGLE, 
-                                Constants.Arm.MID_EXTEND_NU,
-                                80,
-                                250);
-                        break;
-                    case LOW:
-                        //Fully extend in, then pivot down
-                        doThing(Constants.Arm.LOW_ANGLE,
-                                Constants.Arm.LOW_EXTEND_NU,
-                                40,
-                                250);
-                        break;
-                    case INTAKE:
-                        //NO
-                        break;
-                    case STOW:  //Scoring
-                        break;
-                }
-                break;
-            case MID:
-                switch(currState){
-                    case PREP:
-                    doThing(Constants.Arm.PREP_ANGLE, 
-                            Constants.Arm.EXTEND_REST_NU,
-                            80,     //<-- ARBITRARY VALUES. TODO: Tune this
-                            250);
-                        break;
-                    case HIGH:
-                        //Lift pivot up, then extend out
-                        doThing(Constants.Arm.HIGH_FRONT_ANGLE, 
-                                Constants.Arm.HIGH_EXTEND_NU,
-                        80, //<-- The pivot won't actually move that much, so it can be fairly low number
-                        250);
-                        break;
-                    case MID:
-                        break;
-                    case LOW:
-                        //Extend in while pivoting down
-                        break;
-                    case INTAKE:
-                        break;
-                    case STOW:
-                        break;
-                }
-                break;
-            case LOW:
-                switch(currState){
-                    case PREP:
-                        break;
-                    case HIGH:
-                        //No. Go to Prep height
-                        break;
-                    case MID:
-                        //No. Go to Prep height
-                        break;
-                    case LOW:
-                        break;
-                    case INTAKE:
-                        break;
-                    case STOW:
-                        break;
-                }
-                break;
-            case INTAKE:
-                switch(currState){
-                    case PREP:
-                        break;
-                    case HIGH:
-                        break;
-                    case MID:
-                        break;
-                    case LOW:
-                        break;
-                    case INTAKE:
-                        break;
-                    case STOW:
-                        break;
-                }
-                break;
-        }
-    }
-
     public void addToAbsoluteOffset(double offset) {
         encoderConfig.MagnetSensor.MagnetOffset += offset;
         encoderConfigurator.apply(encoderConfig);
@@ -432,7 +278,7 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean pivotOK(){
-        if(false && (RobotContainer.PDH.getFaults().Channel0BreakerFault || RobotContainer.PDH.getFaults().Channel0BreakerFault)) return false;
+        if(RobotContainer.PDH.getFaults().Channel9BreakerFault || RobotContainer.PDH.getFaults().Channel12BreakerFault) return false;
     
         return motorOK(kick1) && motorOK(kick2);
     }
@@ -602,8 +448,8 @@ public class ArmSubsystem extends SubsystemBase {
     public boolean armAtZero(){
         return Math.abs(getEncoderDeg()) < 1; //degree
     }
-    // private boolean switchState = true;
-    // private RobotState lastState = Robot.state;
+    private boolean switchState = true;
+    private RobotState lastState = Robot.state;
     @Override
     public void periodic() {
     if(Constants.Logging.ARM) {
@@ -632,30 +478,33 @@ public class ArmSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Pivot Speed", getPivotSpeed());
 
         //* Only for when the pivot is tuned with the encoder */
-        // if(switchState){
-        //     switch(Robot.state){
-        //         case OK:
-        //             footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-        //             footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
-        //             footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
-        //             footConfig.Feedback.SensorToMechanismRatio = 1;
-        //             break;
-        //         case PivotEncoderBad:
-        //             footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-        //             break;
-        //         case OhSht:
-        //             break;
-        //     }
-        //     foot.apply(footConfig);
-        //     switchState = false;
-        // }
-        // if(lastState != Robot.state){
-        //     switchState = true;
-        //     lastState = Robot.state;
-        // } 
-        if(!encoderOK()) status = ArmStatus.ENCODER_BAD;
-        else if(!extendOK()) status = ArmStatus.EXTEND_BAD;
+        if(switchState){
+            switch(status){
+                case OK:
+                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+                    // footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
+                    // footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
+                    // footConfig.Feedback.SensorToMechanismRatio = 1;
+                    break;
+                case ENCODER_BAD:
+                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+                    break;
+                case PIVOT_BAD:
+                    break;
+                case EXTEND_BAD:
+                    break;
+            }
+            foot.apply(footConfig);
+            switchState = false;
+        }
+        if(lastState != Robot.state){
+            switchState = true;
+            lastState = Robot.state;
+        } 
+        
+        if(!encoderOK()) status = ArmStatus.ENCODER_BAD;    //<-- Encoder takes priority over pivot
         else if(!pivotOK()) status = ArmStatus.PIVOT_BAD;
+        else if(!extendOK()) status = ArmStatus.EXTEND_BAD;
         else status = ArmStatus.OK;
     }
 }

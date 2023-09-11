@@ -23,8 +23,8 @@ public class DriveDistanceCommand extends SequentialCommandGroup {
         PathPlannerTrajectory trajectory = PathPlanner.generatePath(
             constraints, 
             List.of(
-                new PathPoint(new Translation2d(0, 0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0)),
-                new PathPoint(new Translation2d(distance, 0), Rotation2d.fromDegrees(0), Rotation2d.fromDegrees(0))
+                new PathPoint(new Translation2d(0, 0), Rotation2d.fromDegrees(90), Rotation2d.fromDegrees(0)),
+                new PathPoint(new Translation2d(0, distance), Rotation2d.fromDegrees(90), Rotation2d.fromDegrees(0))
             )
         );
         addCommands(

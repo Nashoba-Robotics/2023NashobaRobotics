@@ -354,7 +354,7 @@ public class SwerveModule {
     }
 
     public void updateMovePosition() {
-        double temp = Math.abs(moveMotor.getPosition().getValue());
+        double temp = Math.abs(moveMotor.getPosition().getValue() * 1.02);
         movePosition += Math.abs(temp - lastMovePosition);
         lastMovePosition = temp;
     }

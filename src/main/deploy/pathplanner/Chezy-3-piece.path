@@ -64,7 +64,7 @@
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -149,12 +149,12 @@
     },
     {
       "anchorPoint": {
-        "x": 1.69,
-        "y": 1.07
+        "x": 1.6820746230566106,
+        "y": 1.0662953392415107
       },
       "prevControl": {
-        "x": 2.8150134210007143,
-        "y": 1.0472543510407684
+        "x": 2.807088044057325,
+        "y": 1.043549690282279
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -174,7 +174,7 @@
     {
       "position": 0.5672727272726952,
       "names": [
-        "IntakeStart"
+        "Start Intake"
       ]
     },
     {
@@ -184,7 +184,7 @@
       ]
     },
     {
-      "position": 2.8800000000000443,
+      "position": 3.359999999999983,
       "names": [
         "Intake Start"
       ]
@@ -193,6 +193,18 @@
       "position": 4.843636363636204,
       "names": [
         "Stop Intake"
+      ]
+    },
+    {
+      "position": 1.570909090909027,
+      "names": [
+        "High Cube Prep"
+      ]
+    },
+    {
+      "position": 5.36727272727254,
+      "names": [
+        "Mid Cube Prep"
       ]
     }
   ]

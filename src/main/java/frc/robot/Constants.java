@@ -111,9 +111,9 @@ public final class Constants {
       public static final double MAX_TURNING_SPEED = 1; // r/s
       public static final double MAX_TURNING_ACCELERATION = 0.5; // r/s^2
 
-      public static final double P_X = 0; //2;
+      public static final double P_X = 2; //2;
       public static final double D_X = 0; //0.005;
-      public static final double P_Y = 0; //2;
+      public static final double P_Y = 2; //2;
       public static final double D_Y = 0; //0.005;
       public static final double P_THETA = 5;
       public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(

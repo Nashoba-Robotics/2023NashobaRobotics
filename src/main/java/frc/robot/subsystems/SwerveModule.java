@@ -403,4 +403,8 @@ public class SwerveModule {
 
         return true;
     }
+
+    public double getMoveStatorCurrent(){
+        return moveMotor.getStatorCurrent().getValue();
+    }
 }

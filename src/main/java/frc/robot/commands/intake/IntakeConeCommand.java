@@ -11,7 +11,9 @@ import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.SmartLEDSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
+import frc.robot.subsystems.SmartLEDSubsystem.Color;
 
 public class IntakeConeCommand extends CommandBase {
     boolean pivotMan0;
@@ -89,6 +91,7 @@ public class IntakeConeCommand extends CommandBase {
         //LED stuff
         if(Robot.state != RobotState.OK){
             // CandleSubsystem.getInstance().set(CandleState.SYSTEM_BAD);
+            SmartLEDSubsystem.changeStatus(SmartLEDSubsystem.red);
         }
         else if(GrabberSubsystem.getInstance().getGrabberCurrent() > 30) {
             if(!timerStarted){

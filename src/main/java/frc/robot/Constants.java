@@ -266,14 +266,14 @@ public final class Constants {
     public static final double PIVOT_TARGET_DEADZONE = 0.5 * TAU / 360;
     
     public static final class Cube{
-      public static final double HIGH_ANGLE = -59 * TAU/360;
+      public static final double HIGH_ANGLE = -59 * TAU/360; //-64.44293049695546
       public static final double MID_ANGLE = -62 * TAU/360;
       public static final double LOW_ANGLE = -105 * TAU/360;
 
       public static final double INTAKE_ANGLE = -108 * Constants.TAU/360;
       public static final double INTAKE_EXTEND_NU = 3_000/2048.;
 
-      public static final double HIGH_EXTEND_NU = 82_000/2048.;
+      public static final double HIGH_EXTEND_NU = 82_000/2048.; //7.6728219283223
       public static final double MID_EXTEND_NU = 35_000/2048.;
       public static final double LOW_EXTEND_NU = 0/2048.;
     }

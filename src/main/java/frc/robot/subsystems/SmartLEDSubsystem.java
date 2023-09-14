@@ -17,87 +17,138 @@ import frc.robot.Constants;
 
 public class SmartLEDSubsystem extends SubsystemBase{
     private static CANdle candle;
+    public static LightState state;
 
-    private static final Color white = new Color(255, 255, 255);
-    private static final Color black = new Color(0, 0, 0);
-    private static final Color yellow = new Color(255, 80, 0);
-    private static final Color purple = new Color(148, 0, 211);
-    private static final Color green = new Color(0, 255, 0);
-    private static final Color red = new Color(255, 0, 0);
-    private static final Color orange = new Color(0xFF, 0x10, 0x0);
-    private static final Color blue = new Color(0, 0, 255);
+    public enum LightState{
+        DEFAULT,
+        WANT_CONE,
+        HAVE_CONE,
+        WANT_CUBE,
+        HAVE_CUBE,
+        SINGLE_STATION,
+        DISABLED
+    }
+
+    public static final Color white = new Color(255, 255, 255);
+    public static final Color black = new Color(0, 0, 0);
+    public static final Color yellow = new Color(255, 80, 0);
+    public static final Color purple = new Color(148, 0, 211);
+    public static final Color green = new Color(0, 255, 0);
+    public static final Color red = new Color(255, 0, 0);
+    public static final Color orange = new Color(0xFF, 0x10, 0x0);
+    public static final Color blue = new Color(0, 0, 255);
 
     public SmartLEDSubsystem(){
         candle = new CANdle(Constants.Misc.CANDLE_PORT, "drivet");
+        state = LightState.DEFAULT;
     }
-    private static boolean full = true;
-    private static Color statusColor;
-    private static Color stateColor;
+    private static boolean full = false; // Represents whether or not the full LED stips are lit up
+    private static Color statusColor = green;   // Whether the robot has a bad thing going on
+    private static Color stateColor = white;    // Light to represent what the robot wants
     @Override
     public void periodic() {
-        //Front facing away from DS
-        if(!full){
-            LEDSegment.MainStrip.clearAnimation();
-            if(SwerveDriveSubsystem.getInstance().getGyroAngle() >= -Constants.TAU/8
-            && SwerveDriveSubsystem.getInstance().getGyroAngle() <= Constants.TAU/8){
-                LEDSegment.FLStrip.setColor(stateColor);
-                LEDSegment.FRStrip.setColor(stateColor);
-                if(DriverStation.getAlliance() == Alliance.Blue){
-                    LEDSegment.BLStrip.setColor(stateColor);
-                    LEDSegment.BRStrip.setColor(statusColor);
-                }
-                else{
-                    LEDSegment.BRStrip.setColor(stateColor);
-                    LEDSegment.BLStrip.setColor(statusColor);
-                }
-            }
-            //Facing right
-            else if(SwerveDriveSubsystem.getInstance().getGyroAngle() > Constants.TAU/8
-                &&  SwerveDriveSubsystem.getInstance().getGyroAngle() < Constants.TAU*3/8){
-                LEDSegment.FLStrip.setColor(stateColor);
-                LEDSegment.BLStrip.setColor(stateColor);
+        switch(state){
+            case DISABLED:
+                stateColor = orange;
+                break;
+            case DEFAULT:
+                stateColor = white;
+                break;
+            case WANT_CONE:
+                stateColor = yellow;
+                break;
+            case WANT_CUBE:
+                stateColor = purple;
+                break;
+            case HAVE_CONE:
+                stateColor = green;
+                break;
+            case HAVE_CUBE:
+                stateColor = green;
+                break;
+            case SINGLE_STATION:
+                stateColor = blue;
+                break;
+            default:
+                stateColor = white;
+                break;
+        }
 
-                if(DriverStation.getAlliance() == Alliance.Blue){
-                    LEDSegment.BRStrip.setColor(stateColor);
-                    LEDSegment.FRStrip.setColor(statusColor);
-                }
-                else{
-                    LEDSegment.FRStrip.setColor(stateColor);
-                    LEDSegment.BRStrip.setColor(statusColor);
-                }
-            }
-            //Facing back
-            else if(SwerveDriveSubsystem.getInstance().getGyroAngle() >= Constants.TAU*3/8
-                &&  SwerveDriveSubsystem.getInstance().getGyroAngle() <= -Constants.TAU*3/8){
-                LEDSegment.BLStrip.setColor(stateColor);
-                LEDSegment.BRStrip.setColor(stateColor);
-                
-                if(DriverStation.getAlliance() == Alliance.Blue){
-                    LEDSegment.FRStrip.setColor(stateColor);
-                    LEDSegment.FLStrip.setColor(statusColor);
-                }
-                else{
+        if(DriverStation.isTeleop()){
+            //Front facing away from DS
+            if(!full){
+                // LEDSegment.MainStrip.clearAnimation();
+                if(SwerveDriveSubsystem.getInstance().getGyroAngle() >= -Constants.TAU/8
+                && SwerveDriveSubsystem.getInstance().getGyroAngle() <= Constants.TAU/8){
                     LEDSegment.FLStrip.setColor(stateColor);
-                    LEDSegment.FRStrip.setColor(statusColor);
+                    LEDSegment.FRStrip.setColor(stateColor);
+                    if(DriverStation.getAlliance() == Alliance.Blue){
+                        LEDSegment.BLStrip.setColor(stateColor);
+                        LEDSegment.BRStrip.setColor(statusColor);
+                    }
+                    else{
+                        LEDSegment.BRStrip.setColor(stateColor);
+                        LEDSegment.BLStrip.setColor(statusColor);
+                    }
+                }
+                //Facing right
+                else if(SwerveDriveSubsystem.getInstance().getGyroAngle() < -Constants.TAU/8
+                    &&  SwerveDriveSubsystem.getInstance().getGyroAngle() > -Constants.TAU*3/8){
+                    LEDSegment.FLStrip.setColor(stateColor);
+                    LEDSegment.BLStrip.setColor(stateColor);
+
+                    if(DriverStation.getAlliance() == Alliance.Blue){
+                        LEDSegment.BRStrip.setColor(stateColor);
+                        LEDSegment.FRStrip.setColor(statusColor);
+                    }
+                    else{
+                        LEDSegment.FRStrip.setColor(stateColor);
+                        LEDSegment.BRStrip.setColor(statusColor);
+                    }
+                }
+                //Facing back
+                else if(SwerveDriveSubsystem.getInstance().getGyroAngle() >= Constants.TAU*3/8
+                    &&  SwerveDriveSubsystem.getInstance().getGyroAngle() <= -Constants.TAU*3/8){
+                    LEDSegment.BLStrip.setColor(stateColor);
+                    LEDSegment.BRStrip.setColor(stateColor);
+                    
+                    if(DriverStation.getAlliance() == Alliance.Blue){
+                        LEDSegment.FRStrip.setColor(stateColor);
+                        LEDSegment.FLStrip.setColor(statusColor);
+                    }
+                    else{
+                        LEDSegment.FLStrip.setColor(stateColor);
+                        LEDSegment.FRStrip.setColor(statusColor);
+                    }
+                }
+                //Facing Left
+                else{
+                    LEDSegment.FRStrip.setColor(stateColor);
+                    LEDSegment.BRStrip.setColor(stateColor);
+
+                    if(DriverStation.getAlliance() == Alliance.Blue){
+                        LEDSegment.FLStrip.setColor(stateColor);
+                        LEDSegment.BLStrip.setColor(statusColor);
+                    }
+                    else{
+                        LEDSegment.BLStrip.setColor(stateColor);
+                        LEDSegment.FLStrip.setColor(statusColor);
+                    }
                 }
             }
-            //Facing right
             else{
-                LEDSegment.FRStrip.setColor(stateColor);
-                LEDSegment.BRStrip.setColor(stateColor);
+                fullClear();
 
-                if(DriverStation.getAlliance() == Alliance.Blue){
-                    LEDSegment.FLStrip.setColor(stateColor);
-                    LEDSegment.BLStrip.setColor(statusColor);
-                }
-                else{
-                    LEDSegment.BLStrip.setColor(stateColor);
-                    LEDSegment.FLStrip.setColor(statusColor);
-                }
+                LEDSegment.MainStrip.setColor(stateColor);
             }
         }
-        else{
-            
+        else if(DriverStation.isDisabled()){
+            fullClear();
+            LEDSegment.MainStrip.setBoucneAnimation(stateColor, 0.1);
+        }
+        else if(DriverStation.isAutonomous()){
+            fullClear();
+            LEDSegment.MainStrip.setRainbowAnimation(0.1);
         }
     }
 
@@ -109,6 +160,15 @@ public class SmartLEDSubsystem extends SubsystemBase{
     }
     public static void setFull(boolean f){
         full = f;
+    }
+
+    public static void fullClear(){
+        LEDSegment.MainStrip.fullClear();
+
+        LEDSegment.BLStrip.fullClear();
+        LEDSegment.BRStrip.fullClear();
+        LEDSegment.FLStrip.fullClear();
+        LEDSegment.FRStrip.fullClear();
     }
 
     public static class Color{
@@ -128,10 +188,10 @@ public class SmartLEDSubsystem extends SubsystemBase{
         PivotEncoderIndicator(2, 2, 0),
         SwerveEncoderIndicator(4, 2, 0),
         VoltageIndicator(6, 2, 0),
-        FLStrip(0, 0, 0),
-        FRStrip(0, 0, 0),
-        BRStrip(0, 0, 0),
-        BLStrip(0, 0, 0),
+        FLStrip(8, 27, 0),//8-35
+        FRStrip(89, 27, 0),
+        BRStrip(61, 28, 0),
+        BLStrip(35, 26, 0),
         MainStrip(0, 0, 0);
 
         public final int startIndex;

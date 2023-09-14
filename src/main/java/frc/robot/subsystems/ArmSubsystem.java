@@ -108,7 +108,7 @@ public class ArmSubsystem extends SubsystemBase {
         tuneConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         tuneConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-        tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = false;
+        tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = true;
         tuneConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = Constants.Arm.EXTEND_FORWARD_SOFT_LIMIT;
         tuneConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = true;
         tuneConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = Constants.Arm.EXTEND_REVERSE_SOFT_LIMIT;

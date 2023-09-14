@@ -34,6 +34,7 @@ import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.KryptonCougarLEDSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.SmartLEDSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
 
@@ -51,7 +52,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    KryptonCougarLEDSubsystem x = new KryptonCougarLEDSubsystem();
     m_robotContainer = new RobotContainer();
     DataLogManager.start();
     DriverStation.startDataLog(DataLogManager.getLog());
@@ -92,6 +92,9 @@ public class Robot extends TimedRobot {
     ArmSubsystem.getInstance().resetPivotNU();
     // ArmSubsystem.getInstance().zeroPivotSensor();
     SwerveDriveSubsystem.getInstance().resetModulesAbsolute();
+
+    SmartLEDSubsystem x = new SmartLEDSubsystem();
+
   }
 
   @Override

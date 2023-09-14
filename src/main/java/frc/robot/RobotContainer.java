@@ -29,8 +29,11 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CandleSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 import frc.robot.subsystems.JoystickSubsystem;
+import frc.robot.subsystems.KryptonCougarLEDSubsystem;
+import frc.robot.subsystems.SmartLEDSubsystem;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 import frc.robot.subsystems.CandleSubsystem.CandleState;
+import frc.robot.subsystems.SmartLEDSubsystem.LightState;
 
 public class RobotContainer {
 
@@ -94,22 +97,18 @@ public class RobotContainer {
       ArmSubsystem.getInstance()));
 
     cone.onTrue(new InstantCommand(
-      () -> CandleSubsystem.getInstance().set(CandleState.WANT_CONE),
-      CandleSubsystem.getInstance()
+      () -> SmartLEDSubsystem.state = LightState.WANT_CONE
       ));
     cone.onFalse(new InstantCommand(
-      () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
-      CandleSubsystem.getInstance()
+      () -> SmartLEDSubsystem.state = LightState.DEFAULT
     ));
 
-    // cube.onTrue(new InstantCommand(
-    //   () -> CandleSubsystem.getInstance().set(CandleState.WANT_CUBE),
-    //   CandleSubsystem.getInstance()
-    // ));
-    // cube.onFalse(new InstantCommand(
-    //   () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
-    //   CandleSubsystem.getInstance()
-    // ));
+    cube.onTrue(new InstantCommand(
+      () -> SmartLEDSubsystem.state = LightState.WANT_CUBE
+    ));
+    cube.onFalse(new InstantCommand(
+      () -> SmartLEDSubsystem.state = LightState.DEFAULT
+    ));
 
     // doubleStation.onTrue(
     //   new InstantCommand(
@@ -117,10 +116,10 @@ public class RobotContainer {
     //     CandleSubsystem.getInstance()
     //     )
     // );
-    doubleStation.onFalse(new InstantCommand(
-      () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
-      CandleSubsystem.getInstance()
-      ));
+    // doubleStation.onFalse(new InstantCommand(
+    //   () -> CandleSubsystem.getInstance().set(CandleState.ENABLED),
+    //   CandleSubsystem.getInstance()
+    //   ));
 
     intakeButton.and(doubleStation).toggleOnTrue(new SingleStationIntakeCommand());
     

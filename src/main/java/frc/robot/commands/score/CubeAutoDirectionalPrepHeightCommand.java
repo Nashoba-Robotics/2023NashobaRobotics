@@ -68,7 +68,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         else multiplier = 1;
 
         switch(targetLevel) {
-            case HIGH:
+            case HIGH:  //x = 31.59in, y = 35.5 in.
              ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.HIGH_ANGLE * multiplier);
              ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.HIGH_EXTEND_NU);
              targetPos = Constants.Arm.Cube.HIGH_EXTEND_NU;
@@ -93,7 +93,7 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
         gotToStart = false;
         resetEncoder = false;
 
-        atStartDeg = Math.abs(ArmSubsystem.getInstance().getPivotRad() - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360;
+        atStartDeg = Math.abs(Math.abs(ArmSubsystem.getInstance().getPivotRad()) - Constants.Arm.PREP_ANGLE) < 1*Constants.TAU/360;
 
         Tabs.Comp.setExtendTarget(targetPos);
         Tabs.Comp.setPivotTarget(targetPivot);

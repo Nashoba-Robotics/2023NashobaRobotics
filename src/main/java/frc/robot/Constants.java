@@ -40,7 +40,7 @@ public final class Constants {
   
   public static final class Swerve {
     public static final double TURN_GEAR_RATIO = 150. / 7.;
-    public static final double MOVE_GEAR_RATIO = 8.14;
+    public static final double MOVE_GEAR_RATIO = 6.33;
 
     public static final double WIDTH = Units.inchesToMeters(26 - 2.625*2);
     public static final double LENGTH = Units.inchesToMeters(26 - 2.625*2);
@@ -82,15 +82,15 @@ public final class Constants {
     public static final double TURN_KI = 0;
     public static final double TURN_KD = 0.0;
 
-    public static final double MOVE_KF = 0.01;
-    public static final double MOVE_KP = 0.01;
+    public static final double MOVE_KF = 0.009;
+    public static final double MOVE_KP = 0.04;
     public static final double MOVE_KI = 0.0;
-    public static final double MOVE_KD = 0.0;
+    public static final double MOVE_KD = 0.000;
 
-    public static final double MOD0_AFF = 0.0;
-    public static final double MOD1_AFF = 0.0;
-    public static final double MOD2_AFF = 0.0;
-    public static final double MOD3_AFF = 0.0;
+    public static final double MOD0_AFF = 0.02;
+    public static final double MOD1_AFF = 0.02;
+    public static final double MOD2_AFF = 0.02;
+    public static final double MOD3_AFF = 0.02;
   
     public static final class Balance{
       public static final double FAST_K_P = 0.01;
@@ -111,9 +111,9 @@ public final class Constants {
       public static final double MAX_TURNING_SPEED = 1; // r/s
       public static final double MAX_TURNING_ACCELERATION = 0.5; // r/s^2
 
-      public static final double P_X = 5; //5;
+      public static final double P_X = 2; //5;
       public static final double D_X = 0; //0.005;
-      public static final double P_Y = 5; //5;
+      public static final double P_Y = 2; //5;
       public static final double D_Y = 0; //0.005;
       public static final double P_THETA = 5;
       public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(
@@ -309,7 +309,7 @@ public final class Constants {
   public static final class Logging {
     public static final boolean ARM = false;
     public static final boolean GRABBER = false;
-    public static final boolean SWERVE = false;
+    public static final boolean SWERVE = true;
   }
 
   //Stores the channels all of these are located on in the PDH

@@ -1,5 +1,6 @@
 package frc.robot.commands.intake;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -39,7 +40,8 @@ public class IntakeCubeCommand extends CommandBase {
 
         // Extend is TEMP to test at the same distance
         ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.INTAKE_EXTEND_NU);
-        ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.INTAKE_ANGLE);
+        if(DriverStation.isAutonomous())  ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.INTAKE_ANGLE + 0.5*Constants.TAU/360);
+        else ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.INTAKE_ANGLE);
         targetPivot = Constants.Arm.Cube.INTAKE_ANGLE;
         atPivot = false;
         pivotMan0 = false;

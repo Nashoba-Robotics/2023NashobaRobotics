@@ -164,8 +164,8 @@ public final class Constants {
     public static final double SCORE_CONE_NU = 4;
     public static final double CUBE_NU = -7;
 
-    public static final double CONE_RELEASE_SPEED = 0.07; //Speed of rollers to release cone. Shouldn't be enough to shoot it out. It should just be a bit of a boost to HELP it out
-    public static final double LOW_CONE_RELEASE_SPEED = 1;
+    public static final double CONE_RELEASE_SPEED = -0.12; //Speed of rollers to release cone. Shouldn't be enough to shoot it out. It should just be a bit of a boost to HELP it out
+    public static final double LOW_CONE_RELEASE_SPEED = -1;
     public static final double CUBE_RELEASE_SPEED = 1;
 
     //Intkae
@@ -213,18 +213,19 @@ public final class Constants {
     public static final double HIGH_CONE_PIVOT_VELOCITY = 0.1;
     public static final double HIGH_CONE_PIVOT_ACCELERATION = 0.7;
 
-    public static final double PIVOT_KF = 2.081;
+    public static final double PIVOT_KF = 2.0; //2.081
     public static final double PIVOT_KP = 16;
     public static final double PIVOT_KI = 0.0;
     public static final double PIVOT_KD = 0.0;
 
     //Scorign (Radians)
-    public static final double HIGH_FRONT_ANGLE = 0.177246*TAU;
+    public static final double HIGH_FRONT_ANGLE = 0.177246*TAU - 1.5*TAU/360;
     public static final double HIGH_BACK_ANGLE = -61.5 * TAU/360;
     public static final double MID_ANGLE = 0.193604 * TAU;
     public static final double LOW_ANGLE = 104 * TAU/360;
 
     public static final double HIGH_EXTEND_NU = 39.223633+0.415039;
+    public static final double HIGH_BACK_EXTEND = 39.223633+0.915039;
     public static final double MID_EXTEND_NU = 29_500/2048.;
     public static final double LOW_EXTEND_NU = 0/2048.;
 
@@ -242,7 +243,7 @@ public final class Constants {
     public static final double SCORE_EXTEND_ACCELRATION = 300;
 
     //Intkae
-    public static final double INTAKE_ANGLE = 111.5 * TAU/360; //112.5
+    public static final double INTAKE_ANGLE = 112 * TAU/360; //112.5
     public static final double INTAKE_EXTEND_NU = 3_000/2048.;
     public static final double INTAKE_DEADZONE = 1 * TAU/360;
 
@@ -270,7 +271,7 @@ public final class Constants {
       public static final double MID_ANGLE = -62 * TAU/360;
       public static final double LOW_ANGLE = -105 * TAU/360;
 
-      public static final double INTAKE_ANGLE = -110 * Constants.TAU/360;
+      public static final double INTAKE_ANGLE = -109 * Constants.TAU/360;
       public static final double INTAKE_EXTEND_NU = 3_000/2048.;
 
       public static final double HIGH_EXTEND_NU = 82_000/2048.; //7.6728219283223
@@ -307,8 +308,8 @@ public final class Constants {
   }
 
   public static final class Logging {
-    public static final boolean ARM = false;
-    public static final boolean GRABBER = false;
+    public static final boolean ARM = true;
+    public static final boolean GRABBER = true;
     public static final boolean SWERVE = true;
   }
 

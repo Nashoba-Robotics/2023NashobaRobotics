@@ -103,9 +103,9 @@ public class ArmSubsystem extends SubsystemBase {
         tuneConfig.Slot0.kD = Constants.Arm.ARM_KD;
 
         tuneConfig.CurrentLimits.StatorCurrentLimitEnable = false;
-        tuneConfig.CurrentLimits.StatorCurrentLimit = 0;
+        tuneConfig.CurrentLimits.StatorCurrentLimit = 60;
         tuneConfig.CurrentLimits.SupplyCurrentLimitEnable = false;
-        tuneConfig.CurrentLimits.SupplyCurrentLimit = 0;
+        tuneConfig.CurrentLimits.SupplyCurrentLimit = 80;
 
         tuneConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         tuneConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
@@ -129,10 +129,10 @@ public class ArmSubsystem extends SubsystemBase {
         footConfig.Slot0.kI = Constants.Arm.PIVOT_KI;
         footConfig.Slot0.kD = Constants.Arm.PIVOT_KD;
 
-        footConfig.CurrentLimits.StatorCurrentLimitEnable = false;
-        footConfig.CurrentLimits.StatorCurrentLimit = 0;
-        footConfig.CurrentLimits.SupplyCurrentLimitEnable = false;
-        footConfig.CurrentLimits.SupplyCurrentLimit = 0;
+        footConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+        footConfig.CurrentLimits.StatorCurrentLimit = 60;
+        footConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
+        footConfig.CurrentLimits.SupplyCurrentLimit = 80;
 
         footConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
@@ -240,47 +240,106 @@ public class ArmSubsystem extends SubsystemBase {
     }
 
     public boolean encoderOK(){
-        if(RobotContainer.PDH.getFaults().Channel15BreakerFault) return false;
-        if(encoder.getFault_BadMagnet().getValue()) return false;
-        if(encoder.getFault_BootDuringEnable().getValue()) return false;
-        if(encoder.getFault_Hardware().getValue()) return false;
-        if(encoder.getFault_Undervoltage().getValue()) return false;
+        boolean good = true;
+        if(RobotContainer.PDH.getFaults().Channel15BreakerFault) {
+            LogManager.appendToLog("PDH", "Arm:/EncoderStatus");
+            good = false;
+        }
+        if(encoder.getFault_BadMagnet().getValue()) {
+            LogManager.appendToLog("Bad Magnet", "Arm:/EncoderStatus");
+            good = false;
+        }
+        if(encoder.getFault_BootDuringEnable().getValue()) {
+            LogManager.appendToLog("Boot During Enable", "Arm:/EncoderStatus");
+            good = false;
+        }
+        if(encoder.getFault_Hardware().getValue()) {
+            LogManager.appendToLog("Hardware", "Arm:/EncoderStatus");
+            good = false;
+        }
+        if(encoder.getFault_Undervoltage().getValue()) {
+            LogManager.appendToLog("Underg Voltage", "Arm:/EncoderStatus");
+            good = false;
+        }
 
-        if(encoder.getFaultField().getError() != StatusCode.OK) return false;
+        if(encoder.getFaultField().getError() != StatusCode.OK) {
+            LogManager.appendToLog("Fault Field", "Arm:/EncoderStatus");
+            good = false;
+        }
 
-        if(encoder.getMagnetHealth().getValue() != MagnetHealthValue.Magnet_Green) return false;
+        if(encoder.getMagnetHealth().getValue() != MagnetHealthValue.Magnet_Green) {
+            LogManager.appendToLog("Magnet Health", "Arm:/EncoderStatus");
+            good = false;
+        }
 
-        return true;
+        return good;
     }
 
-    public boolean motorOK(TalonFX motor){
+    public boolean motorOK(TalonFX motor, boolean pivot){
+        boolean good = true;
         //Find the PDH port
         // if(false && RobotContainer.PDH.getFaults().Channel0BreakerFault) return false;
+        String path = "Arm:/RobotStatus/";
+        if(pivot){
+            path += "/Pivot";
+        }
+        else{
+            path += "/Extend";
+        }
+        if(!motor.isAlive()){
+            LogManager.appendToLog("Motor Dead", path);
+            good = false;
+        }
 
-        if(!motor.isAlive()) return false;
+        if(motor.getFault_DeviceTemp().getValue()){
+            LogManager.appendToLog("Temp", path);
+            good = false;
+        }
+        if(motor.getFault_BootDuringEnable().getValue()){
+            LogManager.appendToLog("Boot During Enable", path);
+            good = false;
+        }
+        if(motor.getFault_FusedSensorOutOfSync().getValue()){
+            LogManager.appendToLog("Sensor Out of Sync", path);
+            good = false;
+        }
+        if(motor.getFault_MissingRemoteSensor().getValue()){
+            LogManager.appendToLog("Missing Remote Sensor", path);
+            good = false;
+        }
+        if(motor.getFault_OverSupplyV().getValue()){
+            LogManager.appendToLog("Over Supply", path);
+            good = false;
+        }
+        if(motor.getFault_ProcTemp().getValue()){
+            LogManager.appendToLog("Proc Temp", path);
+            good = false;
+        }
+        if(motor.getFault_Undervoltage().getValue()){
+            LogManager.appendToLog("Undervoltage", path);
+            good = false;
+        }
+        if(motor.getFault_UnstableSupplyV().getValue()){
+            LogManager.appendToLog("Unstable Supply", path);
+            good = false;
+        }
 
-        if(motor.getFault_DeviceTemp().getValue()) return false;
-        if(motor.getFault_BootDuringEnable().getValue()) return false;
-        if(motor.getFault_FusedSensorOutOfSync().getValue()) return false;
-        if(motor.getFault_MissingRemoteSensor().getValue()) return false;
-        if(motor.getFault_OverSupplyV().getValue()) return false;
-        if(motor.getFault_ProcTemp().getValue()) return false;
-        if(motor.getFault_Undervoltage().getValue()) return false;
-        if(motor.getFault_UnstableSupplyV().getValue()) return false;
+        if(motor.getFaultField().getError() != StatusCode.OK){
+            LogManager.appendToLog("Fault Field?", path);
+            good = false;
+        }
 
-        if(motor.getFaultField().getError() != StatusCode.OK) return false;
-
-        return true;
+        return good;
     }
 
     public boolean extendOK(){
-        return (true || !RobotContainer.PDH.getFaults().Channel0BreakerFault) && motorOK(tromboneSlide);
+        return motorOK(tromboneSlide, false);
     }
 
     public boolean pivotOK(){
         if(RobotContainer.PDH.getFaults().Channel9BreakerFault || RobotContainer.PDH.getFaults().Channel12BreakerFault) return false;
     
-        return motorOK(kick1) && motorOK(kick2);
+        return motorOK(kick1, true) && motorOK(kick2, true);
     }
 
     public void resetPivotNU(){
@@ -455,8 +514,8 @@ public class ArmSubsystem extends SubsystemBase {
     if(Constants.Logging.ARM) {
             //Extender
             LogManager.appendToLog(getExtendNU(), "Arm:/Extender/Position");
-            // LogManager.appendToLog(tromboneSlide.getStatorCurrent(), "Arm:/Extender/Stator");
-            // LogManager.appendToLog(tromboneSlide.getSupplyCurrent(), "Arm:/Extender/Supply");
+            LogManager.appendToLog(tromboneSlide.getStatorCurrent().getValue(), "Arm:/Extender/Stator");
+            LogManager.appendToLog(tromboneSlide.getSupplyCurrent().getValue(), "Arm:/Extender/Supply");
             
             //Pivot1
             LogManager.appendToLog(NRUnits.Pivot.rotToRad(ArmSubsystem.getInstance().getPivotRad()), "Arm:/RelativeAngle");
@@ -468,7 +527,6 @@ public class ArmSubsystem extends SubsystemBase {
             LogManager.appendToLog(getPivotPos(), "Arm:/Pivot2/Position");
             LogManager.appendToLog(getStatorCurrent2(), "Arm:/Pivot2/Stator");
             LogManager.appendToLog(getSupplyCurrent2(), "Arm:/Pivot2/Supply");
-            
         }
 
         Tabs.Comp.displayPivotAngle(getPivotRad());
@@ -478,29 +536,29 @@ public class ArmSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Pivot Speed", getPivotSpeed());
 
         //* Only for when the pivot is tuned with the encoder */
-        if(switchState){
-            switch(status){
-                case OK:
-                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-                    // footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
-                    // footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
-                    // footConfig.Feedback.SensorToMechanismRatio = 1;
-                    break;
-                case ENCODER_BAD:
-                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-                    break;
-                case PIVOT_BAD:
-                    break;
-                case EXTEND_BAD:
-                    break;
-            }
-            foot.apply(footConfig);
-            switchState = false;
-        }
-        if(lastState != Robot.state){
-            switchState = true;
-            lastState = Robot.state;
-        } 
+        // if(switchState){
+        //     switch(status){
+        //         case OK:
+        //             footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
+        //             // footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
+        //             // footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
+        //             // footConfig.Feedback.SensorToMechanismRatio = 1;
+        //             break;
+        //         case ENCODER_BAD:
+        //             footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+        //             break;
+        //         case PIVOT_BAD:
+        //             break;
+        //         case EXTEND_BAD:
+        //             break;
+        //     }
+        //     foot.apply(footConfig);
+        //     switchState = false;
+        // }
+        // if(lastState != Robot.state){
+        //     switchState = true;
+        //     lastState = Robot.state;
+        // } 
         
         if(!encoderOK()) status = ArmStatus.ENCODER_BAD;    //<-- Encoder takes priority over pivot
         else if(!pivotOK()) status = ArmStatus.PIVOT_BAD;

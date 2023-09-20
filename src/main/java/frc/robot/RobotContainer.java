@@ -48,7 +48,7 @@ public class RobotContainer {
     SmartDashboard.putData(new InstantCommand(
       () -> SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2)
     ));
-    SmartDashboard.putData(new KCLEDTestCommand());
+    // SmartDashboard.putData(new KCLEDTestCommand());
     // SmartDashboard.putData(new RunArmCommand());
     // SmartDashboard.putData(new EncoderTestCommand());
 
@@ -57,9 +57,9 @@ public class RobotContainer {
 
   public static CommandJoystick operatorController = new CommandJoystick(2);
   Trigger intakeButton = operatorController.button(2);  //B
-  Trigger lowPrepCone = operatorController.button(1); //Y
-  Trigger midPrepCone = operatorController.button(3); //A
-  Trigger highPrepCone = operatorController.button(4);  //X
+  Trigger lowPrep = operatorController.button(1); //Y
+  Trigger midPrep = operatorController.button(3); //A
+  Trigger highPreep = operatorController.button(4);  //X
 
   // Trigger doubleStationIntake = operatorController.button(14); //screenshot
 
@@ -128,16 +128,16 @@ public class RobotContainer {
     
     intakeButton.and(cone).toggleOnTrue(new IntakeConeCommand(true));
 
-    lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
-    highPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH, true));
+    lowPrep.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
+    midPrep.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    highPreep.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH, true));
 
     score.and(cone).toggleOnTrue(new ScoreConeCommand());
     intakeButton.and(cube).toggleOnTrue(new IntakeCubeCommand());
 
-    lowPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.LOW));
-    midPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.MID));
-    highPrepCone.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
+    lowPrep.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.LOW));
+    midPrep.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    highPreep.and(cube).onTrue(new CubeAutoDirectionalPrepHeightCommand(TargetLevel.HIGH));
 
     score.and(cube).toggleOnTrue(new ScoreCubeCommand());
     puke.toggleOnTrue(new PukeCommand());
@@ -182,9 +182,9 @@ public class RobotContainer {
       SwerveDriveSubsystem.getInstance()
     ));
 
-    resetPivotNU.onTrue(new InstantCommand(
-      () -> ArmSubsystem.getInstance().resetPivotNU()
-    ));
+    // resetPivotNU.onTrue(new InstantCommand(
+    //   () -> ArmSubsystem.getInstance().resetPivotNU()
+    // ));
   }
 
   public void configureTabs() {

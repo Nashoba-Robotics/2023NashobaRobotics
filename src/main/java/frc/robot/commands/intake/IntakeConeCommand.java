@@ -115,16 +115,16 @@ public class IntakeConeCommand extends CommandBase {
             timerStarted = false;
         }
 
-        if(Robot.state == RobotState.OK && !resetEncoder && 
-        ArmSubsystem.getInstance().pivotStopped() && 
-        Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
-            if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {
-                ArmSubsystem.getInstance().resetPivotNU();
-                resetEncoder = true;
-            } else {
-                // TODO: Do something here
-            }
-        }
+        // if(Robot.state == RobotState.OK && 
+        // ArmSubsystem.getInstance().pivotStopped() && 
+        // Math.abs(ArmSubsystem.getInstance().getPivotRad()-Constants.Arm.INTAKE_ANGLE) <= Constants.Arm.INTAKE_DEADZONE){
+        //     if(Math.abs(ArmSubsystem.getInstance().getPivotRad()) > Constants.TAU/4) {
+        //         // ArmSubsystem.getInstance().resetPivotNU();
+        //         resetEncoder = true;
+        //     } else {
+        //         // TODO: Do something here
+        //     }
+        // }
     }
 
     @Override

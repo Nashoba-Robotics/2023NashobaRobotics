@@ -27,8 +27,8 @@ public class MidToClimb extends SequentialCommandGroup{
                 GrabberSubsystem.getInstance().zeroWrist();
                 SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
                 SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(180)));
-                ArmSubsystem.getInstance().pivot(0);
-                ArmSubsystem.getInstance().resetPivotNU();
+                // ArmSubsystem.getInstance().pivot(0);
+                // ArmSubsystem.getInstance().resetPivotNU();
             }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
             new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(new Pose2d(0, 0, Rotation2d.fromDegrees(180)));

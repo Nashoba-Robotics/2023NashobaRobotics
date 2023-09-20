@@ -80,6 +80,7 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 if(!autoDir) multiplier = 1;
                 if(multiplier == 1){
                     targetPivot = Constants.Arm.HIGH_FRONT_ANGLE;
+                    if(DriverStation.isAutonomous()) targetPivot = Constants.Arm.HIGH_FRONT_ANGLE-1*Constants.TAU/360;
                     targetWrist = Constants.Grabber.PREP_CONE_FRONT_NU;
                 } 
                 if(multiplier == -1){
@@ -89,7 +90,10 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
                 if(DriverStation.isAutonomous()){
                     targetPos = Constants.Arm.HIGH_EXTEND_NU-1300/2048.;  //61000+1500
                 }
-                else targetPos = Constants.Arm.HIGH_EXTEND_NU;
+                else {
+                    if(multiplier == 1) targetPos = Constants.Arm.HIGH_EXTEND_NU;
+                    else if(multiplier == -1) targetPos = Constants.Arm.HIGH_BACK_EXTEND;
+                }
                 break;
             case MID: 
                 targetPos = Constants.Arm.MID_EXTEND_NU;

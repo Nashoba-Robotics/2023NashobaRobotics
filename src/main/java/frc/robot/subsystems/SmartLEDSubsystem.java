@@ -19,6 +19,9 @@ public class SmartLEDSubsystem extends SubsystemBase{
     private static CANdle candle;
     public static LightState state;
 
+    private LightState lastState = LightState.DEFAULT;
+    private boolean cleared = false;
+
     public enum LightState{
         DEFAULT,
         WANT_CONE,
@@ -47,6 +50,9 @@ public class SmartLEDSubsystem extends SubsystemBase{
     private static Color stateColor = white;    // Light to represent what the robot wants
     @Override
     public void periodic() {
+        if(state != lastState){
+            fullClear();
+        }
         switch(state){
             case DISABLED:
                 stateColor = orange;
@@ -137,17 +143,13 @@ public class SmartLEDSubsystem extends SubsystemBase{
                 }
             }
             else{
-                fullClear();
-
                 LEDSegment.MainStrip.setColor(stateColor);
             }
         }
         else if(DriverStation.isDisabled()){
-            fullClear();
             LEDSegment.MainStrip.setBoucneAnimation(stateColor, 0.1);
         }
         else if(DriverStation.isAutonomous()){
-            fullClear();
             LEDSegment.MainStrip.setRainbowAnimation(0.1);
         }
     }
@@ -192,7 +194,7 @@ public class SmartLEDSubsystem extends SubsystemBase{
         FRStrip(89, 27, 0),
         BRStrip(61, 28, 0),
         BLStrip(35, 26, 0),
-        MainStrip(0, 0, 0);
+        MainStrip(8, 100, 0);
 
         public final int startIndex;
         public final int segmentSize;

@@ -83,6 +83,8 @@ public class CubeAutoDirectionalPrepHeightCommand extends CommandBase {
              targetWrist = Constants.Grabber.CUBE_NU;
              break;
            case LOW: 
+            ArmSubsystem.getInstance().setPivotCruiseVelocity(0.49);
+            ArmSubsystem.getInstance().setPivotAcceleration(0.98);
             ArmSubsystem.getInstance().pivot(Constants.Arm.Cube.LOW_ANGLE * multiplier);
             ArmSubsystem.getInstance().extendNU(Constants.Arm.Cube.LOW_EXTEND_NU);
             targetPos = Constants.Arm.Cube.LOW_EXTEND_NU;

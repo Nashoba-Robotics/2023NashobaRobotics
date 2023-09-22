@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.Field.TargetLevel;
 import frc.robot.commands.test.ArmSpeedTestCommand;
+import frc.robot.commands.test.BackSideTest;
 import frc.robot.commands.test.CameraCenterCommand;
+import frc.robot.commands.test.DriveTestCommand;
 import frc.robot.commands.test.EncoderTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.KCLEDTestCommand;
@@ -125,8 +127,8 @@ public class RobotContainer {
     
     intakeButton.and(cone).toggleOnTrue(new IntakeConeCommand(true));
 
-    lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
-    midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    lowPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.MID));
+    midPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.LOW));
     highPrepCone.and(cone).onTrue(new AutoDirectionalPrepHeightCommand(TargetLevel.HIGH, true));
 
     score.and(cone).toggleOnTrue(new ScoreConeCommand());
@@ -204,6 +206,9 @@ public class RobotContainer {
     // Tabs.GrabberTest.tab.add(new GrabberTestCommand());
 
     Tabs.Comp.add(new SetPivotOffsetCommand());
+
+    SmartDashboard.putData(new DriveTestCommand());
+    SmartDashboard.putData(new BackSideTest());
   }
 
   static PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);

@@ -53,7 +53,7 @@ public final class Constants {
       new Translation2d(-WIDTH/2, -LENGTH/2)
     );
 
-    public static final double WHEELRADIUS = Units.inchesToMeters(1.925);
+    public static final double WHEELRADIUS = Units.inchesToMeters(1.893);
     
     public static final double MAX_NATIVE_VELOCITY = 103;
 
@@ -111,9 +111,9 @@ public final class Constants {
       public static final double MAX_TURNING_SPEED = 1; // r/s
       public static final double MAX_TURNING_ACCELERATION = 0.5; // r/s^2
 
-      public static final double P_X = 2; //5;
+      public static final double P_X = 2; //2;
       public static final double D_X = 0; //0.005;
-      public static final double P_Y = 2; //5;
+      public static final double P_Y = 2; //2;
       public static final double D_Y = 0; //0.005;
       public static final double P_THETA = 5;
       public static final TrapezoidProfile.Constraints THETA_CONSTRAINTS = new TrapezoidProfile.Constraints(
@@ -169,8 +169,8 @@ public final class Constants {
     public static final double CUBE_RELEASE_SPEED = 1;
 
     //Intkae
-    public static final double CONE_INTAKE_SPEED = -0.7;  //Wheels spin in, so the value is negative
-    public static final double CUBE_INTAKE_SPEED = -0.5;   //We explicitly state the positive and negative in the command
+    public static final double CONE_INTAKE_SPEED = 0.7;  //Wheels spin in, so the value is negative
+    public static final double CUBE_INTAKE_SPEED = -0.8;   //We explicitly state the positive and negative in the command
     public static final double CONE_HOLD_SPEED = -0.17;
     public static final double CUBE_HOLD_SPEED = -0.05;
   }
@@ -191,7 +191,7 @@ public final class Constants {
     public static final int RETRACT_SWITCH_PORT = 0;
 
     public static final int ENCODER_PORT = 4;
-    public static final double ENCODER_OFFSET = 0.407959;
+    public static final double ENCODER_OFFSET = 0.400879;
 
     public static final double ARM_KF = 0.016;
     public static final double ARM_KP = 2.2;
@@ -242,7 +242,7 @@ public final class Constants {
     public static final double SCORE_EXTEND_ACCELRATION = 300;
 
     //Intkae
-    public static final double INTAKE_ANGLE = 116 * Constants.TAU/360; //112.5
+    public static final double INTAKE_ANGLE = 111.5 * TAU/360; //112.5
     public static final double INTAKE_EXTEND_NU = 3_000/2048.;
     public static final double INTAKE_DEADZONE = 1 * TAU/360;
 
@@ -270,7 +270,7 @@ public final class Constants {
       public static final double MID_ANGLE = -62 * TAU/360;
       public static final double LOW_ANGLE = -105 * TAU/360;
 
-      public static final double INTAKE_ANGLE = -108 * Constants.TAU/360;
+      public static final double INTAKE_ANGLE = -110 * Constants.TAU/360;
       public static final double INTAKE_EXTEND_NU = 3_000/2048.;
 
       public static final double HIGH_EXTEND_NU = 82_000/2048.; //7.6728219283223

@@ -1,6 +1,7 @@
 package frc.robot.commands.auto.intakescore;
 
 import edu.wpi.first.hal.simulation.ConstBufferCallback;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.ArmSubsystem;
@@ -36,6 +37,8 @@ public class AutoBacksideCubeScoreCommand extends CommandBase{
         extended = false;
         scored = false;
         startTime = System.currentTimeMillis()/1000;
+        ArmSubsystem.getInstance().setExtendCruiseVelocity(100);
+        ArmSubsystem.getInstance().setExtendAcceleration(200);
     }
 
     @Override

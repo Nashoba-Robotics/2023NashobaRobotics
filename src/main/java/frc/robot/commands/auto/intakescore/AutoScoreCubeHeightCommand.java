@@ -12,7 +12,7 @@ public class AutoScoreCubeHeightCommand extends SequentialCommandGroup {
     
     public AutoScoreCubeHeightCommand(TargetLevel height) {
         addCommands(
-            new CubeAutoDirectionalPrepHeightCommand(height, false).withTimeout(1.4),
+            new CubeAutoDirectionalPrepHeightCommand(height, true).withTimeout(1.4),
             new ScoreCubeCommand().withTimeout(0.4)
         );
     }

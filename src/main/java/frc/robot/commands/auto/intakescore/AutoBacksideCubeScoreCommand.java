@@ -8,14 +8,14 @@ import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.GrabberSubsystem;
 
 public class AutoBacksideCubeScoreCommand extends CommandBase{
-    boolean high;
-    double extendLength;
+    public boolean high;
+    public double extendLength;
 
-    boolean extended;
-    boolean scored;
+    private boolean extended;
+    private boolean scored;
 
-    double extendTime = 1;
-    double scoredTime = 1;
+    private final double extendTime = 1;
+    private final double scoreTime = 1;
 
     double startTime;
 
@@ -45,14 +45,14 @@ public class AutoBacksideCubeScoreCommand extends CommandBase{
     public void execute() {
         if(!extended && !scored){
             ArmSubsystem.getInstance().extendNU(extendLength);
-            if(System.currentTimeMillis()/1000-startTime > 1){
+            if(System.currentTimeMillis()/1000-startTime > extendTime){
                 extended = true;
                 startTime = System.currentTimeMillis()/1000;
             }
         } 
         else if(!scored){
             GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_RELEASE_SPEED);
-            if(System.currentTimeMillis()/1000-startTime > 1){
+            if(System.currentTimeMillis()/1000-startTime > scoreTime){
                 scored = true;
                 startTime = System.currentTimeMillis()/1000;
             }

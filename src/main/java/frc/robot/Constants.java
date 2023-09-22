@@ -204,9 +204,9 @@ public final class Constants {
     public static final double AUTO_ARM_ACCELERATION = 100;
 
     public static final double PIVOT_CRUISE_VELOCITY = 0.3; //0.3
-    public static final double PIVOT_ACCELERATION = 0.7;
+    public static final double PIVOT_ACCELERATION = 0.6;
 
-    public static final double AUTO_PIVOT_CRUISE_VELOCITY = 0.49;
+    public static final double AUTO_PIVOT_CRUISE_VELOCITY = 0.3;
     public static final double AUTO_PIVOT_ACCELERATION = 0.59;
 
     //High Scoring
@@ -228,7 +228,7 @@ public final class Constants {
     public static final double MID_EXTEND_NU = 29_500/2048.;
     public static final double LOW_EXTEND_NU = 0/2048.;
 
-    public static final double AUTO_DUNK_ANGLE = 3 * TAU/360;
+    public static final double AUTO_DUNK_ANGLE = 0 * TAU/360;
     public static final double TELEOP_DUNK_ANGLE = 1 * TAU/360;
 
     public static final double RETRACT_NU = 18_000/2048.; //NU to retract back in after scoring to avoid hitting middle node

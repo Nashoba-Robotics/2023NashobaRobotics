@@ -64,17 +64,22 @@ public class Chezy3PieceFar extends SequentialCommandGroup {
 
         addCommands(
             new InstantCommand(() -> {
+                GrabberSubsystem.getInstance().zeroWrist();
+                GrabberSubsystem.getInstance().set(0);
+                SwerveDriveSubsystem.getInstance().setGyro(Constants.TAU/2);
+            }, GrabberSubsystem.getInstance(), SwerveDriveSubsystem.getInstance()),
+            new AutoScoreCommand(),
+            new InstantCommand(() -> {
                 SwerveDriveSubsystem.getInstance().resetOdometry(
                     PathPlannerTrajectory.transformTrajectoryForAlliance(
                         path.get(0),
                         DriverStation.getAlliance()).getInitialHolonomicPose()
                     );
             }, SwerveDriveSubsystem.getInstance()),
-            new AutoScoreCommand(),
             path1,
-            new AutoScoreCubeHeightCommand(TargetLevel.HIGH),
+            new AutoBacksideCubeScoreCommand(true),
             path2,
-            new AutoScoreCubeHeightCommand(TargetLevel.MID)
+            new AutoBacksideCubeScoreCommand(false)
         );
 
     }

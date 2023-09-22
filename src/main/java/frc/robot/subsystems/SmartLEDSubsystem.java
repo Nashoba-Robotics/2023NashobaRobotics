@@ -12,6 +12,7 @@ import com.ctre.phoenix.led.LarsonAnimation.BounceMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -80,12 +81,14 @@ public class SmartLEDSubsystem extends SubsystemBase{
                 break;
         }
 
-        if(DriverStation.isTeleop()){
+        if(DriverStation.isEnabled()){
             //Front facing away from DS
             if(!full){
                 // LEDSegment.MainStrip.clearAnimation();
                 if(SwerveDriveSubsystem.getInstance().getGyroAngle() >= -Constants.TAU/8
                 && SwerveDriveSubsystem.getInstance().getGyroAngle() <= Constants.TAU/8){
+                    SmartDashboard.putNumber("Light", 0);
+
                     LEDSegment.FLStrip.setColor(stateColor);
                     LEDSegment.FRStrip.setColor(stateColor);
                     if(DriverStation.getAlliance() == Alliance.Blue){
@@ -100,6 +103,8 @@ public class SmartLEDSubsystem extends SubsystemBase{
                 //Facing right
                 else if(SwerveDriveSubsystem.getInstance().getGyroAngle() < -Constants.TAU/8
                     &&  SwerveDriveSubsystem.getInstance().getGyroAngle() > -Constants.TAU*3/8){
+                    SmartDashboard.putNumber("Light", 1);
+
                     LEDSegment.FLStrip.setColor(stateColor);
                     LEDSegment.BLStrip.setColor(stateColor);
 
@@ -114,7 +119,8 @@ public class SmartLEDSubsystem extends SubsystemBase{
                 }
                 //Facing back
                 else if(SwerveDriveSubsystem.getInstance().getGyroAngle() >= Constants.TAU*3/8
-                    &&  SwerveDriveSubsystem.getInstance().getGyroAngle() <= -Constants.TAU*3/8){
+                    ||  SwerveDriveSubsystem.getInstance().getGyroAngle() <= -Constants.TAU*3/8){
+                    SmartDashboard.putNumber("Light", 2);
                     LEDSegment.BLStrip.setColor(stateColor);
                     LEDSegment.BRStrip.setColor(stateColor);
                     
@@ -125,10 +131,13 @@ public class SmartLEDSubsystem extends SubsystemBase{
                     else{
                         LEDSegment.FLStrip.setColor(stateColor);
                         LEDSegment.FRStrip.setColor(statusColor);
+                        
                     }
                 }
                 //Facing Left
                 else{
+                    SmartDashboard.putNumber("Light", 3);
+
                     LEDSegment.FRStrip.setColor(stateColor);
                     LEDSegment.BRStrip.setColor(stateColor);
 
@@ -147,7 +156,7 @@ public class SmartLEDSubsystem extends SubsystemBase{
             }
         }
         else if(DriverStation.isDisabled()){
-            LEDSegment.MainStrip.setBoucneAnimation(stateColor, 0.1);
+            LEDSegment.MainStrip.setBoucneAnimation(orange, 0.1);
         }
         else if(DriverStation.isAutonomous()){
             LEDSegment.MainStrip.setRainbowAnimation(0.1);
@@ -194,7 +203,7 @@ public class SmartLEDSubsystem extends SubsystemBase{
         FRStrip(89, 27, 0),
         BRStrip(61, 28, 0),
         BLStrip(35, 26, 0),
-        MainStrip(8, 100, 0);
+        MainStrip(8, 108, 0);
 
         public final int startIndex;
         public final int segmentSize;
@@ -240,7 +249,7 @@ public class SmartLEDSubsystem extends SubsystemBase{
 
         public void setBoucneAnimation(Color color, double speed) {
             setAnimation(new LarsonAnimation(
-                    color.r, color.g, color.b, 0, speed, segmentSize, BounceMode.Front, 3, startIndex));
+                    color.r, color.g, color.b, 0, speed, segmentSize, BounceMode.Front, 7, startIndex));
         }
 
         public void setStrobeAnimation(Color color, double speed) {

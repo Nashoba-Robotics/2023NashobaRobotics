@@ -124,14 +124,20 @@ public class AutoDirectionalPrepHeightCommand extends CommandBase {
         //Manual Extension:
         //Make sure that the arm has reached its desired extend position before we allow manual movement to happen
         if(atStartDeg){
-            double pivotVelocity = Math.abs(targetPivot-ArmSubsystem.getInstance().getEncoderRad());
-            pivotVelocity /= Constants.TAU;
-            pivotVelocity /= targetTime;
-            ArmSubsystem.getInstance().setPivotCruiseVelocity(pivotVelocity);
-
-            double extendVelocity = Math.abs(targetPos-ArmSubsystem.getInstance().getExtendNU());
-            extendVelocity /= targetTime;
-            ArmSubsystem.getInstance().setExtendCruiseVelocity(extendVelocity);
+            if(DriverStation.isAutonomous()){
+                ArmSubsystem.getInstance().setPivotCruiseVelocity(0.39407);
+                ArmSubsystem.getInstance().setExtendCruiseVelocity(88.7955);
+            }
+            else{
+                double pivotVelocity = Math.abs(targetPivot-ArmSubsystem.getInstance().getEncoderRad());
+                pivotVelocity /= Constants.TAU;
+                pivotVelocity /= targetTime;
+                ArmSubsystem.getInstance().setPivotCruiseVelocity(pivotVelocity);
+    
+                double extendVelocity = Math.abs(targetPos-ArmSubsystem.getInstance().getExtendNU());
+                extendVelocity /= targetTime;
+                ArmSubsystem.getInstance().setExtendCruiseVelocity(extendVelocity);
+            }
 
             ArmSubsystem.getInstance().pivot(targetPivot);
             ArmSubsystem.getInstance().extendNU(targetPos);

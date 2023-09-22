@@ -212,7 +212,7 @@ public final class Tabs {
             resetExtendEntry();
             resetPivotAngleEntry();
             resetGrabSpeed();
-            resetOrienter();
+            // resetOrienter();
         }
 
         public static double getExtendNU(){

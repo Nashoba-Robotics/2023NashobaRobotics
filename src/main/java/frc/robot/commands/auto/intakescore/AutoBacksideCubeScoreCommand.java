@@ -10,8 +10,8 @@ public class AutoBacksideCubeScoreCommand extends CommandBase{
     boolean high;
     double extendLength;
 
-    boolean extended = false;
-    boolean scored = true;
+    boolean extended;
+    boolean scored;
 
     double extendTime = 1;
     double scoredTime = 1;
@@ -30,9 +30,11 @@ public class AutoBacksideCubeScoreCommand extends CommandBase{
         }
     }
 
-    // Assume the robot is already at the correct prep angle
+    // Assume the robot is already at the correct cube angle
     @Override
     public void initialize() {
+        extended = false;
+        scored = false;
         startTime = System.currentTimeMillis()/1000;
     }
 
@@ -40,14 +42,14 @@ public class AutoBacksideCubeScoreCommand extends CommandBase{
     public void execute() {
         if(!extended && !scored){
             ArmSubsystem.getInstance().extendNU(extendLength);
-            if(System.currentTimeMillis()/1000 > 1){
+            if(System.currentTimeMillis()/1000-startTime > 1){
                 extended = true;
                 startTime = System.currentTimeMillis()/1000;
             }
         } 
         else if(!scored){
             GrabberSubsystem.getInstance().set(Constants.Grabber.CUBE_RELEASE_SPEED);
-            if(System.currentTimeMillis()/1000 > 1){
+            if(System.currentTimeMillis()/1000-startTime > 1){
                 scored = true;
                 startTime = System.currentTimeMillis()/1000;
             }

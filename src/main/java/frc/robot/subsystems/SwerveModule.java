@@ -95,8 +95,8 @@ public class SwerveModule {
         moveConfig.Slot0.kD = Constants.Swerve.MOVE_KD;
         moveConfig.Voltage.PeakForwardVoltage = 12;
         moveConfig.Voltage.PeakReverseVoltage = -12;
-        moveConfig.CurrentLimits.StatorCurrentLimit = 60;
-        moveConfig.CurrentLimits.SupplyCurrentLimit = 80;
+        moveConfig.CurrentLimits.StatorCurrentLimit = 50;
+        moveConfig.CurrentLimits.SupplyCurrentLimit = 50;
         moveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         moveConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         moveConfigurator.apply(moveConfig);
@@ -117,8 +117,8 @@ public class SwerveModule {
         turnConfig.MotionMagic.MotionMagicCruiseVelocity = 103;
         turnConfig.MotionMagic.MotionMagicAcceleration = 180;
         turnConfig.MotionMagic.MotionMagicJerk = 0;
-        turnConfig.CurrentLimits.StatorCurrentLimit = 60;
-        turnConfig.CurrentLimits.SupplyCurrentLimit = 80;
+        turnConfig.CurrentLimits.StatorCurrentLimit = 30;
+        turnConfig.CurrentLimits.SupplyCurrentLimit = 30;
         turnConfig.CurrentLimits.StatorCurrentLimitEnable = true;
         turnConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
         turnConfigurator.apply(turnConfig);
@@ -322,6 +322,14 @@ public class SwerveModule {
 
     public double getTurnAngle(){
         return NRUnits.constrainRad(getTurnPosition() * Constants.TAU);
+    }
+
+    public double getTurnStatorCurrent() {
+        return turnMotor.getStatorCurrent().getValue();
+    }
+
+    public double getTurnSupplyCurrent() {
+        return turnMotor.getSupplyCurrent().getValue();
     }
 
     // RADIANS

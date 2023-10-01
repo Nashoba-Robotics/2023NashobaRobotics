@@ -29,7 +29,7 @@ public class AutoBacksideCubeScoreCommand extends CommandBase{
             scoreTime = 0.3;
         }
         else{
-            extendLength = Constants.Arm.Cube.MID_EXTEND_NU;
+            extendLength = Constants.Arm.Cube.MID_EXTEND_NU-5;
             extendTime = 0.7;
             scoreTime = 0.3;
         }

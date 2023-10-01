@@ -478,25 +478,6 @@ public class ArmSubsystem extends SubsystemBase {
         // SmartDashboard.putNumber("Pivot Speed", getPivotSpeed());
 
         //* Only for when the pivot is tuned with the encoder */
-        if(switchState){
-            switch(status){
-                case OK:
-                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RemoteCANcoder;
-                    // footConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.ENCODER_PORT;
-                    // footConfig.Feedback.FeedbackRotorOffset = Constants.Arm.ENCODER_OFFSET;
-                    // footConfig.Feedback.SensorToMechanismRatio = 1;
-                    break;
-                case ENCODER_BAD:
-                    footConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-                    break;
-                case PIVOT_BAD:
-                    break;
-                case EXTEND_BAD:
-                    break;
-            }
-            foot.apply(footConfig);
-            switchState = false;
-        }
         if(lastState != Robot.state){
             switchState = true;
             lastState = Robot.state;

@@ -130,9 +130,9 @@ public class ArmSubsystem extends SubsystemBase {
         footConfig.Slot0.kD = Constants.Arm.PIVOT_KD;
 
         footConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-        footConfig.CurrentLimits.StatorCurrentLimit = 60;
+        footConfig.CurrentLimits.StatorCurrentLimit = 100;
         footConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
-        footConfig.CurrentLimits.SupplyCurrentLimit = 80;
+        footConfig.CurrentLimits.SupplyCurrentLimit = 100;
 
         footConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         
@@ -518,8 +518,8 @@ public class ArmSubsystem extends SubsystemBase {
             LogManager.appendToLog(tromboneSlide.getSupplyCurrent().getValue(), "Arm:/Extender/Supply");
             
             //Pivot1
-            LogManager.appendToLog(NRUnits.Pivot.rotToRad(ArmSubsystem.getInstance().getPivotRad()), "Arm:/RelativeAngle");
-            LogManager.appendToLog(NRUnits.Pivot.rotToRad(getEncoderDeg()), "Arm:/Pivot1/AbsolutePosition");
+            LogManager.appendToLog(getPivotDeg(), "Arm:/RelativeAngle");
+            LogManager.appendToLog(getEncoderDeg(), "Arm:/Pivot1/AbsolutePosition");
             LogManager.appendToLog(getStatorCurrent1(), "Arm:/Pivot1/Stator");
             LogManager.appendToLog(getSupplyCurrent1(), "Arm:/Pivot1/Supply");
 

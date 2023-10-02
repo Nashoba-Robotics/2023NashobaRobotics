@@ -271,7 +271,7 @@ public final class Constants {
       public static final double MID_ANGLE = -62 * TAU/360;
       public static final double LOW_ANGLE = -105 * TAU/360;
 
-      public static final double INTAKE_ANGLE = -109 * Constants.TAU/360;
+      public static final double INTAKE_ANGLE = -110 * Constants.TAU/360;
       public static final double INTAKE_EXTEND_NU = 3_000/2048.;
 
       public static final double HIGH_EXTEND_NU = 82_000/2048.; //7.6728219283223

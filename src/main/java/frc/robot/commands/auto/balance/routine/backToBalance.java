@@ -16,7 +16,7 @@ public class backToBalance extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return SwerveDriveSubsystem.getInstance().notLevel();
+        return SwerveDriveSubsystem.getInstance().reallyNotLevel();
     }
 
 }

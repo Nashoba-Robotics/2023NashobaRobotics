@@ -367,6 +367,15 @@ public class SwerveDriveSubsystem extends SubsystemBase {
         return Math.abs(Math.sqrt(speed.vxMetersPerSecond*speed.vxMetersPerSecond + speed.vyMetersPerSecond*speed.vyMetersPerSecond));
     }
 
+    public double getMoveStator(int index){
+        if(index >= 4 || index < 0) return 0;
+        return modules[index].getMoveStatorCurrent();
+    }
+    public double getTurnStator(int index){
+        if(index >= 4 || index < 0) return 0;
+        return modules[index].getTurnStatorCurrent();
+    }
+
     @Override
     public void periodic(){
         for(SwerveModule module : modules) module.updateMovePosition();

@@ -18,6 +18,7 @@ import frc.robot.commands.test.EncoderTestCommand;
 import frc.robot.commands.test.IntakeTestCommand;
 import frc.robot.commands.test.KCLEDTestCommand;
 import frc.robot.commands.test.RunArmCommand;
+import frc.robot.commands.test.TJTestCommand;
 import frc.robot.commands.SetPivotOffsetCommand;
 import frc.robot.commands.auto.intakescore.AutoBacksideCubeScoreCommand;
 import frc.robot.commands.intake.SingleStationIntakeCommand;
@@ -208,12 +209,14 @@ public class RobotContainer {
 
     Tabs.Comp.add(new SetPivotOffsetCommand());
 
-    SmartDashboard.putData(new DriveTestCommand());
-    SmartDashboard.putData(new BackSideTest());
-    SmartDashboard.putData(new AutoBacksideCubeScoreCommand(false));
-    SmartDashboard.putData("Cube Prep", new InstantCommand(
-      () -> ArmSubsystem.getInstance().pivot(60*Constants.TAU/360)
-    ) );
+    // SmartDashboard.putData(new DriveTestCommand());
+    // SmartDashboard.putData(new BackSideTest());
+    // SmartDashboard.putData(new AutoBacksideCubeScoreCommand(false));
+    // SmartDashboard.putData("Cube Prep", new InstantCommand(
+      // () -> ArmSubsystem.getInstance().pivot(60*Constants.TAU/360)
+    // ) );
+
+    SmartDashboard.putData(new TJTestCommand());
   }
 
   static PowerDistribution pdh = new PowerDistribution(1, ModuleType.kRev);

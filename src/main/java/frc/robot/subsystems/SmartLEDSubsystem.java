@@ -53,6 +53,7 @@ public class SmartLEDSubsystem extends SubsystemBase{
     public void periodic() {
         if(state != lastState){
             fullClear();
+            lastState = state;
         }
         switch(state){
             case DISABLED:

@@ -5,7 +5,6 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
 public class offBalance extends CommandBase {
-    
     public offBalance() {
         addRequirements(SwerveDriveSubsystem.getInstance());
     }

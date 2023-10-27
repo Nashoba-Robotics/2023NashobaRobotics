@@ -2,6 +2,7 @@ package frc.robot.commands.test;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.LogManager;
 import frc.robot.commands.DriveSpeedCommand;
 import frc.robot.subsystems.SwerveDriveSubsystem;
 
@@ -27,6 +28,7 @@ public class TJTestCommand extends CommandBase{
             SmartDashboard.putNumber("TJ Test Turn Current " + i, SwerveDriveSubsystem.getInstance().getTurnStator(i));
 
         }
+        LogManager.appendToLog(speed, "Swerve/:TJ Speed");
     }
 
     @Override
